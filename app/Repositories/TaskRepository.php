@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Tasks;
+use App\Models\Task;
 use App\Repositories\Concerns\BaseRepository;
 
 class TaskRepository extends BaseRepository
@@ -14,6 +14,6 @@ class TaskRepository extends BaseRepository
      */
     public function model()
     {
-        return Tasks::class;
+        return Task::class;
     }
 }

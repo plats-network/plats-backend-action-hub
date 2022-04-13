@@ -17,38 +17,18 @@ class TaskService extends BaseService
     }
 
     /**
-     * @param array $conditions
-     *
-     * @return mixed
-     */
-    public function search($conditions = [])
-    {
-        $this->makeBuilder($conditions);
-
-        return $this->endFilter();
-    }
-
-    /**
      * @param \Illuminate\Http\Request $request
-     * @param string $missionId
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection|mixed
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function create(Request $request, $missionId)
+    public function create(Request $request)
     {
-        $data = $request->only([
-            'name',
-            'description',
-            'reward_amount',
-            'exc_time',
-            'long',
-            'last',
-        ]);
+        $data = $request->except(['image']);
 
-        $data['mission_id'] = $missionId;
-        $data['creator_id'] = $request->user()->id;
         $data['status']     = ACTIVE_TASK;
+        $data['type']       = TYPE_FREE_TASK;
+        $data['creator_id'] = $request->user()->id;
 
         return $this->repository->create($data);
     }

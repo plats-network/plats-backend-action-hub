@@ -13,14 +13,15 @@ if (!defined('DEFINE_CONSTANT')) {
     define('ADMIN_ROLE', 2);
 
     /**
-     * Mission
-     */
-    define('INACTIVE_MISSION', 0);
-    define('ACTIVE_MISSION', 1);
-
-    /**
      * Task
      */
     define('INACTIVE_TASK', 0);
     define('ACTIVE_TASK', 1);
+    define('TYPE_FREE_TASK', 1);
+
+    /**
+     * Task Location
+     */
+    define('INACTIVE_LOCATION_TASK', 0);
+    define('ACTIVE_LOCATION_TASK', 1);
 }

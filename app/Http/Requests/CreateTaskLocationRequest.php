@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateMissionRequest extends FormRequest
+class CreateTaskLocationRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,7 +15,9 @@ class CreateMissionRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:' . INPUT_MAX_LENGTH],
-            'image' => ['image']
+            'long' => ['numeric', 'max:' . INPUT_MAX_LENGTH],
+            'lat' => ['numeric', 'max:' . INPUT_MAX_LENGTH],
+            'sort' => ['integer'],
         ];
     }
 }

@@ -13,11 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('missions', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
             $table->mediumText('description')->nullable();
             $table->string('image')->nullable();
+            $table->bigInteger('duration')->nullable();
+            $table->decimal('distance', 8, 1)->default(0);
+            $table->decimal('reward_amount', 12)->default(0);
+            $table->integer('type')->default(0);
             $table->uuid('creator_id')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
@@ -32,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('missions');
+        Schema::dropIfExists('tasks');
     }
 };

@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\Mission;
+use App\Models\TaskLocation;
 use App\Repositories\Concerns\BaseRepository;
 
-class MissionRepository extends BaseRepository
+class TaskLocationRepository extends BaseRepository
 {
     /**
      * Specify Model class name
@@ -14,6 +14,6 @@ class MissionRepository extends BaseRepository
      */
     public function model()
     {
-        return Mission::class;
+        return TaskLocation::class;
     }
 }

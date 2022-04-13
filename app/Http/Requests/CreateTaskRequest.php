@@ -15,11 +15,11 @@ class CreateTaskRequest extends FormRequest
     {
         return [
             'name'          => ['required', 'max:' . INPUT_MAX_LENGTH],
-            'image'         => ['image'],
+            'description'   => ['max:' . INPUT_MAX_LENGTH],
+            'duration'      => ['integer', 'min:1'],
+            'distance'      => ['numeric', 'min:0'],
             'reward_amount' => ['numeric', 'min:0'],
-            'exc_time'      => ['integer', 'min:0'],
-            'long'          => ['numeric', 'max:' . INPUT_MAX_LENGTH],
-            'last'          => ['numeric', 'max:' . INPUT_MAX_LENGTH],
+            'image'         => ['image'],
         ];
     }
 }

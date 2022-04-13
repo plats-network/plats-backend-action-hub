@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Tasks extends Model
+class TaskLocation extends Model
 {
     use HasFactory;
     use Uuid;
@@ -18,7 +18,7 @@ class Tasks extends Model
      *
      * @var string
      */
-    protected $table = 'tasks';
+    protected $table = 'task_locations';
 
     /**
      * The attributes that are mass assignable.
@@ -26,14 +26,25 @@ class Tasks extends Model
      * @var string[]
      */
     protected $fillable = [
-        'mission_id',
+        'task_id',
         'name',
-        'image',
-        'reward_amount',
-        'exc_time',
+        'address',
         'long',
-        'last',
-        'creator_id',
+        'lat',
+        'sort',
+        'status',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'task_id',
+        'created_at',
+        'updated_at',
+        'deleted_at',
         'status',
     ];
 }

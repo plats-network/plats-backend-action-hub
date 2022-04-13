@@ -46,7 +46,7 @@ abstract class BaseService extends SearchBaseServiceAbstract
 
         $this->withLoad = !is_array($with) ? : array_merge($this->withLoad, $with);
 
-        return $result->loadMissing($this->withLoad);
+        return $result->load($this->withLoad);
     }
 
     /**
