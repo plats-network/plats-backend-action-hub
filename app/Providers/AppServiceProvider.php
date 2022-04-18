@@ -38,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Blade::componentNamespace('App\View\Components\Forms', 'form');
         Blade::anonymousComponentNamespace('admin._components', 'admin');
 
         /**

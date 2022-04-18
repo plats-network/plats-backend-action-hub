@@ -20,4 +20,5 @@
 
 <script src="{{ asset('theme-acorn/common.js') }}"></script>
 <script src="{{ asset('theme-acorn/scripts.js') }}"></script>
+<script src="{{ asset('js/admin/app.js') }}"></script>
 <!-- Page Specific Scripts End -->

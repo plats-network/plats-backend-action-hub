@@ -7,7 +7,10 @@ $.ajaxSetup({
     }
 });
 
+require('../../_common/js/lodash-install');
+require('../../_common/js/translator');
 
 require('overlayscrollbars/js/OverlayScrollbars.min');
 require('../../theme/acorn/vendor/autoComplete.min');
 require('../../theme/acorn/vendor/clamp.min');
+require('select2');

@@ -1,6 +1,6 @@
 @extends('admin.layout')
 @section('content')
-    <x-admin::page_name
+    <x-admin::top_page
             title="Getting Started"
             desc="Let us manage the database engines for your applications so you can focus on building."/>
 
