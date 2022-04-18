@@ -14,7 +14,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/Dashboard/Analysis">
+                    <a href="#">
                         <i data-acorn-icon="chart-4" class="icon" data-acorn-size="18"></i>
                         <span class="label">Analysis</span>
                     </a>
@@ -24,29 +24,17 @@
         <li>
             <a href="#" data-bs-target="#services">
                 <i data-acorn-icon="grid-1" class="icon" data-acorn-size="18"></i>
-                <span class="label">Services</span>
+                <span class="label">Action hub</span>
             </a>
             <ul>
                 <li>
-                    <a href="/Services/Database">
+                    <a href="{{ route(TASK_LIST_ADMIN_ROUTER) }}">
                         <i data-acorn-icon="database" class="icon d-none" data-acorn-size="18"></i>
-                        <span class="label">Database</span>
+                        <span class="label">Task</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/Services/Storage">
-                        <i data-acorn-icon="file-image" class="icon d-none" data-acorn-size="18"></i>
-                        <span class="label">Storage</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/Services/Hosting">
-                        <i data-acorn-icon="router" class="icon d-none" data-acorn-size="18"></i>
-                        <span class="label">Hosting</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/Services/Users">
+                    <a href="#">
                         <i data-acorn-icon="user" class="icon d-none" data-acorn-size="18"></i>
                         <span class="label">Users</span>
                     </a>

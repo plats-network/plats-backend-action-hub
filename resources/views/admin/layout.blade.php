@@ -19,7 +19,9 @@
             <div class="row">
             @include('admin._layout.menu_left')
             <!-- Page Content Start -->
-            @yield('content')
+                <div class="col">
+                    @yield('content')
+                </div>
             <!-- Page Content End -->
             </div>
         </div>
@@ -28,5 +30,4 @@
 </div>
 @include('admin._layout.scripts')
 </body>
-
 </html>

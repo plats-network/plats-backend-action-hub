@@ -96,7 +96,7 @@
   // Settings initialization
   _initSettings() {
     if (typeof Settings !== 'undefined') {
-      const settings = new Settings({attributes: {placement: 'horizontal', layout: 'boxed', color: 'light-blue', navcolor: 'light' }, showSettings: true, storagePrefix: 'acorn-service-provider-'});
+      const settings = new Settings({attributes: {placement: 'horizontal', layout: 'boxed', color: 'light-blue', navcolor: 'light' }, showSettings: true, storagePrefix: 'plats-action-hub-'});
     }
   }
 
