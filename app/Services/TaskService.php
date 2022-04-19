@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\UserCheckedInLocationEvent;
 use App\Repositories\TaskRepository;
 use App\Repositories\TaskUserRepository;
 use App\Services\Concerns\BaseService;
@@ -73,17 +74,17 @@ class TaskService extends BaseService
      * @param \Illuminate\Http\File|\Illuminate\Http\UploadedFile|string $imageFile
      *
      */
-    public function endLocation($taskId, $locaId, $userId, $imageFile)
+    public function checkIn($taskId, $locaId, $userId, $imageFile)
     {
         // Get and check exists Task and Location
-        $this->repository->taskHasLocation($taskId, $locaId);
+        $localTask = $this->repository->taskHasLocation($taskId, $locaId);
 
         $taskUser = $this->taskUserRepository->location($userId, $locaId);
         abort_if(is_null($taskUser), 422, trans('task_user.not_started'));
         abort_if(!is_null($taskUser->ended_at), 422, trans('task_user.update_reject'));
 
         //Save image
-        $filePath = 'user_tasks/' . $userId . '/' . $taskId . '/';
+        /*$filePath = 'user_tasks/' . $userId . '/' . $taskId . '/';
         $image = Storage::putFileAs($filePath, $imageFile, $imageFile->hashName());
 
         $taskUser->ended_at = Carbon::now();
@@ -91,7 +92,10 @@ class TaskService extends BaseService
 
         $taskUser->libraries()->create([
             'url' => $image
-        ]);
+        ]);*/
+
+        //Fire Event
+        UserCheckedInLocationEvent::dispatch($taskUser, $localTask, $taskId);
 
         return $taskUser;
     }

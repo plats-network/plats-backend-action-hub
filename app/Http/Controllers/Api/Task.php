@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTaskRequest;
-use App\Http\Requests\EndTaskRequest;
+use App\Http\Requests\CheckInTaskRequest;
 use App\Http\Requests\StartTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskUserResource;
@@ -76,17 +76,17 @@ class Task extends Controller
     }
 
     /**
-     * @param \App\Http\Requests\EndTaskRequest $request
+     * @param \App\Http\Requests\CheckInTaskRequest $request
      * @param string $taskId
      * @param string $locationId
      *
      * @return \App\Http\Resources\TaskUserResource
      */
-    public function endLocationTask(EndTaskRequest $request, $taskId, $locationId)
+    public function checkIn(CheckInTaskRequest $request, $taskId, $locationId)
     {
         return new TaskUserResource(
             $this->taskService
-                ->endLocation(
+                ->checkIn(
                     $taskId,
                     $locationId,
                     $request->user()->id,

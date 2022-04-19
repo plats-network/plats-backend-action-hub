@@ -82,7 +82,7 @@ class Task extends Model
      */
     public function locations()
     {
-        return $this->hasMany(TaskLocation::class, 'task_id', 'id');
+        return $this->hasMany(TaskLocation::class, 'task_id', 'id')->orderBy('sort')->orderBy('id');
     }
 
     /**
