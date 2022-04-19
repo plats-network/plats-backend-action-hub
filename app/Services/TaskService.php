@@ -37,6 +37,29 @@ class TaskService extends BaseService
     }
 
     /**
+     * Calculate the remaining time of the quest from the start
+     *
+     * @param \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Collection $userHistories
+     * @param integer $duration Minute
+     */
+    public function timeRemaining($userHistories, $duration)
+    {
+        return $duration;
+        //TODO: Calculate
+        $timeUsed = 0;
+        foreach ($userHistories as $history) {
+            if (is_null($history->ended_at)) {
+                continue;
+            }
+            $calcu = Carbon::parse($history->started_at)->diffInRealMinutes(Carbon::parse($history->ended_at));
+            dd($calcu);
+            $timeUsed += 0;
+        }
+
+        return $duration - $timeUsed;
+    }
+
+    /**
      * User start task at location
      *
      * @param string $taskId Task ID
@@ -84,7 +107,7 @@ class TaskService extends BaseService
         abort_if(!is_null($taskUser->ended_at), 422, trans('task_user.update_reject'));
 
         //Save image
-        /*$filePath = 'user_tasks/' . $userId . '/' . $taskId . '/';
+        $filePath = 'user_tasks/' . $userId . '/' . $taskId . '/';
         $image = Storage::putFileAs($filePath, $imageFile, $imageFile->hashName());
 
         $taskUser->ended_at = Carbon::now();
@@ -92,7 +115,7 @@ class TaskService extends BaseService
 
         $taskUser->libraries()->create([
             'url' => $image
-        ]);*/
+        ]);
 
         //Fire Event
         UserCheckedInLocationEvent::dispatch($taskUser, $localTask, $taskId);
