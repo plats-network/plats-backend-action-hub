@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ActionHub\Task;
-use App\Http\Controllers\ActionHub\TaskLocation;
+use App\Http\Controllers\Api\Task;
+use App\Http\Controllers\Api\TaskLocation;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +18,8 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
     Route::get('/', 'index');
     Route::post('/', 'create');
     Route::get('/{id}', 'detail')->whereUuid('id');
+    Route::post('/{id}/start/{location_id}', 'startTask')->whereUuid('id')->whereUuid('location_id');
+    Route::post('/{id}/end/{location_id}', 'endLocationTask')->whereUuid('id')->whereUuid('location_id');
 
     Route::prefix('{id}/locations')->controller(TaskLocation::class)->group(function () {
         Route::post('/', 'create');

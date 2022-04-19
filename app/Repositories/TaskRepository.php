@@ -16,4 +16,15 @@ class TaskRepository extends BaseRepository
     {
         return Task::class;
     }
+
+    /**
+     * @param $taskId
+     * @param $locaId
+     *
+     * @return mixed
+     */
+    public function taskHasLocation($taskId, $locaId)
+    {
+        return $this->model->hasLocation($locaId)->findOrFail($taskId);
+    }
 }

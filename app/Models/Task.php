@@ -47,6 +47,32 @@ class Task extends Model
     ];
 
     /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param string $localId Location ID
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeHasLocation($builder, $localId)
+    {
+        return $builder->whereHas('locations', function ($q) use ($localId) {
+            $q->where('id', $localId);
+        });
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param string $localId Location ID
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithLocation($builder, $localId)
+    {
+        return $builder->with(['locations' => function ($q) use ($localId) {
+            return $q->where('id', $localId);
+        }]);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function locations()
