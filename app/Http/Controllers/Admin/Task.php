@@ -39,7 +39,7 @@ class Task extends Controller
         if (!empty(request()->old())) {
             $this->flashReset();
         }
-        
+
         return view('admin.task.create');
     }
 
