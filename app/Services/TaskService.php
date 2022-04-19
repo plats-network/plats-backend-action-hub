@@ -27,6 +27,15 @@ class TaskService extends BaseService
     }
 
     /**
+     * @param string $taskId
+     * @param string $userId
+     */
+    public function myLocations($taskId, $userId)
+    {
+        return $this->taskUserRepository->locations($taskId, $userId);
+    }
+
+    /**
      * User start task at location
      *
      * @param string $taskId Task ID
@@ -120,4 +129,6 @@ class TaskService extends BaseService
 
         return $this->repository->create($data);
     }
+
+    //protected function
 }

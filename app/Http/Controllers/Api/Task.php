@@ -41,9 +41,12 @@ class Task extends Controller
      *
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function detail($id)
+    public function detail(Request $request, $id)
     {
-        return new TaskResource($this->taskService->find($id, ['locations']));
+        $task = $this->taskService->find($id, ['locations', 'galleries']);
+        $task->histories = $this->taskService->myLocations($task->id, $request->user()->id);
+
+        return new TaskResource($task);
     }
 
     /**

@@ -39,6 +39,17 @@ class TaskUser extends Model
     ];
 
     /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param $userId
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfUser($builder, $userId)
+    {
+        return $builder->where('user_id', $userId);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function libraries()
