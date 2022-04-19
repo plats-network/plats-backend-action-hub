@@ -88,6 +88,23 @@ class TaskService extends BaseService
     }
 
     /**
+     * Create or Update the task
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection|mixed|void
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
+    public function store(Request $request)
+    {
+        if (!$request->filled('id')) {
+            return $this->create($request);
+        }
+
+        dd('Updating...');
+    }
+
+    /**
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection|mixed
