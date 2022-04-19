@@ -2,10 +2,26 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * Required config menus
+     *
+     * @var bool
+     */
+    protected $bootedAppMenu = false;
+
+    /**
+     * Check booted composer
+     *
+     * @var bool
+     */
+    protected $bootedComposer = false;
+
     /**
      * Register any application services.
      *
@@ -13,7 +29,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
     }
 
     /**
@@ -23,6 +38,43 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Blade::componentNamespace('App\View\Components\Forms', 'form');
+        Blade::anonymousComponentNamespace('admin._components', 'admin');
 
+        /**
+         * DO: Boot menus
+         */
+        /*view()->composer('*', function () {
+            if ($this->bootedComposer == true) {
+                return true;
+            }
+
+            $this->addMenuHelper();
+
+            $this->bootedComposer = true;
+
+            return true;
+        });*/
+    }
+
+    /**
+     * Get config files menu
+     *
+     * @return bool
+     */
+    protected function addMenuHelper(): bool
+    {
+        if ($this->bootedAppMenu || request()->expectsJson() || Auth::guest()) {
+            return true;
+        }
+
+        $menuFiles = glob(app_path('Helpers/Menus/*.php'));
+        foreach ($menuFiles as $file) {
+            require $file;
+        }
+
+        $this->bootedAppMenu = true;
+
+        return true;
     }
 }
