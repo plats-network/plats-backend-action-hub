@@ -16,6 +16,13 @@ class Alert extends Component
     public $type;
 
     /**
+     * Message bag
+     *
+     * @var string | array
+     */
+    public $messages;
+
+    /**
      * @var \Illuminate\Contracts\Session\Session
      */
     protected $session;
@@ -28,6 +35,7 @@ class Alert extends Component
     {
         $this->session = $session;
         $this->type = $type;
+        $this->messages = $this->getMessage();
     }
     /**
      * @return \Illuminate\Contracts\View\View
@@ -42,7 +50,7 @@ class Alert extends Component
      *
      * @return array|string
      */
-    public function messages()
+    public function getMessage()
     {
         // Get errors from form validate
         $messages = $this->session->get('errors', new MessageBag());
@@ -66,6 +74,6 @@ class Alert extends Component
      */
     public function shouldRender(): bool
     {
-        return !empty($this->messages());
+        return !empty($this->messages);
     }
 }

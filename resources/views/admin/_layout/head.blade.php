@@ -6,10 +6,10 @@
 <!-- Font Tags End -->
 <!-- Vendor Styles Start -->
 <link rel="stylesheet" href="{{ asset('css/admin/vendor.css') }}"/>
-@yield('css')
+@stack('css')
 <!-- Vendor Styles End -->
 <!-- Template Base Styles Start -->
 <link rel="stylesheet" href="{{ asset('css/admin/template.css') }}"/>
 <link rel="stylesheet" href="{{ asset('css/admin/custom.css') }}"/>
 <!-- Template Base Styles End -->
-<script src="{{ asset('theme-acorn/base/loader.js') }}"></script>
+<script src="{{ asset('js/admin/theme/base/loader.js') }}"></script>

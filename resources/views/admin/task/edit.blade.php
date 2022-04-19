@@ -1,5 +1,5 @@
 @extends('admin.layout')
 @section('content')
-<x-admin::top_page :title="trans('admin.task.create_page')"/>
+<x-admin::top_page :title="trans('admin.task.edit_page')"/>
 @include('admin.task.form')
 @endsection

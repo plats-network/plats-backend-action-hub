@@ -132,7 +132,6 @@ Table of Contents
 @import 'plugins/contextmenu';
 @import 'plugins/datatable';
 @import 'plugins/datepicker';
-@import 'plugins/dropzone';
 @import 'plugins/editor';
 @import 'plugins/lightbox';
 @import 'plugins/listjs';
@@ -142,16 +141,18 @@ Table of Contents
 @import 'plugins/progressbar';
 @import 'plugins/rating';
 @import 'plugins/scrollbar';*/
+@import 'plugins/dropzone';
 @import 'plugins/select2';
+//@import 'plugins/validation';
 /*@import 'plugins/slider';
 @import 'plugins/sortable';
 @import 'plugins/steps';
 @import 'plugins/tagify';
 @import 'plugins/timepicker';
 @import 'plugins/tour';
-@import 'plugins/validation';
-@import 'plugins/wizard';*/
 
+@import 'plugins/wizard';*/
+//invalid
 @import 'layout/base';
 @import 'layout/typography';
 @import 'layout/main';

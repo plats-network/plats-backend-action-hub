@@ -41,7 +41,7 @@
                                 <div class="row g-0 h-100 align-content-center">
                                     <div class="col-11 col-md-3 d-flex flex-column justify-content-center mb-2 mb-md-0 order-1 order-md-1 h-md-100 position-relative">
                                         <div class="text-muted text-small d-md-none">NAME</div>
-                                        <a href="#" class="text-truncate stretched-link">
+                                        <a href="{{ route(TASK_EDIT_ADMIN_ROUTER, $task->id) }}" class="text-truncate stretched-link">
                                             {{ $task->name }}
                                         </a>
                                     </div>

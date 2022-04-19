@@ -3,7 +3,8 @@ const glob = require('glob');
 const path = require('path');
 
 mix.options({
-    processCssUrls : false
+    processCssUrls : false,
+    //publicPath: 'public/static/'
 }).disableNotifications();
 
 if (!mix.inProduction()) {

@@ -9,6 +9,7 @@ return [
         'page_name' => 'Task management',
         'page_desc' => 'List your tasks',
         'create_page' => 'Create a new task',
+        'edit_page' => 'Edit task',
         'form' => [
             'name' => 'Title of task',
             'desc' => 'Description for task',
@@ -16,6 +17,7 @@ return [
             'distance' => 'Distance (Kilometer)',
             'reward_amount' => 'Reward amount',
             'status' => 'Status',
+            'image' => 'Cover image',
         ],
         'status' => [
             INACTIVE_TASK => 'Draft',

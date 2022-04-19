@@ -9,6 +9,7 @@ $.ajaxSetup({
 
 require('../../_common/js/lodash-install');
 require('../../_common/js/translator');
+require('../../_common/js/form-validation');
 
 require('overlayscrollbars/js/OverlayScrollbars.min');
 require('../../theme/acorn/vendor/autoComplete.min');
