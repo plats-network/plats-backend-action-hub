@@ -45,6 +45,7 @@ class Task extends Controller
     {
         $task = $this->taskService->find($id, ['locations', 'galleries']);
         $task->histories = $this->taskService->myLocations($task->id, $request->user()->id);
+        $task->remaining = $this->taskService->timeRemaining($task->histories, $task->duration);
 
         return new TaskResource($task);
     }
