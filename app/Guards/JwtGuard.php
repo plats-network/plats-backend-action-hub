@@ -2,13 +2,48 @@
 
 namespace App\Guards;
 
-use App\Services\UserService;
+use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\SessionGuard;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Session\Session;
+use Illuminate\Http\Request;
+use PHPOpenSourceSaver\JWTAuth\JWT;
 
-class JwtGuard extends \PHPOpenSourceSaver\JWTAuth\JWTGuard
+class JwtGuard extends SessionGuard
 {
+    /**
+     * The name of the Guard.
+     *
+     * @var string
+     */
+    protected $name = 'tymon.jwt';
+
+    /**
+     * Instantiate the class.
+     *
+     * @param \PHPOpenSourceSaver\JWTAuth\JWT $jwt
+     * @param \Illuminate\Contracts\Auth\UserProvider $provider
+     * @param \Illuminate\Contracts\Session\Session $session
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Contracts\Events\Dispatcher $eventDispatcher
+     */
+    public function __construct(
+        JWT $jwt,
+        UserProvider $provider,
+        Session $session,
+        Request $request,
+        Dispatcher $eventDispatcher
+    ) {
+        $this->jwt      = $jwt;
+        $this->provider = $provider;
+        $this->request  = $request;
+        $this->events   = $eventDispatcher;
+        $this->session  = $session;
+    }
+
     /**
      * Determine if the current user is authenticated.
      *
@@ -16,7 +51,41 @@ class JwtGuard extends \PHPOpenSourceSaver\JWTAuth\JWTGuard
      */
     public function check()
     {
-        return ! is_null($this->user());
+        return !is_null($this->user());
+    }
+
+    /**
+     * Get the currently authenticated user.
+     *
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     */
+    public function user()
+    {
+        if ($this->loggedOut) {
+            return null;
+        }
+
+        // If we've already retrieved the user for the current request we can just
+        // return it back immediately. We do not want to fetch the user data on
+        // every call to this method because that would be tremendously slow.
+        if (! is_null($this->user)) {
+            return $this->user;
+        }
+
+        // The case of using tokens for login is still accepted
+        if ($this->jwt->setRequest($this->request)->getToken()) {
+            return $this->checkAndGetUserFromToken();
+        }
+
+        $sessionToken = $this->session->get($this->getName());
+        if (is_null($sessionToken)) {
+            return null;
+        }
+
+        // Set token
+        $this->jwt->setToken($sessionToken)->getToken();
+
+        return $this->checkAndGetUserFromToken();
     }
 
     /**
@@ -28,43 +97,12 @@ class JwtGuard extends \PHPOpenSourceSaver\JWTAuth\JWTGuard
      */
     public function authenticate()
     {
-        dd('ok');
-        if (! is_null($user = $this->user())) {
+        dd('ok authenticate');
+        if (!is_null($user = $this->user())) {
             return $user;
         }
 
         throw new AuthenticationException;
-    }
-
-    /**
-     * Determine if the current user is a guest.
-     *
-     * @return bool
-     */
-    public function guest()
-    {
-        return is_null($this->user);
-    }
-
-    /**
-     * Get the currently authenticated user.
-     *
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
-     */
-    public function user()
-    {
-        if (null !== $this->user) {
-            return $this->user;
-        }
-
-        $this->jwt->setRequest($this->request)->getToken();
-        $payload = $this->jwt->check(true);
-
-        if ($payload && $this->validateSubject()) {
-            return new UserService($payload);
-        }
-
-        return null;
     }
 
     /**
@@ -75,7 +113,7 @@ class JwtGuard extends \PHPOpenSourceSaver\JWTAuth\JWTGuard
     public function id()
     {
         if ($this->user()) {
-            return $this->user()->getAuthIdentifier();
+            return $this->user()->id;
         }
 
         return null;
@@ -91,30 +129,50 @@ class JwtGuard extends \PHPOpenSourceSaver\JWTAuth\JWTGuard
     public function validate(array $credentials = [])
     {
         dd(__FUNCTION__);
+
         return false;
     }
 
     /**
-     * Determine if the guard has a user instance.
+     * Determine if the user matches the credentials.
+     *
+     * @param mixed $user
+     * @param array $credentials
      *
      * @return bool
      */
-    public function hasUser()
+    protected function hasValidCredentials($user, $credentials)
     {
-        dd(__FUNCTION__);
-        return false;
+        return !is_null($user) && $this->provider->validateCredentials($user, $credentials);
     }
 
     /**
-     * Set the current user.
+     * Ensure the JWTSubject matches what is in the token.
      *
-     * @param \Illuminate\Contracts\Auth\Authenticatable $user
-     *
-     * @return void
+     * @return bool
      */
-    public function setUser(Authenticatable $user)
+    protected function validateSubject()
     {
-        dd(__FUNCTION__);
-        return false;
+        // If the provider doesn't have the necessary method
+        // to get the underlying model name then allow.
+        if (!method_exists($this->provider, 'getModel')) {
+            return true;
+        }
+
+        return $this->jwt->checkSubjectModel($this->provider->getModel());
+    }
+
+    /**
+     * @return Authenticatable|null
+     */
+    protected function checkAndGetUserFromToken()
+    {
+        $payload = $this->jwt->check(true);
+
+        if ($payload && $this->validateSubject()) {
+            return new User($payload->toArray(), $this->jwt->getToken());
+        }
+
+        return null;
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Support\Facades\Http;
 
 class PlatsUserProvider implements UserProvider
 {
@@ -57,8 +59,14 @@ class PlatsUserProvider implements UserProvider
      */
     public function retrieveByCredentials(array $credentials)
     {
-        dd(__FUNCTION__);
-        // TODO: Implement retrieveByCredentials() method.
+        $response = Http::post(config('auth.login_url'), $credentials);
+
+        $data = $response->json('data');
+        if ($response->failed() || empty($data)) {
+            return null;
+        }
+
+        return new User($data, $data['jwt']['access_token']);
     }
 
     /**
@@ -71,7 +79,8 @@ class PlatsUserProvider implements UserProvider
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        dd(__FUNCTION__);
-        // TODO: Implement validateCredentials() method.
+        unset($credentials);
+
+        return !is_null($user->getAuthIdentifier());
     }
 }
