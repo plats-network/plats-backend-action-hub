@@ -8,7 +8,6 @@
     <meta name="description" content=""/>
     @include('admin._layout.head')
 </head>
-
 <body>
 <div id="root">
     <div id="nav" class="nav-container d-flex">

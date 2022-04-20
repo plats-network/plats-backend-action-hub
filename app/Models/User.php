@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Services;
+namespace App\Models;
 
+use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Arr;
 
-class UserService implements Authenticatable
+class User implements Authenticatable
 {
-    /**
-     * @var \PHPOpenSourceSaver\JWTAuth\Payload
-     */
-    protected $payload;
+    use AuthenticatableTrait;
 
     /**
      * @var array
@@ -17,22 +16,25 @@ class UserService implements Authenticatable
     protected $attributes = [];
 
     /**
-     * @param $jwtPayload
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
      */
-    public function __construct($jwtPayload)
-    {
-        $this->payload = $jwtPayload;
-        $this->setAttribute();
-    }
+    protected $fillable = [
+        'id',
+        'name',
+        'email',
+        'role',
+    ];
 
     /**
-     * @return array
+     * @param array $userAttributes
+     * @param string $accessToken
      */
-    private function setAttribute()
+    public function __construct($userAttributes, $accessToken = null)
     {
-        return $this->attributes = [
-            'id' => $this->payload['sub'],
-        ];
+        $this->attributes = Arr::only($userAttributes, $this->fillable);
+        $this->attributes['token'] = $accessToken;
     }
 
     /**
@@ -42,7 +44,7 @@ class UserService implements Authenticatable
      */
     public function getAuthIdentifierName()
     {
-        dd($this->payload);
+        return 'token';
     }
 
     /**
@@ -50,10 +52,10 @@ class UserService implements Authenticatable
      *
      * @return mixed
      */
-    public function getAuthIdentifier()
+/*    public function getAuthIdentifier()
     {
-        return $this->payload['sub'];
-    }
+        return $this->{$this->getAuthIdentifierName()};
+    }*/
 
     /**
      * Get the password for the user.
@@ -62,7 +64,7 @@ class UserService implements Authenticatable
      */
     public function getAuthPassword()
     {
-        return null;
+        // TODO: Implement getAuthPassword() method.
     }
 
     /**
@@ -72,7 +74,7 @@ class UserService implements Authenticatable
      */
     public function getRememberToken()
     {
-        return null;
+        // TODO: Implement getRememberToken() method.
     }
 
     /**
@@ -80,11 +82,11 @@ class UserService implements Authenticatable
      *
      * @param string $value
      *
-     * @return bool
+     * @return void
      */
     public function setRememberToken($value)
     {
-        return true;
+        // TODO: Implement setRememberToken() method.
     }
 
     /**
@@ -94,7 +96,7 @@ class UserService implements Authenticatable
      */
     public function getRememberTokenName()
     {
-        return null;
+        // TODO: Implement getRememberTokenName() method.
     }
 
     /**

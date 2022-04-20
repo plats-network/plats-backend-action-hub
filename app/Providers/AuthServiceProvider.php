@@ -32,6 +32,7 @@ class AuthServiceProvider extends ServiceProvider
             $guard = new JWTGuard(
                 $app['tymon.jwt'],
                 $app['auth']->createUserProvider($config['provider']),
+                $app['session.store'],
                 $app['request'],
                 $app['events']
             );
@@ -44,6 +45,7 @@ class AuthServiceProvider extends ServiceProvider
         Auth::provider('token', function ($app, array $config) {
             return new PlatsUserProvider();
         });
+
         /*if (! $this->app->routesAreCached()) {
             Passport::routes();
         }*/
