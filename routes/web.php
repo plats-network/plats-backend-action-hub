@@ -17,3 +17,9 @@ Route::get('/', function () {
     abort(403);
     //return view('welcome');
 });
+
+Route::post('/test/api-form-data', function (\Illuminate\Http\Request $request) {
+    \Illuminate\Support\Facades\Log::info($request->all());
+
+    return $request->all();
+});
