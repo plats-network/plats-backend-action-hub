@@ -36,6 +36,8 @@ class TaskUser extends Model
         'location_id',
         'started_at',
         'ended_at',
+        'checkin_image',
+        'activity_log',
     ];
 
     /**
@@ -47,13 +49,5 @@ class TaskUser extends Model
     public function scopeOfUser($builder, $userId)
     {
         return $builder->where('user_id', $userId);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function libraries()
-    {
-        return $this->hasMany(TaskUserLibrary::class, 'task_user_id', 'id');
     }
 }
