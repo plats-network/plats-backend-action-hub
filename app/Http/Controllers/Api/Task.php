@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateTaskRequest;
 use App\Http\Requests\CheckInTaskRequest;
+use App\Http\Requests\CreateTaskRequest;
 use App\Http\Requests\StartTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskUserResource;
@@ -43,9 +43,12 @@ class Task extends Controller
      */
     public function detail(Request $request, $id)
     {
-        $task = $this->taskService->find($id, ['locations', 'galleries']);
-        $task->histories = $this->taskService->myLocations($task->id, $request->user()->id);
-        $task->remaining = $this->taskService->timeRemaining($task->histories, $task->duration);
+        $task = $this->taskService->mapUserHistory(
+            $this->taskService->find($id, ['locations', 'galleries']),
+            $request->user()->id
+        );
+
+        //$task->remaining = $this->taskService->timeRemaining($task->histories, $task->duration);
 
         return new TaskResource($task);
     }
@@ -91,7 +94,8 @@ class Task extends Controller
                     $taskId,
                     $locationId,
                     $request->user()->id,
-                    $request->image
+                    $request->image,
+                    $request->activity_log
                 )
         );
     }

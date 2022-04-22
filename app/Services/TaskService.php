@@ -95,9 +95,10 @@ class TaskService extends BaseService
      * @param string $locaId Location ID
      * @param string $userId User ID
      * @param \Illuminate\Http\File|\Illuminate\Http\UploadedFile|string $imageFile
+     * @param string $activityLog
      *
      */
-    public function checkIn($taskId, $locaId, $userId, $imageFile)
+    public function checkIn($taskId, $locaId, $userId, $imageFile, $activityLog = null)
     {
         // Get and check exists Task and Location
         $localTask = $this->repository->taskHasLocation($taskId, $locaId);
@@ -111,11 +112,9 @@ class TaskService extends BaseService
         $image = Storage::putFileAs($filePath, $imageFile, $imageFile->hashName());
 
         $taskUser->ended_at = Carbon::now();
+        $taskUser->checkin_image = $image;
+        $taskUser->activity_log = $activityLog;
         $taskUser->save();
-
-        $taskUser->libraries()->create([
-            'url' => $image
-        ]);
 
         //Fire Event
         UserCheckedInLocationEvent::dispatch($taskUser, $localTask, $taskId);
@@ -157,5 +156,41 @@ class TaskService extends BaseService
         return $this->repository->create($data);
     }
 
-    //protected function
+    /**
+     * @param \App\Models\Task $task
+     * @param string $userId
+     *
+     * @return mixed|void
+     */
+    public function mapUserHistory(\App\Models\Task $task, $userId)
+    {
+        $userHistories = $this->myLocations($task->id, $userId);
+        if ($userHistories->isEmpty()) {
+            $task->user_status = USER_WAITING_TASK;
+            return $task;
+        }
+
+        $task->user_status = ($userHistories->whereNotNull('ended_at')->count() == $task->locations->count())
+            ? USER_COMPLETED_TASK
+            : USER_PROCESSING_TASK;
+
+        $task->locations = $task->locations->map(function ($location) use ($userHistories) {
+
+            $userTask = $userHistories->where('location_id', $location->id)->first();
+            if (is_null($userTask)) {
+                return $location->user_status = USER_WAITING_TASK;
+            }
+
+            if (is_null($userTask->ended_at)) {
+                return $location->user_status = USER_PROCESSING_TASK;
+            }
+
+            $location->user_status = USER_COMPLETED_TASK;
+            $location->activity_log = $userTask->activity_log;
+
+            return $location;
+        });
+
+        return $task;
+    }
 }

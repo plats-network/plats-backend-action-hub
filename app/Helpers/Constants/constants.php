@@ -19,6 +19,11 @@ if (!defined('DEFINE_CONSTANT')) {
     define('ACTIVE_TASK', 1);
     define('TYPE_FREE_TASK', 1);
 
+    //User-Task-Status
+    define('USER_WAITING_TASK', 0);
+    define('USER_PROCESSING_TASK', 1);
+    define('USER_COMPLETED_TASK', 2);
+
     /**
      * Task Location
      */
