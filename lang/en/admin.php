@@ -24,4 +24,12 @@ return [
             ACTIVE_TASK => 'Active',
         ],
     ],
+    'location' => [
+        'form' => [
+            'name' => 'Location name',
+            'address' => 'Location address',
+            'coordinate' => 'Coordinate: Longitude, Latitude'
+        ],
+    ],
+    'task_created' => 'Task created successfully',
 ];

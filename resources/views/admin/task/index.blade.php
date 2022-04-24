@@ -9,6 +9,7 @@
         <!-- Add New Button End -->
     </x-admin::top_page>
 
+    <x-alert/>
     <!-- Task List Start -->
     <div class="row">
         <div class="col-12 mb-5">
@@ -54,10 +55,10 @@
                                     <div class="col-6 col-md-3 d-flex flex-column justify-content-center mb-2 mb-md-0 order-4 order-md-3">
                                         <div class="text-muted text-small d-md-none">STARTED AT</div>
                                         <div class="text-alternate">
-                                            2022/04/10
+                                            {{ $task->created_at->toDateString() }}
                                         </div>
                                     </div>
-                                    <div class="col-6 col-md-2 d-flex flex-column justify-content-center mb-2 mb-md-0 order-last order-md-5">
+                                    <div class="col-6 col-md-2 d-flex flex-column justify-content-center mb-2 mb-md-0 order-5 order-md-5">
                                         <div class="text-muted text-small d-md-none">Status</div>
                                         <div class="text-alternate">
                                             <span class="badge rounded-pill text-uppercase
@@ -66,9 +67,9 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-1 col-md-1 d-flex flex-column justify-content-center order-2 order-md-last">
+                                    <div class="col-12 col-md-1 d-flex flex-column justify-content-center order-last order-md-last">
                                         <a href="{{ route(TASK_EDIT_ADMIN_ROUTER, $task->id) }}"
-                                           class="btn btn-sm btn-icon btn-icon-start btn-outline-primary">
+                                           class="btn btn-sm btn-icon btn-icon-start btn-outline-primary ms-1">
                                             <i data-acorn-icon="edit-square"></i>
                                             <span>Edit</span>
                                         </a>

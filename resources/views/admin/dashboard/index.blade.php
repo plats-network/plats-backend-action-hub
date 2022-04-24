@@ -1,8 +1,8 @@
 @extends('admin.layout')
 @section('content')
     <x-admin::top_page
-            title="Getting Started"
-            desc="Let us manage the database engines for your applications so you can focus on building."/>
+            title="ABOUT PLATS"
+            desc="Marketing Power in Your Hand"/>
 
     <div class="row">
         <!-- Introduction Banner Start -->
@@ -11,13 +11,15 @@
                 <img src="{{ asset('img/admin/content/database.webp') }}" class="card-img h-100 position-absolute theme-filter" alt="card image" />
                 <div class="card-img-overlay d-flex flex-column justify-content-end bg-transparent">
                     <div class="mb-4">
-                        <div class="cta-1 mb-2 w-75 w-sm-50">Introduction to Cloud</div>
-                        <div class="w-50 text-alternate">Lollipop chocolate marzipan marshmallow gummi bears. Tootsie roll liquorice cake jelly beans.</div>
+                        <div class="cta-1 mb-2 w-75 w-sm-50">Introduction to Plats Network</div>
+                        <div class="w-50 text-alternate">
+                            Plats Network is a pioneering on-chain marketing platform, aiming to change how a brand approaches the potential customer and how regular customers interact with a brand ads. Both are in an ACTIVE manner.
+                        </div>
                     </div>
                     <div>
-                        <a href="#" class="btn btn-icon btn-icon-start btn-primary mt-3 stretched-link">
+                        <a href="{{ route(TASK_LIST_ADMIN_ROUTER) }}" class="btn btn-icon btn-icon-start btn-primary mt-3 stretched-link">
                             <i data-acorn-icon="chevron-right"></i>
-                            <span>Getting Started</span>
+                            <span>CREATE NEW CAMPAIGN</span>
                         </a>
                     </div>
                 </div>

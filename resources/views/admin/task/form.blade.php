@@ -1,6 +1,6 @@
 <x-alert/>
 <x-form::open :action="route(TASK_STORE_ADMIN_ROUTER)" files="true">
-    <input type="hidden" name="id" value="{{ old('id', 0) }}">
+    <input type="hidden" name="id" value="{{ old('id') }}">
     <div class="row">
         <div class="col-12 mb-5">
             <h2 class="small-title">Basic information</h2>
@@ -69,6 +69,23 @@
                     </div>
                 </div>
             </div>
+
+            <h2 class="small-title mt-3">Locations</h2>
+            <div class="card">
+                <div class="card-body ">
+                    <div class="js-append-location">
+                        <div class="js-location_form">
+                            @include('admin.location.form_js')
+                            <hr/>
+                        </div>
+                    </div>
+                    <p class="m-0">
+                        <button type="button" class="btn btn-icon btn-icon-only btn-outline-secondary js-plus-location">
+                            <i data-acorn-icon="plus"></i>
+                        </button>
+                    </p>
+                </div>
+            </div>
             <div class="mt-3">
                 <a href="{{ route(TASK_LIST_ADMIN_ROUTER) }}" class="btn btn-icon btn-icon-start btn-outline-info">
                     <i data-acorn-icon="arrow-top-left"></i>
@@ -81,6 +98,8 @@
                     </span>
                 </button>
             </div>
+
+
         </div>
     </div>
 </x-form::open>

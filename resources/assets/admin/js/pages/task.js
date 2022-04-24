@@ -9,6 +9,15 @@ class TaskControls {
     constructor() {
         this._initSingleImageUpload();
         this._initGalleries();
+        this._initLocationPlus();
+    }
+
+    _initLocationPlus() {
+        $('.js-plus-location').click(function () {
+            let formClone = $('.js-location_form:first').prop('outerHTML');
+            formClone = formClone.replace(/location\[0/gi, 'location[' + ($('.js-location_form').length));
+            $('.js-append-location').append(formClone);
+        });
     }
 
     // Single Image Upload initialization

@@ -66,6 +66,6 @@ class Task extends Controller
     {
         $this->taskService->store($request);
 
-        return redirect()->back();
+        return redirect()->route(TASK_LIST_ADMIN_ROUTER);
     }
 }
