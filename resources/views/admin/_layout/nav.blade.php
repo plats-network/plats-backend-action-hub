@@ -11,7 +11,7 @@
     <div class="user-container d-flex">
         <a href="#" class="d-flex user position-relative" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <img class="profile" alt="profile" src="{{ asset('img/admin/profile/profile-9.webp') }}" />
-            <div class="name">Lisa Jackson</div>
+            <div class="name">{{ auth()->user()->name }}</div>
         </a>
         <div class="dropdown-menu dropdown-menu-end user-menu wide">
             <div class="row mb-3 ms-0 me-0">
@@ -26,9 +26,6 @@
                         <li>
                             <a href="#">Preferences</a>
                         </li>
-                        <li>
-                            <a href="#">Calendar</a>
-                        </li>
                     </ul>
                 </div>
                 <div class="col-6 pe-1 ps-1">
@@ -38,31 +35,6 @@
                         </li>
                         <li>
                             <a href="#">Billing</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row mb-1 ms-0 me-0">
-                <div class="col-12 p-1 mb-2 pt-2">
-                    <div class="text-extra-small text-primary">APPLICATION</div>
-                </div>
-                <div class="col-6 ps-1 pe-1">
-                    <ul class="list-unstyled">
-                        <li>
-                            <a href="#">Themes</a>
-                        </li>
-                        <li>
-                            <a href="#">Language</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-6 pe-1 ps-1">
-                    <ul class="list-unstyled">
-                        <li>
-                            <a href="#">Devices</a>
-                        </li>
-                        <li>
-                            <a href="#">Storage</a>
                         </li>
                     </ul>
                 </div>
@@ -90,9 +62,9 @@
                 <div class="col-6 pe-1 ps-1">
                     <ul class="list-unstyled">
                         <li>
-                            <a href="#">
+                            <a href="https://whitepaper.plats.network/" target="_blank">
                                 <i data-acorn-icon="gear" class="me-2" data-acorn-size="17"></i>
-                                <span class="align-middle">Settings</span>
+                                <span class="align-middle">Intro</span>
                             </a>
                         </li>
                         <li>

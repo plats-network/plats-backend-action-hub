@@ -153,7 +153,34 @@ class TaskService extends BaseService
         $data['type']       = TYPE_FREE_TASK;
         $data['creator_id'] = $request->user()->id;
 
-        return $this->repository->create($data);
+        //Save cover
+        if ($request->hasFile('image')) {
+            $uploadedFile = $request->file('image');
+            $path = 'tasks/cover/' . Carbon::now()->format('Ymd');
+            $data['image'] = Storage::putFileAs($path, $uploadedFile, $uploadedFile->hashName());
+        }
+
+        $task = $this->repository->create($data);
+        $locationData = [];
+        foreach ($request->input('location') as $order => $location) {
+            $longAndLat = explode(',', preg_replace('/\s+/', '', $location['coordinate']));
+            $locationData[] = [
+                'name' => $location['name'],
+                'address' => $location['address'],
+                'long' => $longAndLat[0],
+                'lat' => $longAndLat[1],
+                'sort' => $order,
+                'status' => ACTIVE_LOCATION_TASK,
+            ];
+        }
+
+        if (!empty($locationData)) {
+            $task->locations()->createMany($locationData);
+        }
+
+        $this->withSuccess(trans('admin.task_created'));
+
+        return $task;
     }
 
     /**

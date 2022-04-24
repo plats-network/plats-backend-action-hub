@@ -6,6 +6,7 @@ use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Task extends Model
 {
@@ -45,6 +46,21 @@ class Task extends Model
     protected $hidden = [
         'deleted_at'
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['cover_url'];
+
+    /**
+     * @return string
+     */
+    public function getCoverUrlAttribute()
+    {
+        return Storage::url($this->image);
+    }
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
