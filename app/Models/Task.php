@@ -59,6 +59,10 @@ class Task extends Model
      */
     public function getCoverUrlAttribute()
     {
+        if (is_null($this->image)) {
+            return 'https://via.placeholder.com/250x130?text=Cover Image';
+        }
+
         return Storage::url($this->image);
     }
 

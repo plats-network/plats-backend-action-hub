@@ -40,8 +40,8 @@
                             <x-form::label :label="trans('admin.task.form.image')"/>
                             <div class="position-relative" id="taskImgCover">
                                 <img
-                                        src="https://via.placeholder.com/250x130?text=Cover Image"
-                                        alt="alternate text"
+                                        src="{{ old('cover_url', 'https://via.placeholder.com/250x130?text=Cover Image') }}"
+                                        alt="cover"
                                         class="border border-separator-light border-4"
                                         id="taskImgCoverThumb" style="width: 250px; height: 130px"
                                 />
