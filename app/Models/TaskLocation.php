@@ -47,4 +47,12 @@ class TaskLocation extends Model
         'deleted_at',
         'status',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function histories()
+    {
+        return $this->hasMany(TaskLocationHistory::class, 'location_id');
+    }
 }

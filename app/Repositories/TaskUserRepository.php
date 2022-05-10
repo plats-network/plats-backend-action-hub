@@ -18,26 +18,13 @@ class TaskUserRepository extends BaseRepository
     }
 
     /**
-     * @param string $userId
-     * @param string $locaId
+     * @param $taskId
+     * @param $userId
      *
-     * @return mixed
+     * @return null | TaskUser
      */
-    public function location($userId, $locaId)
+    public function userStartedTask($taskId, $userId)
     {
-        return $this->model->ofUser($userId)->where('location_id', $locaId)->first();
-    }
-
-    /**
-     * Get check-in histories of user by task
-     *
-     * @param string $taskId
-     * @param string $userId
-     *
-     * @return mixed
-     */
-    public function locations($taskId, $userId)
-    {
-        return $this->model->ofUser($userId)->where('task_id', $taskId)->get();
+        return $this->model->where('task_id', $taskId)->where('user_id', $userId)->first();
     }
 }

@@ -3,15 +3,23 @@
 namespace App\Services;
 
 use App\Events\UserCheckedInLocationEvent;
+use App\Events\UserCheckingLocationEvent;
+use App\Repositories\LocationHistoryRepository;
 use App\Repositories\TaskRepository;
 use App\Repositories\TaskUserRepository;
 use App\Services\Concerns\BaseService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
 
 class TaskService extends BaseService
 {
+    /**
+     * @var \App\Repositories\LocationHistoryRepository
+     */
+    protected $localHistoryRepo;
+
     /**
      * @var \App\Repositories\TaskUserRepository
      */
@@ -19,21 +27,34 @@ class TaskService extends BaseService
 
     /**
      * @param \App\Repositories\TaskRepository $repository
+     * @param \App\Repositories\LocationHistoryRepository $localHistoryRepo
      * @param \App\Repositories\TaskUserRepository $taskUserRepository
      */
-    public function __construct(TaskRepository $repository, TaskUserRepository $taskUserRepository)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        TaskRepository $repository,
+        LocationHistoryRepository $localHistoryRepo,
+        TaskUserRepository $taskUserRepository
+    ) {
+        $this->repository       = $repository;
+        $this->localHistoryRepo = $localHistoryRepo;
         $this->taskUserRepository = $taskUserRepository;
     }
 
     /**
-     * @param string $taskId
+     * Get list of task on home page, relationship to user status with task
+     *
      * @param string $userId
      */
-    public function myLocations($taskId, $userId)
+    public function home($userId, $page = 1, $limit = PAGE_SIZE)
     {
-        return $this->taskUserRepository->locations($taskId, $userId);
+        $tasks = $this->repository->latestTasks($limit);
+
+        //Load relationship
+        $tasks = $tasks->load(['participants' => function ($q) use ($userId) {
+            return $q->where('user_id', $userId);
+        }]);
+
+        return new Paginator($tasks, $limit, $page);
     }
 
     /**
@@ -71,21 +92,34 @@ class TaskService extends BaseService
     public function startTask($taskId, $locaId, $userId)
     {
         // Get and check exists Task and Location
-        $this->repository->taskHasLocation($taskId, $locaId);
+        $taskHasLocal = $this->repository->taskHasLocation($taskId, $locaId);
 
         abort_if(
-            !is_null($this->taskUserRepository->location($userId, $locaId)),
+            !is_null($this->localHistoryRepo->location($userId, $locaId)),
             422,
             trans('task_user.already_started')
         );
 
-        return $this->taskUserRepository->create([
+        $locaUserHistory = $this->localHistoryRepo->create([
             'user_id' => $userId,
-            'task_id' => $taskId,
             'location_id' => $locaId,
             'started_at' => Carbon::now(),
             'ended_at' => null,
         ]);
+
+        //This is the user's first location
+        if (is_null($this->taskUserRepository->userStartedTask($taskId, $userId))) {
+            $this->taskUserRepository->create([
+                'user_id'   => $userId,
+                'task_id'   => $taskId,
+                'status'    => USER_PROCESSING_TASK,
+                'time_left' => $taskHasLocal->duration,
+            ]);
+        }
+
+        UserCheckingLocationEvent::dispatch($locaUserHistory, $taskHasLocal, $taskId, $userId);
+
+        return $locaUserHistory;
     }
 
     /**
@@ -103,7 +137,7 @@ class TaskService extends BaseService
         // Get and check exists Task and Location
         $localTask = $this->repository->taskHasLocation($taskId, $locaId);
 
-        $taskUser = $this->taskUserRepository->location($userId, $locaId);
+        $taskUser = $this->localHistoryRepo->location($userId, $locaId);
         abort_if(is_null($taskUser), 422, trans('task_user.not_started'));
         abort_if(!is_null($taskUser->ended_at), 422, trans('task_user.update_reject'));
 
@@ -184,19 +218,27 @@ class TaskService extends BaseService
     }
 
     /**
-     * @param \App\Models\Task $task
+     * @param string $taskId
      * @param string $userId
      *
      * @return mixed|void
      */
-    public function mapUserHistory(\App\Models\Task $task, $userId)
+    public function mapUserHistory($taskId, $userId)
     {
+        $task = $this->find($taskId, ['locations', 'galleries'])->load([
+                'participants' => function ($q) use ($userId) {
+                    return $q->where('user_id', $userId);
+                },
+            ]);
+
+        return $task;
+        dd($task);
         $userHistories = $this->myLocations($task->id, $userId);
         if ($userHistories->isEmpty()) {
             $task->user_status = USER_WAITING_TASK;
             return $task;
         }
-
+dd($userHistories);
         $task->user_status = ($userHistories->whereNotNull('ended_at')->count() == $task->locations->count())
             ? USER_COMPLETED_TASK
             : USER_PROCESSING_TASK;

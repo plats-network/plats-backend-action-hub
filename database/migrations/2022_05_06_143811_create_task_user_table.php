@@ -13,9 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('task_users', function (Blueprint $table) {
-            $table->string('checkin_image')->nullable();
-            $table->mediumText('activity_log')->nullable();
+        Schema::create('task_users', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuid('user_id');
+            $table->uuid('task_id');
+            $table->tinyInteger('status')->default(0);
+            $table->bigInteger('time_left')->default(0);
+
+            $table->index(['user_id', 'task_id']);
         });
     }
 
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('task_users');
     }
 };

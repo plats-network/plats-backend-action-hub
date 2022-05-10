@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('task_users', function (Blueprint $table) {
+        Schema::create('task_location_histories', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id')->index();
-            $table->uuid('task_id');
-            $table->uuid('location_id');
+            $table->uuid('location_id')->index();
             $table->timestamp('started_at')->nullable();
             $table->timestamp('ended_at')->nullable();
+            $table->string('checkin_image')->nullable();
+            $table->mediumText('activity_log')->nullable();
         });
     }
 
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('task_users');
+        Schema::dropIfExists('task_location_histories');
     }
 };
