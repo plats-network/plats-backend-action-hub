@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TaskUser extends Model
 {
@@ -19,13 +20,6 @@ class TaskUser extends Model
     protected $table = 'task_users';
 
     /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var string[]
@@ -33,21 +27,24 @@ class TaskUser extends Model
     protected $fillable = [
         'user_id',
         'task_id',
-        'location_id',
-        'started_at',
-        'ended_at',
-        'checkin_image',
-        'activity_log',
+        'status',
+        'time_left',// Minute
     ];
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param $userId
+     * The attributes that should be hidden for serialization.
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @var array
      */
-    public function scopeOfUser($builder, $userId)
-    {
-        return $builder->where('user_id', $userId);
-    }
+    protected $hidden = [
+        'user_id',
+        'task_id',
+    ];
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
 }

@@ -44,7 +44,11 @@ class Task extends Model
      * @var array
      */
     protected $hidden = [
-        'deleted_at'
+        'image',
+        'status',
+        'creator_id',
+        'updated_at',
+        'deleted_at',
     ];
 
     /**
@@ -92,6 +96,21 @@ class Task extends Model
         }]);
     }
 
+    /**
+     * @param $userId
+     *
+     * @return \App\Models\Task|m.\App\Models\Task.load
+     */
+    public function scopeWithUserStatus($userId)
+    {
+        return $this->load(['participants' => function ($q) use ($userId) {
+            return $q->where('user_id', $userId);
+        } ]);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function participants()
     {
         return $this->hasMany(TaskUser::class, 'task_id');

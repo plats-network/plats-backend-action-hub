@@ -18,6 +18,14 @@ class TaskRepository extends BaseRepository
     }
 
     /**
+     * @return mixed
+     */
+    public function latestTasks($limit = PAGE_SIZE)
+    {
+        return $this->model->where('status', ACTIVE_TASK)->latest()->limit($limit)->get();
+    }
+
+    /**
      * @param $taskId
      * @param $locaId
      *

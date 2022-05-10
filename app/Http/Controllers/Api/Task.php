@@ -9,6 +9,7 @@ use App\Http\Requests\StartTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskUserResource;
 use App\Services\TaskService;
+use App\Services\TaskUserService;
 use Illuminate\Http\Request;
 
 class Task extends Controller
@@ -33,7 +34,7 @@ class Task extends Controller
      */
     public function index(Request $request)
     {
-        return TaskResource::collection($this->taskService->search($request->toArray()));
+        return TaskResource::collection($this->taskService->home($request->user()->id));
     }
 
     /**
@@ -43,10 +44,7 @@ class Task extends Controller
      */
     public function detail(Request $request, $id)
     {
-        $task = $this->taskService->mapUserHistory(
-            $this->taskService->find($id, ['locations', 'galleries']),
-            $request->user()->id
-        );
+        $task = $this->taskService->mapUserHistory($id, $request->user()->id);
 
         //$task->remaining = $this->taskService->timeRemaining($task->histories, $task->duration);
 
