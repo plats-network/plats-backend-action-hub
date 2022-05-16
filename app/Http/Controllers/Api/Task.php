@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CheckInTaskRequest;
 use App\Http\Requests\CreateTaskRequest;
@@ -9,10 +10,9 @@ use App\Http\Requests\StartTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskUserResource;
 use App\Services\TaskService;
-use App\Services\TaskUserService;
 use Illuminate\Http\Request;
 
-class Task extends Controller
+class Task extends ApiController
 {
     /**
      * @var \App\Services\TaskService
@@ -96,5 +96,20 @@ class Task extends Controller
                     $request->activity_log
                 )
         );
+    }
+
+    /**
+     * User cancel task
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param $taskId
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function cancel(Request $request, $taskId)
+    {
+        $this->taskService->cancel($request->user()->id, $taskId);
+
+        return $this->responseMessage('DONE!');
     }
 }
