@@ -15,17 +15,18 @@ class TaskResource extends JsonResource
      */
     public function toArray($request)
     {
-        unset($request);
-
-        $result = $this->resource->unsetRelation('participants')->toArray();
+        $userId = $request->user()->id;
+        $result = [];
 
         if (!$this->resource->participants instanceof MissingValue
             && $this->resource->participants->isNotEmpty()
         ) {
             $userStatus = $this->resource->participants->first();
-            $result['user_status'] = $userStatus->toArray();
+            if ($userId == $userStatus->user_id) {
+                $result['user_status'] = $userStatus->toArray();
+            }
         }
 
-        return $result;
+        return $this->resource->unsetRelation('participants')->toArray() + $result;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\UserCanceledTaskEvent;
 use App\Events\UserCheckedInLocationEvent;
 use App\Events\UserCheckingLocationEvent;
 use App\Repositories\LocationHistoryRepository;
@@ -257,5 +258,28 @@ class TaskService extends BaseService
         });
 
         return $task;
+    }
+
+    /**
+     * @param string $userId
+     * @param string $taskId
+     */
+    public function cancel($userId, $taskId)
+    {
+        $task = $this->find($taskId, ['locations']);
+
+        $userTask = $this->taskUserRepository->userStartedTask($taskId, $userId);
+        abort_if(is_null($userTask), 404);
+
+        $userTask->delete();
+
+        $this->localHistoryRepo->getModel()
+            ->ofUser($userId)
+            ->whereIn('location_id', $task->locations->pluck('id'))
+            ->delete();
+
+        UserCanceledTaskEvent::dispatch($userId, $taskId);
+
+        return true;
     }
 }
