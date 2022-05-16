@@ -231,17 +231,13 @@ class TaskService extends BaseService
                 },
             ]);
 
-        return $task;
-        dd($task);
-        $userHistories = $this->myLocations($task->id, $userId);
+        /**
+         * Get user histories with task and map user_status to each location
+         */
+        $userHistories = $this->localHistoryRepo->myHistoryInLocas($userId, $task->locations->pluck('id'));
         if ($userHistories->isEmpty()) {
-            $task->user_status = USER_WAITING_TASK;
             return $task;
         }
-dd($userHistories);
-        $task->user_status = ($userHistories->whereNotNull('ended_at')->count() == $task->locations->count())
-            ? USER_COMPLETED_TASK
-            : USER_PROCESSING_TASK;
 
         $task->locations = $task->locations->map(function ($location) use ($userHistories) {
 

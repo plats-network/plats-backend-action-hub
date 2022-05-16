@@ -36,8 +36,23 @@ class LocationHistoryRepository extends BaseRepository
      *
      * @return mixed
      */
-    public function locations($taskId, $userId)
+/*    public function locations($taskId, $userId)
     {
         return $this->model->ofUser($userId)->where('task_id', $taskId)->get();
+    }*/
+
+    /**
+     * @param string $userId
+     * @param string | array[string, string] $locas list id of location
+     */
+    public function myHistoryInLocas($userId, $locas)
+    {
+        $builder = $this->model->ofUser($userId);
+
+        if (is_string($locas)) {
+            return $builder->where('location_id', $locas)->get();
+        }
+
+        return $builder->whereIn('location_id', $locas)->get();
     }
 }
