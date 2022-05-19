@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Repositories\TaskUserRepository;
 use App\Services\Concerns\BaseService;
 
-class TaskUserService extends BaseService
+class UserTaskService extends BaseService
 {
     /**
      * @param \App\Repositories\TaskUserRepository $repository
@@ -16,12 +16,16 @@ class TaskUserService extends BaseService
     }
 
     /**
-     * Check status of user in tasks
+     * @param array $conditions
      *
-     * @param $userId
-     * @param array $listTasks list ids of task
+     * @return mixed
      */
-    public function userStatusOfTask($userId, $listTasks)
+    public function search($conditions = [])
     {
+        $this->withLoad = ['task'];
+
+        $this->makeBuilder($conditions);
+
+        return $this->endFilter();
     }
 }
