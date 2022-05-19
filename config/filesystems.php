@@ -73,5 +73,6 @@ return [
         //public_path('storage') => storage_path('app/public'),
         public_path('static/js/admin/theme') => resource_path('assets/theme/acorn/js'),
         public_path('static/fonts/cs') => resource_path('assets/theme/acorn/fonts/cs'),
+        public_path('static/fonts/fontawesome') => base_path('node_modules/@fortawesome/fontawesome-free/webfonts'),
     ],
 ];

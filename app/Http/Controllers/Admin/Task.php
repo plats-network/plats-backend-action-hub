@@ -48,12 +48,14 @@ class Task extends Controller
      */
     public function edit($id)
     {
+        $task = $this->taskService->find($id);
+
         // Save detail to session
         if (empty(request()->old()) || old('id') != $id) {
-            $this->flashSession($this->taskService->find($id));
+            $this->flashSession($task);
         }
 
-        return view('admin.task.edit');
+        return view('admin.task.edit', ['task' => $task]);
     }
 
     /**

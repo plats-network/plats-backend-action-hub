@@ -1,5 +1,7 @@
 const { Dropzone } = require("dropzone");
 Dropzone.autoDiscover = false;
+require('jquery-repeater-form');
+
 
 $(document).ready(function () {
     const taskController = new TaskControls();
@@ -9,15 +11,39 @@ class TaskControls {
     constructor() {
         this._initSingleImageUpload();
         this._initGalleries();
-        this._initLocationPlus();
+        this._initLocation();
     }
 
-    _initLocationPlus() {
-        $('.js-plus-location').click(function () {
-            let formClone = $('.js-location_form:first').prop('outerHTML');
-            formClone = formClone.replace(/location\[0/gi, 'location[' + ($('.js-location_form').length));
-            $('.js-append-location').append(formClone);
+    /**
+     *
+     * @private
+     */
+    _initLocation() {
+        let _this = this;
+        $('.js-repeater').repeater({
+            // (Optional)
+            // Removes the delete button from the first list item,
+            // defaults to false.
+            isFirstItemUndeletable: true
         });
+
+        $('.js-location-delete').on('click', function () {
+            _this._deleteLocationItem($(this));
+        });
+    }
+
+    /**
+     *
+     * @param $this jquery element
+     * @private
+     */
+    _deleteLocationItem($this) {
+        let locationId = $this.attr('data-location-id');
+        let eFrom = $this.closest('form');
+        $this.closest('div[data-repeater-item=' + locationId + ']').remove();
+
+        eFrom.append('<input type="hidden" name="location_delete[]" value="'+ locationId +'">');
+        return true;
     }
 
     // Single Image Upload initialization

@@ -49,6 +49,14 @@ class TaskLocation extends Model
     ];
 
     /**
+     * @return string
+     */
+    public function getCoordinateAttribute()
+    {
+        return $this->long . ', ' . $this->lat;
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function histories()
