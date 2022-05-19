@@ -72,18 +72,24 @@
 
             <h2 class="small-title mt-3">Locations</h2>
             <div class="card">
-                <div class="card-body ">
-                    <div class="js-append-location">
-                        <div class="js-location_form">
+                <div class="card-body js-repeater">
+                    <div data-repeater-list="location">
+                        @isset($task)
+                        @foreach($task->locations as $location)
+                            <div class="" data-repeater-item="{{ $location->id }}">
+                            @include('admin.location.form_js', ['location' => $location])
+                            </div>
+                        @endforeach
+                        @else
+                        <div class="" data-repeater-item>
                             @include('admin.location.form_js')
-                            <hr/>
                         </div>
+                        @endisset
                     </div>
-                    <p class="m-0">
-                        <button type="button" class="btn btn-icon btn-icon-only btn-outline-secondary js-plus-location">
-                            <i data-acorn-icon="plus"></i>
-                        </button>
-                    </p>
+                    <button data-repeater-create class="btn btn-icon btn-icon-start btn-info" type="button">
+                        <i data-acorn-icon="plus"></i>
+                        <span>Add a new location</span>
+                    </button>
                 </div>
             </div>
             <div class="mt-3">

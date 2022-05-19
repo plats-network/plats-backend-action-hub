@@ -9,6 +9,7 @@ use App\Repositories\LocationHistoryRepository;
 use App\Repositories\TaskRepository;
 use App\Repositories\TaskUserRepository;
 use App\Services\Concerns\BaseService;
+use App\Services\Traits\TaskLocationTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Storage;
 
 class TaskService extends BaseService
 {
+    use TaskLocationTrait;
+
     /**
      * @var \App\Repositories\LocationHistoryRepository
      */
@@ -171,7 +174,7 @@ class TaskService extends BaseService
             return $this->create($request);
         }
 
-        dd('Updating...');
+        return $this->update($request);
     }
 
     /**
@@ -196,24 +199,57 @@ class TaskService extends BaseService
         }
 
         $task = $this->repository->create($data);
-        $locationData = [];
-        foreach ($request->input('location') as $order => $location) {
-            $longAndLat = explode(',', preg_replace('/\s+/', '', $location['coordinate']));
-            $locationData[] = [
-                'name' => $location['name'],
-                'address' => $location['address'],
-                'long' => $longAndLat[0],
-                'lat' => $longAndLat[1],
-                'sort' => $order,
-                'status' => ACTIVE_LOCATION_TASK,
-            ];
-        }
 
-        if (!empty($locationData)) {
-            $task->locations()->createMany($locationData);
-        }
+        //Create location
+        $this->createLocation($task, $request->input('location'));
 
         $this->withSuccess(trans('admin.task_created'));
+
+        return $task;
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection|mixed
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
+    public function update(Request $request)
+    {
+        $task = $this->find($request->input('id'));
+
+        $data = $request->except(['image', 'location']);
+        //Save cover
+        if ($request->hasFile('image')) {
+            $uploadedFile = $request->file('image');
+            $path = 'tasks/cover/' . Carbon::now()->format('Ymd');
+            $data['image'] = Storage::putFileAs($path, $uploadedFile, $uploadedFile->hashName());
+        }
+
+        $task = $this->repository->updateByModel($task, $data);
+
+        //Update/Create Location
+        if ($request->filled('location')) {
+            $createLocations = [];
+            $updateLocations = [];
+            foreach ($request->input('location', []) as $location) {
+                if (isset($location['id']) && !empty($location['id'])) {
+                    $updateLocations[] = $location;
+                    continue;
+                }
+
+                $createLocations[] = $location;
+            }
+
+            //Create location
+            $this->createLocation($task, $createLocations);
+            $this->updateLocation($task, $updateLocations);
+        }
+
+        //Delete location
+        if ($request->filled('location_delete')) {
+            $task->locations()->whereIn('id', $request->input('location_delete', []))->delete();
+        }
 
         return $task;
     }
