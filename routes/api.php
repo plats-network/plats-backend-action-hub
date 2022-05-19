@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Task;
 use App\Http\Controllers\Api\TaskLocation;
+use App\Http\Controllers\Api\UserTask;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +27,5 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
         Route::post('/', 'create');
     });
 });
+
+Route::get('/my-tasks', [UserTask::class, 'histories']);

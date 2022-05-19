@@ -18,7 +18,7 @@ class TaskResource extends JsonResource
         $userId = $request->user()->id;
         $result = [];
 
-        if (!$this->resource->participants instanceof MissingValue
+        if (!$this->whenLoaded('participants') instanceof MissingValue
             && $this->resource->participants->isNotEmpty()
         ) {
             $userStatus = $this->resource->participants->first();

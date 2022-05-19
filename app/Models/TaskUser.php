@@ -11,6 +11,7 @@ class TaskUser extends Model
 {
     use HasFactory;
     use Uuid;
+    use SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -37,14 +38,17 @@ class TaskUser extends Model
      * @var array
      */
     protected $hidden = [
+        'id',
         'user_id',
         'task_id',
+        'deleted_at',
     ];
 
     /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public $timestamps = false;
+    public function task()
+    {
+        return $this->belongsTo(Task::class, 'task_id');
+    }
 }
