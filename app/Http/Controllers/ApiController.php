@@ -21,6 +21,6 @@ class ApiController extends BaseController
      */
     public function responseMessage($message, $code = 200)
     {
-        return response()->json(['data' => ['message', $message]], $code);
+        return response()->json(['data' => ['message' => $message]], $code);
     }
 }
