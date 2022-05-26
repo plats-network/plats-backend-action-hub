@@ -62,12 +62,26 @@ class Task extends Controller
      * @param \App\Http\Requests\CreateTaskRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException|\Prettus\Repository\Exceptions\RepositoryException
      */
     public function store(CreateTaskRequest $request)
     {
         $this->taskService->store($request);
 
         return redirect()->route(TASK_LIST_ADMIN_ROUTER);
+    }
+
+    /**
+     * Client deposit
+     *
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function deposit($id)
+    {
+        $task = $this->taskService->find($id);
+
+        return view('admin.task.deposit', ['task' => $task]);
     }
 }

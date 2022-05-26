@@ -29,19 +29,8 @@ class LocationHistoryRepository extends BaseRepository
     }
 
     /**
-     * Get check-in histories of user by task
+     * Get check-in histories of user by list location
      *
-     * @param string $taskId
-     * @param string $userId
-     *
-     * @return mixed
-     */
-/*    public function locations($taskId, $userId)
-    {
-        return $this->model->ofUser($userId)->where('task_id', $taskId)->get();
-    }*/
-
-    /**
      * @param string $userId
      * @param string | array[string, string] $locas list id of location
      */

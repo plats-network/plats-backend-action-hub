@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class TaskLocationHistory extends Model
 {
@@ -39,6 +40,16 @@ class TaskLocationHistory extends Model
         'checkin_image',
         'activity_log',
     ];
+
+    /**
+     * @param $value
+     *
+     * @return string|null
+     */
+    public function getCheckinImageAttribute($value)
+    {
+        return !(is_null($value)) ? Storage::url($value) : '';
+    }
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
