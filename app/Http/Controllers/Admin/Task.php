@@ -66,7 +66,11 @@ class Task extends Controller
      */
     public function store(CreateTaskRequest $request)
     {
-        $this->taskService->store($request);
+        $task = $this->taskService->store($request);
+
+        if (!$request->filled('id')) {
+            return redirect()->route(TASK_DEPOSIT_ADMIN_ROUTER, $task->id);
+        }
 
         return redirect()->route(TASK_LIST_ADMIN_ROUTER);
     }

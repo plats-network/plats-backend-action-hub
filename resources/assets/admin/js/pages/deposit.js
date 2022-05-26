@@ -45,11 +45,10 @@ class Deposit {
                     transferExtrinsic.signAndSend(account.address, {signer: injector.signer}, ({status}) => {
                         if (status.isInBlock) {
                             _this._showErr('Thanh toán thành công', 'Giao dịch thành công. Đang chuyển trạng thái!');
-                            location.href = REDIRECT_AFTER_DEPOSIT;
-                        } else {
-                            _this._showErr('Transaction failed', 'Đã có lỗi xảy ra trong quá trình thanh toán');
 
-                           return false;
+                            setTimeout(() => {
+                                location.href = REDIRECT_AFTER_DEPOSIT;
+                            }, 2000);
                         }
                     }).catch((error) => {
                         _this._showErr('Transaction failed', error);
