@@ -33,6 +33,8 @@ class Task extends Model
         'duration',// Minute
         'distance',//KM
         'reward_amount',
+        'total_reward',
+        'deposit_status',
         'type',
         'creator_id',
         'status',
@@ -44,6 +46,7 @@ class Task extends Model
      * @var array
      */
     protected $hidden = [
+        'total_reward',
         'image',
         'status',
         'creator_id',
@@ -68,6 +71,16 @@ class Task extends Model
         }
 
         return Storage::url($this->image);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return int
+     */
+    public function getTotalRewardAttribute($value)
+    {
+        return intval($value);
     }
 
     /**

@@ -166,7 +166,7 @@ class TaskService extends BaseService
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection|mixed|void
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException|\Prettus\Repository\Exceptions\RepositoryException
      */
     public function store(Request $request)
     {

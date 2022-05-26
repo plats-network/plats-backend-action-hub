@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\UserCheckedInLocationEvent;
+use App\Repositories\LocationHistoryRepository;
 use App\Services\TaskService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -35,6 +36,10 @@ class StartLocalAfterCheckInListener implements ShouldQueue
         $taskId = $event->taskId;
         //Find tak and all locations
         $task = $this->taskService->find($taskId, ['locations']);
+        //Task only once location
+        if ($task->locations->count() <= 1) {
+            return true;
+        }
 
         //User just checked in at this location
         $eventCheckedLocal = $event->userLocation;
@@ -42,7 +47,8 @@ class StartLocalAfterCheckInListener implements ShouldQueue
         $userId = $eventCheckedLocal->user_id;
 
         // Get history checkin of User
-        $userStartedLocations = $this->taskService->myLocations($event->taskId, $userId);
+        $userStartedLocations = app(LocationHistoryRepository::class)
+            ->myHistoryInLocas($userId, $task->locations->pluck('id'));
 
         $nextLocation = $task->locations->whereNotIn('id', $userStartedLocations->pluck('location_id'))->first();
         if (is_null($nextLocation)) {

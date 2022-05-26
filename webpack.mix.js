@@ -1,6 +1,8 @@
 const mix = require('laravel-mix');
 const glob = require('glob');
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
+
 
 mix.options({
     processCssUrls : false,
@@ -12,6 +14,28 @@ if (!mix.inProduction()) {
         devtool: 'inline-source-map'
     }).sourceMaps();
 }
+
+
+mix.webpackConfig({
+    resolve: {
+        fallback: {
+            fs : false,
+            os: false
+        },
+    },
+    experiments: {
+        topLevelAwait: true
+    },
+    plugins: [
+        new Dotenv({
+            path: './.env',
+            allowEmptyValues: true,
+            silent: true,
+           // prefix: 'import.meta.env.' // reference your env variables as 'import.meta.env.ENV_VAR'.
+        }),
+    ]
+});
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management

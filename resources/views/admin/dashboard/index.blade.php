@@ -225,7 +225,7 @@
             <div class="row g-2">
                 <div class="col-12 col-lg-6">
                     <div class="card">
-                        <a href="/Blog" class="row g-0 sh-11">
+                        <a href="#" class="row g-0 sh-11">
                             <div class="col-auto h-100">
                                 <img src="/img/video/video-thumbnail-1.webp" alt="alternate text" class="card-img card-img-horizontal sw-11 sw-md-14 theme-filter" />
                                 <div class="position-absolute bg-foreground opacity-75 text-primary px-1 py-1 text-extra-small b-2 s-2 rounded-lg">12:00</div>

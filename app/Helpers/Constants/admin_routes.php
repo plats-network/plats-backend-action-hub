@@ -12,4 +12,5 @@ if (!defined('DEFINE_ADMIN_ROUTER')) {
     define('TASK_CREATE_ADMIN_ROUTER', 'admin.task.create.route');
     define('TASK_EDIT_ADMIN_ROUTER', 'admin.task.edit.route');
     define('TASK_STORE_ADMIN_ROUTER', 'admin.task.store.route');
+    define('TASK_DEPOSIT_ADMIN_ROUTER', 'admin.task.deposit.route');
 }

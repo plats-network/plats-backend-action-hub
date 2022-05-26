@@ -10,4 +10,5 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
     Route::get('/create', 'create')->name(TASK_CREATE_ADMIN_ROUTER);
     Route::get('/edit/{id}', 'edit')->name(TASK_EDIT_ADMIN_ROUTER)->whereUuid('id');
     Route::post('/store', 'store')->name(TASK_STORE_ADMIN_ROUTER);
+    Route::get('/deposit/{id}', 'deposit')->name(TASK_DEPOSIT_ADMIN_ROUTER)->whereUuid('id');
 });

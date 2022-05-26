@@ -25,13 +25,26 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <x-forms.group :label="trans('admin.task.form.reward_amount')">
-                                        <x-forms.input name="reward_amount" :value="old('reward_amount')" required/>
+                                        <x-forms.input type="number" name="reward_amount" :value="old('reward_amount')" required/>
                                     </x-forms.group>
+                                </div>
+                                <div class="col-lg-6">
+                                    <x-forms.group :label="trans('admin.task.form.total_reward')">
+                                        @if (old('id'))
+                                        <div class="form-control-plaintext fw-bold">
+                                            {{ old('total_reward') }}
+                                        </div>
+                                        @else
+                                        <x-forms.input type="number" name="total_reward" :value="old('total_reward')" required/>
+                                        @endif
+                                    </x-forms.group>
+
                                 </div>
                                 <div class="col-lg-6">
                                     <x-forms.group :label="trans('admin.task.form.status')">
                                         <x-forms.select name="status" select2 required
-                                                        :options="[INACTIVE_TASK => 'Draft', ACTIVE_TASK => 'Active']"/>
+                                                        :options="[INACTIVE_TASK => 'Draft', ACTIVE_TASK => 'Active']"
+                                                        :selected="old('status')"/>
                                     </x-forms.group>
                                 </div>
                             </div>

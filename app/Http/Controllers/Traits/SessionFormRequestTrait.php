@@ -17,7 +17,7 @@ trait SessionFormRequestTrait
     public function flashSession($attributes)
     {
         if ($attributes instanceof Model) {
-            $attributes = $attributes->toArray();
+            $attributes = $attributes->makeVisible($attributes->getHidden())->toArray();
         }
 
         // Add data to session and use with old() function
