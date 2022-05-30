@@ -36,12 +36,23 @@ class LocationHistoryRepository extends BaseRepository
      */
     public function myHistoryInLocas($userId, $locas)
     {
+        return $this->userStatusInSubTasks($userId, $locas);
+    }
+
+    /**
+     * @param $userId
+     * @param $subtaskIds
+     *
+     * @return mixed
+     */
+    public function userStatusInSubTasks($userId, $subtaskIds)
+    {
         $builder = $this->model->ofUser($userId);
 
-        if (is_string($locas)) {
-            return $builder->where('location_id', $locas)->get();
+        if (is_string($subtaskIds)) {
+            return $builder->where('location_id', $subtaskIds)->get();
         }
 
-        return $builder->whereIn('location_id', $locas)->get();
+        return $builder->whereIn('location_id', $subtaskIds)->get();
     }
 }

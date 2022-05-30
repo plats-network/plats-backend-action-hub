@@ -112,13 +112,26 @@ class Task extends Model
     /**
      * @param $userId
      *
-     * @return \App\Models\Task|m.\App\Models\Task.load
+     * @return \App\Models\Task.\App\Models\Task.load
      */
     public function scopeWithUserStatus($userId)
     {
         return $this->load(['participants' => function ($q) use ($userId) {
             return $q->where('user_id', $userId);
         } ]);
+    }
+
+    /**
+     * @param $builder
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function scopeUserJoinedTask($builder, $userId)
+    {
+        return $builder->whereHas('participants', function ($q) use ($userId) {
+            return $q->where('user_id', $userId);
+        });
     }
 
     /**
