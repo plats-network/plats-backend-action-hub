@@ -61,4 +61,14 @@ class TaskLocationHistory extends Model
     {
         return $builder->where('user_id', $userId);
     }
+
+    /**
+     * @param $builder
+     *
+     * @return mixed
+     */
+    public function scopeCompleted($builder)
+    {
+        return $builder->whereNotNull('ended_at');
+    }
 }

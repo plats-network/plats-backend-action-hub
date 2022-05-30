@@ -27,4 +27,16 @@ class TaskUserRepository extends BaseRepository
     {
         return $this->model->where('task_id', $taskId)->where('user_id', $userId)->first();
     }
+
+    /**
+     * @param $taskId
+     * @param $userId
+     * @param int $status
+     *
+     * @return mixed
+     */
+    public function updateStatusTask($taskId, $userId, $status = USER_PROCESSING_TASK)
+    {
+        return $this->model->where('task_id', $taskId)->where('user_id', $userId)->update(['status' => $status]);
+    }
 }

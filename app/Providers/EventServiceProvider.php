@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\UserCheckedInLocationEvent;
+use App\Listeners\CheckUserCompletedTaskListener;
 use App\Listeners\StartLocalAfterCheckInListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -21,7 +22,8 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         UserCheckedInLocationEvent::class => [
-            StartLocalAfterCheckInListener::class
+            StartLocalAfterCheckInListener::class,
+            CheckUserCompletedTaskListener::class,
         ],
     ];
 

@@ -2,11 +2,12 @@
 
 namespace App\Events;
 
+use App\Contracts\UserCompletedSubtask;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserCheckedInLocationEvent
+class UserCheckedInLocationEvent implements UserCompletedSubtask
 {
     use Dispatchable;
     use InteractsWithSockets;
@@ -37,5 +38,25 @@ class UserCheckedInLocationEvent
         $this->userLocation = $userLocation;
         $this->taskLocation = $taskLocation;
         $this->taskId    = $taskId;
+    }
+
+    /**
+     * Id of task
+     *
+     * @return string
+     */
+    public function taskId()
+    {
+        return $this->taskId;
+    }
+
+    /**
+     * User Id
+     *
+     * @return string
+     */
+    public function userId()
+    {
+        return $this->userLocation->user_id;
     }
 }

@@ -35,4 +35,28 @@ class TaskRepository extends BaseRepository
     {
         return $this->model->hasLocation($locaId)->findOrFail($taskId);
     }
+
+    /**
+     * @param $userId
+     * @param $taskId
+     *
+     * @return mixed
+     */
+    public function userJoinedTask($userId, $taskId)
+    {
+        return $this->model->where('id', $taskId)
+            ->userJoinedTask($userId)
+            ->first();
+    }
+
+    /**
+     * Get subtask
+     * TODO: multiple type
+     *
+     * @param \App\Models\Task $task
+     */
+    public function subtasks($task)
+    {
+        return $task->locations;
+    }
 }
