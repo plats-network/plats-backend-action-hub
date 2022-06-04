@@ -2,11 +2,12 @@
 
 namespace App\Events;
 
+use App\Contracts\UserCompletedTask;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserCompletedTaskEvent
+class UserCompletedTaskEvent implements UserCompletedTask
 {
     use Dispatchable;
     use InteractsWithSockets;
@@ -31,5 +32,25 @@ class UserCompletedTaskEvent
     {
         $this->userId = $userId;
         $this->taskId = $taskId;
+    }
+
+    /**
+     * Id of task
+     *
+     * @return string
+     */
+    public function taskId()
+    {
+        return $this->taskId;
+    }
+
+    /**
+     * User Id
+     *
+     * @return string
+     */
+    public function userId()
+    {
+        return $this->userId;
     }
 }
