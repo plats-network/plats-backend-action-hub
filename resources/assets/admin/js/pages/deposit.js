@@ -1,4 +1,5 @@
 import {web3Accounts, web3Enable, web3FromSource} from '@polkadot/extension-dapp';
+import BN from 'bn.js';
 const {ApiPromise, WsProvider, Keyring} = require('@polkadot/api');
 const wsHost = 'ws://' + process.env.BLC_WS_HOST + ':' + process.env.BLC_WS_PORT;
 
@@ -39,10 +40,13 @@ class Deposit {
                     return allAccounts;
                 });
 
-               let depositAmount = CAMPAIGN_AMOUNT;
+               //CAMPAIGN_AMOUNT
+               let depositAmount = new BN(CAMPAIGN_AMOUNT + '000000000000000000');
                let taskId = TASK_ID;
 
+                //TODO: Change wallet. Default 0
                 const account = allAccounts[0];
+
                 await web3FromSource(account.meta.source).then((injector) => {
                     const transferExtrinsic = apiPolkadot.tx.task.createCampaign(taskId, depositAmount);
                     transferExtrinsic.signAndSend(account.address, {signer: injector.signer}, ({status}) => {
