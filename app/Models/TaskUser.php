@@ -29,6 +29,7 @@ class TaskUser extends Model
         'user_id',
         'task_id',
         'status',
+        'wallet_address',
         'time_left',// Minute
     ];
 

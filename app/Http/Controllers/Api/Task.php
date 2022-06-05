@@ -74,7 +74,14 @@ class Task extends ApiController
      */
     public function startTask(StartTaskRequest $request, $taskId, $locationId)
     {
-        return new TaskUserResource($this->taskService->startTask($taskId, $locationId, $request->user()->id));
+        return new TaskUserResource(
+            $this->taskService->startTask(
+                $taskId,
+                $locationId,
+                $request->user()->id,
+                $request->input('wallet_address')
+            )
+        );
     }
 
     /**

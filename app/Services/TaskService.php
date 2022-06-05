@@ -90,10 +90,11 @@ class TaskService extends BaseService
      * @param string $taskId Task ID
      * @param string $locaId Location ID
      * @param string $userId User ID
+     * @param string $walletAddress
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function startTask($taskId, $locaId, $userId)
+    public function startTask($taskId, $locaId, $userId, $walletAddress = null)
     {
         // Get and check exists Task and Location
         $taskHasLocal = $this->repository->taskHasLocation($taskId, $locaId);
@@ -114,10 +115,11 @@ class TaskService extends BaseService
         //This is the user's first location
         if (is_null($this->taskUserRepository->userStartedTask($taskId, $userId))) {
             $this->taskUserRepository->create([
-                'user_id'   => $userId,
-                'task_id'   => $taskId,
-                'status'    => USER_PROCESSING_TASK,
-                'time_left' => $taskHasLocal->duration,
+                'user_id'        => $userId,
+                'task_id'        => $taskId,
+                'status'         => USER_PROCESSING_TASK,
+                'wallet_address' => $walletAddress,
+                'time_left'      => Carbon::now()->addMinutes($taskHasLocal->duration),
             ]);
         }
 
