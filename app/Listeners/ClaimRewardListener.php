@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Contracts\UserCompletedTask;
-use App\Repositories\TaskRepository;
+use App\Repositories\TaskUserRepository;
 use App\Services\BLCGatewayService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -13,18 +13,18 @@ class ClaimRewardListener implements ShouldQueue
     use InteractsWithQueue;
 
     /**
-     * @var \App\Repositories\TaskRepository
+     * @var \App\Repositories\TaskUserRepository
      */
-    protected $taskRepository;
+    protected $taskUserRepository;
 
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(TaskRepository $taskRepository)
+    public function __construct(TaskUserRepository $taskUserRepository)
     {
-        $this->taskRepository = $taskRepository;
+        $this->taskUserRepository = $taskUserRepository;
     }
 
     /**
@@ -36,8 +36,17 @@ class ClaimRewardListener implements ShouldQueue
      */
     public function handle(UserCompletedTask $event)
     {
-        $task = $this->taskRepository->find($event->taskId());
+        $userTask = $this->taskUserRepository->userStartedTask($event->taskId(), $event->userId());
+        if (is_null($userTask)) {
+            return;
+        }
 
-        app(BLCGatewayService::class)->award($task->reward_amount, $task->id);
+        $task = $userTask->task;
+
+        if (is_null($task)) {
+            return;
+        }
+
+        app(BLCGatewayService::class)->award($task->reward_amount, $task->id, $userTask->wallet_address);
     }
 }

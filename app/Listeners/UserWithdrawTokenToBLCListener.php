@@ -30,6 +30,6 @@ class UserWithdrawTokenToBLCListener implements ShouldQueue
      */
     public function handle(ClaimToken $event)
     {
-        app(BLCGatewayService::class)->withdraw($event->amount(), $event->transactionId());
+        app(BLCGatewayService::class)->withdraw($event->amount(), $event->transactionId(), $event->address());
     }
 }

@@ -7,19 +7,20 @@ use Illuminate\Support\Facades\Http;
 class BLCGatewayService
 {
     /**
-     * @param $amount
-     * @param $taskId
+     * @param int $amount
+     * @param string $taskId
+     * @param string $walletAddress
      *
      * @return \Illuminate\Http\Client\Response
      */
-    public function award($amount, $taskId)
+    public function award($amount, $taskId, $walletAddress)
     {
         $actionUrl = $this->getGatewayUrl() . '/reward/award';
 
         $query = [
             'task_id' => $taskId,
             'amount'  => $amount,
-            //'address' => ''
+            'address' => $walletAddress
         ];
 
         return Http::get($actionUrl, $query);
@@ -27,18 +28,19 @@ class BLCGatewayService
 
     /**
      * @param $amount
-     * @param $transactionId
+     * @param string $transactionId
+     * @param string $walletAddress
      *
      * @return \Illuminate\Http\Client\Response
      */
-    public function withdraw($amount, $transactionId)
+    public function withdraw($amount, $transactionId, $walletAddress)
     {
         $actionUrl = $this->getGatewayUrl() . '/withdraw/claim';
 
         $query = [
             'transaction_id' => $transactionId,
             'amount'         => $amount,
-            //'address' => ''
+            'address'        => $walletAddress,
         ];
 
         return Http::get($actionUrl, $query);

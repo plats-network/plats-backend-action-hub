@@ -18,8 +18,10 @@ return new class extends Migration
             $table->uuid('user_id');
             $table->uuid('task_id');
             $table->tinyInteger('status')->default(0);
-            $table->bigInteger('time_left')->default(0);
-
+            $table->timestamp('time_left')->nullable();
+            $table->string('wallet_address')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
             $table->index(['user_id', 'task_id']);
         });
     }
