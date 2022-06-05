@@ -29,4 +29,11 @@ if (!defined('DEFINE_CONSTANT')) {
      */
     define('INACTIVE_LOCATION_TASK', 0);
     define('ACTIVE_LOCATION_TASK', 1);
+
+    /**
+     * Withdraw status
+     */
+    define('WITHDRAWN_STATUS_PENDING', 0);
+    define('WITHDRAWN_STATUS_PROCESSING', 1);
+    define('WITHDRAWN_STATUS_COMPLETED', 2);
 }

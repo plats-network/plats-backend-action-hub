@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Events\UserCheckedInLocationEvent;
+use App\Events\UserClaimTokenEvent;
 use App\Events\UserCompletedTaskEvent;
 use App\Listeners\CheckUserCompletedTaskListener;
 use App\Listeners\ClaimRewardListener;
+use App\Listeners\UserWithdrawTokenToBLCListener;
 use App\Listeners\StartLocalAfterCheckInListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -29,6 +31,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         UserCompletedTaskEvent::class => [
             ClaimRewardListener::class
+        ],
+        UserClaimTokenEvent::class => [
+            UserWithdrawTokenToBLCListener::class
         ],
     ];
 
