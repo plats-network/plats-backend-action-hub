@@ -40,6 +40,7 @@
 @push('scripts')
     <script>
         const CAMPAIGN_AMOUNT = '{{ $task->total_reward }}';
+        const TASK_ID = '{{ $task->id }}';
         const REDIRECT_AFTER_DEPOSIT = '{{ route(TASK_LIST_ADMIN_ROUTER) }}';
     </script>
 @endpush

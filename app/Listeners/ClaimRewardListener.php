@@ -4,9 +4,9 @@ namespace App\Listeners;
 
 use App\Contracts\UserCompletedTask;
 use App\Repositories\TaskRepository;
+use App\Services\BLCGatewayService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Http;
 
 class ClaimRewardListener implements ShouldQueue
 {
@@ -38,14 +38,6 @@ class ClaimRewardListener implements ShouldQueue
     {
         $task = $this->taskRepository->find($event->taskId());
 
-        $gatewayUrl = config('blc.connection.host') . ':' . config('blc.connection.port');
-        $actionUrl  = $gatewayUrl . '/reward/award';
-        $query      = [
-            'task_id' => 0,
-            'amount'  => $task->reward_amount,
-            //'address' => ''
-        ];
-
-        Http::get($actionUrl, $query);
+        app(BLCGatewayService::class)->award($task->reward_amount, $task->id);
     }
 }

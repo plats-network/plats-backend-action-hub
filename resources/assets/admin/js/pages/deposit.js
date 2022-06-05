@@ -39,9 +39,12 @@ class Deposit {
                     return allAccounts;
                 });
 
+               let depositAmount = CAMPAIGN_AMOUNT;
+               let taskId = TASK_ID;
+
                 const account = allAccounts[0];
                 await web3FromSource(account.meta.source).then((injector) => {
-                    const transferExtrinsic = apiPolkadot.tx.task.createCampaign(CAMPAIGN_AMOUNT);
+                    const transferExtrinsic = apiPolkadot.tx.task.createCampaign(taskId, depositAmount);
                     transferExtrinsic.signAndSend(account.address, {signer: injector.signer}, ({status}) => {
                         if (status.isInBlock) {
                             _this._showErr('Thanh toán thành công', 'Giao dịch thành công. Đang chuyển trạng thái!');
