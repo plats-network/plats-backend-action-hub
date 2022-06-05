@@ -9,6 +9,7 @@ use App\Repositories\TaskRepository;
 use App\Repositories\TaskUserRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 
 class CheckUserCompletedTaskListener implements ShouldQueue
 {
@@ -69,7 +70,7 @@ class CheckUserCompletedTaskListener implements ShouldQueue
         $userStatusInSubtask = $this->localHistoryRepo->userStatusInSubTasks($userId, $subtaskIds);
         if (
             $userStatusInSubtask
-                ->whereIn('id', $subtaskIds)
+                ->whereIn('location_id', $subtaskIds)
                 ->whereNotNull('ended_at')
                 ->count() != $subtasks->count()
         ) {
@@ -78,7 +79,6 @@ class CheckUserCompletedTaskListener implements ShouldQueue
 
         // Update status
         $this->taskUserRepository->updateStatusTask($taskId, $userId, USER_COMPLETED_TASK);
-
         //Fire event
         UserCompletedTaskEvent::dispatch($userId, $taskId);
     }
