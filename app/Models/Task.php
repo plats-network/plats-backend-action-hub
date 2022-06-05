@@ -84,6 +84,16 @@ class Task extends Model
     }
 
     /**
+     * @param $value
+     *
+     * @return int
+     */
+    public function getRewardAmountAttribute($value)
+    {
+        return intval($value);
+    }
+
+    /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
      * @param string $localId Location ID
      *
