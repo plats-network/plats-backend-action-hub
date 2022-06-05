@@ -35,11 +35,12 @@ class BLCGatewayService
      */
     public function withdraw($amount, $transactionId, $walletAddress)
     {
+        unset($amount);//Default withdraw all balance
         $actionUrl = $this->getGatewayUrl() . '/withdraw/claim';
 
         $query = [
             'transaction_id' => $transactionId,
-            'amount'         => $amount,
+            'amount'         => '',
             'address'        => $walletAddress,
         ];
 

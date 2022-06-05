@@ -23,4 +23,14 @@ class Withdraw extends Model
      * @var string[]
      */
     protected $fillable = ['user_id', 'amount', 'address', 'status'];
+
+    /**
+     * @param $value
+     *
+     * @return int
+     */
+    public function getAmountAttribute($value)
+    {
+        return intval($value);
+    }
 }
