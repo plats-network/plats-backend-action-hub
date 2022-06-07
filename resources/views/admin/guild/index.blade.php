@@ -20,7 +20,7 @@
                     <div class="col">
                         <div class="card-body pt-0 pb-0 h-100">
                             <div class="row g-0 h-100 align-content-center">
-                                <div class="col-12 col-md-6 d-flex align-items-center mb-2 mb-md-0 text-muted text-small text-uppercase">
+                                <div class="col-12 col-md-6 d-flex align-items-center mb-2 mb-md-0 text-muted text-uppercase">
                                     NAME
                                 </div>
                                 <div class="col-6 col-md-2 d-flex align-items-center text-medium text-muted text-uppercase">
