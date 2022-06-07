@@ -15,19 +15,23 @@
         <div class="col-12 mb-5">
             <div class="card mb-2 bg-transparent no-shadow d-none d-md-block">
                 <div class="row g-0 sh-3">
+                    <div class="sw-20">
+                    </div>
                     <div class="col">
                         <div class="card-body pt-0 pb-0 h-100">
                             <div class="row g-0 h-100 align-content-center">
-                                <div class="col-12 col-md-3 d-flex align-items-center mb-2 mb-md-0 text-muted text-small">
+                                <div class="col-12 col-md-7 d-flex align-items-center mb-2 mb-md-0 text-muted text-small">
                                     NAME
                                 </div>
-                                <div class="col-6 col-md-3 d-flex align-items-center text-alternate text-medium text-muted text-small">
+                                <div class="col-6 col-md-1 d-flex align-items-center text-alternate text-medium text-muted text-small">
                                     REWARD
                                 </div>
-                                <div class="col-6 col-md-3 d-flex align-items-center text-alternate text-medium text-muted text-small">
-                                    STARTED AT
+                                <div class="col-6 col-md-1 d-flex align-items-center text-alternate text-medium text-muted text-small">
+                                    STATUS
                                 </div>
-                                <div class="col-6 col-md-2 d-flex align-items-center text-alternate text-medium text-muted text-small">STATUS</div>
+                                <div class="col-6 col-md-2 d-flex align-items-center text-alternate text-medium text-muted text-small text-uppercase">
+                                    Locations / Participants
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -36,29 +40,32 @@
             <div id="checkboxTable" class="mb-n2">
                 @foreach($tasks as $task)
                 <div class="card mb-2">
-                    <div class="row g-0 sh-21 sh-md-7">
+                    <div class="row g-0 sh-19 sh-lg-18">
+                        <div class="col-auto">
+                            <img src="{{ $task->cover_url }}" alt="alternate text" class="card-img card-img-horizontal sw-20 sh-18">
+                        </div>
                         <div class="col">
                             <div class="card-body pt-0 pb-0 h-100">
                                 <div class="row g-0 h-100 align-content-center">
-                                    <div class="col-11 col-md-3 d-flex flex-column justify-content-center mb-2 mb-md-0 order-1 order-md-1 h-md-100 position-relative">
+                                    <div class="col-12 col-md-7 d-flex flex-column mb-lg-0 mb-3 mb-lg-0 pe-3 d-flex">
                                         <div class="text-muted text-small d-md-none">NAME</div>
-                                        <a href="{{ route(TASK_EDIT_ADMIN_ROUTER, $task->id) }}" class="text-truncate stretched-link">
+                                        <h4><a href="{{ route(TASK_EDIT_ADMIN_ROUTER, $task->id) }}" class="text-truncate stretched-link">
                                             {{ $task->name }}
-                                        </a>
+                                        </a></h4>
+                                        <div class="text-small text-muted text-truncate">
+                                            {{ $task->description }}
+                                        </div>
                                     </div>
-                                    <div class="col-6 col-md-3 d-flex flex-column justify-content-center mb-2 mb-md-0 order-3 order-md-2">
+                                    <div class="col-4 col-md-1 d-flex flex-column pe-1 mb-2 mb-lg-0 align-items-lg-center justify-content-center">
                                         <div class="text-muted text-small d-md-none">REWARD</div>
-                                        <div class="text-alternate">
-                                            {{ $task->reward_amount }}
+                                        <div class="lh-1 h4 mb-0 text-alternate">
+                                            <span>
+                                              {{ $task->reward_amount }}
+                                            </span>
                                         </div>
+                                        <div class="text-muted text-small">PLAT</div>
                                     </div>
-                                    <div class="col-6 col-md-3 d-flex flex-column justify-content-center mb-2 mb-md-0 order-4 order-md-3">
-                                        <div class="text-muted text-small d-md-none">STARTED AT</div>
-                                        <div class="text-alternate">
-                                            {{ $task->created_at->toDateString() }}
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-md-2 d-flex flex-column justify-content-center mb-2 mb-md-0 order-5 order-md-5">
+                                    <div class="col-6 col-md-1 d-flex flex-column justify-content-center">
                                         <div class="text-muted text-small d-md-none">Status</div>
                                         <div class="text-alternate">
                                             <span class="badge rounded-pill text-uppercase
@@ -67,6 +74,13 @@
                                             </span>
                                         </div>
                                     </div>
+                                    <div class="col-6 col-md-2 d-flex flex-column justify-content-center align-items-lg-center">
+                                        <div class="text-muted text-small d-md-none">Locations/Participants</div>
+                                        <div class="h3">
+                                            <span class="text-danger text-small">3</span> / <span class="text-success">3</span>
+                                        </div>
+                                    </div>
+
                                     <div class="col-12 col-md-1 d-flex flex-column justify-content-center order-last order-md-last">
                                         <a href="{{ route(TASK_EDIT_ADMIN_ROUTER, $task->id) }}"
                                            class="btn btn-sm btn-icon btn-icon-start btn-outline-primary ms-1">
