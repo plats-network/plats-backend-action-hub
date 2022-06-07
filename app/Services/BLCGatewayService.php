@@ -15,7 +15,7 @@ class BLCGatewayService
      */
     public function award($amount, $taskId, $walletAddress)
     {
-        $actionUrl = $this->getGatewayUrl() . '/reward/award';
+        $actionUrl = $this->getGatewayUrl('/reward/award');
 
         $query = [
             'task_id' => $taskId,
@@ -35,7 +35,7 @@ class BLCGatewayService
      */
     public function withdraw($amount, $transactionId, $walletAddress)
     {
-        $actionUrl = $this->getGatewayUrl() . '/withdraw/claim';
+        $actionUrl = $this->getGatewayUrl('/withdraw/claim');
 
         $query = [
             'transaction_id' => $transactionId,
@@ -47,10 +47,16 @@ class BLCGatewayService
     }
 
     /**
+     * Format the given URL segments into a single URL.
+     *
+     * @param string $path
+     *
      * @return string
      */
-    private function getGatewayUrl()
+    private function getGatewayUrl($path = null)
     {
-        return config('blc.connection.host') . ':' . config('blc.connection.port');
+        $path = '/' . trim($path, '/');
+
+        return trim(config('blc.endpoint'), '/') . $path;
     }
 }

@@ -33,4 +33,10 @@ return [
         ],
     ],
     'task_created' => 'Task created successfully',
+    'guild' => [
+        'page_name' => 'Guild management',
+        'page_desc' => 'List your guilds',
+        'create_page' => 'Create a new guild',
+        'edit_page' => 'Edit task',
+    ],
 ];

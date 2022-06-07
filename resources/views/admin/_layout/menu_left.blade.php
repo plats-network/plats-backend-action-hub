@@ -29,14 +29,26 @@
             <ul>
                 <li>
                     <a href="{{ route(TASK_LIST_ADMIN_ROUTER) }}">
-                        <i data-acorn-icon="database" class="icon d-none" data-acorn-size="18"></i>
-                        <span class="label">Task</span>
+                        <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
+                        <span class="label">Task Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i data-acorn-icon="boxes" class="icon d-none" data-acorn-size="18"></i>
+                        <span class="label">NFT Management</span>
                     </a>
                 </li>
                 <li>
                     <a href="#">
                         <i data-acorn-icon="user" class="icon d-none" data-acorn-size="18"></i>
-                        <span class="label">Users</span>
+                        <span class="label">Customer Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route(GUILD_LIST_ADMIN_ROUTER) }}">
+                        <i data-acorn-icon="spinner" class="icon d-none" data-acorn-size="18"></i>
+                        <span class="label">Guilds</span>
                     </a>
                 </li>
             </ul>
@@ -44,7 +56,7 @@
         <li>
             <a href="#" data-bs-target="#account">
                 <i data-acorn-icon="user" class="icon" data-acorn-size="18"></i>
-                <span class="label">Account</span>
+                <span class="label">Accounting</span>
             </a>
             <ul>
                 <li>
