@@ -77,7 +77,8 @@
                                     <div class="col-6 col-md-2 d-flex flex-column justify-content-center align-items-lg-center">
                                         <div class="text-muted text-small d-md-none">Locations/Participants</div>
                                         <div class="h3">
-                                            <span class="text-danger text-small">3</span> / <span class="text-success">3</span>
+                                            <span class="text-danger text-small">{{ $task->locations_count }}</span> /
+                                            <span class="text-success">{{ $task->participants_count }}</span>
                                         </div>
                                     </div>
 

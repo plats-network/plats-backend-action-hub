@@ -55,6 +55,14 @@ abstract class SearchBaseServiceAbstract
     {
         $this->makeBuilder($conditions);
 
+        if (isset($conditions['withCount'])) {
+            foreach ($conditions['withCount'] as $relation) {
+                $this->builder = $this->builder->withCount($relation);
+            }
+
+            $this->cleanFilterBuilder('withCount');
+        }
+
         return $this->endFilter();
     }
 
