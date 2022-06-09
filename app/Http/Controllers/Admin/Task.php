@@ -27,7 +27,10 @@ class Task extends Controller
      */
     public function index()
     {
-        return view('admin.task.index', ['tasks' => $this->taskService->search()]);
+        return view(
+            'admin.task.index',
+            ['tasks' => $this->taskService->search(['withCount' => ['participants', 'locations']])]
+        );
     }
 
     /**

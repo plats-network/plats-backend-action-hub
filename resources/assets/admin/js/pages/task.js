@@ -24,7 +24,18 @@ class TaskControls {
             // (Optional)
             // Removes the delete button from the first list item,
             // defaults to false.
-            isFirstItemUndeletable: true
+            isFirstItemUndeletable: true,
+            show: function () {
+                let $this = $(this);
+                $this.attr('data-repeater-item', '');
+                let btnDelete = $this.find('.js-location-delete');
+                if (btnDelete.length) {
+                    btnDelete.attr('data-repeater-delete', '');
+                    btnDelete.attr('data-location-id', '');
+                    btnDelete.removeClass('js-location-delete');//always set bottom of condition
+                }
+                $this.slideDown();
+            },
         });
 
         $('.js-location-delete').on('click', function () {

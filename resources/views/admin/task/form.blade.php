@@ -4,14 +4,13 @@
     <div class="row">
         <div class="col-12 mb-5">
             <h2 class="small-title">Basic information</h2>
-            <div class="card">
-                <div class="card-body">
-                    <x-forms.group :label="trans('admin.task.form.name')">
-                        <x-forms.input name="name" :value="old('name')" required/>
-                    </x-forms.group>
-
-                    <div class="row">
-                        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="card">
+                        <div class="card-body">
+                            <x-forms.group :label="trans('admin.task.form.name')">
+                                <x-forms.input name="name" :value="old('name')" required/>
+                            </x-forms.group>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <x-forms.group :label="trans('admin.task.form.duration')">
@@ -31,11 +30,11 @@
                                 <div class="col-lg-6">
                                     <x-forms.group :label="trans('admin.task.form.total_reward')">
                                         @if (old('id'))
-                                        <div class="form-control-plaintext fw-bold">
-                                            {{ old('total_reward') }}
-                                        </div>
+                                            <div class="form-control-plaintext fw-bold">
+                                                {{ old('total_reward') }}
+                                            </div>
                                         @else
-                                        <x-forms.input type="number" name="total_reward" :value="old('total_reward')" required/>
+                                            <x-forms.input type="number" name="total_reward" :value="old('total_reward')" required/>
                                         @endif
                                     </x-forms.group>
 
@@ -48,8 +47,15 @@
                                     </x-forms.group>
                                 </div>
                             </div>
+                            <x-forms.group :label="trans('admin.task.form.desc')">
+                                <x-forms.textarea name="description" :value="old('description')"/>
+                            </x-forms.group>
                         </div>
-                        <div class="col-lg-6">
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="card mb-3">
+                        <div class="card-body">
                             <x-form::label :label="trans('admin.task.form.image')"/>
                             <div class="position-relative" id="taskImgCover">
                                 <img
@@ -66,12 +72,48 @@
                             </div>
                         </div>
                     </div>
-
-                    <x-forms.group :label="trans('admin.task.form.desc')">
-                        <x-forms.textarea name="description" :value="old('description')"/>
-                    </x-forms.group>
+                    <!-- END cover image -->
+                    <section class="scroll-section" id="teams">
+                        <h2 class="small-title">Guilds</h2>
+                        <div class="card h-100-card">
+                            <div class="card-body mb-n2 scroll-out">
+                                <div class="scroll-by-count" data-count="3" data-childSelector="div.item" data-subtractMargin="false">
+                                    @for ($i = 0; $i < 10; $i++)
+                                    <div class="row g-0 align-items-start align-content-start align-content-md-center align-items-md-center sh-13
+                                    sh-md-7 mb-2 item">
+                                        <div class="col-auto d-flex align-items-center mb-md-0">
+                                            <div class="sw-12 me-1 mb-1">
+                                                <img src="{{ asset('img/admin/demo/list/01.webp') }}" class="img-fluid rounded-md sh-7 sw-10"
+                                                     alt="thumb">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="row g-0 h-100 align-items-start align-content-start align-content-md-center align-items-md-center">
+                                                <div class="col-12 col-md-6 d-flex flex-column pe-2 mb-2 mb-md-0">
+                                                    <div>Plats Hanoi</div>
+                                                    <div class="text-muted text-small">5 Members</div>
+                                                </div>
+                                                <div class="col-auto col-md-4 d-flex flex-column align-items-start align-items-md-end pe-3">
+                                                    <div>{{ rand(2, 12) }} Tasks</div>
+                                                    <div class="text-small text-muted">Active</div>
+                                                </div>
+                                                <div class="col-auto col-md-2 d-flex flex-column align-items-start align-items-md-end">
+                                                    <label class="form-check custom-icon mb-0">
+                                                        <input type="checkbox" class="form-check-input" name="guilds[{{ $i }}]" value="{{ $i }}"
+                                                               {{ $i < 3 ? 'checked' : '' }} />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endfor
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
+            <!--- END Basic information -->
             <h2 class="small-title mt-3">Task galleries</h2>
             <div class="card">
                 <div class="card-body">
