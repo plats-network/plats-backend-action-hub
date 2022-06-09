@@ -62,6 +62,28 @@ class TaskService extends BaseService
     }
 
     /**
+     * Auto paginate with query parameters
+     *
+     * @param  array  $conditions
+     *
+     * @return mixed
+     */
+    public function search($conditions = [])
+    {
+        $this->makeBuilder($conditions);
+
+        if (isset($conditions['withCount'])) {
+            foreach ($conditions['withCount'] as $relation) {
+                $this->builder = $this->builder->withCount($relation);
+            }
+
+            $this->cleanFilterBuilder('withCount');
+        }
+
+        return $this->endFilter();
+    }
+
+    /**
      * Calculate the remaining time of the quest from the start
      *
      * @param \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Collection $userHistories
