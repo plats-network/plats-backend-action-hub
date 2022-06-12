@@ -15,12 +15,11 @@
                 <div class="card-body row g-0">
                     <div class="col-12">
                         <div class="cta-3 text-white">Deposit</div>
-                        <div class="mb-3 cta-3 text-white">Start now!</div>
+                        <div class="mb-3 cta-3 text-white">Transaction is processing now!</div>
                         <div class="row gx-2">
                             <div class="col">
                                 <div class="text-muted mb-3 mb-sm-0 pe-3 text-white">
-                                    Hệ thống đang tiến hành kết nối ví thanh toán. Vui lòng không tắt trang đến khi thực hiện xong.<br/>
-                                    Xin cảm ơn!
+                                    The system is connecting the payment wallet. Please do not turn off the page until this is done.<br/>
                                 </div>
                             </div>
                             <div class="col-12 col-sm-auto d-flex align-items-center position-relative">
