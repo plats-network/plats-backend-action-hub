@@ -78,20 +78,20 @@
                         <div class="card h-100-card">
                             <div class="card-body mb-n2 scroll-out">
                                 <div class="scroll-by-count" data-count="3" data-childSelector="div.item" data-subtractMargin="false">
-                                    @for ($i = 0; $i < 10; $i++)
+                                    @foreach ($guilds as $guild)
                                     <div class="row g-0 align-items-start align-content-start align-content-md-center align-items-md-center sh-13
                                     sh-md-7 mb-2 item">
                                         <div class="col-auto d-flex align-items-center mb-md-0">
                                             <div class="sw-12 me-1 mb-1">
-                                                <img src="{{ asset('img/admin/demo/list/01.webp') }}" class="img-fluid rounded-md sh-7 sw-10"
+                                                <img src="{{ $guild['avatar'] }}" class="img-fluid rounded-md sh-7 sw-10"
                                                      alt="thumb">
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="row g-0 h-100 align-items-start align-content-start align-content-md-center align-items-md-center">
                                                 <div class="col-12 col-md-6 d-flex flex-column pe-2 mb-2 mb-md-0">
-                                                    <div>Plats Hanoi</div>
-                                                    <div class="text-muted text-small">5 Members</div>
+                                                    <div>{{ $guild['name'] }}</div>
+                                                    <div class="text-muted text-small">{{ rand(100, 9999) }} Members</div>
                                                 </div>
                                                 <div class="col-auto col-md-4 d-flex flex-column align-items-start align-items-md-end pe-3">
                                                     <div>{{ rand(2, 12) }} Tasks</div>
@@ -99,14 +99,14 @@
                                                 </div>
                                                 <div class="col-auto col-md-2 d-flex flex-column align-items-start align-items-md-end">
                                                     <label class="form-check custom-icon mb-0">
-                                                        <input type="checkbox" class="form-check-input" name="guilds[{{ $i }}]" value="{{ $i }}"
-                                                               {{ $i < 3 ? 'checked' : '' }} />
+                                                        <input type="checkbox" class="form-check-input" name="guilds[{{ $loop->iteration }}]" value="{{ $loop->iteration }}"
+                                                               {{ $loop->iteration < 3 ? 'checked' : '' }} />
                                                     </label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    @endfor
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
