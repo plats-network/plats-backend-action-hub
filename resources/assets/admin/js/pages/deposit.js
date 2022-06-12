@@ -51,7 +51,7 @@ class Deposit {
                     const transferExtrinsic = apiPolkadot.tx.task.createCampaign(taskId, depositAmount);
                     transferExtrinsic.signAndSend(account.address, {signer: injector.signer}, ({status}) => {
                         if (status.isInBlock) {
-                            _this._showErr('Thanh toán thành công', 'Giao dịch thành công. Đang chuyển trạng thái!');
+                            _this._showErr('Payment success!', 'Successful transaction. Transitioning state!');
 
                             setTimeout(() => {
                                 location.href = REDIRECT_AFTER_DEPOSIT;
