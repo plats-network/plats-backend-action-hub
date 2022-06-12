@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTaskRequest;
+use App\Services\GuildService;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
 
@@ -15,11 +16,18 @@ class Task extends Controller
     protected $taskService;
 
     /**
-     * @param \App\Services\TaskService $taskService
+     * @var \App\Services\GuildService
      */
-    public function __construct(TaskService $taskService)
+    protected $guildService;
+
+    /**
+     * @param \App\Services\TaskService $taskService
+     * @param \App\Services\GuildService $guildService
+     */
+    public function __construct(TaskService $taskService, GuildService $guildService)
     {
         $this->taskService = $taskService;
+        $this->guildService = $guildService;
     }
 
     /**
@@ -51,14 +59,17 @@ class Task extends Controller
      */
     public function edit($id)
     {
-        $task = $this->taskService->find($id);
+        $assign = [];
+        $assign['task'] = $this->taskService->find($id);
 
         // Save detail to session
         if (empty(request()->old()) || old('id') != $id) {
-            $this->flashSession($task);
+            $this->flashSession($assign['task']);
         }
 
-        return view('admin.task.edit', ['task' => $task]);
+        $assign['guilds'] = $this->guildService->mockGuilds();
+
+        return view('admin.task.edit', $assign);
     }
 
     /**

@@ -209,7 +209,7 @@ class TaskService extends BaseService
      */
     public function create(Request $request)
     {
-        $data = $request->except(['image']);
+        $data = $request->except(['image', 'guilds']);
 
         $data['status']     = ACTIVE_TASK;
         $data['type']       = TYPE_FREE_TASK;
@@ -242,7 +242,7 @@ class TaskService extends BaseService
     {
         $task = $this->find($request->input('id'));
 
-        $data = $request->except(['image', 'location']);
+        $data = $request->except(['image', 'location', 'guilds']);
         //Save cover
         if ($request->hasFile('image')) {
             $uploadedFile = $request->file('image');

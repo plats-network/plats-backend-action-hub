@@ -47,12 +47,13 @@
                         <div class="col">
                             <div class="card-body pt-0 pb-0 h-100">
                                 <div class="row g-0 h-100 align-content-center">
-                                    <div class="col-12 col-md-7 d-flex flex-column mb-lg-0 mb-3 mb-lg-0 pe-3 d-flex">
-                                        <div class="text-muted text-small d-md-none">NAME</div>
-                                        <h4><a href="{{ route(TASK_EDIT_ADMIN_ROUTER, $task->id) }}" class="text-truncate stretched-link">
+                                    <div class="col-12 col-md-7 d-flex flex-column mb-lg-0 pe-3 d-flex">
+                                        <h4>
+                                            <a href="{{ route(TASK_EDIT_ADMIN_ROUTER, $task->id) }}" class="stretched-link">
                                             {{ $task->name }}
-                                        </a></h4>
-                                        <div class="text-small text-muted text-truncate">
+                                        </a>
+                                        </h4>
+                                        <div class="text-small text-muted d-none d-md-block">
                                             {{ $task->description }}
                                         </div>
                                     </div>
@@ -66,7 +67,7 @@
                                         <div class="text-muted text-small">PLAT</div>
                                     </div>
                                     <div class="col-6 col-md-1 d-flex flex-column justify-content-center">
-                                        <div class="text-muted text-small d-md-none">Status</div>
+                                        <div class="text-muted text-small d-none">Status</div>
                                         <div class="text-alternate">
                                             <span class="badge rounded-pill text-uppercase
                                             bg-outline-{{ $task->status == INACTIVE_TASK ? 'muted' : 'primary' }}">
@@ -74,7 +75,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-6 col-md-2 d-flex flex-column justify-content-center align-items-lg-center">
+                                    <div class="col-6 col-md-2 d-none d-md-flex flex-column justify-content-center align-items-lg-center">
                                         <div class="text-muted text-small d-md-none">Locations/Participants</div>
                                         <div class="h3">
                                             <span class="text-danger text-small">{{ $task->locations_count }}</span> /
