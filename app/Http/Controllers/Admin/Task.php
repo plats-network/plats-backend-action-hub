@@ -51,7 +51,10 @@ class Task extends Controller
             $this->flashReset();
         }
 
-        return view('admin.task.create');
+        $assign = [];
+        $assign['guilds'] = $this->guildService->mockGuilds();
+
+        return view('admin.task.create', $assign);
     }
 
     /**
@@ -60,6 +63,7 @@ class Task extends Controller
     public function edit($id)
     {
         $assign = [];
+        $assign['guilds'] = $this->guildService->mockGuilds();
         $assign['task'] = $this->taskService->find($id);
 
         // Save detail to session
@@ -67,7 +71,6 @@ class Task extends Controller
             $this->flashSession($assign['task']);
         }
 
-        $assign['guilds'] = $this->guildService->mockGuilds();
 
         return view('admin.task.edit', $assign);
     }
