@@ -21,6 +21,6 @@
 @stack('scripts')
 
 <script src="{{ asset('js/admin/theme/common.js') }}"></script>
-<script src="{{ asset('js/admin/theme/scripts.js') }}"></script>
+<script src="{{ asset('js/admin/theme/scripts.js?v=1.0') }}"></script>
 <script src="{{ asset('js/admin/app.js') }}"></script>
 <!-- Page Specific Scripts End -->
