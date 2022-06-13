@@ -14,6 +14,7 @@
 <script src="{{ asset('js/admin/theme/base/nav.js') }}"></script>
 <script src="{{ asset('js/admin/theme/base/search.js') }}"></script>
 <script src="{{ asset('js/admin/theme/base/settings.js') }}"></script>
+<script src="{{ asset('js/admin/theme/plugins/checkall.js') }}"></script>
 <!-- Template Base Scripts End -->
 <!-- Page Specific Scripts Start -->
 @include('admin._layout.script_pages')

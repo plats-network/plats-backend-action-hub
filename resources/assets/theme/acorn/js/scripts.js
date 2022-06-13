@@ -91,6 +91,9 @@
     if (typeof SupportTicketsDetail !== 'undefined') {
       const supportTicketsDetail = new SupportTicketsDetail();
     }
+
+    if (typeof Checkall !== 'undefined') {
+      new Checkall(document.getElementById('checkAllforCheckboxTable'));
   }
 
   // Settings initialization
