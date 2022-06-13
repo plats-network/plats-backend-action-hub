@@ -94,6 +94,7 @@
 
     if (typeof Checkall !== 'undefined') {
       new Checkall(document.getElementById('checkAllforCheckboxTable'));
+    }
   }
 
   // Settings initialization
