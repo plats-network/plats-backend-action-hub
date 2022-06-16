@@ -22,8 +22,8 @@ class GuildService
             ],
             [
                 'name'   => 'Master Guild',
-                'area'   => 'China',
-                'language'   => 'Chinese',
+                'area'   => 'Vietnam',
+                'language'   => 'Vietnamese',
                 'members'   => '56,888',
                 'leader'   => 'Chen',
                 'type'   => 'Game Guild',
