@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Analytics;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Dashboard;
 use App\Http\Controllers\Admin\Task;
@@ -16,4 +17,8 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
 
 Route::prefix('guilds')->controller(Guild::class)->group(function () {
     Route::get('/', 'index')->name(GUILD_LIST_ADMIN_ROUTER);
+});
+
+Route::prefix('analytics')->controller(Analytics::class)->group(function () {
+    Route::get('/', 'index')->name(ANALYSIS_DASHBOARD_ADMIN_ROUTER);
 });

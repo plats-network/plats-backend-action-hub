@@ -39,4 +39,8 @@ return [
         'create_page' => 'Create a new guild',
         'edit_page' => 'Edit task',
     ],
+    'analysis' => [
+        'page_name' => 'Analytics',
+        'page_desc' => 'Analytics',
+    ],
 ];

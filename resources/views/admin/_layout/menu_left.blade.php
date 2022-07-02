@@ -8,15 +8,15 @@
             </a>
             <ul>
                 <li>
-                    <a href="{{ route(DASHBOARD_ADMIN_ROUTER) }}" class="active">
+                    <a href="{{ route(DASHBOARD_ADMIN_ROUTER) }}" class="{{ request()->route()->getName() == DASHBOARD_ADMIN_ROUTER ? 'active' : '' }}">
                         <i data-acorn-icon="navigate-diagonal" class="icon" data-acorn-size="18"></i>
                         <span class="label">{{ trans('nav.dashboard') }}</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ route(ANALYSIS_DASHBOARD_ADMIN_ROUTER) }}" class="{{ request()->route()->getName() == ANALYSIS_DASHBOARD_ADMIN_ROUTER ? 'active' : '' }}">
                         <i data-acorn-icon="chart-4" class="icon" data-acorn-size="18"></i>
-                        <span class="label">Analysis</span>
+                        <span class="label">Analytics</span>
                     </a>
                 </li>
             </ul>

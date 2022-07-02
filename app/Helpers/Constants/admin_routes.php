@@ -15,4 +15,6 @@ if (!defined('DEFINE_ADMIN_ROUTER')) {
     define('TASK_DEPOSIT_ADMIN_ROUTER', 'admin.task.deposit.route');
 
     define('GUILD_LIST_ADMIN_ROUTER', 'admin.guild.list.route');
+
+    define('ANALYSIS_DASHBOARD_ADMIN_ROUTER', 'admin.analysis.dashboard.route');
 }
