@@ -36,4 +36,9 @@ if (!defined('DEFINE_CONSTANT')) {
     define('WITHDRAWN_STATUS_PENDING', 0);
     define('WITHDRAWN_STATUS_PROCESSING', 1);
     define('WITHDRAWN_STATUS_COMPLETED', 2);
+
+    /**
+     *
+     */
+    define('MOBILE_OS_NAME', ['ios', 'android']);
 }

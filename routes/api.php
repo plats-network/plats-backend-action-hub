@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\Task;
 use App\Http\Controllers\Api\TaskLocation;
 use App\Http\Controllers\Api\UserTask;
 use App\Http\Controllers\Api\Wallet;
+use App\Http\Controllers\Api\UserDevices;
+use App\Http\Controllers\Api\Notification;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,4 +35,15 @@ Route::get('/my-tasks', [UserTask::class, 'histories']);
 
 Route::prefix('wallet')->controller(Wallet::class)->group(function () {
     Route::post('/withdraw', 'withdraw');
+});
+
+Route::prefix('notifications')->controller(Notification::class)->group(function () {
+    Route::get('/', 'index');
+    Route::post('/', 'create');
+    Route::get('/{id}', 'detail')->whereUuid('id');
+});
+
+Route::prefix('user_devices')->controller(UserDevices::class)->group(function () {
+    Route::get('/', 'index');
+    Route::post('/', 'create');
 });
