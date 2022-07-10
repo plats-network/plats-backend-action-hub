@@ -29,7 +29,7 @@ return [
         'form' => [
             'name' => 'Location name',
             'address' => 'Location address',
-            'coordinate' => 'Coordinate: Longitude, Latitude'
+            'coordinate' => 'Coordinate: Latitude, Longitude'
         ],
     ],
     'task_created' => 'Task created successfully',
