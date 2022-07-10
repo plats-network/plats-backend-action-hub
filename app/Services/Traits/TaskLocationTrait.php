@@ -2,6 +2,8 @@
 
 namespace App\Services\Traits;
 
+use App\Services\Location\Coordinate;
+
 trait TaskLocationTrait
 {
     /**
@@ -16,12 +18,12 @@ trait TaskLocationTrait
 
         $locationData = [];
         foreach ($locations as $order => $location) {
-            $longAndLat     = explode(',', preg_replace('/\s+/', '', $location['coordinate']));
+            $coordinate = Coordinate::parse($location['coordinate']);
             $locationData[] = [
                 'name'    => $location['name'],
                 'address' => $location['address'],
-                'long'    => $longAndLat[0],
-                'lat'     => $longAndLat[1],
+                'long'    => $coordinate->longitude(),
+                'lat'     => $coordinate->latitude(),
                 'sort'    => $order,
                 'status'  => ACTIVE_LOCATION_TASK,
             ];
@@ -47,12 +49,13 @@ trait TaskLocationTrait
         }
 
         foreach ($locations as $location) {
-            $longAndLat     = explode(',', preg_replace('/\s+/', '', $location['coordinate']));
+            $coordinate = Coordinate::parse($location['coordinate']);
+
             $locationData = [
                 'name'    => $location['name'],
                 'address' => $location['address'],
-                'long'    => $longAndLat[0],
-                'lat'     => $longAndLat[1],
+                'long'    => $coordinate->longitude(),
+                'lat'     => $coordinate->latitude(),
             ];
 
             $task->locations()->where('id', $location['id'])->update($locationData);

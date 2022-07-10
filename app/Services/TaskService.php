@@ -286,7 +286,7 @@ class TaskService extends BaseService
      */
     public function mapUserHistory($taskId, $userId)
     {
-        $task = $this->find($taskId, ['locations', 'galleries'])->load([
+        $task = $this->find($taskId, ['locations.guides', 'galleries'])->load([
                 'participants' => function ($q) use ($userId) {
                     return $q->where('user_id', $userId);
                 },

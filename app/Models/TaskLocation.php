@@ -63,4 +63,14 @@ class TaskLocation extends Model
     {
         return $this->hasMany(TaskLocationHistory::class, 'location_id');
     }
+
+    /**
+     * Checkin guild
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function guides()
+    {
+        return $this->hasMany(TaskLocationGuide::class, 'location_id');
+    }
 }
