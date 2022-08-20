@@ -2,6 +2,8 @@
 
 namespace App\Models\Traits\Attribute;
 
+use Illuminate\Support\Facades\Storage;
+
 trait TaskAttribute {
     /**
      * @return string
