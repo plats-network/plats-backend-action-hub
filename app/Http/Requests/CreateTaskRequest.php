@@ -18,11 +18,14 @@ class CreateTaskRequest extends FormRequest
             'description'         => ['max:' . INPUT_MAX_LENGTH],
             'duration'            => ['integer', 'min:1'],
             'distance'            => ['numeric', 'min:0'],
-            'reward_amount'       => ['numeric', 'min:0'],
+            'valid_amount'        => ['required', 'min:1'],
             'image'               => ['image'],
-            'location'            => ['required', 'array'],
-            'location.*.name'       => ['required', 'max:' . INPUT_MAX_LENGTH],
-            'location.*.coordinate' => ['required', 'max:' . INPUT_MAX_LENGTH],
+            'rewards'              => ['required', 'array'],
+            'rewards.*.reward_id'  => ['required', 'max:' . INPUT_MAX_LENGTH],
+            'rewards.*.amount'     => ['required', 'max:' . INPUT_MAX_LENGTH],
+            'locations'            => ['required', 'array'],
+            'locations.*.name'       => ['required', 'max:' . INPUT_MAX_LENGTH],
+            'locations.*.coordinate' => ['required', 'max:' . INPUT_MAX_LENGTH],
         ];
     }
 }

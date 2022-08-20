@@ -40,7 +40,7 @@ abstract class BaseService extends SearchBaseServiceAbstract
     {
         $result = $this->repository->find($id);
 
-        if (!$with) {
+        if (!$with || !$result) {
             return $result;
         }
 
