@@ -1,9 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\Task;
-use App\Http\Controllers\Api\TaskLocation;
-use App\Http\Controllers\Api\UserTask;
-use App\Http\Controllers\Api\Wallet;
+use App\Http\Controllers\Api\{Task, TaskLocation, UserTask, Wallet};
 use Illuminate\Support\Facades\Route;
 
 /*

@@ -49,13 +49,13 @@ class TaskService extends BaseService
      *
      * @param string $userId
      */
-    public function home($userId, $page = 1, $limit = PAGE_SIZE)
+    public function getTaskList($userId, $page = 1, $limit = PAGE_SIZE)
     {
         $tasks = $this->repository->latestTasks($limit);
 
         //Load relationship
-        $tasks = $tasks->load(['participants' => function ($q) use ($userId) {
-            return $q->where('user_id', $userId);
+        $tasks = $tasks->load(['participants' => function ($query) use ($userId) {
+            return $query->where('user_id', $userId);
         }]);
 
         return new Paginator($tasks, $limit, $page);
@@ -118,7 +118,7 @@ class TaskService extends BaseService
      */
     public function startTask($taskId, $locaId, $userId, $walletAddress = null)
     {
-        // Get and check exists Task and Location
+        // Get and check exists Task pand Location
         $taskHasLocal = $this->repository->taskHasLocation($taskId, $locaId);
 
         abort_if(
@@ -227,6 +227,9 @@ class TaskService extends BaseService
         //Create location
         $this->createLocation($task, $request->input('location'));
 
+        //Create rewards
+        // $this->createRewards($task, $request->input('rewards'));
+
         $this->withSuccess(trans('admin.task_created'));
 
         return $task;
@@ -286,7 +289,11 @@ class TaskService extends BaseService
      */
     public function mapUserHistory($taskId, $userId)
     {
-        $task = $this->find($taskId, ['locations.guides', 'galleries'])->load([
+        $taskData = $this->find($taskId, ['locations.guides', 'galleries']);
+        if(!$taskData) {
+            return $taskData;
+        }
+        $task = $taskData->load([
                 'participants' => function ($q) use ($userId) {
                     return $q->where('user_id', $userId);
                 },

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\CheckInTaskRequest;
 use App\Http\Requests\CreateTaskRequest;
 use App\Http\Requests\StartTaskRequest;
@@ -34,7 +33,10 @@ class Task extends ApiController
      */
     public function index(Request $request)
     {
-        return TaskResource::collection($this->taskService->home($request->user()->id));
+        $userId = $request->user()->id;
+        $taskList = TaskResource::collection($this->taskService->getTaskList($userId));
+        
+        return $this->respondWithResource($taskList);
     }
 
     /**
@@ -45,10 +47,12 @@ class Task extends ApiController
     public function detail(Request $request, $id)
     {
         $task = $this->taskService->mapUserHistory($id, $request->user()->id);
-
+        
         //$task->remaining = $this->taskService->timeRemaining($task->histories, $task->duration);
-
-        return new TaskResource($task);
+        if(!$task) {
+            return $this->respondError('Task not found');
+        }
+        return $this->respondWithResource(new TaskResource($task));
     }
 
     /**
@@ -59,7 +63,7 @@ class Task extends ApiController
      */
     public function create(CreateTaskRequest $request)
     {
-        return new TaskResource($this->taskService->create($request));
+        return $this->respondCreated(new TaskResource($this->taskService->create($request)));
     }
 
     /**
@@ -74,14 +78,9 @@ class Task extends ApiController
      */
     public function startTask(StartTaskRequest $request, $taskId, $locationId)
     {
-        return new TaskUserResource(
-            $this->taskService->startTask(
-                $taskId,
-                $locationId,
-                $request->user()->id,
-                $request->input('wallet_address')
-            )
-        );
+        $startTask = $this->taskService->startTask($taskId, $locationId, $request->user()->id, $request->input('wallet_address'));
+        
+        return $this->respondWithResource(new TaskUserResource($startTask));
     }
 
     /**
@@ -93,16 +92,9 @@ class Task extends ApiController
      */
     public function checkIn(CheckInTaskRequest $request, $taskId, $locationId)
     {
-        return new TaskUserResource(
-            $this->taskService
-                ->checkIn(
-                    $taskId,
-                    $locationId,
-                    $request->user()->id,
-                    $request->image,
-                    $request->activity_log
-                )
-        );
+        $dataCheckIn = $this->taskService->checkIn($taskId, $locationId, $request->user()->id, $request->image, $request->activity_log);
+        
+        return $this->respondWithResource(new TaskUserResource($dataCheckIn));
     }
 
     /**
