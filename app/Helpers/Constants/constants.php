@@ -23,6 +23,8 @@ if (!defined('DEFINE_CONSTANT')) {
     define('USER_WAITING_TASK', 0);
     define('USER_PROCESSING_TASK', 1);
     define('USER_COMPLETED_TASK', 2);
+    define('USER_CANCEL_TASK', 3);
+    define('USER_TIMEOUT_TASK', 4);
 
     /**
      * Task Location

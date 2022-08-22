@@ -13,6 +13,8 @@ use App\Services\Traits\TaskLocationTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Carbon as SupportCarbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class TaskService extends BaseService
@@ -116,36 +118,48 @@ class TaskService extends BaseService
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function startTask($taskId, $locaId, $userId, $walletAddress = null)
+    public function startTask($taskId, $locaId, $userId, $postData)
     {
-        // Get and check exists Task pand Location
+        // Get and check exists Task and Location
         $taskHasLocal = $this->repository->taskHasLocation($taskId, $locaId);
+        $userDoingOtherTasks = $this->taskUserRepository->userDoingOtherTasks($taskId, $userId);
+        $userStartedTask = $this->taskUserRepository->userStartedTask($taskId, $userId);
+        $errors = [];
+        if ($userDoingOtherTasks || $userStartedTask) {
+            $errors ['userDoingOtherTasks'] =  $userDoingOtherTasks;
+            $errors ['userStartedTask'] =  $userStartedTask;
 
-        abort_if(
-            !is_null($this->localHistoryRepo->location($userId, $locaId)),
-            422,
-            trans('task_user.already_started')
-        );
-
-        $locaUserHistory = $this->localHistoryRepo->create([
-            'user_id' => $userId,
-            'location_id' => $locaId,
-            'started_at' => Carbon::now(),
-            'ended_at' => null,
-        ]);
-
-        //This is the user's first location
-        if (is_null($this->taskUserRepository->userStartedTask($taskId, $userId))) {
-            $this->taskUserRepository->create([
-                'user_id'        => $userId,
-                'task_id'        => $taskId,
-                'status'         => USER_PROCESSING_TASK,
-                'wallet_address' => $walletAddress,
-                'time_left'      => Carbon::now()->addMinutes($taskHasLocal->duration),
-            ]);
+            return $errors;
         }
+        DB::beginTransaction();
+        try {
+            $locaUserHistory = $this->localHistoryRepo->create([
+                'user_id' => $userId,
+                'location_id' => $locaId,
+                'started_at' => SupportCarbon::now(),
+                'ended_at' => null,
+            ]);
+            //This is the user's first location
+            if (is_null($this->taskUserRepository->userStartedTask($taskId, $userId))) {
+                $this->taskUserRepository->create([
+                    'user_id'                   => $userId,
+                    'task_id'                   => $taskId,
+                    'status'                    => USER_PROCESSING_TASK,
+                    'location_checked'          => $postData['location_checked'] ??  null,
+                    'wallet_address'            => $postData['wallet_address'],
+                    'time_left'                 => SupportCarbon::now()->addMinutes($taskHasLocal->duration),
+                ]);
+            }
 
-        UserCheckingLocationEvent::dispatch($locaUserHistory, $taskHasLocal, $taskId, $userId);
+            UserCheckingLocationEvent::dispatch($locaUserHistory, $taskHasLocal, $taskId, $userId);
+            DB::commit();
+        } catch (RuntimeException $exception) {
+            DB::rollBack();
+            throw $exception;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw new RuntimeException($exception->getMessage(), 500062, $exception->getMessage(), $exception);
+        }
 
         return $locaUserHistory;
     }

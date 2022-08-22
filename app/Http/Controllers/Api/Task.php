@@ -63,7 +63,8 @@ class Task extends ApiController
      */
     public function create(CreateTaskRequest $request)
     {
-        return $this->respondCreated(new TaskResource($this->taskService->create($request)));
+        $data = $this->taskService->create($request);
+        return $this->respondWithResource(new TaskUserResource($data), 'Create successful task.', 201);
     }
 
     /**
@@ -78,9 +79,16 @@ class Task extends ApiController
      */
     public function startTask(StartTaskRequest $request, $taskId, $locationId)
     {
-        $startTask = $this->taskService->startTask($taskId, $locationId, $request->user()->id, $request->input('wallet_address'));
+        $startTask = $this->taskService->startTask($taskId, $locationId, $request->user()->id, $request->all());
         
-        return $this->respondWithResource(new TaskUserResource($startTask));
+        if($startTask['userDoingOtherTasks']) {
+            return $this->respondWithResource(new TaskUserResource($startTask['userDoingOtherTasks']), trans('task_user.starting_other_tasks'), 400);
+        }
+        if($startTask['userStartedTask']) {
+            return $this->respondWithResource(new TaskUserResource($startTask['userStartedTask']), trans('task_user.already_started'), 400);
+        }
+
+        return $this->respondWithResource(new TaskUserResource($startTask), 'Start doing the task now.');
     }
 
     /**
