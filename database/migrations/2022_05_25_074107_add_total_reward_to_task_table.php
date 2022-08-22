@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->decimal('total_reward', 12, 2)->default(0)->after('reward_amount');
+            $table->decimal('total_reward', 12, 2)->default(0)->after('distance');
             $table->tinyInteger('deposit_status')->default(0)->after('total_reward');
         });
     }

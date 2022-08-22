@@ -6,6 +6,7 @@ use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 class TaskUser extends Model
 {
@@ -30,6 +31,7 @@ class TaskUser extends Model
         'task_id',
         'status',
         'wallet_address',
+        'location_checked',
         'time_left',// Minute
     ];
 
@@ -51,5 +53,10 @@ class TaskUser extends Model
     public function task()
     {
         return $this->belongsTo(Task::class, 'task_id');
+    }
+
+    public function getTimeLeftAttribute()
+    {
+        return Carbon::parse($this->attributes['time_left']);
     }
 }
