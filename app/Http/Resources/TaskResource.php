@@ -29,25 +29,12 @@ class TaskResource extends JsonResource
         $result['rewards'] = [
             [
                 'reward_id' => '1', 
-                'name' => 'PLATS Coin', 
-                'description' => 'You can claim after 10days', 
-                'amount' => '200',
-                'unit' => 'Plats'
-            ],
-            [
-                'reward_id' => '2', 
-                'name' => 'Vouchers', 
-                'description' => 'Discount 30% when using in 30 Shines', 
-                'amount' => '2',
-                'unit' => ''
-            ],
-            [
-                'reward_id' => '3', 
-                'name' => 'Gift cards', 
-                'description' => 'Gift card 30k/use', 
-                'amount' => '5',
-                'unit' => ''
-            ],
+                'name' => 'Mystery box.', 
+                'description' => 'You can claim after 10 days', 
+                'amount' => '1',
+                'type' => '1',
+                'image' => 'https://public.nftstatic.com/static/nft/zipped/8061c9dbe0d74430b53d904468d946d9_zipped.png'
+            ]
         ];
         return $this->resource->unsetRelation('participants')->toArray() + $result;
     }

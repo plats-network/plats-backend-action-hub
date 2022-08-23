@@ -250,7 +250,7 @@ class TaskService extends BaseService
         $task = $this->repository->create($data);
 
         //Create location
-        $this->createLocation($task, $request->input('location'));
+        $this->createLocation($task, $request->input('locations'));
 
         //Create rewards
         // $this->createRewards($task, $request->input('rewards'));

@@ -57,6 +57,9 @@ class TaskUser extends Model
 
     public function getTimeLeftAttribute()
     {
-        return Carbon::parse($this->attributes['time_left']);
+        $time_left = Carbon::parse($this->attributes['time_left']);
+        $now = Carbon::now();
+        
+        return $now->lte($time_left) ? $time_left->diffInSeconds($now) : 0;
     }
 }

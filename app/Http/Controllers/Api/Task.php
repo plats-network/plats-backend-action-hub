@@ -34,7 +34,7 @@ class Task extends ApiController
     public function index(Request $request)
     {
         $userId = $request->user()->id;
-        $taskList = TaskResource::collection($this->taskService->getTaskList($userId));
+        $taskList = TaskResource::collection($this->taskService->getTaskList($userId, $request->get('page'), $request->get('limit')));
         
         return $this->respondWithResource($taskList);
     }
