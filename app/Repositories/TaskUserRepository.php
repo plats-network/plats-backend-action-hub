@@ -25,10 +25,15 @@ class TaskUserRepository extends BaseRepository
      */
     public function userStartedTask($taskId, $userId)
     {
-        return $this->model->where('task_id', $taskId)->where('user_id', $userId)->first();
+        return $this->model::with('task:id,name')
+        ->where('task_id', $taskId)
+        ->where('user_id', $userId)
+        ->first();
     }
     
     /**
+     * Get all task doing of a user and ignore current task
+     * 
      * @param $taskId
      * @param $userId
      *
@@ -36,10 +41,16 @@ class TaskUserRepository extends BaseRepository
      */
     public function userDoingOtherTasks($taskId, $userId)
     {
-        return $this->model->where('task_id', '!=', $taskId)->where('user_id', $userId)->where('status', USER_PROCESSING_TASK)->first();
+        return $this->model::with('task:id,name')
+        ->where('task_id', '!=', $taskId)
+        ->where('user_id', $userId)
+        ->where('status', USER_PROCESSING_TASK)
+        ->first();
     }
     
     /**
+     * Get all task doing of a user
+     * 
      * @param $taskId
      * @param $userId
      *
@@ -47,7 +58,10 @@ class TaskUserRepository extends BaseRepository
      */
     public function userDoingTask($userId)
     {
-        return $this->model->where('user_id', $userId)->where('status', USER_PROCESSING_TASK)->first();
+        return $this->model::with('task:id,name')
+        ->where('user_id', $userId)
+        ->where('status', USER_PROCESSING_TASK)
+        ->first();
     }
 
     /**
