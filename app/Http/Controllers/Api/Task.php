@@ -104,6 +104,17 @@ class Task extends ApiController
         
         return $this->respondWithResource(new TaskUserResource($dataCheckIn));
     }
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \App\Http\Resources\TaskUserResource
+     */
+    public function getTaskDoing(Request $request)
+    {
+        $dataTaskDoing = $this->taskService->getTaskDoing($request->user()->id);
+        
+        return $this->respondWithResource(new TaskUserResource($dataTaskDoing));
+    }
 
     /**
      * User cancel task

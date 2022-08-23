@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::prefix('tasks')->controller(Task::class)->group(function () {
     Route::get('/', 'index');
+    Route::get('/doing', 'getTaskDoing');
     Route::post('/', 'create');
     Route::get('/{id}', 'detail')->whereUuid('id');
     Route::post('/{id}/start/{location_id}', 'startTask')->whereUuid('id')->whereUuid('location_id');
