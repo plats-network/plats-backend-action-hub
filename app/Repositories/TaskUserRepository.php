@@ -38,6 +38,17 @@ class TaskUserRepository extends BaseRepository
     {
         return $this->model->where('task_id', '!=', $taskId)->where('user_id', $userId)->where('status', USER_PROCESSING_TASK)->first();
     }
+    
+    /**
+     * @param $taskId
+     * @param $userId
+     *
+     * @return null | TaskUser
+     */
+    public function userDoingTask($userId)
+    {
+        return $this->model->where('user_id', $userId)->where('status', USER_PROCESSING_TASK)->first();
+    }
 
     /**
      * @param $taskId

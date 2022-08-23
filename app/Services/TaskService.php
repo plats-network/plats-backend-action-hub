@@ -62,6 +62,17 @@ class TaskService extends BaseService
 
         return new Paginator($tasks, $limit, $page);
     }
+    /**
+     * Get task you are doing
+     *
+     * @param string $userId
+     */
+    public function getTaskDoing($userId)
+    {
+        $task = $this->taskUserRepository->userDoingTask($userId);
+
+        return $task;
+    }
 
     /**
      * Auto paginate with query parameters
