@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits\Relation;
 
-use App\Models\{TaskGallery, TaskLocation, TaskUser, Task};
+use App\Models\{TaskGallery, TaskLocation, TaskUser, Task, User};
 
 trait TaskRelation {
     /**

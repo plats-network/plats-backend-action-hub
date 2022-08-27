@@ -112,7 +112,6 @@ class TaskService extends BaseService
                 continue;
             }
             $calcu = Carbon::parse($history->started_at)->diffInRealMinutes(Carbon::parse($history->ended_at));
-            dd($calcu);
             $timeUsed += 0;
         }
 
@@ -189,24 +188,28 @@ class TaskService extends BaseService
     {
         // Get and check exists Task and Location
         $localTask = $this->repository->taskHasLocation($taskId, $locaId);
+        $taskLocation = $this->localHistoryRepo->location($userId, $locaId);
 
-        $taskUser = $this->localHistoryRepo->location($userId, $locaId);
-        abort_if(is_null($taskUser), 422, trans('task_user.not_started'));
-        abort_if(!is_null($taskUser->ended_at), 422, trans('task_user.update_reject'));
+        abort_if(is_null($taskLocation), 422, trans('task_user.not_started'));
+        abort_if(!is_null($taskLocation->ended_at), 422, trans('task_user.update_reject'));
 
         //Save image
         $filePath = 'user_tasks/' . $userId . '/' . $taskId . '/';
         $image = Storage::putFileAs($filePath, $imageFile, $imageFile->hashName());
 
-        $taskUser->ended_at = Carbon::now();
-        $taskUser->checkin_image = $image;
-        $taskUser->activity_log = $activityLog;
-        $taskUser->save();
+        $taskLocation->ended_at = Carbon::now();
+        $taskLocation->checkin_image = $image;
+        $taskLocation->activity_log = $activityLog;
+        $taskLocation->save();
 
+        // Update taskUser
+        if($localTask->valid_amount == $taskLocation->get()->count()) {
+            $this->taskUserRepository->updateStatusTask($taskId, $userId, USER_COMPLETED_TASK);
+        }
         //Fire Event
-        UserCheckedInLocationEvent::dispatch($taskUser, $localTask, $taskId);
+        UserCheckedInLocationEvent::dispatch($taskLocation, $localTask, $taskId);
 
-        return $taskUser;
+        return $taskLocation;
     }
 
     /**

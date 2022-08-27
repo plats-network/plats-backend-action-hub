@@ -55,6 +55,14 @@ class TaskUser extends Model
         return $this->belongsTo(Task::class, 'task_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function taskLocations()
+    {
+        return $this->hasMany(TaskLocation::class, 'task_id', 'task_id');
+    }
+
     public function getTimeLeftAttribute()
     {
         $time_left = Carbon::parse($this->attributes['time_left']);

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\CreateTaskLocationRequest;
 use App\Http\Resources\TaskLocationResource;
 use App\Services\TaskLocationService;
 
-class TaskLocation extends Controller
+class TaskLocation extends ApiController
 {
     /**
      * @var \App\Services\TaskLocationService
@@ -30,6 +30,7 @@ class TaskLocation extends Controller
      */
     public function create(CreateTaskLocationRequest $request, $taskId)
     {
-        return new TaskLocationResource($this->taskLocationService->create($request, $taskId));
+        $taskLocation = new TaskLocationResource($this->taskLocationService->create($request, $taskId));
+        return $this->respondWithResource($taskLocation);
     }
 }

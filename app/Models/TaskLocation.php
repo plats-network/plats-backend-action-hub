@@ -33,6 +33,8 @@ class TaskLocation extends Model
         'lat',
         'sort',
         'status',
+        'phone_number',
+        'open_time',
     ];
 
     /**
@@ -72,5 +74,13 @@ class TaskLocation extends Model
     public function guides()
     {
         return $this->hasMany(TaskLocationGuide::class, 'location_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function taskUser()
+    {
+        return $this->belongsTo(TaskUser::class, 'task_id');
     }
 }

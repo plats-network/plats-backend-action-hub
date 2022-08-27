@@ -18,6 +18,7 @@ class CreateTaskLocationRequest extends FormRequest
             'long' => ['numeric', 'max:' . INPUT_MAX_LENGTH],
             'lat' => ['numeric', 'max:' . INPUT_MAX_LENGTH],
             'sort' => ['integer'],
+            'phone_number' => ['digits:10']
         ];
     }
 }

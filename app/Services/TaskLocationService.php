@@ -43,6 +43,8 @@ class TaskLocationService extends BaseService
             'long',
             'lat',
             'sort',
+            'phone_number',
+            'open_time',
         ]);
 
         $data['task_id'] = $taskId;
