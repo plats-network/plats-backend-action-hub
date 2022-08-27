@@ -60,6 +60,8 @@ return [
 
     'use_ssl' => env('USE_SSL', false),
 
+    'api_user_url' => env('API_URL_USER'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

@@ -25,7 +25,7 @@ class TaskUserRepository extends BaseRepository
      */
     public function userStartedTask($taskId, $userId)
     {
-        return $this->model::with('task:id,name')
+        return $this->model::with('task:id,name', 'taskLocations')
         ->where('task_id', $taskId)
         ->where('user_id', $userId)
         ->first();
@@ -41,7 +41,7 @@ class TaskUserRepository extends BaseRepository
      */
     public function userDoingOtherTasks($taskId, $userId)
     {
-        return $this->model::with('task:id,name')
+        return $this->model::with('task:id,name', 'taskLocations')
         ->where('task_id', '!=', $taskId)
         ->where('user_id', $userId)
         ->where('status', USER_PROCESSING_TASK)
@@ -58,7 +58,7 @@ class TaskUserRepository extends BaseRepository
      */
     public function userDoingTask($userId)
     {
-        return $this->model::with('task:id,name')
+        return $this->model::with('task:id,name', 'taskLocations')
         ->where('user_id', $userId)
         ->where('status', USER_PROCESSING_TASK)
         ->first();

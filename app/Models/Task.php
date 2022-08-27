@@ -38,6 +38,8 @@ class Task extends Model
         'duration',// Minute
         'distance',//KM
         'total_reward',
+        'valid_amount',
+        'valid_radius',
         'deposit_status',
         'type',
         'creator_id',
