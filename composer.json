@@ -31,7 +31,7 @@
         "symfony/translation-contracts": "3.0.*",
         "symfony/service-contracts": "3.0.*",
         "symfony/event-dispatcher-contracts": "3.0.*",
-        "symfony/deprecation-contracts": "3.0.*",
+        "symfony/deprecation-contracts": "3.0.*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
