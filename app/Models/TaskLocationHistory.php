@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class TaskLocationHistory extends Model
 {
-    use HasFactory;
-    use Uuid;
+    use HasFactory, Uuid;
 
     /**
      * The table associated with the model.

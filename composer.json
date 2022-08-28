@@ -25,6 +25,7 @@
         "nunomaduro/collision": "^6.1",
         "phpmd/phpmd": "^2.12",
         "phpunit/phpunit": "^9.5.10",
+        "rakutentech/laravel-request-docs": "^1.23",
         "spatie/laravel-ignition": "^1.0",
         "squizlabs/php_codesniffer": "^3.6"
     },

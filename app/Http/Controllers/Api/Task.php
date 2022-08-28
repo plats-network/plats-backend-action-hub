@@ -10,6 +10,8 @@ use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskUserResource;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
+use App\Models\Task as ModelTask;
+use Illuminate\Database\QueryException;
 
 class Task extends ApiController
 {
@@ -19,11 +21,17 @@ class Task extends ApiController
     protected $taskService;
 
     /**
+     * @var App\Models\Task as ModelTask;
+     */
+    protected $modelTask;
+
+    /**
      * @param \App\Services\TaskService $taskService
      */
-    public function __construct(TaskService $taskService)
+    public function __construct(TaskService $taskService, ModelTask $modelTask)
     {
-        $this->taskService = $taskService;
+        $this->taskService  = $taskService;
+        $this->modelTask    = $modelTask;
     }
 
     /**
@@ -34,9 +42,23 @@ class Task extends ApiController
     public function index(Request $request)
     {
         $userId = $request->user()->id;
-        $taskList = TaskResource::collection($this->taskService->getTaskList($userId, $request->get('page'), $request->get('limit')));
-        
-        return $this->respondWithResource($taskList);
+        try {
+            $limit = $request->get('limit') ?? PAGE_SIZE;
+            $tasks = $this->modelTask->load(['participants' => function ($query) use ($userId) {
+                    return $query->where('user_id', $userId);
+                }])
+                ->whereStatus(ACTIVE_TASK)
+                ->paginate($limit);
+            $paginate = [
+                'total_page'    => (int)$tasks->lastPage(),
+                'per_page'      => (int)$limit,
+                'current_page'  => (int)$request->get('page') ?: 1
+            ];
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return $this->respondWithResource(TaskResource::collection($tasks), $paginate);
     }
 
     /**
@@ -46,12 +68,12 @@ class Task extends ApiController
      */
     public function detail(Request $request, $id)
     {
-        $task = $this->taskService->mapUserHistory($id, $request->user()->id);
-        
-        //$task->remaining = $this->taskService->timeRemaining($task->histories, $task->duration);
-        if(!$task) {
-            return $this->respondError('Task not found');
+        try {
+            $task = $this->taskService->mapUserHistory($id, $request->user()->id);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNoContent();
         }
+
         return $this->respondWithResource(new TaskResource($task));
     }
 

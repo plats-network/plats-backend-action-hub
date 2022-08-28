@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TaskUserLibrary extends Model
 {
-    use HasFactory;
-    use Uuid;
+    use HasFactory, Uuid;
 
     /**
      * The table associated with the model.

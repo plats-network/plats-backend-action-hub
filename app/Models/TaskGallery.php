@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TaskGallery extends Model
 {
-    use HasFactory;
-    use Uuid;
+    use HasFactory, Uuid;
 
     /**
      * Indicates if the model should be timestamped.

@@ -9,8 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TaskLocationGuide extends Model
 {
-    use HasFactory;
-    use Uuid;
+    use HasFactory, Uuid;
 
     /**
      * The table associated with the model.

@@ -14,10 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Task extends Model
 {
-    use HasFactory;
-    use Uuid;
-    use SoftDeletes;
-    use TaskRelation, TaskScope, TaskAttribute, TaskMethod;
+    use HasFactory, Uuid, SoftDeletes, TaskRelation, TaskScope, TaskAttribute, TaskMethod;
 
     /**
      * The table associated with the model.
