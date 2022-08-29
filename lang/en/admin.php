@@ -11,12 +11,13 @@ return [
         'create_page' => 'Create a new task',
         'edit_page' => 'Edit task',
         'form' => [
+            'type' => 'Type of task',
             'name' => 'Title of task',
             'desc' => 'Description for task',
             'duration' => 'Duration (Minutes)',
-            'distance' => 'Distance (Kilometer)',
-            'reward_amount' => 'Reward (per user)',
-            'total_reward' => 'Total reward',
+            'order' => 'Order',
+            'valid_amount' => 'Valid amount',
+            'valid_radius' => 'Valid radius',
             'status' => 'Status',
             'image' => 'Cover image',
         ],
@@ -24,12 +25,24 @@ return [
             INACTIVE_TASK => 'Draft',
             ACTIVE_TASK => 'Active',
         ],
+        'order' => [
+            OUT_OF_ORDER => 'Out of order',
+            IN_ORDER => 'In order',
+        ],
+        'type' => [
+            CHECKIN => 'Checkin',
+            INSTALL_APP => 'Install Mobile App',
+            VIDEO_WATCH => 'Video Watch',
+            SUBSCRIBE_AND_INTERACT => 'Like / Share / Subcribe',
+        ],
     ],
     'location' => [
         'form' => [
             'name' => 'Location name',
             'address' => 'Location address',
-            'coordinate' => 'Coordinate: Latitude, Longitude'
+            'coordinate' => 'Coordinate: Latitude, Longitude',
+            'phone_number' => 'Phone number',
+            'open_time' => 'Open time'
         ],
     ],
     'task_created' => 'Task created successfully',
@@ -39,4 +52,8 @@ return [
         'create_page' => 'Create a new guild',
         'edit_page' => 'Edit task',
     ],
+    'placeholders' => [
+        'valid_amount' => 'Ex: number of places to checkin',
+        'phone_number' => 'Ex: 0123456789'
+    ]
 ];

@@ -38,4 +38,18 @@ if (!defined('DEFINE_CONSTANT')) {
     define('WITHDRAWN_STATUS_PENDING', 0);
     define('WITHDRAWN_STATUS_PROCESSING', 1);
     define('WITHDRAWN_STATUS_COMPLETED', 2);
+
+    /**
+     * Task order
+     */
+    define('OUT_OF_ORDER', 0);
+    define('IN_ORDER', 1);
+
+    /**
+     * Task type
+     */
+    define('CHECKIN', 1);
+    define('INSTALL_APP', 2);
+    define('VIDEO_WATCH', 3);
+    define('SUBSCRIBE_AND_INTERACT', 4);
 }

@@ -33,7 +33,7 @@ class Task extends Model
         'description',
         'image',
         'duration',// Minute
-        'distance',//KM
+        'order',
         'total_reward',
         'valid_amount',
         'valid_radius',
