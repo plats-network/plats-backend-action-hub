@@ -46,7 +46,7 @@ class ClaimRewardListener implements ShouldQueue
         if (is_null($task)) {
             return;
         }
-
-        app(BLCGatewayService::class)->award($task->reward_amount, $task->id, $userTask->wallet_address);
+        
+        app(BLCGatewayService::class)->award($task->reward_amount ?? null, $task->id, $userTask->wallet_address);
     }
 }

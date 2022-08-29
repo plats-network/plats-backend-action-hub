@@ -58,13 +58,12 @@
                                         </div>
                                     </div>
                                     <div class="col-4 col-md-1 d-flex flex-column pe-1 mb-2 mb-lg-0 align-items-lg-center justify-content-center">
-                                        <div class="text-muted text-small d-md-none">REWARD</div>
+                                        <div class="text-muted text-small d-md-none">VALID AMOUNT</div>
                                         <div class="lh-1 h4 mb-0 text-alternate">
                                             <span>
-                                              {{ $task->reward_amount }}
+                                              {{ $task->valid_amount }}
                                             </span>
                                         </div>
-                                        <div class="text-muted text-small">PLAT</div>
                                     </div>
                                     <div class="col-6 col-md-1 d-flex flex-column justify-content-center">
                                         <div class="text-muted text-small d-none">Status</div>
