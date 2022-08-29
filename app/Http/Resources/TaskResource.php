@@ -20,8 +20,7 @@ class TaskResource extends JsonResource
     {
         $creator = $this->getUserDetail($this->creator_id);
         $userId = $request->user()->id;
-        $task_improgress = TaskUser::where('user_id', $userId)->where('status', USER_PROCESSING_TASK)->first();
-        // $task_improgress = $this->participants()->where('user_id', $userId)->where('status', USER_PROCESSING_TASK)->first();
+        $task_improgress = $this->getTaskImprogress($userId, $this->id);
         $task_done = $this->participants()->where('user_id', $userId)->where('status', USER_COMPLETED_TASK)->first();
 
         return [
@@ -54,40 +53,6 @@ class TaskResource extends JsonResource
                 'image'         => 'https://public.nftstatic.com/static/nft/zipped/8061c9dbe0d74430b53d904468d946d9_zipped.png'
             ]
         ];
-
-        // OLD
-        // $userId = $request->user()->id;
-        // $result = [];
-        // $userStatus = $this->resource->participants->first();
-        // dd(DateHelper::parseDate($this->created_at));
-        // dd($userStatus, $this->participants->first());
-
-        // if (!$this->whenLoaded('participants') instanceof MissingValue
-        //     && $this->resource->participants->isNotEmpty()
-        // ) {
-        //     $userStatus = $this->resource->participants->first();
-        //     if ($userId == $userStatus->user_id) {
-        //         $result['user_status'] = $userStatus->toArray();
-        //     }
-        // }
-        // // Get creator task user
-        // $creator = $this->getUserDetail($this->creator_id);
-        // $result['creator_id'] = $creator['id'];
-        // $result['creator_name'] = $creator['name'];
-
-        // // Get rewards task user
-        // $result['rewards'] = [
-        //     [
-        //         'reward_id' => '1', 
-        //         'name' => 'Mystery box.', 
-        //         'description' => 'You can claim after 10 days', 
-        //         'amount' => '1',
-        //         'type' => '1',
-        //         'image' => 'https://public.nftstatic.com/static/nft/zipped/8061c9dbe0d74430b53d904468d946d9_zipped.png'
-        //     ]
-        // ];
-        
-        // return $this->resource->unsetRelation('participants')->toArray() + $result;
     }
 
     /**
@@ -96,7 +61,7 @@ class TaskResource extends JsonResource
      * @param $userId
      *
      */
-    private function getUserDetail($userId)
+    protected function getUserDetail($userId)
     {
         try {
             $url = config('app.api_user_url') . '/profile/' . $userId;
@@ -106,5 +71,17 @@ class TaskResource extends JsonResource
         }
 
         return $response->json('data') ?? null;
+    }
+
+    protected function getTaskImprogress($userId, $taskId)
+    {
+        try {
+            return TaskUser::where('user_id', $userId)
+                ->where('task_id', $taskId)
+                ->where('status', USER_PROCESSING_TASK)
+                ->first();
+        } catch (ModelNotFoundException $e) {
+            return null;
+        }
     }
 }
