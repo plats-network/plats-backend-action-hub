@@ -20,10 +20,10 @@ const init = function () {
         e.preventDefault();
         let $this = $(this);
         let form = $this.parents('form');
-        if (form.hasClass('has_validate') && !form.valid()) {
-            form.addClass('was-validated');
-            return false;
-        }
+        // if (form.hasClass('has_validate') && !form.valid()) {
+        //     form.addClass('was-validated');
+        //     return false;
+        // }
 
         $this.prop('disabled', true);
         form.submit();

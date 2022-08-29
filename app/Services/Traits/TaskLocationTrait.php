@@ -20,12 +20,15 @@ trait TaskLocationTrait
         foreach ($locations as $order => $location) {
             $coordinate = Coordinate::parse($location['coordinate']);
             $locationData[] = [
-                'name'    => $location['name'],
-                'address' => $location['address'],
-                'long'    => $coordinate->longitude(),
-                'lat'     => $coordinate->latitude(),
-                'sort'    => $order,
-                'status'  => ACTIVE_LOCATION_TASK,
+                'name'              => $location['name'],
+                'address'           => $location['address'],
+                'long'              => $coordinate->longitude(),
+                'lat'               => $coordinate->latitude(),
+                'sort'              => $order,
+                'phone_number'      => $location['phone_number'],
+                'open_time'         => $location['open_time'],
+                'close_time'        => $location['close_time'],
+                'status'            => ACTIVE_LOCATION_TASK,
             ];
         }
 

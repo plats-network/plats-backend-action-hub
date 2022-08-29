@@ -240,7 +240,7 @@ class TaskService extends BaseService
         $data = $request->except(['image', 'guilds']);
 
         $data['status']     = ACTIVE_TASK;
-        $data['type']       = TYPE_FREE_TASK;
+        $data['type']       = CHECKIN;
         $data['creator_id'] = $request->user()->id;
 
         //Save cover
@@ -273,7 +273,7 @@ class TaskService extends BaseService
     {
         $task = $this->find($request->input('id'));
 
-        $data = $request->except(['image', 'location', 'guilds']);
+        $data = $request->except(['image', 'locations', 'guilds']);
         //Save cover
         if ($request->hasFile('image')) {
             $uploadedFile = $request->file('image');
@@ -284,10 +284,10 @@ class TaskService extends BaseService
         $task = $this->repository->updateByModel($task, $data);
 
         //Update/Create Location
-        if ($request->filled('location')) {
+        if ($request->filled('locations')) {
             $createLocations = [];
             $updateLocations = [];
-            foreach ($request->input('location', []) as $location) {
+            foreach ($request->input('locations', []) as $location) {
                 if (isset($location['id']) && !empty($location['id'])) {
                     $updateLocations[] = $location;
                     continue;

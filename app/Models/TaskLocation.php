@@ -35,6 +35,7 @@ class TaskLocation extends Model
         'status',
         'phone_number',
         'open_time',
+        'close_time',
     ];
 
     /**
