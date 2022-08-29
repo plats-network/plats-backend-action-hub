@@ -10,9 +10,7 @@ use Illuminate\Support\Carbon;
 
 class TaskUser extends Model
 {
-    use HasFactory;
-    use Uuid;
-    use SoftDeletes;
+    use HasFactory, Uuid, SoftDeletes;
 
     /**
      * The table associated with the model.

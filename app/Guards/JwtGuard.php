@@ -97,7 +97,6 @@ class JwtGuard extends SessionGuard
      */
     public function authenticate()
     {
-        dd('ok authenticate');
         if (!is_null($user = $this->user())) {
             return $user;
         }

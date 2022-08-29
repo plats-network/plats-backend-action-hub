@@ -36,4 +36,4 @@ trait TaskAttribute {
     {
         return intval($value);
     }
-} 
+}

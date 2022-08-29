@@ -14,13 +14,51 @@ use Illuminate\Validation\ValidationException;
 trait ApiResponseTrait
 {
     /**
+     * @var int
+     */
+    protected $httpStatusCode = 200;
+
+    /**
+     * @var int
+     */
+    protected $errorCode;
+
+
+    /**
+     * Set HTTP status code of the response.
+     *
+     * @param  int  $statusCode
+     * @return self
+     */
+    public function setHTTPStatusCode($statusCode)
+    {
+        $this->httpStatusCode = $statusCode;
+
+        return $this;
+    }
+
+    /**
+     * Sends a response invalid query (http 500) to the request.
+     * Error Code = 40.
+     *
+     * @param  string  $message
+     * @return JsonResponse
+     */
+    public function respondInvalidQuery($message = null)
+    {
+        return $this->setHTTPStatusCode(500)
+                    ->setErrorCode(40)
+                    ->respondWithError($message);
+    }
+
+    /**
      * @param JsonResource $resource
      * @param null $message
      * @param int $statusCode
      * @param array $headers
      * @return JsonResponse
      */
-    protected function respondWithResource(JsonResource $resource, $message = null, $statusCode = 200, $headers = [])
+    protected function respondWithResource(JsonResource $resource, $meta = [], $message = null, $statusCode = 200, $headers = [])
     {
         // https://laracasts.com/discuss/channels/laravel/pagination-data-missing-from-api-resource
 
@@ -28,6 +66,7 @@ trait ApiResponseTrait
             [
                 'success' => true,
                 'data' => $resource,
+                'meta' => $meta,
                 'message' => $message
             ], $statusCode, $headers
         );
@@ -45,14 +84,11 @@ trait ApiResponseTrait
             'success' => $data['success'],
             'message' => $data['message'] ?? null,
             'data' => $data['data'] ?? null,
+            'meta'  => $data['meta'] ?? null
         ];
         if (isset($data['errors'])) {
             $responseStructure['errors'] = $data['errors'];
         }
-        // if (isset($data['status'])) {
-        //     $statusCode = $data['status'];
-        // }
-
 
         if (isset($data['exception']) && ($data['exception'] instanceof Error || $data['exception'] instanceof Exception)) {
             if (config('app.env') !== 'production') {
