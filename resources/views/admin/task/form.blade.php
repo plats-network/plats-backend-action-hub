@@ -3,7 +3,7 @@
     <input type="hidden" name="id" value="{{ old('id') }}">
     <div class="row">
         <div class="col-12 mb-5">
-            <h2 class="small-title">Basic information222</h2>
+            <h2 class="small-title">Basic information</h2>
             <div class="row">
                 <div class="col-lg-7">
                     <div class="card">
