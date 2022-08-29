@@ -58,7 +58,7 @@ trait ApiResponseTrait
      * @param array $headers
      * @return JsonResponse
      */
-    protected function respondWithResource(JsonResource $resource, $meta = [], $message = null, $statusCode = 200, $headers = [])
+    protected function respondWithResource(JsonResource $resource, $message = null, $statusCode = 200, $headers = [])
     {
         // https://laracasts.com/discuss/channels/laravel/pagination-data-missing-from-api-resource
 
@@ -66,7 +66,6 @@ trait ApiResponseTrait
             [
                 'success' => true,
                 'data' => $resource,
-                'meta' => $meta,
                 'message' => $message
             ], $statusCode, $headers
         );
@@ -83,8 +82,7 @@ trait ApiResponseTrait
         $responseStructure = [
             'success' => $data['success'],
             'message' => $data['message'] ?? null,
-            'data' => $data['data'] ?? null,
-            'meta'  => $data['meta'] ?? null
+            'data'  => $data['data'] ?? null
         ];
         if (isset($data['errors'])) {
             $responseStructure['errors'] = $data['errors'];

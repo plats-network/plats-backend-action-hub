@@ -49,16 +49,11 @@ class Task extends ApiController
                 }])
                 ->whereStatus(ACTIVE_TASK)
                 ->paginate($limit);
-            $paginate = [
-                'total_page'    => (int)$tasks->lastPage(),
-                'per_page'      => (int)$limit,
-                'current_page'  => (int)$request->get('page') ?: 1
-            ];
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondWithResource(TaskResource::collection($tasks), $paginate);
+        return $this->respondWithResource(TaskResource::collection($tasks));
     }
 
     /**
