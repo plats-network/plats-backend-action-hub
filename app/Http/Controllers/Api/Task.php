@@ -64,7 +64,8 @@ class Task extends ApiController
     public function detail(Request $request, $id)
     {
         try {
-            $task = $this->taskService->mapUserHistory($id, $request->user()->id);
+            $userId = $request->user()->id;
+            $task = $this->taskService->mapUserHistory($id, $userId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNoContent();
         }
