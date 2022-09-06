@@ -58,6 +58,66 @@ trait ApiResponseTrait
      * @param array $headers
      * @return JsonResponse
      */
+    protected function respondWithIndex(JsonResource $resource, $meta = [], $message = null, $statusCode = 200, $headers = [])
+    {
+        // https://laracasts.com/discuss/channels/laravel/pagination-data-missing-from-api-resource
+
+        return $this->apiListResponse(
+            [
+                'success' => true,
+                'data' => $resource,
+                'meta'  => $meta,
+                'message' => $message,
+            ], $statusCode, $headers
+        );
+    }
+
+    /**
+     * @param array $data
+     * @param int $statusCode
+     * @param array $headers
+     * @return array
+     */
+    public function parseDataList($data = [], $statusCode = 200, $headers = [])
+    {
+        $responseStructure = [
+            'success' => $data['success'],
+            'message' => $data['message'] ?? null,
+            'data'  => $data['data'] ?? null,
+            'meta'  => $data['meta'] ?? null
+        ];
+
+        return ["content" => $responseStructure, "statusCode" => $statusCode, "headers" => $headers];
+    }
+
+    /**
+     * Return generic json response with the given data.
+     *
+     * @param       $data
+     * @param int $statusCode
+     * @param array $headers
+     *
+     * @return JsonResponse
+     */
+    protected function apiListResponse($data = [], $statusCode = 200, $headers = [])
+    {
+        // https://laracasts.com/discuss/channels/laravel/pagination-data-missing-from-api-resource
+
+        $result = $this->parseDataList($data, $statusCode, $headers);
+
+
+        return response()->json(
+            $result['content'], $result['statusCode'], $result['headers']
+        );
+    }
+
+    /**
+     * @param JsonResource $resource
+     * @param null $message
+     * @param int $statusCode
+     * @param array $headers
+     * @return JsonResponse
+     */
     protected function respondWithResource(JsonResource $resource, $message = null, $statusCode = 200, $headers = [])
     {
         // https://laracasts.com/discuss/channels/laravel/pagination-data-missing-from-api-resource
@@ -113,12 +173,6 @@ trait ApiResponseTrait
         }
         return ["content" => $responseStructure, "statusCode" => $statusCode, "headers" => $headers];
     }
-
-
-    /*
-     *
-     * Just a wrapper to facilitate abstract
-     */
 
     /**
      * Return generic json response with the given data.

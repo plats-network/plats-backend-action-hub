@@ -53,7 +53,17 @@ class Task extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondWithResource(TaskResource::collection($tasks));
+        $datas = TaskResource::collection($tasks);
+        $pages = [
+            'current_page' => (int)$request->get('page'),
+            // 'from'  => (int)$request->get('page'),
+            // 'to'    => (int) $request->get('page') + 1 ,
+            'last_page' => $tasks->lastPage(),
+            'per_page'  => (int)$limit,
+            'total' => $tasks->lastPage()
+        ];
+
+        return $this->respondWithIndex($datas, $pages);
     }
 
     /**
