@@ -4,17 +4,17 @@ namespace Deployer;
 require 'recipe/laravel.php';
 
 // Project name
-set('prod', 'plats_api');
-set('stg', 'stg_plats_api');
-set('dev', 'dev_plats_api');
+set('prod', 'prod_plats_task');
+set('stg', 'plats_task');
+set('dev', 'dev_plats_task');
 
 // Project repository
 set('repository', 'git@github.com:plats-network/plats-backend-action-hub.git');
 
 // Set release_or_current_path
-set('release_or_prod_path', '/home/dovv/apps/{{prod}}');
-set('release_or_stg_path', '/home/dovv/apps/{{stg}}');
-set('release_or_dev_path', '/home/dovv/apps/{{dev}}');
+set('release_or_prod_path', '/home/deploy/apps//{{prod}}');
+set('release_or_stg_path', '/home/deploy/apps/{{stg}}');
+set('release_or_dev_path', '/home/deploy/apps/{{dev}}');
 
 // [Optional] Allocate tty for git clone. Default value is false.
 set('git_tty', true); 
@@ -42,25 +42,25 @@ add('writable_dirs', [
 host('production')
     ->hostname('139.59.109.139')
     ->stage('production')
-    ->user('dovv')
+    ->user('deploy')
     ->identityFile('~/.ssh/id_techld')
-    ->set('branch', 'deploy')
+    ->set('branch', 'main')
     ->set('deploy_path', '{{release_or_prod_path}}');
 
 host('staging')
     ->hostname('139.59.109.139')
     ->stage('staging')
-    ->user('dovv')
+    ->user('deploy')
     ->identityFile('~/.ssh/id_techld')
-    ->set('branch', 'deploy')
+    ->set('branch', 'staging')
     ->set('deploy_path', '{{release_or_stg_path}}');
 
 host('development')
     ->hostname('139.59.109.139')
     ->stage('development')
-    ->user('dovv')
+    ->user('deploy')
     ->identityFile('~/.ssh/id_techld')
-    ->set('branch', 'deploy')
+    ->set('branch', 'develop')
     ->set('deploy_path', '{{release_or_dev_path}}');
     
 // Tasks
