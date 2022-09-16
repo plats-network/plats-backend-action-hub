@@ -138,7 +138,7 @@
                 <button type="submit" class="btn btn-icon btn-icon-start btn-primary">
                     <i data-acorn-icon="save"></i>
                     <span class="text-uppercase">
-                        {{ old('id') ? trans('admin.save_edit') : trans('admin.save_create') }} 234234
+                        {{ old('id') ? trans('admin.save_edit') : trans('admin.save_create') }}
                     </span>
                 </button>
             </div>
