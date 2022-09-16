@@ -6,6 +6,7 @@
     <script src="{{ mix('/static/js/admin/pages/task.js') }}"></script>
     @break
     @case(TASK_DEPOSIT_ADMIN_ROUTER)
-    <script src="{{ mix('/static/js/admin/pages/deposit.js') }}"></script>
+    {{-- <script src="{{ mix('/static/js/admin/pages/deposit.js') }}"></script> --}}
+    <script src="{{ mix('/static/js/admin/pages/depositETH.js') }}"></script>
     @break
 @endswitch
