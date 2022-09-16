@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\{Task, TaskLocation, UserTask, Wallet};
+use App\Http\Controllers\Api\{Task, TaskLocation, UserTask, Wallet, OpenBox};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +28,7 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
 });
 
 Route::get('/my-tasks', [UserTask::class, 'histories']);
+Route::resource('open_box', OpenBox::class)->only(['index']);
 
 Route::prefix('wallet')->controller(Wallet::class)->group(function () {
     Route::post('/withdraw', 'withdraw');
