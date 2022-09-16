@@ -46,6 +46,23 @@
                                                         :selected="old('status')"/>
                                     </x-forms.group>
                                 </div>
+                                {{-- <div class="col-lg-6">
+                                    <x-forms.group :label="trans('admin.task.form.reward_amount')">
+                                        <x-forms.input type="number" name="reward_amount" :value="old('reward_amount')" required/>
+                                    </x-forms.group>
+                                </div> --}}
+                                <div class="col-lg-6">
+                                    <x-forms.group :label="trans('admin.task.form.total_reward')">
+                                        @if (old('id'))
+                                            <div class="form-control-plaintext fw-bold">
+                                                {{ old('total_reward') }}
+                                            </div>
+                                        @else
+                                            <x-forms.input type="number" name="total_reward" :value="old('total_reward')" required/>
+                                        @endif
+                                    </x-forms.group>
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -121,7 +138,7 @@
                 <button type="submit" class="btn btn-icon btn-icon-start btn-primary">
                     <i data-acorn-icon="save"></i>
                     <span class="text-uppercase">
-                        {{ old('id') ? trans('admin.save_edit') : trans('admin.save_create') }}
+                        {{ old('id') ? trans('admin.save_edit') : trans('admin.save_create') }} 234234
                     </span>
                 </button>
             </div>
