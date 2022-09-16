@@ -36,7 +36,7 @@ class Deposit {
 
             let platContract = new ethers.Contract(platContractAddress, platContractABI, signer)
             //CAMPAIGN_AMOUNT
-            let depositValue = ethers.utils.parseEther("1000");
+            let depositValue = ethers.utils.parseEther(CAMPAIGN_AMOUNT);
             let taskId = TASK_ID;
 
             //TODO: Change wallet. Default 0

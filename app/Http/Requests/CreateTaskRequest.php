@@ -23,6 +23,7 @@ class CreateTaskRequest extends FormRequest
             'valid_amount'                      => ['required', 'min:1'],
             'image'                             => ['image'],
             'rewards'                           => ['array'],
+            'reward_amount'                     => ['numeric', 'min:0'],
             'rewards.*.reward_id'               => ['max:' . INPUT_MAX_LENGTH],
             'rewards.*.amount'                  => ['max:' . INPUT_MAX_LENGTH],
             'locations'                         => ['required', 'array'],
