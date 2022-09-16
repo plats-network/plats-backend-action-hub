@@ -29,7 +29,7 @@ class CreateTaskRequest extends FormRequest
             'locations.*.name'                  => ['required', 'max:' . INPUT_MAX_LENGTH],
             'locations.*.phone_number'          => ['numeric', 'digits:10'],
             'locations.*.open_time'             => ['date_format:H:i'],
-            'locations.*.close_time'            => ['date_format:H:i|after:open_time'],
+            'locations.*.close_time'            => ['date_format:H:i, after:open_time'],
             'locations.*.coordinate'            => ['required', 'max:' . INPUT_MAX_LENGTH],
             'locations.*.lat'                   => ['numeric', 'between:-90,90'],
             'locations.*.long'                  => ['numeric', 'between:-180,180'],
