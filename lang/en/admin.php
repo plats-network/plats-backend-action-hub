@@ -12,6 +12,7 @@ return [
         'edit_page' => 'Edit task',
         'form' => [
             'type' => 'Type of task',
+            'checkin_type' => 'Type of checkin task',
             'name' => 'Title of task',
             'desc' => 'Description for task',
             'duration' => 'Duration (Minutes)',
@@ -36,6 +37,10 @@ return [
             INSTALL_APP => 'Install Mobile App',
             VIDEO_WATCH => 'Video Watch',
             SUBSCRIBE_AND_INTERACT => 'Like / Share / Subcribe',
+        ],
+        'checkin_type' => [
+            ONE_OF_MANY_LOCATIONS => 'One of many locations',
+            MULTIPLE_LOCATIONS => 'Multiple locations'
         ],
     ],
     'reward' => [

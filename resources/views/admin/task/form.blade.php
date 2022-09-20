@@ -61,7 +61,13 @@
                                             <x-forms.input type="number" name="total_reward" :value="old('total_reward')" required/>
                                         @endif
                                     </x-forms.group>
-
+                                </div>
+                                <div class="col-lg-6">
+                                    <x-forms.group :label="trans('admin.task.form.checkin_type')">
+                                        <x-forms.select name="checkin_type" select2 required
+                                                        :options="trans('admin.task.checkin_type')"
+                                                        :selected="old('checkin_type')"/>
+                                    </x-forms.group>
                                 </div>
                             </div>
                         </div>
