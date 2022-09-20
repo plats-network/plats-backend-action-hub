@@ -5,8 +5,7 @@ require 'recipe/laravel.php';
 
 // Project name
 set('prod', 'prod_plats_task');
-set('stg', 'plats_task');
-set('dev', 'dev_plats_task');
+set('stg', 'plats_action');
 
 // Project repository
 set('repository', 'git@github.com:plats-network/plats-backend-action-hub.git');
@@ -14,7 +13,6 @@ set('repository', 'git@github.com:plats-network/plats-backend-action-hub.git');
 // Set release_or_current_path
 set('release_or_prod_path', '/home/deploy/apps//{{prod}}');
 set('release_or_stg_path', '/home/deploy/apps/{{stg}}');
-set('release_or_dev_path', '/home/deploy/apps/{{dev}}');
 
 // [Optional] Allocate tty for git clone. Default value is false.
 set('git_tty', true); 
@@ -40,7 +38,7 @@ add('writable_dirs', [
 
 // Hosts
 host('production')
-    ->hostname('139.59.109.139')
+    ->hostname('194.233.72.10')
     ->stage('production')
     ->user('deploy')
     ->identityFile('~/.ssh/id_techld')
@@ -48,25 +46,17 @@ host('production')
     ->set('deploy_path', '{{release_or_prod_path}}');
 
 host('staging')
-    ->hostname('139.59.109.139')
+    ->hostname('194.233.72.10')
     ->stage('staging')
     ->user('deploy')
     ->identityFile('~/.ssh/id_techld')
     ->set('branch', 'staging')
     ->set('deploy_path', '{{release_or_stg_path}}');
 
-host('development')
-    ->hostname('139.59.109.139')
-    ->stage('development')
-    ->user('deploy')
-    ->identityFile('~/.ssh/id_techld')
-    ->set('branch', 'develop')
-    ->set('deploy_path', '{{release_or_dev_path}}');
-    
 // Tasks
-// task('reload:php-fpm', function () { 
-//     run('sudo /usr/sbin/service php7.4-fpm reload'); 
-// });
+task('reload:php-fpm', function () { 
+    run('sudo /usr/sbin/service php8.1-fpm reload'); 
+});
 
 task('build', function () {
     run('cd {{release_path}} && build');
@@ -101,7 +91,7 @@ task('deploy', [
     'cleanup',
     // can be used by the user to assign custom tasks to execute on successful deployments
     'artisan:storage:link',
-    // 'reload:php-fpm',
+    'reload:php-fpm',
     'success',
 ]);
 
