@@ -7,12 +7,22 @@ if (!defined('DEFINE_ADMIN_ROUTER')) {
     define('LOGIN_ADMIN_ROUTE', 'admin.login.route');
     define('LOGOUT_ADMIN_ROUTE', 'admin.logout.route');
 
+    // Dashboard
     define('DASHBOARD_ADMIN_ROUTER', 'admin.dashboard.route');
+
+    // Task
     define('TASK_LIST_ADMIN_ROUTER', 'admin.task.list.route');
     define('TASK_CREATE_ADMIN_ROUTER', 'admin.task.create.route');
     define('TASK_EDIT_ADMIN_ROUTER', 'admin.task.edit.route');
     define('TASK_STORE_ADMIN_ROUTER', 'admin.task.store.route');
     define('TASK_DEPOSIT_ADMIN_ROUTER', 'admin.task.deposit.route');
 
+    // Reward
+    define('REWARD_LIST_ADMIN_ROUTER', 'admin.reward.list.route');
+    define('REWARD_CREATE_ADMIN_ROUTER', 'admin.reward.create.route');
+    define('REWARD_EDIT_ADMIN_ROUTER', 'admin.reward.edit.route');
+    define('REWARD_STORE_ADMIN_ROUTER', 'admin.reward.store.route');
+
+    // Guild
     define('GUILD_LIST_ADMIN_ROUTER', 'admin.guild.list.route');
 }

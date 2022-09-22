@@ -52,4 +52,10 @@ if (!defined('DEFINE_CONSTANT')) {
     define('INSTALL_APP', 2);
     define('VIDEO_WATCH', 3);
     define('SUBSCRIBE_AND_INTERACT', 4);
+
+    /**
+     * Task checkin type
+     */
+    define('ONE_OF_MANY_LOCATIONS', 1);
+    define('MULTIPLE_LOCATIONS', 2);
 }
