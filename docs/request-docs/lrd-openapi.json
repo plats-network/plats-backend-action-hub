@@ -1523,6 +1523,11 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
+                                    "type": {
+                                        "type": "integer",
+                                        "nullable": false,
+                                        "format": "integer"
+                                    },
                                     "name": {
                                         "type": "object",
                                         "nullable": false,
@@ -1538,10 +1543,10 @@
                                         "nullable": false,
                                         "format": "integer"
                                     },
-                                    "distance": {
-                                        "type": "object",
+                                    "order": {
+                                        "type": "integer",
                                         "nullable": false,
-                                        "format": "object"
+                                        "format": "integer"
                                     },
                                     "valid_amount": {
                                         "type": "object",
@@ -1557,6 +1562,11 @@
                                         "type": "array",
                                         "nullable": false,
                                         "format": "array"
+                                    },
+                                    "reward_amount": {
+                                        "type": "object",
+                                        "nullable": false,
+                                        "format": "object"
                                     },
                                     "rewards.*.reward_id": {
                                         "type": "object",
@@ -1578,7 +1588,32 @@
                                         "nullable": false,
                                         "format": "object"
                                     },
+                                    "locations.*.phone_number": {
+                                        "type": "object",
+                                        "nullable": false,
+                                        "format": "object"
+                                    },
+                                    "locations.*.open_time": {
+                                        "type": "object",
+                                        "nullable": false,
+                                        "format": "object"
+                                    },
+                                    "locations.*.close_time": {
+                                        "type": "object",
+                                        "nullable": false,
+                                        "format": "object"
+                                    },
                                     "locations.*.coordinate": {
+                                        "type": "object",
+                                        "nullable": false,
+                                        "format": "object"
+                                    },
+                                    "locations.*.lat": {
+                                        "type": "object",
+                                        "nullable": false,
+                                        "format": "object"
+                                    },
+                                    "locations.*.long": {
                                         "type": "object",
                                         "nullable": false,
                                         "format": "object"
@@ -1767,6 +1802,94 @@
             }
         },
         "api/my-tasks": {
+            "get": {
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "api/open_box": {
             "get": {
                 "description": "",
                 "parameters": [],
@@ -2172,6 +2295,11 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
+                                    "type": {
+                                        "type": "integer",
+                                        "nullable": false,
+                                        "format": "integer"
+                                    },
                                     "name": {
                                         "type": "object",
                                         "nullable": false,
@@ -2187,10 +2315,10 @@
                                         "nullable": false,
                                         "format": "integer"
                                     },
-                                    "distance": {
-                                        "type": "object",
+                                    "order": {
+                                        "type": "integer",
                                         "nullable": false,
-                                        "format": "object"
+                                        "format": "integer"
                                     },
                                     "valid_amount": {
                                         "type": "object",
@@ -2206,6 +2334,11 @@
                                         "type": "array",
                                         "nullable": false,
                                         "format": "array"
+                                    },
+                                    "reward_amount": {
+                                        "type": "object",
+                                        "nullable": false,
+                                        "format": "object"
                                     },
                                     "rewards.*.reward_id": {
                                         "type": "object",
@@ -2227,7 +2360,32 @@
                                         "nullable": false,
                                         "format": "object"
                                     },
+                                    "locations.*.phone_number": {
+                                        "type": "object",
+                                        "nullable": false,
+                                        "format": "object"
+                                    },
+                                    "locations.*.open_time": {
+                                        "type": "object",
+                                        "nullable": false,
+                                        "format": "object"
+                                    },
+                                    "locations.*.close_time": {
+                                        "type": "object",
+                                        "nullable": false,
+                                        "format": "object"
+                                    },
                                     "locations.*.coordinate": {
+                                        "type": "object",
+                                        "nullable": false,
+                                        "format": "object"
+                                    },
+                                    "locations.*.lat": {
+                                        "type": "object",
+                                        "nullable": false,
+                                        "format": "object"
+                                    },
+                                    "locations.*.long": {
                                         "type": "object",
                                         "nullable": false,
                                         "format": "object"
@@ -2561,6 +2719,11 @@
                                         "type": "integer",
                                         "nullable": false,
                                         "format": "integer"
+                                    },
+                                    "phone_number": {
+                                        "type": "object",
+                                        "nullable": false,
+                                        "format": "object"
                                     }
                                 }
                             }
