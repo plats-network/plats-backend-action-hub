@@ -14,7 +14,7 @@ class StartTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'wallet_address' => ['required', 'max:' . INPUT_MAX_LENGTH],
+            'start_task' => ['boolean']
         ];
     }
 }

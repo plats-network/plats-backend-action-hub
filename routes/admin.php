@@ -14,7 +14,7 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
     Route::get('/deposit/{id}', 'deposit')->name(TASK_DEPOSIT_ADMIN_ROUTER)->whereUuid('id');
 });
 
-// Reward management
+// Reward management Chua co controller len commnet
 // Route::prefix('rewards')->controller(Reward::class)->group(function () {
 //     Route::get('/', 'index')->name(REWARD_LIST_ADMIN_ROUTER);
 //     Route::get('/create', 'create')->name(REWARD_CREATE_ADMIN_ROUTER);

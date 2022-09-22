@@ -11,7 +11,13 @@ use App\Http\Resources\TaskUserResource;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
 use App\Models\Task as ModelTask;
+use App\Models\TaskUser;
 use Illuminate\Database\QueryException;
+use App\Repositories\LocationHistoryRepository;
+use App\Repositories\TaskRepository;
+use App\Repositories\TaskUserRepository;
+use Illuminate\Support\Carbon as SupportCarbon;
+use Illuminate\Support\Facades\DB;
 
 class Task extends ApiController
 {
@@ -26,12 +32,35 @@ class Task extends ApiController
     protected $modelTask;
 
     /**
+     * @var App\Repositories\LocationHistoryRepository;
+     */
+    protected $locationHistoryRepository;
+
+    /**
+     * @var App\Repositories\TaskRepository;
+     */
+    protected $taskRepository;
+
+    /**
+     * @var App\Repositories\TaskUserRepository;
+     */
+    protected $taskUserRepository;
+
+    /**
      * @param \App\Services\TaskService $taskService
      */
-    public function __construct(TaskService $taskService, ModelTask $modelTask)
-    {
-        $this->taskService  = $taskService;
-        $this->modelTask    = $modelTask;
+    public function __construct(
+        TaskService $taskService,
+        ModelTask $modelTask,
+        LocationHistoryRepository $locationHistoryRepository,
+        TaskRepository $taskRepository,
+        TaskUserRepository $taskUserRepository
+    ) {
+        $this->taskService                  = $taskService;
+        $this->modelTask                    = $modelTask;
+        $this->locationHistoryRepository    = $locationHistoryRepository;
+        $this->taskRepository               = $taskRepository;
+        $this->taskUserRepository           = $taskUserRepository;
     }
 
     /**
@@ -42,6 +71,10 @@ class Task extends ApiController
     public function index(Request $request)
     {
         $userId = $request->user()->id;
+        if (!$userId) {
+            return $this->respondUnAuthorized();
+        }
+
         try {
             $limit = $request->get('limit') ?? PAGE_SIZE;
             $tasks = $this->modelTask->load(['participants' => function ($query) use ($userId) {
@@ -73,8 +106,12 @@ class Task extends ApiController
      */
     public function detail(Request $request, $id)
     {
+        $userId = $request->user()->id;
+        if (!$userId) {
+            return $this->respondUnAuthorized();
+        }
+        
         try {
-            $userId = $request->user()->id;
             $task = $this->taskService->mapUserHistory($id, $userId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNoContent();
@@ -105,18 +142,44 @@ class Task extends ApiController
      * @return \Illuminate\Http\Resources\Json\JsonResource
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function startTask(StartTaskRequest $request, $taskId, $locationId)
+    public function startTask(Request $request, $taskId, $locationId)
     {
-        $startTask = $this->taskService->startTask($taskId, $locationId, $request->user()->id, $request->all());
-        
-        if($startTask['userDoingOtherTasks']) {
-            return $this->respondWithResource(new TaskUserResource($startTask['userDoingOtherTasks']), trans('task_user.starting_other_tasks'), 400);
-        }
-        if($startTask['userStartedTask']) {
-            return $this->respondWithResource(new TaskUserResource($startTask['userStartedTask']), trans('task_user.already_started'), 400);
+        // Todo: Refactor sau khi co time
+        $userId = $request->user()->id;
+        if (!$userId) {
+            return $this->respondUnAuthorized();
         }
 
-        return $this->respondWithResource(new TaskUserResource($startTask), 'Start doing the task now.');
+        # Check Task
+        $task = $this->taskRepository->find($taskId);
+
+        if (empty($task)) {
+            return $this->respondNotFound('Task not found!');
+        }
+
+        # Check task inprogress
+        $taskImprogress = TaskUser::where('user_id', $userId)
+            ->where('status', USER_PROCESSING_TASK)
+            ->get();
+
+        if (
+            null === $request->get('start_task')
+            || empty($request->get('start_task'))
+        ) {
+
+            if ($taskImprogress->count() > 0) {
+                $datas = ['is_improgress' => true];
+
+                return $this->respondWithResource(new TaskUserResource($datas), "Có task đang chạy!");
+            } else {
+                $this->createTask($taskId, $userId, $locationId, $task, $taskImprogress);
+            }
+        } else {
+            $this->createTask($taskId, $userId, $locationId, $task, $taskImprogress);
+        }
+
+        $datas = ['is_improgress' => false];
+        return $this->respondWithResource(new TaskUserResource($datas), 'Start doing the task now.');
     }
 
     /**
@@ -128,7 +191,12 @@ class Task extends ApiController
      */
     public function checkIn(CheckInTaskRequest $request, $taskId, $locationId)
     {
-        $dataCheckIn = $this->taskService->checkIn($taskId, $locationId, $request->user()->id, $request->image, $request->activity_log);
+        $userId = $request->user()->id;
+        if (!$userId) {
+            return $this->respondUnAuthorized();
+        }
+
+        $dataCheckIn = $this->taskService->checkIn($taskId, $locationId,$userId, $request->image, $request->activity_log);
         
         return $this->respondWithResource(new TaskUserResource($dataCheckIn));
     }
@@ -139,7 +207,12 @@ class Task extends ApiController
      */
     public function getTaskDoing(Request $request)
     {
-        $dataTaskDoing = $this->taskService->getTaskDoing($request->user()->id);
+        $userId = $request->user()->id;
+        if (!$userId) {
+            return $this->respondUnAuthorized();
+        }
+
+        $dataTaskDoing = $this->taskService->getTaskDoing($userId);
         
         return $this->respondWithResource(new TaskUserResource($dataTaskDoing));
     }
@@ -154,8 +227,47 @@ class Task extends ApiController
      */
     public function cancel(Request $request, $taskId)
     {
-        $this->taskService->cancel($request->user()->id, $taskId);
+        $userId = $request->user()->id;
+        if (!$userId) {
+            return $this->respondUnAuthorized();
+        }
+
+        $this->taskService->cancel($userId, $taskId);
 
         return $this->responseMessage('DONE!');
+    }
+
+    private function createTask($taskId, $userId, $taskLocationId, $task, $taskImprogress)
+    {
+        DB::beginTransaction();
+        try {
+            foreach ($taskImprogress as $taskUser) {
+                $taskUser->update(['status' => USER_CANCEL_TASK]);
+            }
+
+            $this->locationHistoryRepository->create([
+                'user_id' => $userId,
+                'location_id' => $taskLocationId,
+                'started_at' => SupportCarbon::now(),
+                'ended_at' => null
+            ]);
+
+            $this->taskUserRepository->create([
+                'user_id' => $userId,
+                'task_id' => $taskId,
+                'status' => USER_PROCESSING_TASK,
+                'location_checked' => null,
+                'wallet_address' => null,
+                'time_left' => SupportCarbon::now()->addMinutes($task->duration),
+            ]);
+
+            DB::commit();
+        } catch (RuntimeException $exception) {
+            DB::rollBack();
+            throw $exception;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw new RuntimeException($exception->getMessage(), 500062, $exception->getMessage(), $exception);
+        }
     }
 }

@@ -28,11 +28,11 @@ return [
     //Use only routes where ->uri start with next string Using Str::startWith( . e.g. - /api/mobile
     'only_route_uri_start_with' => 'api',
 
-    'hide_matching' => [
-        "#^telescope#",
-        "#^docs#",
-        "#^request-docs#",
-    ],
+    // 'hide_matching' => [
+    //     "#^telescope#",
+    //     "#^docs#",
+    //     "#^request-docs#",
+    // ],
 
     "open_api" => [
         // default version that this library provides

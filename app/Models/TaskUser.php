@@ -30,7 +30,7 @@ class TaskUser extends Model
         'status',
         'wallet_address',
         'location_checked',
-        'time_left',// Minute
+        'time_left',
     ];
 
     /**

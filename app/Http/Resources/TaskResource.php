@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\MissingValue;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Facades\Http;
 use App\Models\TaskUser;
+use Carbon\Carbon;
 
 class TaskResource extends JsonResource
 {
@@ -20,7 +21,23 @@ class TaskResource extends JsonResource
     {
         $creator = $this->getUserDetail($this->creator_id);
         $userId = $request->user()->id;
-        $task_improgress = $this->getTaskImprogress($userId, $this->id);
+        $dataTaskProgress = $this->getTaskImprogress($userId, $this->id);
+
+        if (!$dataTaskProgress) {
+          $task_improgress = null;
+        } else {
+          $formatDate = date("Y-m-d H:i:s", $dataTaskProgress->time_left);
+          $time_start = Carbon::parse($formatDate)->subMinute($this->duration)->timestamp;
+          $task_improgress = [
+            'id'  => $dataTaskProgress->id,
+            'status'  => $dataTaskProgress->status,
+            'time_left' => $dataTaskProgress->time_left,
+            'time_current'  => Carbon::now()->timestamp,
+            'time_start'  => $time_start,
+            'time_end'  => $dataTaskProgress->time_left
+          ];
+        }
+
         $task_done = $this->participants()->where('user_id', $userId)->where('status', USER_COMPLETED_TASK)->first();
 
         return [
