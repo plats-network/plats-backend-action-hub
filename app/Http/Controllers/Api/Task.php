@@ -71,9 +71,6 @@ class Task extends ApiController
     public function index(Request $request)
     {
         $userId = $request->user()->id;
-        if (!$userId) {
-            return $this->respondUnAuthorized();
-        }
 
         try {
             $limit = $request->get('limit') ?? PAGE_SIZE;
@@ -89,8 +86,6 @@ class Task extends ApiController
         $datas = TaskResource::collection($tasks);
         $pages = [
             'current_page' => (int)$request->get('page'),
-            // 'from'  => (int)$request->get('page'),
-            // 'to'    => (int) $request->get('page') + 1 ,
             'last_page' => $tasks->lastPage(),
             'per_page'  => (int)$limit,
             'total' => $tasks->lastPage()
@@ -107,9 +102,6 @@ class Task extends ApiController
     public function detail(Request $request, $id)
     {
         $userId = $request->user()->id;
-        if (!$userId) {
-            return $this->respondUnAuthorized();
-        }
         
         try {
             $task = $this->taskService->mapUserHistory($id, $userId);
@@ -146,10 +138,6 @@ class Task extends ApiController
     {
         // Todo: Refactor sau khi co time
         $userId = $request->user()->id;
-        if (!$userId) {
-            return $this->respondUnAuthorized();
-        }
-
         # Check Task
         $task = $this->taskRepository->find($taskId);
 
@@ -192,9 +180,6 @@ class Task extends ApiController
     public function checkIn(CheckInTaskRequest $request, $taskId, $locationId)
     {
         $userId = $request->user()->id;
-        if (!$userId) {
-            return $this->respondUnAuthorized();
-        }
 
         $dataCheckIn = $this->taskService->checkIn($taskId, $locationId,$userId, $request->image, $request->activity_log);
         
@@ -208,9 +193,6 @@ class Task extends ApiController
     public function getTaskDoing(Request $request)
     {
         $userId = $request->user()->id;
-        if (!$userId) {
-            return $this->respondUnAuthorized();
-        }
 
         $dataTaskDoing = $this->taskService->getTaskDoing($userId);
         
@@ -228,9 +210,6 @@ class Task extends ApiController
     public function cancel(Request $request, $taskId)
     {
         $userId = $request->user()->id;
-        if (!$userId) {
-            return $this->respondUnAuthorized();
-        }
 
         $this->taskService->cancel($userId, $taskId);
 
