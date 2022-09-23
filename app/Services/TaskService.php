@@ -375,7 +375,11 @@ class TaskService extends BaseService
         $task = $this->find($taskId, ['locations']);
 
         $userTask = $this->taskUserRepository->userStartedTask($taskId, $userId);
-        abort_if(is_null($userTask), 404);
+
+        if (is_null($userTask)) {
+            return null;
+        }
+        // abort_if(is_null($userTask), 404);
 
         $userTask->delete();
 
