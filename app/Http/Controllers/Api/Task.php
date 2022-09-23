@@ -8,6 +8,7 @@ use App\Http\Requests\CreateTaskRequest;
 use App\Http\Requests\StartTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskUserResource;
+use App\Http\Resources\TaskDogingResource;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
 use App\Models\Task as ModelTask;
@@ -195,8 +196,12 @@ class Task extends ApiController
         $userId = $request->user()->id;
 
         $dataTaskDoing = $this->taskService->getTaskDoing($userId);
-        
-        return $this->respondWithResource(new TaskUserResource($dataTaskDoing));
+
+        if (is_null($dataTaskDoing)) {
+            return $this->respondNotFound();
+        }
+
+        return $this->respondWithResource(new TaskDogingResource($dataTaskDoing));
     }
 
     /**
@@ -211,7 +216,11 @@ class Task extends ApiController
     {
         $userId = $request->user()->id;
 
-        $this->taskService->cancel($userId, $taskId);
+        $cancel = $this->taskService->cancel($userId, $taskId);
+
+        if (is_null($cancel)) {
+            return $this->respondNotFound();
+        }
 
         return $this->responseMessage('DONE!');
     }
