@@ -131,16 +131,6 @@ class TaskService extends BaseService
     public function startTask($taskId, $locaId, $userId, $postData)
     {
         $task = $this->repository->whereId($taskId)->get();
-        dd(2);
-
-        if (!$task) {
-            return [
-                'is' => true
-            ];
-        }
-        dd($task);
-
-
         // Get and check exists Task and Location
         $taskHasLocal = $this->repository->taskHasLocation($taskId, $locaId);
         $userDoingOtherTasks = $this->taskUserRepository->userDoingOtherTasks($taskId, $userId);

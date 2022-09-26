@@ -15,15 +15,14 @@ class TaskDogingResource extends JsonResource
      */
     public function toArray($request)
     {
-        $formatDate = date("Y-m-d H:i:s", $this->time_left);
-        $time_start = Carbon::parse($formatDate)->subMinute($this->task->duration)->timestamp;
-
         return [
             "id" => $this->id,
             "time_left" => $this->time_left,
-            "time_start" => $time_start,
-            "time_current" => Carbon::now()->timestamp,
-            "time_end" => $this->time_left,
+            "duration"  => $this->task()->first()->duration,
+            "time_start" => Carbon::parse($this->time_start)->timestamp,
+            "time_end" => Carbon::parse($this->time_end)->timestamp,
+            "time_start_orginal" => Carbon::parse($this->time_start)->format('Y-m-d H:i:s'),
+            "time_end_orginal" => Carbon::parse($this->time_end)->format('Y-m-d H:i:s'),
             "wallet_address" => $this->wallet_address,
             "task" => $this->task,
             "task_locations" => $this->taskLocations()->first(),

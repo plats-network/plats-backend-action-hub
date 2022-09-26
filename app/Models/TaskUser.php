@@ -31,6 +31,8 @@ class TaskUser extends Model
         'wallet_address',
         'location_checked',
         'time_left',
+        'time_start',
+        'time_end'
     ];
 
     /**

@@ -247,6 +247,8 @@ class Task extends ApiController
                 'location_checked' => null,
                 'wallet_address' => null,
                 'time_left' => SupportCarbon::now()->addMinutes($task->duration),
+                'time_start' => SupportCarbon::now(),
+                'time_end'  => SupportCarbon::now()->addMinutes($task->duration)
             ]);
 
             DB::commit();
