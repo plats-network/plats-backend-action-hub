@@ -67,7 +67,7 @@ class TaskResource extends JsonResource
                 'description'   => 'You can claim after 10 days', 
                 'amount'        => '1',
                 'type'          => '1',
-                'image'         => 'https://public.nftstatic.com/static/nft/zipped/8061c9dbe0d74430b53d904468d946d9_zipped.png'
+                'image'         => 'https://i.imgur.com/UuCaWFA.png'
             ]
         ];
     }
