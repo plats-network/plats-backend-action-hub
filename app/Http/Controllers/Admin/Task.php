@@ -7,33 +7,26 @@ use App\Http\Requests\CreateTaskRequest;
 use App\Services\GuildService;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Auth;
 
 class Task extends Controller
 {
     /**
-     * @var \App\Services\TaskService
-     */
-    protected $taskService;
-
-    /**
-     * @var \App\Services\GuildService
-     */
-    protected $guildService;
-
-    /**
      * @param \App\Services\TaskService $taskService
      * @param \App\Services\GuildService $guildService
      */
-    public function __construct(TaskService $taskService, GuildService $guildService)
-    {
-        $this->taskService = $taskService;
-        $this->guildService = $guildService;
+    public function __construct(
+        private TaskService $taskService,
+        private GuildService $guildService
+    ) {
+        // Code:
     }
 
     /**
      * @return \Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
         return view(
             'admin.task.index',
@@ -71,7 +64,6 @@ class Task extends Controller
             $this->flashSession($assign['task']);
         }
 
-
         return view('admin.task.edit', $assign);
     }
 
@@ -84,6 +76,10 @@ class Task extends Controller
     public function store(CreateTaskRequest $request)
     {
         $task = $this->taskService->store($request);
+
+        // Push notices by services
+        $token = Auth::user()->token;
+        $this->pushNotices($token, $task->title, $task->description, $task->id);
 
         if (!$request->filled('id')) {
             return redirect()->route(TASK_DEPOSIT_ADMIN_ROUTER, $task->id);
@@ -104,5 +100,19 @@ class Task extends Controller
         $task = $this->taskService->find($id);
 
         return view('admin.task.deposit', ['task' => $task]);
+    }
+
+    private function pushNotices($token, $title, $desc, $taskId, $icon = null)
+    {
+        Http::withToken($token)
+            ->post(config('app.api_url_notice') . "/api/push_tasks", [
+                "title" => $title ?? '🙂🙂🙂 Có tin mới!',
+                "description" => $desc ?? '🙂🙂🙂 Bạn có tin nhắn từ Plats',
+                "type" => "new_task",
+                "task_id" => $taskId,
+                "icon"  => $icon
+            ]);
+
+        return;
     }
 }
