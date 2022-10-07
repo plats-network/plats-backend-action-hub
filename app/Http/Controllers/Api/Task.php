@@ -19,6 +19,7 @@ use App\Repositories\TaskRepository;
 use App\Repositories\TaskUserRepository;
 use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class Task extends ApiController
 {
@@ -139,6 +140,7 @@ class Task extends ApiController
     {
         // Todo: Refactor sau khi co time
         $userId = $request->user()->id;
+        $token= request()->bearerToken();
         # Check Task
         $task = $this->taskRepository->find($taskId);
 
@@ -162,9 +164,15 @@ class Task extends ApiController
                 return $this->respondWithResource(new TaskUserResource($datas), "Có task đang chạy!");
             } else {
                 $this->createTask($taskId, $userId, $locationId, $task, $taskImprogress);
+
+                // Push notice by service
+                $this->pushNotice($token, $task->title, $task->description, $taskId);
             }
         } else {
             $this->createTask($taskId, $userId, $locationId, $task, $taskImprogress);
+
+            // Push notice by service
+            $this->pushNotice($token, $task->title, $task->description, $taskId);
         }
 
         $datas = ['is_improgress' => false];
@@ -259,5 +267,18 @@ class Task extends ApiController
             DB::rollBack();
             throw new RuntimeException($exception->getMessage(), 500062, $exception->getMessage(), $exception);
         }
+    }
+
+    private function pushNotice($token, $title, $desc, $taskId)
+    {
+        Http::withToken($token)->post(config('app.api_url_notice') . "/api/push_notice", [
+            "title" => $title,
+            "description" => $desc,
+            "type" => "new_task",
+            "task_id" => $taskId,
+            "icon"  => null
+        ]);
+
+        return;
     }
 }

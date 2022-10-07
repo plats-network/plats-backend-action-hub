@@ -59,7 +59,7 @@ class PlatsUserProvider implements UserProvider
      */
     public function retrieveByCredentials(array $credentials)
     {
-        $response = Http::post(config('auth.login_url'), $credentials);
+        $response = Http::post(config('app.api_user_url') . '/api/login', $credentials);
 
         $data = $response->json('data');
         if ($response->failed() || empty($data)) {

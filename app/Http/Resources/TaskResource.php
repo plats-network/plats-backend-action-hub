@@ -81,7 +81,7 @@ class TaskResource extends JsonResource
     protected function getUserDetail($userId)
     {
         try {
-            $url = config('app.api_user_url') . '/profile/' . $userId;
+            $url = config('app.api_user_url') . '/api/profile/' . $userId;
             $response = Http::withToken(request()->bearerToken())->get($url);
         } catch (ModelNotFoundException $e) {
             return null;
