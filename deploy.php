@@ -1,5 +1,4 @@
 <?php
-<?php
 namespace Deployer;
 
 require 'vendor/autoload.php';
