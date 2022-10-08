@@ -8,7 +8,7 @@ require 'recipe/laravel.php';
 require 'contrib/npm.php';
 
 // Ip hosts
-set('ip_prod', 'xx.xx.xx.xx'); // TODO: ip ec2 prod
+set('ip_prod', '194.233.72.10'); // TODO: ip ec2 prod
 set('ip_stg', '194.233.72.10');
 set('ip_dev', '194.233.72.10');
 
@@ -69,7 +69,7 @@ host('stg')
     ->set('deploy_path', '{{stg_action_path}}');
 
 host('dev')
-    ->set('hostname', '{{ip_stg}}')
+    ->set('hostname', '{{ip_dev}}')
     ->set('stage', 'staging')
     ->set('remote_user', 'deploy')
     ->set('identityFile', '~/.ssh/id_techld')
@@ -104,7 +104,7 @@ task('deploy', [
     'deploy:vendors',
     'deploy:symlink',
     'reload:php-fpm',
-    'deploy:publish',
+    'deploy:publish'
 ]);
 
 // [Optional] if deploy fails automatically unlock.
