@@ -69,10 +69,10 @@ host('stg')
 
 host('dev')
     ->set('hostname', '{{ip_dev}}')
-    ->set('stage', 'staging')
+    ->set('stage', 'development')
     ->set('remote_user', 'deploy')
     ->set('identityFile', '~/.ssh/id_techld')
-    ->set('branch', 'staging')
+    ->set('branch', 'develop')
     ->set('deploy_path', '{{dev_action_path}}');
 
 // Reset php
