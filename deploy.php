@@ -103,7 +103,7 @@ task('deploy', [
     'deploy:vendors',
     'deploy:symlink',
     'reload:php-fpm',
-    'deploy:publish'
+    'deploy:cleanup'
 ]);
 
 // [Optional] if deploy fails automatically unlock.
