@@ -32,7 +32,7 @@ class Task extends Model
         'name',
         'description',
         'image',
-        'duration',// Minute
+        'duration', // Minute
         'order',
         'total_reward',
         'valid_amount',

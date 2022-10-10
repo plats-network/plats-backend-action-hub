@@ -58,4 +58,13 @@ if (!defined('DEFINE_CONSTANT')) {
      */
     define('ONE_OF_MANY_LOCATIONS', 1);
     define('MULTIPLE_LOCATIONS', 2);
+
+    /**
+     * User Reward Type
+     */
+    define('REWARD_TOKEN', 0);
+    define('REWARD_NFT', 1);
+    define('REWARD_VOUCHER', 2);
+    define('REWARD_BOX', 3);
+    define('REWARD_WALLET', 4);
 }

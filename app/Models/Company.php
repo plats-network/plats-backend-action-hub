@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Reward extends Model
+class Company extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
 
@@ -16,7 +16,7 @@ class Reward extends Model
      *
      * @var string
      */
-    protected $table = 'rewards';
+    protected $table = 'companies';
 
     /**
      * The attributes that are mass assignable.
@@ -25,12 +25,9 @@ class Reward extends Model
      */
     protected $fillable = [
         'name',
-        'description',
-        'image',
-        'type',
-        'region',
-        'start_at',
-        'end_at',
+        'address',
+        'phone',
+        'hotline',
     ];
 
     /**
@@ -40,14 +37,14 @@ class Reward extends Model
      */
     protected $hidden = [
         'id',
-        'deleted_at',
+        'company_id',
     ];
 
     /**
      * Get the comments for the blog post.
      */
-    public function detail_rewards()
+    public function branches()
     {
-        return $this->hasMany(DetailReward::class);
+        return $this->hasMany(Branch::class);
     }
 }
