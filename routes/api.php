@@ -1,6 +1,15 @@
 <?php
 
-use App\Http\Controllers\Api\{Task, TaskLocation, UserTask, Wallet, OpenBox};
+use App\Http\Controllers\Api\{
+    Task,
+    TaskLocation,
+    UserTask,
+    Wallet,
+    Box,
+    Vouchers,
+    VoucherHistories,
+    QrCode
+};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +37,12 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
 });
 
 Route::get('/my-tasks', [UserTask::class, 'histories']);
-Route::resource('open_box', OpenBox::class)->only(['index']);
+Route::resource('boxes', Box::class)->only(['index']);
+Route::get('box_use',[Box::class, 'used'])->name('box_use');
+Route::resource('vouchers', Vouchers::class)->only(['index', 'show']);
+Route::resource('{id}/qr_code', QrCode::class)->only(['index']);
+Route::resource('voucher_histories', VoucherHistories::class)->only(['index']);
+Route::get('/voucher_expired',[VoucherHistories::class, 'expired'])->name('voucher_expired');
 
 Route::prefix('wallet')->controller(Wallet::class)->group(function () {
     Route::post('/withdraw', 'withdraw');

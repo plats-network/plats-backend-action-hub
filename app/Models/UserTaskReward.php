@@ -7,16 +7,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Reward extends Model
+class UserTaskReward extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
-
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'rewards';
+    protected $table = 'user_task_rewards';
 
     /**
      * The attributes that are mass assignable.
@@ -24,13 +23,12 @@ class Reward extends Model
      * @var string[]
      */
     protected $fillable = [
-        'name',
-        'description',
-        'image',
-        'type',
-        'region',
-        'start_at',
-        'end_at',
+        'user_id',
+        'detail_reward_id',
+        'type', // 0: tokens, 1: NFTs, 2: Vouchers, 3: boxs, 4: Wallet
+        'amount',
+        'is_consumed',
+        'consume_at',
     ];
 
     /**
@@ -40,14 +38,16 @@ class Reward extends Model
      */
     protected $hidden = [
         'id',
+        'user_id',
         'deleted_at',
+        'detail_reward_id',
     ];
 
     /**
-     * Get the comments for the blog post.
+     * Get the user that owns the phone.
      */
-    public function detail_rewards()
+    public function detail_reward()
     {
-        return $this->hasMany(DetailReward::class);
+        return $this->belongsTo(Branch::class, 'detail_reward_id', 'id');
     }
 }
