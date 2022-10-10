@@ -83,19 +83,19 @@ task('reload:php-fpm', function () {
 // Run npm development
 // exec: dep npm:run:dev dev
 task('npm:run:dev', function () {
-    run('cd {{dev_action_path}}/current && npm install && npm run prod');
+    run('cd {{dev_action_path}}/current && npm install && npm run prod && php artisan storage:link');
 });
 
 // Run npm staging
 // exec: dep npm:run:stg stg
 task('npm:run:stg', function () {
-    run('cd {{stg_action_path}}/current && npm install && npm run prod');
+    run('cd {{stg_action_path}}/current && npm install && npm run prod && php artisan storage:link');
 });
 
 // Run npm production
 // exec: dep npm:run:prod prod
 task('npm:run:prod', function () {
-    run('cd {{prod_action_path}}/current && npm install && npm run prod');
+    run('cd {{prod_action_path}}/current && npm install && npm run prod && php artisan storage:link');
 });
 
 task('deploy', [
