@@ -31,7 +31,6 @@
                             </div>
                             <p class="h6 text-white lh-1-5 mb-5">
                                 A decentralized Action Hub for business, which provides all necessary tools and libraries for Clients to create their marketing campaigns with specific tasks
-
                             </p>
                             <div class="mb-5">
                                 <a class="btn btn-lg btn-outline-white" href="#">Learn More</a>

@@ -30,13 +30,13 @@
                 <li>
                     <a href="{{ route(TASK_LIST_ADMIN_ROUTER) }}">
                         <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
-                        <span class="label">Task Management</span>
+                        <span class="label">Quản lý tasks</span>
                     </a>
                 </li>
                 <li>
                     <a href="#">
                         <i data-acorn-icon="boxes" class="icon d-none" data-acorn-size="18"></i>
-                        <span class="label">NFT Management</span>
+                        <span class="label">Quản lý NFT</span>
                     </a>
                 </li>
                 <li>

@@ -49,6 +49,7 @@
                                 <div class="row g-0 h-100 align-content-center">
                                     <div class="col-12 col-md-7 d-flex flex-column mb-lg-0 pe-3 d-flex">
                                         <h4>
+                                            <img class="border-gray" height="50px;" src="{{ Storage::disk('s3')->url($task->cover_url) }}" alt="...">
                                             <a href="{{ route(TASK_EDIT_ADMIN_ROUTER, $task->id) }}" class="stretched-link">
                                             {{ $task->name }}
                                         </a>

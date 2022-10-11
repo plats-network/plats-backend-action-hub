@@ -23,21 +23,27 @@ class Vouchers extends ApiController
     {
         $limit = $request->get('limit') ?? PAGE_SIZE;
         $userId = $request->user()->id;
+        $type = $request->get('type');
 
-        $vouchers = $this->detailRewardRepository
-            ->getRewards($userId, REWARD_VOUCHER)
-            ->paginate($limit);
+        if ($type == 'expired') {
+            $histories = $this->detailRewardRepository->getRewards($userId, REWARD_VOUCHER, false, true);
+        } elseif ($type == 'used') {
+            $histories = $this->detailRewardRepository->getRewards($userId, REWARD_VOUCHER, true);
+        } else {
+            $histories = $this->detailRewardRepository->getRewards($userId, REWARD_VOUCHER);
+        }
 
-        if ($vouchers->isEmpty()) {
+        $histories = $histories->paginate($limit);
+        if ($histories->isEmpty()) {
             return $this->respondNotFound('Data not found!');
         }
 
-        $datas = VoucherResource::collection($vouchers);
+        $datas = VoucherResource::collection($histories);
         $pages = [
             'current_page' => (int)$request->get('page'),
-            'last_page' => $vouchers->lastPage(),
+            'last_page' => $histories->lastPage(),
             'per_page'  => (int)$limit,
-            'total' => $vouchers->lastPage()
+            'total' => $histories->lastPage()
         ];
 
         return $this->respondWithIndex($datas, $pages);

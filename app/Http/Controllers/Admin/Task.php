@@ -19,18 +19,18 @@ class Task extends Controller
     public function __construct(
         private TaskService $taskService,
         private GuildService $guildService
-    ) {
-        // Code:
-    }
+    ) {}
 
     /**
      * @return \Illuminate\Contracts\View\View
      */
     public function index(Request $request)
     {
+        $tasks = $this->taskService->search(['withCount' => ['participants', 'locations']]);
+
         return view(
             'admin.task.index',
-            ['tasks' => $this->taskService->search(['withCount' => ['participants', 'locations']])]
+            ['tasks' => $tasks]
         );
     }
 
@@ -78,8 +78,9 @@ class Task extends Controller
         $task = $this->taskService->store($request);
 
         // Push notices by services
-        $token = Auth::user()->token;
-        $this->pushNotices($token, $task->title, $task->description, $task->id);
+        // TODO: Comment tam
+        // $token = Auth::user()->token;
+        // $this->pushNotices($token, $task->title, $task->description, $task->id);
 
         if (!$request->filled('id')) {
             return redirect()->route(TASK_DEPOSIT_ADMIN_ROUTER, $task->id);
