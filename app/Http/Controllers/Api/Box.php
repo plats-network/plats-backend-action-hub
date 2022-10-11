@@ -22,16 +22,12 @@ class Box extends ApiController
     {
         $limit = $request->get('limit') ?? PAGE_SIZE;
         $userId = $request->user()->id;
-        $type = $request->get('type');
+        $type = $request->get('type') == 'unbox' ? true : false;
 
+        $boxs = $this->detailRewardRepository
+            ->getRewards($userId, REWARD_BOX, $type)
+            ->paginate($limit);;
 
-        if ($type == 'unbox') {
-            $boxs = $this->detailRewardRepository->getRewards($userId, REWARD_BOX, true);
-        } else {
-            $boxs = $this->detailRewardRepository->getRewards($userId, REWARD_BOX);
-        }
-
-        $boxs = $boxs->paginate($limit);
         if ($boxs->isEmpty()) {
             return $this->respondNotFound();
         }
