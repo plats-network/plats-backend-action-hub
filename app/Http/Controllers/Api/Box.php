@@ -22,11 +22,16 @@ class Box extends ApiController
     {
         $limit = $request->get('limit') ?? PAGE_SIZE;
         $userId = $request->user()->id;
+        $type = $request->get('type');
 
-        $boxs = $this->detailRewardRepository
-            ->getRewards($userId, REWARD_BOX)
-            ->paginate($limit);
 
+        if ($type == 'unbox') {
+            $boxs = $this->detailRewardRepository->getRewards($userId, REWARD_BOX, true);
+        } else {
+            $boxs = $this->detailRewardRepository->getRewards($userId, REWARD_BOX);
+        }
+
+        $boxs = $boxs->paginate($limit);
         if ($boxs->isEmpty()) {
             return $this->respondNotFound();
         }
@@ -37,35 +42,6 @@ class Box extends ApiController
             'last_page' => $boxs->lastPage(),
             'per_page'  => (int)$limit,
             'total' => $boxs->lastPage()
-        ];
-
-        return $this->respondWithIndex($datas, $pages);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function used(Request $request)
-    {
-        $limit = $request->get('limit') ?? PAGE_SIZE;
-        $userId = $request->user()->id;
-
-        $boxUseds = $this->detailRewardRepository
-            ->getRewards($userId, REWARD_BOX, true)
-            ->paginate($limit);
-
-        if ($boxUseds->isEmpty()) {
-            return $this->respondNotFound();
-        }
-
-        $datas = BoxResource::collection($boxUseds);
-        $pages = [
-            'current_page' => (int)$request->get('page'),
-            'last_page' => $boxUseds->lastPage(),
-            'per_page'  => (int)$limit,
-            'total' => $boxUseds->lastPage()
         ];
 
         return $this->respondWithIndex($datas, $pages);
