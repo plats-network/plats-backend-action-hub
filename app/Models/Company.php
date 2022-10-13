@@ -28,6 +28,7 @@ class Company extends Model
         'address',
         'phone',
         'hotline',
+        'logo_path',
     ];
 
     /**

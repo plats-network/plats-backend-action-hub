@@ -24,10 +24,9 @@ class TaskDogingResource extends JsonResource
             "time_start_orginal" => Carbon::parse($this->time_start)->format('Y-m-d H:i:s'),
             "time_end_orginal" => Carbon::parse($this->time_end)->format('Y-m-d H:i:s'),
             "wallet_address" => $this->wallet_address,
+            "time_expried"  => Carbon::parse($this->time_end) > Carbon::now() ? false : true,
             "task" => $this->task,
             "task_locations" => $this->taskLocations()->first(),
         ];
-
-        // return parent::toArray($request);
     }
 }

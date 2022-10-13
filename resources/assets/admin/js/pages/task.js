@@ -59,6 +59,7 @@ class TaskControls {
 
     // Single Image Upload initialization
     _initSingleImageUpload() {
+        alert(2);
         this._singleImageUploadExample = document.getElementById('taskImgCover');
         const singleImageUpload = new SingleImageUpload(
             this._singleImageUploadExample);

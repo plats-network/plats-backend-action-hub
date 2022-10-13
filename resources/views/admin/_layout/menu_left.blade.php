@@ -28,6 +28,12 @@
             </a>
             <ul>
                 <li>
+                    <a href="{{ route(COMPANY_LIST_ADMIN_ROUTER) }}">
+                        <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
+                        <span class="label">Quản lý companies</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route(TASK_LIST_ADMIN_ROUTER) }}">
                         <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
                         <span class="label">Quản lý tasks</span>

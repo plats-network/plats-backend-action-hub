@@ -93,5 +93,14 @@ return [
     'placeholders' => [
         'valid_amount' => 'Ex: number of places to checkin',
         'phone_number' => 'Ex: 0123456789'
+    ],
+    'company' => [
+        'name' => 'Name',
+        'form' => [
+            'name' => 'Name',
+            'logo' => 'Logo',
+            'address' => 'Address',
+            'phone' => 'Phone number'
+        ]
     ]
 ];

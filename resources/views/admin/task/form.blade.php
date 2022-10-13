@@ -106,6 +106,7 @@
                 </div>
             </div>
             <!--- END Basic information -->
+
             <!--- Guilds -->
             @include('admin.task._form.guild')
             <!--- End Guilds -->
@@ -148,8 +149,6 @@
                     </span>
                 </button>
             </div>
-
-
         </div>
     </div>
 </x-form::open>

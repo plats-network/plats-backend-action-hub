@@ -25,4 +25,10 @@ if (!defined('DEFINE_ADMIN_ROUTER')) {
 
     // Guild
     define('GUILD_LIST_ADMIN_ROUTER', 'admin.guild.list.route');
+
+    // Company
+    define('COMPANY_LIST_ADMIN_ROUTER', 'admin.company.list.route');
+    define('COMPANY_CREATE_ADMIN_ROUTER', 'admin.company.create.route');
+    define('COMPANY_EDIT_ADMIN_ROUTER', 'admin.company.edit.route');
+    define('COMPANY_STORE_ADMIN_ROUTER', 'admin.company.store.route');
 }

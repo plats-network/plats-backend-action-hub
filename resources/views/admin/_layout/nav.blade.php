@@ -11,7 +11,7 @@
     <div class="user-container d-flex">
         <a href="#" class="d-flex user position-relative" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <img class="profile" alt="profile" src="{{ asset('img/admin/profile/profile-starbucks.jpg') }}" />
-            <div class="name">{{ auth()->user()->name }}</div>
+            <div class="name">{{ optional(auth()->user())->name }}</div>
         </a>
         <div class="dropdown-menu dropdown-menu-end user-menu wide">
             <div class="row mb-3 ms-0 me-0">

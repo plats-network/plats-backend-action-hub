@@ -27,15 +27,11 @@ class DetailRewardRepository extends BaseRepository
         $data = $this->model
             ->with('branch:id,name,address')
             ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type, $flag) {
-                $query->whereUserId($userId)->whereType($type)->where('is_consumed', $flag);
-                // if ($flag == true) {
-                //     $query->where('is_consumed', $flag);
-                // }
+                $query->whereUserId($userId)->whereType($type);
+                if ($flag == true) { $query->where('is_consumed', $flag); }
             });
 
-        if ($expired == true) {
-            $data->where('end_at', '<', $date);
-        }
+        if ($expired == true) { $data->where('end_at', '<', $date); }
 
         return $data;
     }
@@ -49,5 +45,10 @@ class DetailRewardRepository extends BaseRepository
             })
             ->whereId($detaiRewardId)
             ->firstOrFail();
+    }
+
+    public function getDetail($id)
+    {
+        return $this->model->findOrFail($id);
     }
 }

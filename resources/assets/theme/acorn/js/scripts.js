@@ -93,7 +93,9 @@
     }
 
     if (typeof Checkall !== 'undefined') {
-      new Checkall(document.getElementById('checkAllforCheckboxTable'));
+      if ($('#checkAllforCheckboxTable').length > 0) {
+        new Checkall(document.getElementById('checkAllforCheckboxTable'));
+      }
     }
   }
 

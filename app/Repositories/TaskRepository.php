@@ -22,7 +22,11 @@ class TaskRepository extends BaseRepository
      */
     public function latestTasks($limit = PAGE_SIZE)
     {
-        return $this->model->where('status', ACTIVE_TASK)->latest()->limit($limit)->get();
+        return $this->model
+            ->where('status', ACTIVE_TASK)
+            ->latest()
+            ->limit($limit)
+            ->get();
     }
 
     /**
@@ -33,7 +37,9 @@ class TaskRepository extends BaseRepository
      */
     public function taskHasLocation($taskId, $locaId)
     {
-        return $this->model->hasLocation($locaId)->findOrFail($taskId);
+        return $this->model
+            ->hasLocation($locaId)
+            ->findOrFail($taskId);
     }
 
     /**
@@ -44,7 +50,8 @@ class TaskRepository extends BaseRepository
      */
     public function userJoinedTask($userId, $taskId)
     {
-        return $this->model->where('id', $taskId)
+        return $this->model
+            ->where('id', $taskId)
             ->userJoinedTask($userId)
             ->first();
     }

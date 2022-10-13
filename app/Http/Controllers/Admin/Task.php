@@ -78,9 +78,8 @@ class Task extends Controller
         $task = $this->taskService->store($request);
 
         // Push notices by services
-        // TODO: Comment tam
-        // $token = Auth::user()->token;
-        // $this->pushNotices($token, $task->title, $task->description, $task->id);
+        $token = Auth::user()->token;
+        $this->pushNotices($token, $task->title, $task->description, $task->id);
 
         if (!$request->filled('id')) {
             return redirect()->route(TASK_DEPOSIT_ADMIN_ROUTER, $task->id);

@@ -276,15 +276,10 @@ class TaskService extends BaseService
 
         $data = $request->except(['image', 'locations', 'guilds']);
 
-        // $uploadedFile = $request->file('image');
-        // $path = 'tasks/cover/' . Carbon::now()->format('Ymd');
-        // dd(Storage::disk('s3')->put($path, $uploadedFile, $uploadedFile->hashName()));
-        // $data['image'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
         //Save cover
         if ($request->hasFile('image')) {
             $uploadedFile = $request->file('image');
             $path = 'tasks/cover/' . Carbon::now()->format('Ymd');
-            // dd(Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName()));
             $data['image'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
         }
 

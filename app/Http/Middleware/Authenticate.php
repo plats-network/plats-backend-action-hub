@@ -60,12 +60,12 @@ class Authenticate extends Middleware
      */
     protected function unauthenticated($request, array $guards)
     {
+        // if ($request->segment(1) == 'cp' && is_null($this->auth->user())) {
+        //     return route(LOGIN_ADMIN_ROUTE);
+        // }
+
         abort(response()->json([
             'success' => false,
             'message' => 'Unauthenticated',], 401));
-
-        // throw new AuthenticationException(
-        //     'Unauthenticated.', $guards, $this->redirectTo($request)
-        // );
     }
 }
