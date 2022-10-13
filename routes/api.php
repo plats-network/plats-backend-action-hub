@@ -36,7 +36,7 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
 });
 
 Route::get('/my-tasks', [UserTask::class, 'histories']);
-Route::resource('boxes', Box::class)->only(['index']);
+Route::resource('boxes', Box::class)->only(['index', 'update']);
 Route::get('box_use',[Box::class, 'used'])->name('box_use');
 Route::resource('vouchers', Vouchers::class)->only(['index', 'show']);
 Route::resource('{id}/qr_code', QrCode::class)->only(['index']);
