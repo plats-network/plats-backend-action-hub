@@ -25,12 +25,12 @@ class Vouchers extends ApiController
         $userId = $request->user()->id;
         $type = $request->get('type');
 
-        if ($type == 'expired') {
-            $histories = $this->detailRewardRepository->getRewards($userId, REWARD_VOUCHER, false, true);
-        } elseif ($type == 'used') {
-            $histories = $this->detailRewardRepository->getRewards($userId, REWARD_VOUCHER, true);
-        } else {
+        if (is_null($type)) {
             $histories = $this->detailRewardRepository->getRewards($userId, REWARD_VOUCHER);
+        } elseif ($type == 'expired') {
+            $histories = $this->detailRewardRepository->getRewards($userId, REWARD_VOUCHER, false, true);
+        } else {
+            $histories = $this->detailRewardRepository->getRewards($userId, REWARD_VOUCHER, true);
         }
 
         $histories = $histories->paginate($limit);
