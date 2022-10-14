@@ -10,17 +10,11 @@ use Illuminate\Http\Request;
 class UserTask extends ApiController
 {
     /**
-     * @var \App\Services\UserTaskService
+     * @param App\Services\UserTaskService $userTaskService
      */
-    protected $userTaskService;
-
-    /**
-     * @param \App\Services\UserTaskService $userTaskService
-     */
-    public function __construct(UserTaskService $userTaskService)
-    {
-        $this->userTaskService = $userTaskService;
-    }
+    public function __construct(
+        private UserTaskService $userTaskService
+    ) {}
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -29,6 +23,11 @@ class UserTask extends ApiController
      */
     public function histories(Request $request)
     {
-        return UserTaskHistoryResource::collection($this->userTaskService->search(['user_id' => $request->user()->id]));
+        $userId = $request->user()->id;
+
+        $datas = $this->userTaskService
+            ->search(['user_id' => $userId]);
+
+        return UserTaskHistoryResource::collection($datas);
     }
 }

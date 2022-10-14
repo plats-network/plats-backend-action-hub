@@ -27,7 +27,7 @@ class TaskUser extends Model
     protected $fillable = [
         'user_id',
         'task_id',
-        'status',
+        'status', // 0: waiting, 1: processing, 2: completed, 3: cancel, 4: timeout
         'wallet_address',
         'location_checked',
         'time_left',
@@ -52,7 +52,7 @@ class TaskUser extends Model
      */
     public function task()
     {
-        return $this->belongsTo(Task::class, 'task_id');
+        return $this->belongsTo(Task::class, 'task_id', 'id');
     }
 
     /**

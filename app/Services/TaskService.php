@@ -196,7 +196,7 @@ class TaskService extends BaseService
 
         //Save image
         $filePath = 'user_tasks/' . $userId . '/' . $taskId . '/';
-        $image = Storage::putFileAs($filePath, $imageFile, $imageFile->hashName());
+        $image = Storage::disk('s3')->putFileAs($filePath, $imageFile, $imageFile->hashName());
 
         $taskLocation->ended_at = Carbon::now();
         $taskLocation->checkin_image = $image;

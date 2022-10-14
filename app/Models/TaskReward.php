@@ -9,9 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TaskReward extends Model
 {
-    use HasFactory;
-    use Uuid;
-    use SoftDeletes;
+    use HasFactory, Uuid, SoftDeletes;
 
     /**
      * The table associated with the model.

@@ -12,8 +12,8 @@ class QrCode extends ApiController
     public function __construct(
         private DetailRewardRepository $detailRewardRepository
     ) {}
-    /**
 
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

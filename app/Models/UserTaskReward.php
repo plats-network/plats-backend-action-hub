@@ -27,7 +27,7 @@ class UserTaskReward extends Model
         'detail_reward_id',
         'type', // 0: tokens, 1: NFTs, 2: Vouchers, 3: boxs, 4: Wallet
         'amount',
-        'is_consumed',
+        'is_consumed', // false: chưa nhận, true: đã nhận
         'consume_at',
     ];
 

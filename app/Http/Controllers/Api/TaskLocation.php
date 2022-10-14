@@ -10,17 +10,11 @@ use App\Services\TaskLocationService;
 class TaskLocation extends ApiController
 {
     /**
-     * @var \App\Services\TaskLocationService
+     * @param App\Services\TaskLocationService taskLocationService
      */
-    protected $taskLocationService;
-
-    /**
-     * @param \App\Services\TaskLocationService taskLocationService
-     */
-    public function __construct(TaskLocationService $taskLocationService)
-    {
-        $this->taskLocationService = $taskLocationService;
-    }
+    public function __construct(
+        private TaskLocationService $taskLocationService
+    ) {}
 
     /**
      * @param \App\Http\Requests\CreateTaskLocationRequest $request
@@ -30,7 +24,9 @@ class TaskLocation extends ApiController
      */
     public function create(CreateTaskLocationRequest $request, $taskId)
     {
-        $taskLocation = new TaskLocationResource($this->taskLocationService->create($request, $taskId));
+        $data = $this->taskLocationService->create($request, $taskId);
+        $taskLocation = new TaskLocationResource($data);
+
         return $this->respondWithResource($taskLocation);
     }
 }

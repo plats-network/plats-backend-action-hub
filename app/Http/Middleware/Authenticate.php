@@ -64,6 +64,10 @@ class Authenticate extends Middleware
         //     return route(LOGIN_ADMIN_ROUTE);
         // }
 
+        if ($request->path() == 'api/task_notices') {
+            return true;
+        }
+
         abort(response()->json([
             'success' => false,
             'message' => 'Unauthenticated',], 401));

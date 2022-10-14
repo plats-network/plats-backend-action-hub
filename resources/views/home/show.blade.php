@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="./src/styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap"
       rel="stylesheet"
@@ -118,7 +119,7 @@
     }
 
     .voucher-card__thumbnail {
-      height: 480px;
+      height: 220px;
       width: 100%;
       background: url("{{{ $detail->url_image }}}") top / cover;
     }

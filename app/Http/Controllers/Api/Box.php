@@ -29,7 +29,7 @@ class Box extends ApiController
 
         $boxs = $this->detailRewardRepository
             ->getRewards($userId, REWARD_BOX, $type)
-            ->paginate($limit);;
+            ->paginate($limit);
 
         if ($boxs->isEmpty()) {
             return $this->respondNotFound();
@@ -44,6 +44,25 @@ class Box extends ApiController
         ];
 
         return $this->respondWithIndex($datas, $pages);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id, Request $request)
+    {
+        try {
+            $userId = $request->user()->id;
+            $data = $this->detailRewardRepository
+                ->getReward($userId, $id, REWARD_BOX);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        return $this->respondWithResource(new BoxResource($data));
     }
 
     /**

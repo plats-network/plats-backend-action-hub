@@ -10,6 +10,7 @@ use Carbon\Carbon;
 class DetailRewardRepository extends BaseRepository
 {
     /**
+     * 
      * Specify Model class name
      *
      * @return string

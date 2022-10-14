@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\TaskUser;
 use App\Repositories\Concerns\BaseRepository;
+use Carbon\Carbon;
 
 class TaskUserRepository extends BaseRepository
 {
@@ -26,9 +27,9 @@ class TaskUserRepository extends BaseRepository
     public function userStartedTask($taskId, $userId)
     {
         return $this->model::with('task:id,name', 'taskLocations')
-        ->where('task_id', $taskId)
-        ->where('user_id', $userId)
-        ->first();
+            ->where('task_id', $taskId)
+            ->where('user_id', $userId)
+            ->first();
     }
     
     /**
@@ -42,10 +43,10 @@ class TaskUserRepository extends BaseRepository
     public function userDoingOtherTasks($taskId, $userId)
     {
         return $this->model::with('task:id,name', 'taskLocations')
-        ->where('task_id', '!=', $taskId)
-        ->where('user_id', $userId)
-        ->where('status', USER_PROCESSING_TASK)
-        ->first();
+            ->where('task_id', '!=', $taskId)
+            ->where('user_id', $userId)
+            ->where('status', USER_PROCESSING_TASK)
+            ->first();
     }
     
     /**
@@ -59,9 +60,9 @@ class TaskUserRepository extends BaseRepository
     public function userDoingTask($userId)
     {
         return $this->model::with('task:id,name', 'taskLocations')
-        ->where('user_id', $userId)
-        ->where('status', USER_PROCESSING_TASK)
-        ->first();
+            ->where('user_id', $userId)
+            ->where('status', USER_PROCESSING_TASK)
+            ->first();
     }
 
     /**
@@ -73,6 +74,27 @@ class TaskUserRepository extends BaseRepository
      */
     public function updateStatusTask($taskId, $userId, $status = USER_PROCESSING_TASK)
     {
-        return $this->model->where('task_id', $taskId)->where('user_id', $userId)->update(['status' => $status]);
+        return $this->model
+            ->where('task_id', $taskId)
+            ->where('user_id', $userId)
+            ->update(['status' => $status]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTaskStatus($status = 0, $type = false)
+    {
+        $query = $this->model
+            ->with('task')
+            ->where('status', $status);
+
+        if ($type) {
+            $now = Carbon::now()->subMinutes(1000000);
+            $query->where('time_end', '>=', $now)
+                ->where('time_end', '<=', Carbon::now());
+        }
+
+        return $query;
     }
 }
