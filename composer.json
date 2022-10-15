@@ -35,6 +35,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
+        "deployer/deployer": "^7.0",
         "dietercoopman/laravel-showsql": "^1.3",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
