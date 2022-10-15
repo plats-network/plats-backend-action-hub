@@ -145,7 +145,7 @@ class TaskService extends BaseService
         }
         DB::beginTransaction();
         try {
-            $locaUserHistory = $this->localHistoryRepo->create([
+            $locaUserHistory = $this->locationHistoryRepository->create([
                 'user_id' => $userId,
                 'location_id' => $locaId,
                 'started_at' => SupportCarbon::now(),
@@ -337,7 +337,7 @@ class TaskService extends BaseService
         /**
          * Get user histories with task and map user_status to each location
          */
-        $userHistories = $this->localHistoryRepo->myHistoryInLocas($userId, $task->locations->pluck('id'));
+        $userHistories = $this->locationHistoryRepository->myHistoryInLocas($userId, $task->locations->pluck('id'));
         if ($userHistories->isEmpty()) {
             return $task;
         }
@@ -379,7 +379,7 @@ class TaskService extends BaseService
 
         $userTask->delete();
 
-        $this->localHistoryRepo->getModel()
+        $this->locationHistoryRepository->getModel()
             ->ofUser($userId)
             ->whereIn('location_id', $task->locations->pluck('id'))
             ->delete();
