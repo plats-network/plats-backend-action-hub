@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Repositories\DetailRewardRepository;
 use App\Http\Resources\BoxResource;
 use App\Http\Resources\UnboxResource;
-
+use Carbon\Carbon;
 
 
 class Box extends ApiController
@@ -78,12 +78,14 @@ class Box extends ApiController
             $data = $this->detailRewardRepository->getReward($userId, $id, REWARD_BOX);
 
             if ($data->user_task_reward) {
-                if (optional($data->user_task_reward)->amount > 0) {
+                if (optional($data->user_task_reward)->is_consumed == 1) {
                     return $this->responseMessage('Open boxed!');
                 }
 
                 $data->user_task_reward->update([
-                    'amount' => $data->amount ?? 120,
+                    'is_consumed' => true,
+                    'consume_at' => Carbon::now(),
+                    'amount' => $data->amount ?? 0,
                     'type' => REWARD_BOX
                 ]);
             }

@@ -17,6 +17,8 @@ class BoxResource extends JsonResource
     public function toArray($request)
     {
         $isExpired = is_null($this->end_at) ? true : Carbon::now() > $this->end_at;
+        $isOpen = optional($this->user_task_reward)->is_consumed == 0 ? false : true;
+        $openLabel = optional($this->user_task_reward)->is_consumed == 0 ? 'Chưa mở' : 'Đã mở';
 
         return [
             'id' => $this->id,
@@ -27,7 +29,9 @@ class BoxResource extends JsonResource
             'expired_timestamp'  => is_null($this->end_at) ? null : Carbon::parse($this->end_at)->timestamp,
             'is_expired' => $isExpired,
             'unbox_label' => optional($this->user_task_reward)->is_consumed == 0 ? 'Unbox' : 'Unboxed',
-            'is_unbox' => optional($this->user_task_reward)->is_consumed == 0 ? false : true
+            'is_unbox' => optional($this->user_task_reward)->is_consumed == 0 ? false : true,
+            'is_open' => $isOpen,
+            'open_label' => $openLabel,
         ];
     }
 }
