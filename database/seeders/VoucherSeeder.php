@@ -29,6 +29,14 @@ class VoucherSeeder extends Seeder
         $content = $res->getBody()->getContents();
         $datas = json_decode($content)->data;
 
+        $logos = [
+            'https://30shine.com/static/media/log-30shine-white.9945e644.jpg',
+            'https://i.imgur.com/UuCaWFA.png',
+            'https://global.toyota/pages/global_toyota/mobility/toyota-brand/emblem_001.jpg',
+            'https://www.highlandscoffee.com.vn/vnt_upload/weblink/1200px-Highlands_Coffee_logo.svg.png',
+            'https://tocotocotea.com/wp-content/uploads/2021/04/Logo-ngang-01.png'
+        ];
+
         print "1. Xoa du lieu cac bang\n";
         DB::table('companies')->delete();
         DB::table('branches')->delete();
@@ -66,7 +74,7 @@ class VoucherSeeder extends Seeder
         Reward::create([
             'name' => 'My box',
             'description' => 'Desc my box',
-            'image' => 'https://i.imgur.com/UuCaWFA.png',
+            'image' => $logos[array_rand($logos, 1)],
             'type' => 0,
             'region' => 0,
             'start_at' => Carbon::now(),
@@ -101,11 +109,11 @@ class VoucherSeeder extends Seeder
 
         do {
             $names = [
-                'Tưng bừng mua 3 tặng 1 tại 30shine store',
-                'Giảm 50% cho hoá đơn mua mang về',
-                'Mua 3 sản phẩm freeship',
-                'Giảm 50% hoá đơn cho mọi dịch vụ tại salon',
-                'Giảm 50% cho hoá đơn mua mang về'
+                'Data test - Tưng bừng mua 3 tặng 1 tại 30shine store',
+                'Data test - Giảm 50% cho hoá đơn mua mang về',
+                'Data test - Mua 3 sản phẩm freeship',
+                'Data test - Giảm 50% hoá đơn cho mọi dịch vụ tại salon',
+                'Data test - Giảm 50% cho hoá đơn mua mang về'
             ];
 
             $type = random_int(0,1);
@@ -120,7 +128,7 @@ class VoucherSeeder extends Seeder
                 'type' => $type, // 0: token plats, 1: vouchers 30shine, 2: vouchers xem phim, 3: thẻ điện thoại...
                 'name' => $name,
                 'description' => $desc,
-                'url_image' => 'https://i.imgur.com/UuCaWFA.png',
+                'url_image' => $logos[array_rand($logos, 1)],
                 'qr_code' => $qr_code,
                 'amount' => $amount,
                 'status' => 1,

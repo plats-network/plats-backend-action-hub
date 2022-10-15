@@ -22,8 +22,8 @@ class BoxResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'name' => 'Open the box now!',
-            'icon'  => 'https://i.imgur.com/UuCaWFA.png',
+            'name' => 'Data test Open the box now!',
+            'icon'  => $this->url_image,
             'expired_date'  => is_null($this->end_at) ? null : Carbon::parse($this->end_at)->format('d/m/Y'),
             'expired_time'  => is_null($this->end_at) ? null : Carbon::parse($this->end_at)->format('H:i'),
             'expired_timestamp'  => is_null($this->end_at) ? null : Carbon::parse($this->end_at)->timestamp,
