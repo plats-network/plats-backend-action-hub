@@ -25,7 +25,10 @@ class LocationHistoryRepository extends BaseRepository
      */
     public function location($userId, $locaId)
     {
-        return $this->model->ofUser($userId)->where('location_id', $locaId)->first();
+        return $this->model
+            ->ofUser($userId)
+            ->where('location_id', $locaId)
+            ->first();
     }
 
     /**
@@ -54,5 +57,21 @@ class LocationHistoryRepository extends BaseRepository
         }
 
         return $builder->whereIn('location_id', $subtaskIds)->get();
+    }
+
+    /**
+     * @param $userId
+     * @param $taskId
+     *
+     * @return mixed
+     */
+    public function firstOrNewHistory($userId, $taskId, $locaId)
+    {
+        return $this->model
+            ->firstOrNew(
+                ['user_id' => $userId],
+                ['task_id' => $taskId],
+                ['location_id' => $locaId]
+            );
     }
 }

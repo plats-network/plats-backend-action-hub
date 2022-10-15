@@ -10,6 +10,7 @@ use App\Repositories\TaskRepository;
 use App\Repositories\TaskUserRepository;
 use App\Services\Concerns\BaseService;
 use App\Services\Traits\TaskLocationTrait;
+use App\Models\TaskLocationHistory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
@@ -24,7 +25,7 @@ class TaskService extends BaseService
     /**
      * @var \App\Repositories\LocationHistoryRepository
      */
-    protected $localHistoryRepo;
+    protected $locationHistoryRepository;
 
     /**
      * @var \App\Repositories\TaskUserRepository
@@ -33,16 +34,16 @@ class TaskService extends BaseService
 
     /**
      * @param \App\Repositories\TaskRepository $repository
-     * @param \App\Repositories\LocationHistoryRepository $localHistoryRepo
+     * @param \App\Repositories\LocationHistoryRepository $locationHistoryRepository
      * @param \App\Repositories\TaskUserRepository $taskUserRepository
      */
     public function __construct(
         TaskRepository $repository,
-        LocationHistoryRepository $localHistoryRepo,
+        LocationHistoryRepository $locationHistoryRepository,
         TaskUserRepository $taskUserRepository
     ) {
-        $this->repository       = $repository;
-        $this->localHistoryRepo = $localHistoryRepo;
+        $this->repository = $repository;
+        $this->locationHistoryRepository = $locationHistoryRepository;
         $this->taskUserRepository = $taskUserRepository;
     }
 
@@ -189,28 +190,32 @@ class TaskService extends BaseService
     {
         // Get and check exists Task and Location
         $localTask = $this->repository->taskHasLocation($taskId, $locaId);
-        $taskLocation = $this->localHistoryRepo->location($userId, $locaId);
 
-        abort_if(is_null($taskLocation), 422, trans('task_user.not_started'));
-        abort_if(!is_null($taskLocation->ended_at), 422, trans('task_user.update_reject'));
+        if (!$localTask) {
+            return null;
+        }
+
+        $history = $this->locationHistoryRepository
+            ->firstOrNewHistory($userId, $taskId, $locaId);
 
         //Save image
-        $filePath = 'user_tasks/' . $userId . '/' . $taskId . '/';
+        $filePath = 'user_tasks/' . $userId . '/' . $taskId;
         $image = Storage::disk('s3')->putFileAs($filePath, $imageFile, $imageFile->hashName());
 
-        $taskLocation->ended_at = Carbon::now();
-        $taskLocation->checkin_image = $image;
-        $taskLocation->activity_log = $activityLog;
-        $taskLocation->save();
+        $history->ended_at = Carbon::now();
+        $history->checkin_image = $image;
+        $history->activity_log = $activityLog;
+        $history->save();
 
         // Update taskUser
-        if($localTask->valid_amount == $taskLocation->get()->count()) {
-            $this->taskUserRepository->updateStatusTask($taskId, $userId, USER_COMPLETED_TASK);
-        }
+        $this->taskUserRepository->updateStatusTask($taskId, $userId, USER_COMPLETED_TASK);
+        // if($localTask->valid_amount == $taskLocation->get()->count()) {
+        //     $this->taskUserRepository->updateStatusTask($taskId, $userId, USER_COMPLETED_TASK);
+        // }
         //Fire Event
-        UserCheckedInLocationEvent::dispatch($taskLocation, $localTask, $taskId);
+        // UserCheckedInLocationEvent::dispatch($history, $localTask, $taskId);
 
-        return $taskLocation;
+        return $history;
     }
 
     /**

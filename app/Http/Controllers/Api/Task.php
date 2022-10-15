@@ -190,7 +190,14 @@ class Task extends ApiController
     {
         $userId = $request->user()->id;
 
-        $dataCheckIn = $this->taskService->checkIn($taskId, $locationId,$userId, $request->image, $request->activity_log);
+        $checkTaskComplated = $this->taskUserRepository->userStartedTask($taskId, $userId);
+
+        if ($checkTaskComplated && $checkTaskComplated->status == USER_COMPLETED_TASK) {
+            return $this->responseMessage('Task checkin done!');
+        }
+
+        $dataCheckIn = $this->taskService
+            ->checkIn($taskId, $locationId,$userId, $request->image, $request->activity_log);
         
         return $this->respondWithResource(new TaskUserResource($dataCheckIn));
     }
