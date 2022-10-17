@@ -25,7 +25,6 @@ class Box extends ApiController
         $limit = $request->get('limit') ?? PAGE_SIZE;
         $userId = $request->user()->id;
         $type = $request->get('type') == 'unbox' ? true : false;
-        // dd($type);
 
         $boxs = $this->detailRewardRepository
             ->getRewards($userId, null, $type)

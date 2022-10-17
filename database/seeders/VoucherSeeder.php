@@ -116,16 +116,16 @@ class VoucherSeeder extends Seeder
                 'Data test - Giảm 50% cho hoá đơn mua mang về'
             ];
 
-            $type = random_int(0,1);
-            $name = $type == 0 ? 'Open the box now!' : $names[array_rand($names, 1)];
-            $desc = $type == 0 ? 'Mô tả box '. $i : "Mô tả vouchers" . $i;
-            $qr_code = $type == 0 ? null : substr(str_shuffle(str_repeat($pool, 5)), 0, 6);
-            $amount = $type == 0 ? random_int(100, 200) : null;
+            $type = random_int(0, 2);
+            $name = $type == 0 ? 'Token name' . $i : ($type == 1 ? 'NFTs ' . $i : $names[array_rand($names, 1)]);
+            $desc = $type == 0 ? 'Token desc' . $i : ($type == 1 ? 'NFTs desc '. $i : 'Vouchers desc ' . $i);
+            $qr_code = $type == 2 ? substr(str_shuffle(str_repeat($pool, 5)), 0, 6) : null;
+            $amount = $type == 0 ? random_int(100, 200) : ($type == 1 ? 1 : null);
 
             DetailReward::create([
                 'branch_id' => Branch::all()->random(1)->first()->id,
                 'reward_id' => Reward::first()->id,
-                'type' => $type, // 0: token plats, 1: vouchers 30shine, 2: vouchers xem phim, 3: thẻ điện thoại...
+                'type' => $type, // 0: token, 1: NFTs, 2: vouchers
                 'name' => $name,
                 'description' => $desc,
                 'url_image' => $logos[array_rand($logos, 1)],
@@ -133,7 +133,7 @@ class VoucherSeeder extends Seeder
                 'amount' => $amount,
                 'status' => 1,
                 'start_at' => Carbon::now(),
-                'end_at' => Carbon::now()->addDays(random_int(-10, 20))
+                'end_at' => Carbon::now()->addDays(random_int(-10, 10))
             ]);
             
             $j = $j + 1;
@@ -142,16 +142,17 @@ class VoucherSeeder extends Seeder
         print "6. Tạo UserTaskReward \n";
         $vochers = DetailReward::all();
         foreach($vochers as $item) {
+            $is_tray = $item->end_at <= Carbon::now() ? true : false;
+            $is_tray = random_int(0, 1);
             $utr = UserTaskReward::where('detail_reward_id', $item->id)->first();
             if ($utr) { continue; }
 
             $userId = $datas[array_rand($datas, 1)];
-            $type = $item->type == 0 ? 3 : 2;
-
             UserTaskReward::create([
                 'user_id' => $userId,
                 'detail_reward_id' => $item->id,
-                'type' => $type // 0: tokens, 1: NFTs, 2: Vouchers, 3: boxs, 4: Wallet
+                'type' => $item->type, // 0: tokens, 1: NFTs, 2: Vouchers
+                'is_tray' => $is_tray
             ]);
         }
 

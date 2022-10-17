@@ -23,8 +23,6 @@ class DetailRewardRepository extends BaseRepository
     public function getRewards($userId, $type = null, $useFlag = false, $expired = false)
     {
         $now = Carbon::now();
-        $date = Carbon::parse($now)->toDateString();
-
         $data = $this->model
             ->with('branch:id,name,address')
             ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type, $useFlag) {
@@ -36,15 +34,12 @@ class DetailRewardRepository extends BaseRepository
                     // type = 0, 1, 2: Tokens, NFTs, Vouchers
                     $query->whereType($type);
                 }
-
-                // if ($useFlag == true) {
-                //     $query->whereIsConsumed($useFlag);
-                // }
-                // $query->whereIsConsumed($useFlag);
             });
 
         if ($expired == true) {
-            $data->where('end_at', '<', $date);
+            $data->where('end_at', '<', $now);
+        } else {
+            $data->where('end_at', '>=', $now);
         }
 
         return $data;

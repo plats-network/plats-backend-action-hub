@@ -14,13 +14,10 @@ class QrCodeResource extends JsonResource
      */
     public function toArray($request)
     {
-        // dd($request->user()->id);
-
         return [
             'id' => $this->id,
             'name' => $this->name,
             'qr_code' => $this->qr_code,
-            'phone' => 'Todo: '
         ];
     }
 }
