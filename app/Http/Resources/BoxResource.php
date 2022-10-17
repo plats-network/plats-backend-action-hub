@@ -35,4 +35,3 @@ class BoxResource extends JsonResource
         ];
     }
 }
-

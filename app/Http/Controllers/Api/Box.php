@@ -9,7 +9,6 @@ use App\Http\Resources\BoxResource;
 use App\Http\Resources\UnboxResource;
 use Carbon\Carbon;
 
-
 class Box extends ApiController
 {
     public function __construct(
@@ -26,9 +25,10 @@ class Box extends ApiController
         $limit = $request->get('limit') ?? PAGE_SIZE;
         $userId = $request->user()->id;
         $type = $request->get('type') == 'unbox' ? true : false;
+        // dd($type);
 
         $boxs = $this->detailRewardRepository
-            ->getRewards($userId, REWARD_BOX, $type)
+            ->getRewards($userId, null, $type)
             ->paginate($limit);
 
         if ($boxs->isEmpty()) {
@@ -73,9 +73,10 @@ class Box extends ApiController
     public function update($id, Request $request)
     {
         $bonus = null;
+
         try {
             $userId = $request->user()->id;
-            $data = $this->detailRewardRepository->getReward($userId, $id, REWARD_BOX);
+            $data = $this->detailRewardRepository->getReward($userId, $id);
 
             if ($data->user_task_reward) {
                 if (optional($data->user_task_reward)->is_consumed == 1) {
@@ -86,7 +87,7 @@ class Box extends ApiController
                     'is_consumed' => true,
                     'consume_at' => Carbon::now(),
                     'amount' => $data->amount ?? 0,
-                    'type' => REWARD_BOX
+                    'type' => $data->type
                 ]);
             }
 

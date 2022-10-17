@@ -83,9 +83,10 @@ class Task extends Controller
         $token = Auth::user()->token;
         $this->pushNotices($token, Str::limit($task->title, 50), Str::limit($task->description, 30), $task->id);
 
-        if (!$request->filled('id')) {
-            return redirect()->route(TASK_DEPOSIT_ADMIN_ROUTER, $task->id);
-        }
+        // TODO: tạo ví metamark
+        // if (!$request->filled('id')) {
+        //     return redirect()->route(TASK_DEPOSIT_ADMIN_ROUTER, $task->id);
+        // }
 
         return redirect()->route(TASK_LIST_ADMIN_ROUTER);
     }

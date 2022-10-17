@@ -24,19 +24,27 @@ class Vouchers extends ApiController
         $limit = $request->get('limit') ?? PAGE_SIZE;
         $userId = $request->user()->id;
         $type = $request->get('type');
+        $status = $request->get('status');
+        $histories = null;
 
-        if (is_null($type)) {
-            $histories = $this->detailRewardRepository->getRewards($userId, REWARD_VOUCHER);
-        } elseif ($type == 'expired') {
-            $histories = $this->detailRewardRepository->getRewards($userId, REWARD_VOUCHER, false, true);
-        } else {
-            $histories = $this->detailRewardRepository->getRewards($userId, REWARD_VOUCHER, true);
+        if ($type == 'token') {
+            $histories = $this->detailRewardRepository->getRewards($userId, REWARD_TOKEN);
+        } elseif ($type == 'nft') {
+            $histories = $this->detailRewardRepository->getRewards($userId, REWARD_NFT);
+        } elseif ($type == 'voucher') {
+            if ($status == 'used') {
+                $histories = $this->detailRewardRepository->getRewards($userId, REWARD_VOUCHER, true);
+            } elseif ($status == 'expired') {
+                $histories = $this->detailRewardRepository->getRewards($userId, REWARD_VOUCHER, false, true);
+            } else {
+                $histories = $this->detailRewardRepository->getRewards($userId, REWARD_VOUCHER);
+            }
+
         }
 
+        if (is_null($histories)) { return $this->respondNotFound('Data not found!'); }
         $histories = $histories->paginate($limit);
-        if ($histories->isEmpty()) {
-            return $this->respondNotFound('Data not found!');
-        }
+        if ($histories->isEmpty()) { return $this->respondNotFound('Data not found!'); }
 
         $datas = VoucherResource::collection($histories);
         $pages = [

@@ -27,7 +27,7 @@
                 <span class="label">Action hub</span>
             </a>
             <ul>
-                <li>
+                <!-- <li>
                     <a href="{{ route(REWARD_LIST_ADMIN_ROUTER) }}">
                         <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
                         <span class="label">Quản lý rewards</span>
@@ -38,7 +38,7 @@
                         <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
                         <span class="label">Quản lý companies</span>
                     </a>
-                </li>
+                </li> -->
                 <li>
                     <a href="{{ route(TASK_LIST_ADMIN_ROUTER) }}">
                         <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>

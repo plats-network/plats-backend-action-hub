@@ -20,32 +20,60 @@ class DetailRewardRepository extends BaseRepository
         return DetailReward::class;
     }
 
-    public function getRewards($userId, $type = 0, $flag = false, $expired = false)
+    public function getRewards($userId, $type = null, $useFlag = false, $expired = false)
     {
         $now = Carbon::now();
         $date = Carbon::parse($now)->toDateString();
 
         $data = $this->model
             ->with('branch:id,name,address')
-            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type, $flag) {
-                $query->whereUserId($userId)->whereType($type);
-                if ($flag == true) { $query->where('is_consumed', $flag); }
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type, $useFlag) {
+                $query->whereUserId($userId)
+                    ->whereIsConsumed($useFlag)
+                    ->whereIsTray(true);
+                // Nếu type = null: Lấy tất cả hiển thị ở hidden box
+                if (!is_null($type)) {
+                    // type = 0, 1, 2: Tokens, NFTs, Vouchers
+                    $query->whereType($type);
+                }
+
+                // if ($useFlag == true) {
+                //     $query->whereIsConsumed($useFlag);
+                // }
+                // $query->whereIsConsumed($useFlag);
             });
 
-        if ($expired == true) { $data->where('end_at', '<', $date); }
+        if ($expired == true) {
+            $data->where('end_at', '<', $date);
+        }
 
         return $data;
     }
 
-    public function getReward($userId, $detaiRewardId, $type = 0)
+    public function getReward($userId, $detaiRewardId, $type = '')
     {
         return $this->model
             ->with('branch:id,address')
             ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type) {
-                $query->whereUserId($userId)->whereType($type);
+                if (is_null($type)) {
+                    $query->whereUserId($userId);
+                } else {
+                    $query->whereUserId($userId)->whereType($type);
+                }
             })
             ->whereId($detaiRewardId)
             ->firstOrFail();
+    }
+
+    public function getLockTray($userId)
+    {
+        $data = $this->model
+            ->with('branch:id,name')
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId) {
+                $query->whereUserId($userId)->whereIsTray(false);
+            });
+
+        return $data;
     }
 
     public function getDetail($id)

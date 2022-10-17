@@ -14,8 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('user_task_rewards', function (Blueprint $table) {
-            $table->integer('type')->default(0)->comment('0: Tokens, 1: NFTs, 2: Vouchers')->after('consume_at');
-            $table->integer('amount')->nullable()->comment('')->after('type');
+            $table->boolean('is_tray')->default(false)->comment('false: đang ở lock tray, true: ở main tray');
         });
     }
 

@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('user_task_rewards', function (Blueprint $table) {
-            $table->integer('type')->default(0)->comment('0: Tokens, 1: NFTs, 2: Vouchers')->after('consume_at');
-            $table->integer('amount')->nullable()->comment('')->after('type');
+        Schema::table('detail_rewards', function (Blueprint $table) {
+            $table->boolean('proccess')->default(false)->comment('flase: chưa xử lý, true: đã xử lý');
         });
     }
 
@@ -26,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('user_task_rewards', function (Blueprint $table) {
+        Schema::table('detail_rewards', function (Blueprint $table) {
             //
         });
     }

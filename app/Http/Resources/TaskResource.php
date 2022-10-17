@@ -58,6 +58,10 @@ class TaskResource extends JsonResource
             'improgress_flag'   => $task_improgress ? true : false,
             'task_improgress'   => $task_improgress,
             'task_done'         => $task_done ? true : false,
+            'near'              => [
+                'radius'        => (int)$this->valid_radius ?? 100,
+                'units'         => 'm',
+            ],
             'locations'         => $this->locations()->get()->toArray(),
             'galleries'         => $this->galleries()->get()->toArray(),
             'rewards'           => [

@@ -41,7 +41,7 @@ class Task extends Model
         'type',
         'creator_id',
         'status',
-        'checkin_type'
+        'checkin_type',
     ];
 
     /**

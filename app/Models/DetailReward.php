@@ -26,15 +26,16 @@ class DetailReward extends Model
     protected $fillable = [
         'branch_id',
         'reward_id',
-        'type', // 0: token plats, 1: vouchers 30shine, 2: vouchers xem phim, 3: thẻ điện thoại...
+        'type', // 0: token plats, 1: NFTs, 2: Vouchers
         'name',
         'amount',
         'description',
         'url_image',
         'qr_code',
-        'status',
+        'status', //
         'start_at',
-        'end_at'
+        'end_at',
+        'proccess', // true: đã xử lý, false: chưa xử lý
     ];
 
     /**
@@ -45,6 +46,7 @@ class DetailReward extends Model
     protected $hidden = [
         'id',
         'branch_id',
+        'reward_id',
     ];
 
     /**

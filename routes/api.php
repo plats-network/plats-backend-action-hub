@@ -1,14 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\{
-    Task,
-    TaskLocation,
-    UserTask,
-    Wallet,
-    Box,
-    Vouchers,
-    QrCode,
-    TaskNotice
+    Task, TaskLocation, UserTask,
+    Wallet, Box, Vouchers,
+    QrCode, TaskNotice, LockTray
 };
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +36,7 @@ Route::resource('boxes', Box::class)->only(['index', 'update', 'show']);
 Route::resource('vouchers', Vouchers::class)->only(['index', 'show']);
 Route::resource('{id}/qr_code', QrCode::class)->only(['index']);
 Route::resource('task_notices', TaskNotice::class)->only(['index']);
+Route::resource('lock_tray', LockTray::class)->only(['index', 'update']);
 Route::get('get_task', [TaskNotice::class, 'getTask']);
 
 Route::prefix('wallet')->controller(Wallet::class)->group(function () {

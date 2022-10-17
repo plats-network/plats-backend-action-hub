@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserTaskReward extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
+
     /**
      * The table associated with the model.
      *
@@ -25,10 +26,11 @@ class UserTaskReward extends Model
     protected $fillable = [
         'user_id',
         'detail_reward_id',
-        'type', // 0: tokens, 1: NFTs, 2: Vouchers, 3: boxs, 4: Wallet
+        'type', // 0: Tokens, 1: NFTs, 2: Vouchers
         'amount',
         'is_consumed', // false: chưa nhận, true: đã nhận
         'consume_at',
+        'is_tray',
     ];
 
     /**
