@@ -23,6 +23,12 @@ if (!defined('DEFINE_ADMIN_ROUTER')) {
     define('REWARD_EDIT_ADMIN_ROUTER', 'admin.reward.edit.route');
     define('REWARD_STORE_ADMIN_ROUTER', 'admin.reward.store.route');
 
+    // Reward detail
+    define('DETAIL_REWARD_LIST_ADMIN_ROUTER', 'admin.detail.reward.list.route');
+    define('DETAIL_REWARD_CREATE_ADMIN_ROUTER', 'admin.detail.reward.create.route');
+    define('DETAIL_REWARD_EDIT_ADMIN_ROUTER', 'admin.detail.reward.edit.route');
+    define('DETAIL_REWARD_STORE_ADMIN_ROUTER', 'admin.detail.reward.store.route');
+
     // Guild
     define('GUILD_LIST_ADMIN_ROUTER', 'admin.guild.list.route');
 

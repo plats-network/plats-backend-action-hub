@@ -8,7 +8,7 @@ use App\Services\GuildService;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Auth;
+use Auth, Str;
 
 class Task extends Controller
 {
@@ -26,11 +26,13 @@ class Task extends Controller
      */
     public function index(Request $request)
     {
-        $tasks = $this->taskService->search(['withCount' => ['participants', 'locations']]);
+        $tasks = $this->taskService
+            ->search(['withCount' => ['participants', 'locations']]);
 
         return view(
-            'admin.task.index',
-            ['tasks' => $tasks]
+            'admin.task.index', [
+                'tasks' => $tasks
+            ]
         );
     }
 
@@ -79,7 +81,7 @@ class Task extends Controller
 
         // Push notices by services
         $token = Auth::user()->token;
-        $this->pushNotices($token, $task->title, $task->description, $task->id);
+        $this->pushNotices($token, Str::limit($task->title, 50), Str::limit($task->description, 30), $task->id);
 
         if (!$request->filled('id')) {
             return redirect()->route(TASK_DEPOSIT_ADMIN_ROUTER, $task->id);

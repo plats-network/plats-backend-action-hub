@@ -7,6 +7,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * attrs
+ * @property uuid $id
+ * @property string $name
+ * @property string $description
+ * @property string $image
+ * @property integer $type
+ * @property integer $region
+ * @property date $start_at
+ * @property date $end_at
+ * @property datatime $created_at
+ * @property datatime $updated_at
+ */
+
 class Reward extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
@@ -27,7 +41,7 @@ class Reward extends Model
         'name',
         'description',
         'image',
-        'type',
+        'type', // 0:  1:
         'region',
         'start_at',
         'end_at',

@@ -44,8 +44,8 @@ return [
         ],
     ],
     'reward' => [
-        'page_name' => 'Reward management',
-        'page_desc' => 'List your rewards',
+        'page_name' => 'Quản lý rewards',
+        'page_desc' => 'Mô tả',
         'create_page' => 'Create a new reward',
         'edit_page' => 'Edit reward',
         'form' => [
@@ -71,7 +71,7 @@ return [
             CHECKIN => 'Checkin',
             INSTALL_APP => 'Install Mobile App',
             VIDEO_WATCH => 'Video Watch',
-            SUBSCRIBE_AND_INTERACT => 'Like / Share / Subcribe',
+            SUBSCRIBE_AND_INTERACT => 'Like/Share/Subcribe',
         ],
     ],
     'location' => [

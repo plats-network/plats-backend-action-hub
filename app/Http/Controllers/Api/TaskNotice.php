@@ -6,6 +6,9 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
 use App\Repositories\TaskUserRepository;
 use App\Http\Resources\NoticeResource;
+use App\Http\Resources\UserTaskRewardResource;
+use App\Models\Task;
+use Illuminate\Http\Request;
 
 class TaskNotice extends ApiController
 {
@@ -14,15 +17,7 @@ class TaskNotice extends ApiController
      */
     public function __construct(
         private TaskUserRepository $taskUserRepository
-    ) {
-        $this->middleware(
-            'auth:api', [
-                'except' => [
-                    'task_notices',
-                ],
-            ]
-        );
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -40,5 +35,11 @@ class TaskNotice extends ApiController
         }
 
         return $this->respondWithResource(NoticeResource::collection($data));
+    }
+
+    public function getTask(Request $request) {
+        $task = Task::all()->random(1)->first();
+
+        return $this->respondWithResource(new UserTaskRewardResource($task));
     }
 }

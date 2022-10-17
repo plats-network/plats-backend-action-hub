@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CompanyRequest extends FormRequest
+class RewardRequest extends FormRequest
 {
 
     /**
@@ -17,9 +17,11 @@ class CompanyRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:' . INPUT_MAX_LENGTH],
-            'address' => ['required', 'max:' . INPUT_MAX_LENGTH],
-            'phone' => ['string', 'min:10', 'max:15'],
-            'logo_path' => ['required']
+            'description' => ['required', 'max:' . INPUT_MAX_LENGTH],
+            'image' => ['required', 'string'],
+            'type' => ['required', 'integer', 'in: [0,1,2,3]'],
+            'start_at' => ['required'],
+            'end_at' => ['required'],
         ];
     }
 

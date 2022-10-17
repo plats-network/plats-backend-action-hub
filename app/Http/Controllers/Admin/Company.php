@@ -7,8 +7,8 @@ use App\Http\Requests\CompanyRequest;
 use App\Services\CompanyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Auth;
 use App\Repositories\CompanyRepository;
+use Auth;
 
 class Company extends Controller
 {
@@ -84,9 +84,7 @@ class Company extends Controller
     public function edit($id)
     {
         $assign = [];
-        // dd($this->companyService);
-        $assign['company'] = $this->companyService->find($id);
-        dd($assign);
+        $assign['company'] = $this->companyRepository->getDetail($id);
 
         // Save detail to session
         if (empty(request()->old()) || old('id') != $id) {

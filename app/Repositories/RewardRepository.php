@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\Company;
+use App\Models\Reward;
 use App\Repositories\Concerns\BaseRepository;
 
-class CompanyRepository extends BaseRepository
+class RewardRepository extends BaseRepository
 { 
     /**
      * Specify Model class name
@@ -14,7 +14,7 @@ class CompanyRepository extends BaseRepository
      */
     public function model()
     {
-        return Company::class;
+        return Reward::class;
     }
 
     /**

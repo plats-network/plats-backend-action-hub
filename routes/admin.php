@@ -2,10 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
-    Dashboard,
-    Task,
-    Guild,
-    Company
+    Dashboard, Task, Guild,
+    Company, Reward, DetailReward
 };
 
 Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_ADMIN_ROUTER);
@@ -27,12 +25,19 @@ Route::prefix('companies')->controller(Company::class)->group(function () {
 });
 
 // Reward management Chua co controller len commnet
-// Route::prefix('rewards')->controller(Reward::class)->group(function () {
-//     Route::get('/', 'index')->name(REWARD_LIST_ADMIN_ROUTER);
-//     Route::get('/create', 'create')->name(REWARD_CREATE_ADMIN_ROUTER);
-//     Route::get('/edit/{id}', 'edit')->name(REWARD_EDIT_ADMIN_ROUTER)->whereUuid('id');
-//     Route::post('/store', 'store')->name(REWARD_STORE_ADMIN_ROUTER);
-// });
+Route::prefix('rewards')->controller(Reward::class)->group(function () {
+    Route::get('/', 'index')->name(REWARD_LIST_ADMIN_ROUTER);
+    Route::get('/create', 'create')->name(REWARD_CREATE_ADMIN_ROUTER);
+    Route::get('/edit/{id}', 'edit')->name(REWARD_EDIT_ADMIN_ROUTER)->whereUuid('id');
+    Route::post('/store', 'store')->name(REWARD_STORE_ADMIN_ROUTER);
+});
+
+Route::prefix('rewards/{reward}')->controller(DetailReward::class)->group(function() {
+    Route::get('/lists', 'index')->name(DETAIL_REWARD_LIST_ADMIN_ROUTER);
+    Route::get('/create', 'create')->name(DETAIL_REWARD_CREATE_ADMIN_ROUTER);
+    Route::get('/edit/{id}', 'edit')->name(DETAIL_REWARD_EDIT_ADMIN_ROUTER)->whereUuid('id');
+    Route::post('/store', 'store')->name(DETAIL_REWARD_STORE_ADMIN_ROUTER);
+});
 
 // Guilds management
 Route::prefix('guilds')->controller(Guild::class)->group(function () {

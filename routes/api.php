@@ -38,10 +38,10 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
 
 Route::get('/my-tasks', [UserTask::class, 'histories']);
 Route::resource('boxes', Box::class)->only(['index', 'update', 'show']);
-Route::get('box_use',[Box::class, 'used'])->name('box_use');
 Route::resource('vouchers', Vouchers::class)->only(['index', 'show']);
 Route::resource('{id}/qr_code', QrCode::class)->only(['index']);
 Route::resource('task_notices', TaskNotice::class)->only(['index']);
+Route::get('get_task', [TaskNotice::class, 'getTask']);
 
 Route::prefix('wallet')->controller(Wallet::class)->group(function () {
     Route::post('/withdraw', 'withdraw');

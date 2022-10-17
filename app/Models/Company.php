@@ -7,6 +7,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * attrs
+ * @property uuid $id
+ * @property string $name
+ * @property string $address
+ * @property string $phone
+ * @property string $logo_path
+ * @property datatime $created_at
+ * @property datatime $updated_at
+ */
+
 class Company extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
@@ -38,7 +49,6 @@ class Company extends Model
      */
     protected $hidden = [
         'id',
-        'company_id',
     ];
 
     /**

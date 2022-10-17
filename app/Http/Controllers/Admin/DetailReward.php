@@ -3,35 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RewardRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use App\Repositories\RewardRepository;
-use App\Models\Reward as RewardModel;
-use Auth;
 
-class Reward extends Controller
+class DetailReward extends Controller
 {
-    /**
-     * @param App\Repositories\RewardRepository $rewardRepository
-     */
-    public function __construct(
-        private RewardRepository $rewardRepository
-    ) {}
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $rewards = $this->rewardRepository->paginate(10);
-
-        return view(
-            'admin.reward.index',
-            ['rewards' => $rewards]
-        );
+        //
     }
 
     /**
@@ -41,12 +24,7 @@ class Reward extends Controller
      */
     public function create()
     {
-        // Remove flash session fields before from visited
-        if (!empty(request()->old())) {
-            $this->flashReset();
-        }
-
-        return view('admin.reward.create');
+        //
     }
 
     /**
@@ -55,7 +33,7 @@ class Reward extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(RewardRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -79,15 +57,7 @@ class Reward extends Controller
      */
     public function edit($id)
     {
-        $assign = [];
-        $assign['reward'] = RewardModel::findOrFail($id);
-
-        // Save detail to session
-        if (empty(request()->old()) || old('id') != $id) {
-            $this->flashSession($assign['reward']);
-        }
-
-        return view('admin.reward.edit', $assign);
+        //
     }
 
     /**
@@ -97,7 +67,7 @@ class Reward extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(RewardRequest $request, $id)
+    public function update(Request $request, $id)
     {
         //
     }
