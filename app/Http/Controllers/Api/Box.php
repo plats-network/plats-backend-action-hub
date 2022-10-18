@@ -56,7 +56,7 @@ class Box extends ApiController
         try {
             $userId = $request->user()->id;
             $data = $this->detailRewardRepository
-                ->getReward($userId, $id, REWARD_BOX);
+                ->getReward($userId, $id, null);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }

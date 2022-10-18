@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\MissingValue;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Facades\Http;
 use App\Models\TaskUser;
+use App\Models\Reward;
 use Carbon\Carbon;
 
 class TaskResource extends JsonResource
@@ -38,7 +39,13 @@ class TaskResource extends JsonResource
           ];
         }
 
-        $task_done = $this->participants()->where('user_id', $userId)->where('status', USER_COMPLETED_TASK)->first();
+        $task_done_number = $this->participants()
+            ->where('user_id', $userId)
+            ->where('status', USER_COMPLETED_TASK)
+            ->count();
+        $task_done = $task_done_number < $this->valid_amount ? false : true;
+        $rewards = Reward::where('end_at', '>=', Carbon::now())->first();
+
 
         return [
             'id'                => $this->id,
@@ -46,7 +53,7 @@ class TaskResource extends JsonResource
             'description'       => $this->description,
             'duration'          => (int)$this->duration,
             'order'             => (int)$this->order,
-            'valid_amount'      => (float)$this->valid_amount,
+            'valid_amount'      => (int)$this->valid_amount,
             'valid_radius'      => (int)$this->valid_radius,
             'distance'          => $this->distance,
             'deposit_status'    => $this->deposit_status,
@@ -56,23 +63,16 @@ class TaskResource extends JsonResource
             'creator_id'        => $creator ? $creator['id'] : '',
             'creator_name'      => $creator ? $creator['name'] : '',
             'improgress_flag'   => $task_improgress ? true : false,
+            'task_done'         => $task_done,
             'task_improgress'   => $task_improgress,
-            'task_done'         => $task_done ? true : false,
+            'task_done_number'  => $task_done_number,
             'near'              => [
                 'radius'        => (int)$this->valid_radius ?? 100,
                 'units'         => 'm',
             ],
             'locations'         => $this->locations()->get()->toArray(),
             'galleries'         => $this->galleries()->get()->toArray(),
-            'rewards'           => [
-                // TODO:
-                'reward_id'     => '1', 
-                'name'          => 'Mystery box.', 
-                'description'   => 'You can claim after 10 days', 
-                'amount'        => '1',
-                'type'          => '1',
-                'image'         => 'https://i.imgur.com/UuCaWFA.png'
-            ]
+            'rewards'           => $rewards,
         ];
     }
 
