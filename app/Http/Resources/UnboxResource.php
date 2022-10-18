@@ -15,11 +15,15 @@ class UnboxResource extends JsonResource
      */
     public function toArray($request)
     {
+        $type_label = $this->type == 0 ? "token" : ($this->type == 1 ? 'nft' : 'voucher');
+
         return [
             'id' => $this->id,
             'name' => 'Bonus',
             'icon'  => 'https://i.imgur.com/UuCaWFA.png',
-            'amount' => $this->amount
+            'amount' => $this->amount,
+            'type' => $this->type,
+            'type_label' => $type_label,
         ];
     }
 }

@@ -75,4 +75,15 @@ class DetailRewardRepository extends BaseRepository
     {
         return $this->model->findOrFail($id);
     }
+
+    public function getBoxs($userId, $unBoxFlag = false)
+    {
+        $data = $this->model
+            ->with('branch:id,name,address')
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $unBoxFlag) {
+                $query->whereUserId($userId)->whereIsOpen($unBoxFlag)->whereIsTray(true);
+            });
+
+        return $data;
+    }
 }

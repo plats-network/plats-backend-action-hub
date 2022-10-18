@@ -24,10 +24,10 @@ class Box extends ApiController
     {
         $limit = $request->get('limit') ?? PAGE_SIZE;
         $userId = $request->user()->id;
-        $type = $request->get('type') == 'unbox' ? true : false;
+        $openFlag = $request->get('type') == 'unbox' ? true : false;
 
         $boxs = $this->detailRewardRepository
-            ->getRewards($userId, null, $type)
+            ->getBoxs($userId, $openFlag)
             ->paginate($limit);
 
         if ($boxs->isEmpty()) {
@@ -75,16 +75,16 @@ class Box extends ApiController
 
         try {
             $userId = $request->user()->id;
-            $data = $this->detailRewardRepository->getReward($userId, $id);
+            $data = $this->detailRewardRepository
+                ->getReward($userId, $id, null);
 
             if ($data->user_task_reward) {
-                if (optional($data->user_task_reward)->is_consumed == 1) {
+                if (optional($data->user_task_reward)->is_open == 1) {
                     return $this->responseMessage('Open boxed!');
                 }
 
                 $data->user_task_reward->update([
-                    'is_consumed' => true,
-                    'consume_at' => Carbon::now(),
+                    'is_open' => true,
                     'amount' => $data->amount ?? 0,
                     'type' => $data->type
                 ]);
