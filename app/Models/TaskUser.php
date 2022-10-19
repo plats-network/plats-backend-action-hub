@@ -27,6 +27,7 @@ class TaskUser extends Model
     protected $fillable = [
         'user_id',
         'task_id',
+        'location_id',
         'status', // 0: waiting, 1: processing, 2: completed, 3: cancel, 4: timeout, 5: reject
         'wallet_address',
         'location_checked',
@@ -44,6 +45,7 @@ class TaskUser extends Model
         'id',
         'user_id',
         'task_id',
+        'location_id',
         'deleted_at',
     ];
 

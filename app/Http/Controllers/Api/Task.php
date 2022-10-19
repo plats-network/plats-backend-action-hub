@@ -20,6 +20,7 @@ use App\Repositories\TaskUserRepository;
 use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 class Task extends ApiController
 {
@@ -143,12 +144,27 @@ class Task extends ApiController
         # Check Task
         $task = $this->taskRepository->find($taskId);
 
-        if (empty($task)) { return $this->respondNotFound('Task not found!'); }
+        if (empty($task)) {
+            return $this->respondNotFound('Task not found!');
+        }
+
+        # Update task time out
+        TaskUser::where('user_id', $userId)
+            ->where('status', USER_PROCESSING_TASK)
+            ->where('time_end', '<', Carbon::now())
+            ->update(['status' => USER_TIMEOUT_TASK]);
+
+        # Check task done
+        $doneTask = $this->taskUserRepository
+            ->userStartedTask($taskId, $userId);
+        if ($doneTask
+            && $doneTask->status == USER_COMPLETED_TASK
+            && $doneTask->location_id == $locationId) {
+            return $this->responseMessage('Task checkin done!');
+        }
 
         # Check task inprogress
-        $taskImprogress = TaskUser::where('user_id', $userId)
-            ->where('status', USER_PROCESSING_TASK)
-            ->get();
+        $taskImprogress = TaskUser::whereUserId($userId)->whereStatus(USER_PROCESSING_TASK)->get();
 
         if (
             null === $request->get('start_task')
@@ -250,6 +266,7 @@ class Task extends ApiController
             $this->taskUserRepository->create([
                 'user_id' => $userId,
                 'task_id' => $taskId,
+                'location_id' => $taskLocationId,
                 'status' => USER_PROCESSING_TASK,
                 'location_checked' => null,
                 'wallet_address' => null,

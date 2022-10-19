@@ -31,9 +31,10 @@ class DetailRewardRepository extends BaseRepository
                     ->whereIsTray(true);
                 // Nếu type = null: Lấy tất cả hiển thị ở hidden box
                 if (!is_null($type)) {
-                    // type = 0, 1, 2: Tokens, NFTs, Vouchers
+                    // type = 0, 1, 2, 3: Tokens, NFTs, Vouchers, Card mobile
                     $query->whereType($type);
                 }
+                $query->orderBy('updated_at', 'DESC');
             });
 
         if ($expired == true) {
@@ -53,8 +54,10 @@ class DetailRewardRepository extends BaseRepository
                 if (is_null($type)) {
                     $query->whereUserId($userId);
                 } else {
-                    $query->whereUserId($userId)->whereType($type);
+                    $query->whereUserId($userId)
+                        ->whereType($type);
                 }
+                $query->orderBy('updated_at', 'DESC');
             })
             ->whereId($detaiRewardId)
             ->firstOrFail();
@@ -65,8 +68,11 @@ class DetailRewardRepository extends BaseRepository
         $data = $this->model
             ->with('branch:id,name')
             ->whereHas('user_task_reward', function(Builder $query) use ($userId) {
-                $query->whereUserId($userId)->whereIsTray(false);
-            });
+                $query->whereUserId($userId)
+                    ->whereIsTray(false)
+                    ->orderBy('updated_at', 'DESC');
+            })
+            ->orderBy('updated_at', 'DESC');
 
         return $data;
     }
@@ -81,8 +87,11 @@ class DetailRewardRepository extends BaseRepository
         $data = $this->model
             ->with('branch:id,name,address')
             ->whereHas('user_task_reward', function(Builder $query) use ($userId, $unBoxFlag) {
-                $query->whereUserId($userId)->whereIsOpen($unBoxFlag)->whereIsTray(true);
-            });
+                $query->whereUserId($userId)
+                    ->whereIsOpen($unBoxFlag)
+                    ->whereIsTray(true);
+            })
+            ->orderBy('updated_at', 'DESC');
 
         return $data;
     }

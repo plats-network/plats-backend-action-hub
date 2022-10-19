@@ -81,13 +81,14 @@ class Box extends ApiController
             if ($data->user_task_reward) {
                 if (optional($data->user_task_reward)->is_open == 1) {
                     return $this->responseMessage('Open boxed!');
+                } else {
+                    $data->update(['updated_at' => Carbon::now()]);
+                    $data->user_task_reward->update([
+                        'is_open' => true,
+                        'amount' => $data->amount ?? 0,
+                        'type' => $data->type
+                    ]);
                 }
-
-                $data->user_task_reward->update([
-                    'is_open' => true,
-                    'amount' => $data->amount ?? 0,
-                    'type' => $data->type
-                ]);
             }
 
             $bonus = $data->user_task_reward;

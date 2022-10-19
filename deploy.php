@@ -99,6 +99,7 @@ task('npm:run:prod', function () {
 });
 
 task('deploy', [
+    'deploy:unlock',
     'deploy:prepare',
     'deploy:vendors',
     'deploy:symlink',
