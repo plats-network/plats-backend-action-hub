@@ -29,11 +29,7 @@ class TaskDogingResource extends JsonResource
                 'radius' => (int)$this->task()->first()->valid_radius ?? 100,
                 'units' => 'm',
             ],
-            "task" => [
-                'id' => optional($this->task->first())->id,
-                'name' => optional($this->task->first())->name,
-                'cover_url' => optional($this->task->first())->cover_url
-            ],
+            "task" => $this->task,
             "task_locations" => $this->taskLocations()->first(),
         ];
     }
