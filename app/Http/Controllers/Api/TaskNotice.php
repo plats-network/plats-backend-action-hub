@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\TaskUserRepository;
 use App\Http\Resources\NoticeResource;
 use App\Http\Resources\UserTaskRewardResource;
-use App\Models\Task;
+use App\Models\{Task, UserTaskReward};
 use Illuminate\Http\Request;
 
 class TaskNotice extends ApiController
@@ -24,7 +24,7 @@ class TaskNotice extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             $data = $this->taskUserRepository
@@ -37,9 +37,40 @@ class TaskNotice extends ApiController
         return $this->respondWithResource(NoticeResource::collection($data));
     }
 
+    /**
+     * Display a listing of the resource.
+     * TEST
+     * @return \Illuminate\Http\Response
+     */
     public function getTask(Request $request) {
-        $task = Task::all()->random(1)->first();
+        $type = $request->type;
 
-        return $this->respondWithResource(new UserTaskRewardResource($task));
+        if ($type == 'new_task') {
+            $task = Task::all()->random(1)->first();
+            $tile = 'Có task mới';
+        } elseif ($type == 'box') {
+            $task = UserTaskReward::whereUserId($request->user_id)
+                ->where('is_tray', true)
+                ->first();
+            $tile = 'Bạn Có box';
+        } else {
+            $task = Task::all()->random(1)->first();
+            $tile = 'Task sắp hết hạn';
+        }
+
+        $data = null;
+        if ($task) {
+            $data = [
+                'id' => $type == 'box' ? $task->detail_reward_id : $task->id,
+                'title' => $tile,
+                'desc' => 'Nội dung mô tả'
+            ];
+        }
+
+        return response()->json([
+            'data' => $data
+        ], 200);
+
+        // return $this->respondWithResource(new UserTaskRewardResource($task));
     }
 }
