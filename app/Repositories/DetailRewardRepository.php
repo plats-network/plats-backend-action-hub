@@ -96,4 +96,19 @@ class DetailRewardRepository extends BaseRepository
 
         return $data;
     }
+
+    public function getNftTokens($userId, $type = 0)
+    {
+        $data = $this->model
+            ->with('branch:id,name,address')
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type) {
+                $query->whereUserId($userId)
+                    ->whereType($type)
+                    ->whereIsOpen(true)
+                    ->whereIsTray(true);
+            })
+            ->orderBy('updated_at', 'DESC');
+
+        return $data;
+    }
 }

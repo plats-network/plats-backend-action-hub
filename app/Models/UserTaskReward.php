@@ -41,9 +41,7 @@ class UserTaskReward extends Model
      */
     protected $hidden = [
         'id',
-        'user_id',
         'deleted_at',
-        'detail_reward_id',
     ];
 
     /**

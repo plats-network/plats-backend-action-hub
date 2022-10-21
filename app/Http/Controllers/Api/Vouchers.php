@@ -28,11 +28,9 @@ class Vouchers extends ApiController
         $histories = null;
 
         if ($type == 'token') {
-            $histories = $this->detailRewardRepository
-                ->getRewards($userId, REWARD_TOKEN);
+            $histories = $this->detailRewardRepository->getNftTokens($userId);
         } elseif ($type == 'nft') {
-            $histories = $this->detailRewardRepository
-                ->getRewards($userId, REWARD_NFT);
+            $histories = $this->detailRewardRepository->getNftTokens($userId, REWARD_NFT);
         } elseif ($type == 'voucher') {
             if ($status == 'used') {
                 $histories = $this->detailRewardRepository

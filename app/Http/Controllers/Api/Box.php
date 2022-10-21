@@ -8,11 +8,15 @@ use App\Repositories\DetailRewardRepository;
 use App\Http\Resources\BoxResource;
 use App\Http\Resources\UnboxResource;
 use Carbon\Carbon;
+use App\Models\UserTaskReward;
+use App\Models\DetailReward;
 
 class Box extends ApiController
 {
     public function __construct(
-        private DetailRewardRepository $detailRewardRepository
+        private DetailRewardRepository $detailRewardRepository,
+        private UserTaskReward $userTaskReward,
+        private DetailReward $detailReward
     ) {}
 
     /**
@@ -82,12 +86,17 @@ class Box extends ApiController
                 if (optional($data->user_task_reward)->is_open == 1) {
                     return $this->responseMessage('Open boxed!');
                 } else {
-                    $data->user_task_reward->update([
-                        'is_open' => true,
-                        'amount' => $data->amount ?? 0,
-                        'type' => $data->type
-                    ]);
-                    $data->update(['updated_at' => Carbon::now()]);
+                    $this->userTaskReward
+                        ->whereUserId($userId)
+                        ->whereDetailRewardId($id)
+                        ->update([
+                            'is_open' => true,
+                            'amount' => $data->amount ?? 0,
+                            'type' => $data->type
+                        ]);
+                    $this->detailReward
+                        ->whereId($id)
+                        ->update(['updated_at' => Carbon::now()]);
                 }
             }
 
