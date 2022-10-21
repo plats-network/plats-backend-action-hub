@@ -20,21 +20,16 @@ class DetailRewardRepository extends BaseRepository
         return DetailReward::class;
     }
 
-    public function getRewards($userId, $type = null, $useFlag = false, $expired = false)
+    public function getRewards($userId, $type = 0, $useFlag = false, $expired = false)
     {
         $now = Carbon::now();
         $data = $this->model
             ->with('branch:id,name,address')
-            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type, $useFlag, $expired) {
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type, $useFlag) {
                 $query->whereUserId($userId)
                     ->whereIsConsumed($useFlag)
+                    ->whereType($type)
                     ->whereIsTray(true);
-                // Nếu type = null: Lấy tất cả hiển thị ở hidden box
-                if (!is_null($type)) {
-                    // type = 0, 1, 2, 3: Tokens, NFTs, Vouchers, Card mobile
-                    $query->whereType($type);
-                }
-                if (!$expired) { $query->whereIsOpen(true); }
                 $query->orderBy('updated_at', 'DESC');
             });
 
