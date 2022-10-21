@@ -8,11 +8,15 @@ use App\Repositories\DetailRewardRepository;
 use App\Http\Resources\QrCodeResource;
 use App\Http\Resources\LockTrayResource;
 use Carbon\Carbon;
+use App\Models\UserTaskReward;
+use App\Models\DetailReward;
 
 class LockTray extends ApiController
 {
     public function __construct(
-        private DetailRewardRepository $detailRewardRepository
+        private DetailRewardRepository $detailRewardRepository,
+        private UserTaskReward $userTaskReward,
+        private DetailReward $detailReward
     ) {}
 
     /**
@@ -64,8 +68,15 @@ class LockTray extends ApiController
                 } elseif (optional($data->user_task_reward)->is_tray == 1) {
                     return $this->responseMessage('Đã chuyển sang main tray!...');
                 } else {
-                    $data->user_task_reward->update(['is_tray' => true]);
-                    $data->update(['updated_at' => Carbon::now()]);
+                    $this->userTaskReward
+                        ->whereUserId($userId)
+                        ->whereDetailRewardId($id)
+                        ->update([
+                            'is_tray' => true
+                        ]);
+                    $this->detailReward
+                        ->whereId($id)
+                        ->update(['updated_at' => Carbon::now()]);
                 }
             }
         } catch (ModelNotFoundException $e) {
