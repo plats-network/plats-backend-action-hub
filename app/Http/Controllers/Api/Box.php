@@ -100,7 +100,10 @@ class Box extends ApiController
                 }
             }
 
-            $bonus = $data->user_task_reward;
+            $bonus = $this->userTaskReward
+                ->whereUserId($userId)
+                ->whereDetailRewardId($id)
+                ->first();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
