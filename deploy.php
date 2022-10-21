@@ -7,22 +7,18 @@ require 'recipe/laravel.php';
 require 'contrib/npm.php';
 
 // Ip hosts
-set('ip_prod', '194.233.72.10'); // TODO: ip ec2 prod
+set('ip_prod', '43.206.124.177'); // TODO: ip ec2 prod
 set('ip_stg', '194.233.72.10');
-set('ip_dev', '194.233.72.10');
-
 // Project name
-set('prod', 'prod_action');
+set('prod', 'plats_action');
 set('stg', 'plats_action');
-set('dev', 'dev_action');
 
 // Project repository
 set('repository', 'git@github.com:plats-network/plats-backend-action-hub.git');
 
 // Set release_or_current_path
-set('prod_action_path', '/home/deploy/apps/{{prod}}');
+set('prod_action_path', '/var/www/html/{{prod}}');
 set('stg_action_path', '/home/deploy/apps/{{stg}}');
-set('dev_action_path', '/home/deploy/apps/{{dev}}');
 
 // Set number of releases to keep
 set('keep_releases', 5);
@@ -55,7 +51,7 @@ host('prod')
     ->set('hostname', '{{ip_prod}}')
     ->set('stage', 'production')
     ->set('user', 'deploy')
-    ->set('identityFile', '~/.ssh/id_techld')
+    ->set('identityFile', '~/.ssh/prod_plats')
     ->set('branch', 'main')
     ->set('deploy_path', '{{prod_action_path}}');
 
@@ -67,23 +63,9 @@ host('stg')
     ->set('branch', 'staging')
     ->set('deploy_path', '{{stg_action_path}}');
 
-host('dev')
-    ->set('hostname', '{{ip_dev}}')
-    ->set('stage', 'development')
-    ->set('remote_user', 'deploy')
-    ->set('identityFile', '~/.ssh/id_techld')
-    ->set('branch', 'develop')
-    ->set('deploy_path', '{{dev_action_path}}');
-
 // Reset php
 task('reload:php-fpm', function () {
     run('sudo /usr/sbin/service php8.1-fpm reload');
-});
-
-// Run npm development
-// exec: dep npm:run:dev dev
-task('npm:run:dev', function () {
-    run('cd {{dev_action_path}}/current && npm install && npm run prod && php artisan storage:link');
 });
 
 // Run npm staging
