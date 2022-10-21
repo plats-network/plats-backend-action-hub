@@ -62,6 +62,7 @@ return [
 
     'api_user_url' => env('API_URL_USER'),
     'api_url_notice' => env('API_URL_NOTICE', ''),
+    '30shine_hash' => env('30SHINE', ''),
     /*
     |--------------------------------------------------------------------------
     | API URL
@@ -134,7 +135,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY'),
+    'key' => env('APP_KEY', ''),
 
     'cipher' => 'AES-256-CBC',
 

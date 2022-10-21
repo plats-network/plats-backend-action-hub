@@ -51,6 +51,6 @@ class UserTaskReward extends Model
      */
     public function detail_reward()
     {
-        return $this->belongsTo(Branch::class, 'detail_reward_id', 'id');
+        return $this->belongsTo(Branch::class);
     }
 }
