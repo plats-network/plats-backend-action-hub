@@ -50,7 +50,7 @@ add('writable_dirs', [
 host('prod')
     ->set('hostname', '{{ip_prod}}')
     ->set('stage', 'production')
-    ->set('user', 'deploy')
+    ->set('remote_user', 'deploy')
     ->set('identityFile', '~/.ssh/prod_plats')
     ->set('branch', 'main')
     ->set('deploy_path', '{{prod_action_path}}');
