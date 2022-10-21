@@ -25,7 +25,7 @@ class DetailRewardRepository extends BaseRepository
         $now = Carbon::now();
         $data = $this->model
             ->with('branch:id,name,address')
-            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type, $useFlag) {
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type, $useFlag, $expired) {
                 $query->whereUserId($userId)
                     ->whereIsConsumed($useFlag)
                     ->whereIsTray(true);
@@ -34,6 +34,7 @@ class DetailRewardRepository extends BaseRepository
                     // type = 0, 1, 2, 3: Tokens, NFTs, Vouchers, Card mobile
                     $query->whereType($type);
                 }
+                if (!$expired) { $query->whereIsOpen(true); }
                 $query->orderBy('updated_at', 'DESC');
             });
 

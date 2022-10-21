@@ -64,8 +64,8 @@ class LockTray extends ApiController
                 } elseif (optional($data->user_task_reward)->is_tray == 1) {
                     return $this->responseMessage('Đã chuyển sang main tray!...');
                 } else {
-                    $data->update(['updated_at' => Carbon::now()]);
                     $data->user_task_reward->update(['is_tray' => true]);
+                    $data->update(['updated_at' => Carbon::now()]);
                 }
             }
         } catch (ModelNotFoundException $e) {
