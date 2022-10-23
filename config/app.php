@@ -63,6 +63,7 @@ return [
     'api_user_url' => env('API_URL_USER'),
     'api_url_notice' => env('API_URL_NOTICE', ''),
     '30shine_hash' => env('30SHINE', ''),
+    'notice_code' => env('NOTICE_CODE', ''),
     /*
     |--------------------------------------------------------------------------
     | API URL

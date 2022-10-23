@@ -90,9 +90,8 @@ class TaskUserRepository extends BaseRepository
             ->where('status', $status);
 
         if ($type) {
-            $now = Carbon::now()->subMinutes(1000000);
-            $query->where('time_end', '>=', $now)
-                ->where('time_end', '<=', Carbon::now());
+            $now = Carbon::now()->subMinutes(10); // 10 phút
+            $query->where('time_end', '>=', $now)->where('time_end', '<=', Carbon::now());
         }
 
         return $query;

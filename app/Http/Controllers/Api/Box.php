@@ -96,7 +96,9 @@ class Box extends ApiController
                         ]);
                     $this->detailReward
                         ->whereId($id)
-                        ->update(['updated_at' => Carbon::now()]);
+                        ->update([
+                            'updated_at' => Carbon::now()
+                        ]);
                 }
             }
 

@@ -13,6 +13,7 @@ use App\Exports\CodeExport;
 
 class MakeCodeVoucher extends Command
 {
+    // Tạo voucher cho 30shine, ốc điếc...
     /**
      * The name and signature of the console command.
      *

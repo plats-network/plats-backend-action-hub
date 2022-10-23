@@ -22,5 +22,9 @@ class CodeVoucher extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['type', 'code', 'status'];
+    protected $fillable = [
+        'type', //0: 30shine, 1: Ốc điếc, 2: Achicklet
+        'code', 
+        'status'
+    ];
 }

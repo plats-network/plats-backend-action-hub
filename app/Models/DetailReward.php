@@ -26,7 +26,7 @@ class DetailReward extends Model
     protected $fillable = [
         'branch_id',
         'reward_id',
-        'type', // 0: token plats, 1: NFTs, 2: Vouchers
+        'type', // 0: token plats, 1: NFTs, 2: Vouchers, 3: card mobile, 4: ticket film
         'name',
         'amount',
         'description',
@@ -35,7 +35,7 @@ class DetailReward extends Model
         'status', //
         'start_at',
         'end_at',
-        'proccess', // true: đã xử lý, false: chưa xử lý
+        'proccess', // true: đã xử lý (cho user), false: chưa xử lý
     ];
 
     /**
