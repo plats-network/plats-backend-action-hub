@@ -67,7 +67,7 @@ class Gifts extends ApiController
         try {
             $userId = $request->user()->id;
             $data = $this->detailRewardRepository
-                ->getReward($userId, $id, REWARD_VOUCHER);
+                ->getReward($userId, $id);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }

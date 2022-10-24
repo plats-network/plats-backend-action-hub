@@ -89,7 +89,7 @@ class DetailRewardRepository extends BaseRepository
         $now = Carbon::now();
         $data = $this->model
             ->with('branch:id,name,address')
-            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type) {
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId) {
                 $query->whereUserId($userId)
                     ->whereIn('type', [2, 3])
                     ->whereIsTray(true)
