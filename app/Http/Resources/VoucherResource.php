@@ -37,6 +37,8 @@ class VoucherResource extends JsonResource
             'address' => optional($this->branch)->address,
             'is_open' => $isOpen,
             'open_label' => $isOpen ? 'unbox' : 'box',
+            'type' => optional($this->user_task_reward)->type,
+            'type_label' => BaseImage::getType(optional($this->user_task_reward)->type),
         ];
     }
 }
