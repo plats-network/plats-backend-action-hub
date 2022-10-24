@@ -31,14 +31,6 @@ class VoucherSeeder extends Seeder
         $datas = json_decode($content)->data;
         $vochers = CodeVoucher::all();
 
-        $logos = [
-            'https://30shine.com/static/media/log-30shine-white.9945e644.jpg',
-            'https://i.imgur.com/UuCaWFA.png',
-            'https://global.toyota/pages/global_toyota/mobility/toyota-brand/emblem_001.jpg',
-            'https://www.highlandscoffee.com.vn/vnt_upload/weblink/1200px-Highlands_Coffee_logo.svg.png',
-            'https://tocotocotea.com/wp-content/uploads/2021/04/Logo-ngang-01.png'
-        ];
-
         print "1. Xoa du lieu cac bang\n";
         DB::table('companies')->delete();
         DB::table('branches')->delete();
@@ -158,9 +150,9 @@ class VoucherSeeder extends Seeder
             $amount = $type == 0 ? random_int(100, 200) : ($type == 1 ? 1 : null);
 
             if ($type == 0 || $type == 1) {
-                $branch = Branch::where('company_id', '81005390-60b8-431e-bd02-b00a5c58407d')->first();
+                $branch = Branch::whereCompanyId('81005390-60b8-431e-bd02-b00a5c58407d')->first();
             } elseif ($type == 2) {
-                $branch = Branch::where('company_id', '64fb16a9-c635-4b9a-99dc-a9538c966cce')->first();
+                $branch = Branch::whereCompanyId('64fb16a9-c635-4b9a-99dc-a9538c966cce')->first();
             }
 
             DetailReward::create([
@@ -180,7 +172,7 @@ class VoucherSeeder extends Seeder
             $j = $j + 1;
         } while($j < 10000);
 
-        $b = $branch = Branch::where('company_id', '329c270e-14ae-4174-bec9-acf641e39ab9')->first();
+        $b = $branch = Branch::whereCompanyId('329c270e-14ae-4174-bec9-acf641e39ab9')->first();
         DetailReward::create([
             'branch_id' => $b->id,
             'reward_id' => Reward::first()->id,

@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
 use App\Models\Branch;
+use App\Helpers\BaseImage;
 
 class BoxResource extends JsonResource
 {
@@ -19,11 +20,12 @@ class BoxResource extends JsonResource
         $isExpired = is_null($this->end_at) ? true : Carbon::now() > $this->end_at;
         $isOpen = optional($this->user_task_reward)->is_open == 0 ? false : true;
         $openLabel = optional($this->user_task_reward)->is_consumed == 0 ? 'Chưa mở' : 'Đã mở';
+        $icon = $isOpen ? BaseImage::loadImage($this->url_image) : BaseImage::loadImage();
 
         return [
             'id' => $this->id,
             'name' => $isOpen ? 'Box đã được mở' : 'Open the box now!',
-            'icon'  => $this->url_image,
+            'icon'  => $icon,
             'expired_date'  => is_null($this->end_at) ? null : Carbon::parse($this->end_at)->format('d/m/Y'),
             'expired_time'  => is_null($this->end_at) ? null : Carbon::parse($this->end_at)->format('H:i'),
             'expired_timestamp'  => is_null($this->end_at) ? null : Carbon::parse($this->end_at)->timestamp,

@@ -42,13 +42,15 @@ class DetailRewardRepository extends BaseRepository
         return $data;
     }
 
-    public function getVoucherExp($userId, $type)
+    public function getGiftExp($userId) # getVoucherExp
     {
         $now = Carbon::now();
         $data = $this->model
             ->with('branch:id,name,address')
-            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type) {
-                $query->whereUserId($userId)->whereType($type)->whereIsTray(true);
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId) {
+                $query->whereUserId($userId)
+                    ->whereIn('type', [2, 3])
+                    ->whereIsTray(true);
             });
 
         $data->where('end_at', '<', $now)->orderBy('updated_at', 'DESC');
@@ -56,13 +58,25 @@ class DetailRewardRepository extends BaseRepository
         return $data;
     }
 
-    public function getVouchers($userId, $type)
+    public function getGifts($userId) # getVouchers
     {
-        $now = Carbon::now();
+        // $now = Carbon::now();
         $data = $this->model
             ->with('branch:id,name,address')
-            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type) {
-                $query->whereUserId($userId)->whereType($type)->whereIsTray(true);
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId) {
+                $query->where(function($q1) use ($userId) {
+                    $q1->whereUserId($userId)
+                        ->whereIn('type', [0,1,2,3])
+                        ->whereIsOpen(false);
+                })
+                ->orWhere(function($q2) use ($userId) {
+                    $q2->whereUserId($userId)
+                        ->whereIn('type', [2,3])
+                        ->whereIn('is_open', [false, true]);
+                })
+                ->whereUserId($userId)
+                ->whereIsTray(true)
+                ->whereIsConsumed(false);
             });
 
         $data->orderBy('updated_at', 'DESC');
@@ -70,14 +84,14 @@ class DetailRewardRepository extends BaseRepository
         return $data;
     }
 
-    public function getVoucherUses($userId, $type)
+    public function getGiftUses($userId) # getVoucherUses
     {
         $now = Carbon::now();
         $data = $this->model
             ->with('branch:id,name,address')
             ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type) {
                 $query->whereUserId($userId)
-                    ->whereType($type)
+                    ->whereIn('type', [2, 3])
                     ->whereIsTray(true)
                     ->whereIsConsumed(true);
             });
@@ -91,13 +105,7 @@ class DetailRewardRepository extends BaseRepository
         return $this->model
             ->with('branch:id,address')
             ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type) {
-                if (is_null($type)) {
-                    $query->whereUserId($userId);
-                } else {
-                    $query->whereUserId($userId)
-                        ->whereType($type);
-                }
-                $query->orderBy('updated_at', 'DESC');
+                $query->whereUserId($userId);
             })
             ->whereId($detaiRewardId)
             ->firstOrFail();

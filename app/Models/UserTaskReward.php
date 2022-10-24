@@ -26,7 +26,7 @@ class UserTaskReward extends Model
     protected $fillable = [
         'user_id',
         'detail_reward_id',
-        'type', // 0: Tokens, 1: NFTs, 2: Vouchers
+        'type', // 0: Tokens, 1: NFTs, 2: Vouchers, 3: card mobile
         'amount', // số lượng token, ntfs...
         'is_consumed', // false: chưa sử dụng, true: Đã xử dụng
         'consume_at', // Ngày sử dụng

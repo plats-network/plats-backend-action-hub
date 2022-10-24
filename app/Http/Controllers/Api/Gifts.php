@@ -8,7 +8,7 @@ use App\Repositories\DetailRewardRepository;
 use App\Http\Resources\VoucherResource;
 use Carbon\Carbon;
 
-class Vouchers extends ApiController
+class Gifts extends ApiController
 {
     public function __construct(
         private DetailRewardRepository $detailRewardRepository
@@ -31,13 +31,13 @@ class Vouchers extends ApiController
             $histories = $this->detailRewardRepository->getNftTokens($userId);
         } elseif ($type == 'nft') {
             $histories = $this->detailRewardRepository->getNftTokens($userId, REWARD_NFT);
-        } elseif ($type == 'voucher') {
+        } elseif ($type == 'gift') {
             if ($status == 'used') {
-                $histories = $this->detailRewardRepository->getVoucherUses($userId, REWARD_VOUCHER);
+                $histories = $this->detailRewardRepository->getGiftUses($userId);
             } elseif ($status == 'expired') {
-                $histories = $this->detailRewardRepository->getVoucherExp($userId, REWARD_VOUCHER);
+                $histories = $this->detailRewardRepository->getGiftExp($userId);
             } else {
-                $histories = $this->detailRewardRepository->getVouchers($userId, REWARD_VOUCHER);
+                $histories = $this->detailRewardRepository->getGifts($userId);
             }
         }
 
