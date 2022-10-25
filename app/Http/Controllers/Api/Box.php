@@ -92,6 +92,7 @@ class Box extends ApiController
                         ->update([
                             'is_open' => true,
                             'amount' => $data->amount ?? 0,
+                            'is_tray' => true,
                             'type' => $data->type
                         ]);
                     $this->detailReward

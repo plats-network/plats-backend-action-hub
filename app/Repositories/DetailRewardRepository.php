@@ -67,12 +67,14 @@ class DetailRewardRepository extends BaseRepository
                 $query->where(function($q1) use ($userId) {
                     $q1->whereUserId($userId)
                         ->whereIn('type', [0,1,2,3])
-                        ->whereIsOpen(true);
+                        ->whereIsOpen(false)
+                        ->whereIsTray(true);
                 })
                 ->orWhere(function($q2) use ($userId) {
                     $q2->whereUserId($userId)
                         ->whereIn('type', [2,3])
-                        ->whereIsOpen(true);
+                        ->whereIn('is_open', [false, true])
+                        ->whereIsTray(true);
                 })
                 ->whereUserId($userId)
                 ->whereIsTray(true)
@@ -100,11 +102,11 @@ class DetailRewardRepository extends BaseRepository
         return $data;
     }
 
-    public function getReward($userId, $detaiRewardId, $type = '')
+    public function getReward($userId, $detaiRewardId)
     {
         return $this->model
             ->with('branch:id,address')
-            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type) {
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId) {
                 $query->whereUserId($userId);
             })
             ->whereId($detaiRewardId)
@@ -150,9 +152,9 @@ class DetailRewardRepository extends BaseRepository
             ->with('branch:id,name,address')
             ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type) {
                 $query->whereUserId($userId)
-                    ->whereType($type)
-                    ->whereIsOpen(true)
-                    ->whereIsTray(true);
+                    ->where('type', 1)
+                    ->where('is_open', true)
+                    ->where('is_tray', 1);
             })
             ->orderBy('updated_at', 'DESC');
 
