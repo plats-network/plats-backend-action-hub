@@ -152,9 +152,9 @@ class DetailRewardRepository extends BaseRepository
             ->with('branch:id,name,address')
             ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type) {
                 $query->whereUserId($userId)
-                    ->where('type', 1)
+                    ->where('type', $type)
                     ->where('is_open', true)
-                    ->where('is_tray', 1);
+                    ->where('is_tray', true);
             })
             ->orderBy('updated_at', 'DESC');
 
