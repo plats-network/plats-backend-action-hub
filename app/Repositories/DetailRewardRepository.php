@@ -67,12 +67,12 @@ class DetailRewardRepository extends BaseRepository
                 $query->where(function($q1) use ($userId) {
                     $q1->whereUserId($userId)
                         ->whereIn('type', [0,1,2,3])
-                        ->whereIsOpen(false);
+                        ->whereIsOpen(true);
                 })
                 ->orWhere(function($q2) use ($userId) {
                     $q2->whereUserId($userId)
                         ->whereIn('type', [2,3])
-                        ->whereIn('is_open', [false, true]);
+                        ->whereIsOpen(true);
                 })
                 ->whereUserId($userId)
                 ->whereIsTray(true)
