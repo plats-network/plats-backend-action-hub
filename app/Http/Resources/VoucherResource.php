@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
 use App\Models\Branch;
+use App\Helpers\BaseImage;
 
 class VoucherResource extends JsonResource
 {
@@ -17,16 +18,15 @@ class VoucherResource extends JsonResource
     public function toArray($request)
     {
         $is_expired = is_null($this->end_at) ? true : Carbon::now() > $this->end_at;
-        $url_image = is_null($this->url_image) ? 'https://i.imgur.com/UuCaWFA.png' : $this->url_image;
         $conpany = Branch::findOrFail(optional($this->branch)->id)->company;
-        $icon = is_null($conpany) ? 'icon' : $conpany->logo_path;
+        $isOpen = optional($this->user_task_reward)->is_open == 0 ? false : true;
 
         return [
             'id' => $this->id,
             'name' => $this->name,
             'amount' => $this->amount,
-            'icon'  => $icon,
-            'url_image' => $url_image,
+            'icon'  => BaseImage::loadImage($conpany->logo_path),
+            'url_image' => BaseImage::loadImage($this->url_image),
             'description' => $this->description,
             'expired'  => is_null($this->end_at) ? null : Carbon::parse($this->end_at)->format('d/m/Y'),
             'is_expired' => $is_expired,
@@ -35,6 +35,10 @@ class VoucherResource extends JsonResource
             'to_time' => is_null($this->end_at) ? null : Carbon::parse($this->end_at)->format('H:i'),
             'to_date' => is_null($this->end_at) ? null : Carbon::parse($this->end_at)->format('d/m/Y'),
             'address' => optional($this->branch)->address,
+            'is_open' => $isOpen,
+            'open_label' => $isOpen ? 'unbox' : 'box',
+            'type' => optional($this->user_task_reward)->type,
+            'type_label' => BaseImage::getType(optional($this->user_task_reward)->type),
         ];
     }
 }

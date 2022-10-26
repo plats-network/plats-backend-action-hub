@@ -8,7 +8,7 @@ use App\Repositories\DetailRewardRepository;
 use App\Http\Resources\VoucherResource;
 use Carbon\Carbon;
 
-class Vouchers extends ApiController
+class Gifts extends ApiController
 {
     public function __construct(
         private DetailRewardRepository $detailRewardRepository
@@ -28,23 +28,17 @@ class Vouchers extends ApiController
         $histories = null;
 
         if ($type == 'token') {
-            $histories = $this->detailRewardRepository
-                ->getRewards($userId, REWARD_TOKEN);
+            $histories = $this->detailRewardRepository->getNftTokens($userId, 0);
         } elseif ($type == 'nft') {
-            $histories = $this->detailRewardRepository
-                ->getRewards($userId, REWARD_NFT);
-        } elseif ($type == 'voucher') {
+            $histories = $this->detailRewardRepository->getNftTokens($userId, REWARD_NFT);
+        } elseif ($type == 'gift') {
             if ($status == 'used') {
-                $histories = $this->detailRewardRepository
-                    ->getRewards($userId, REWARD_VOUCHER, true);
+                $histories = $this->detailRewardRepository->getGiftUses($userId);
             } elseif ($status == 'expired') {
-                $histories = $this->detailRewardRepository
-                    ->getRewards($userId, REWARD_VOUCHER, false, true);
+                $histories = $this->detailRewardRepository->getGiftExp($userId);
             } else {
-                $histories = $this->detailRewardRepository
-                    ->getRewards($userId, REWARD_VOUCHER);
+                $histories = $this->detailRewardRepository->getGifts($userId);
             }
-
         }
 
         if (is_null($histories)) { return $this->respondNotFound('Data not found!'); }
@@ -73,7 +67,7 @@ class Vouchers extends ApiController
         try {
             $userId = $request->user()->id;
             $data = $this->detailRewardRepository
-                ->getReward($userId, $id, REWARD_VOUCHER);
+                ->getReward($userId, $id);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }

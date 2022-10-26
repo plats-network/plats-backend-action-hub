@@ -20,21 +20,16 @@ class DetailRewardRepository extends BaseRepository
         return DetailReward::class;
     }
 
-    public function getRewards($userId, $type = null, $useFlag = false, $expired = false)
+    public function getRewards($userId, $type = 0, $useFlag = false, $expired = false)
     {
         $now = Carbon::now();
         $data = $this->model
             ->with('branch:id,name,address')
-            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type, $useFlag, $expired) {
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type, $useFlag) {
                 $query->whereUserId($userId)
                     ->whereIsConsumed($useFlag)
+                    ->whereType($type)
                     ->whereIsTray(true);
-                // Nếu type = null: Lấy tất cả hiển thị ở hidden box
-                if (!is_null($type)) {
-                    // type = 0, 1, 2, 3: Tokens, NFTs, Vouchers, Card mobile
-                    $query->whereType($type);
-                }
-                if (!$expired) { $query->whereIsOpen(true); }
                 $query->orderBy('updated_at', 'DESC');
             });
 
@@ -47,18 +42,72 @@ class DetailRewardRepository extends BaseRepository
         return $data;
     }
 
-    public function getReward($userId, $detaiRewardId, $type = '')
+    public function getGiftExp($userId) # getVoucherExp
+    {
+        $now = Carbon::now();
+        $data = $this->model
+            ->with('branch:id,name,address')
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId) {
+                $query->whereUserId($userId)
+                    ->whereIn('type', [2, 3])
+                    ->whereIsTray(true);
+            });
+
+        $data->where('end_at', '<', $now)->orderBy('updated_at', 'DESC');
+
+        return $data;
+    }
+
+    public function getGifts($userId) # getVouchers
+    {
+        // $now = Carbon::now();
+        $data = $this->model
+            ->with('branch:id,name,address')
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId) {
+                $query->where(function($q1) use ($userId) {
+                    $q1->whereUserId($userId)
+                        ->whereIn('type', [0,1,2,3])
+                        ->whereIsOpen(false)
+                        ->whereIsTray(true);
+                })
+                ->orWhere(function($q2) use ($userId) {
+                    $q2->whereUserId($userId)
+                        ->whereIn('type', [2,3])
+                        ->whereIn('is_open', [false, true])
+                        ->whereIsTray(true);
+                })
+                ->whereUserId($userId)
+                ->whereIsTray(true)
+                ->whereIsConsumed(false);
+            });
+
+        $data->orderBy('updated_at', 'DESC');
+
+        return $data;
+    }
+
+    public function getGiftUses($userId) # getVoucherUses
+    {
+        $now = Carbon::now();
+        $data = $this->model
+            ->with('branch:id,name,address')
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId) {
+                $query->whereUserId($userId)
+                    ->whereIn('type', [2, 3])
+                    ->whereIsTray(true)
+                    ->whereIsConsumed(true);
+            });
+        $data->orderBy('updated_at', 'DESC');
+
+        return $data;
+    }
+
+    public function getReward($userId, $detaiRewardId)
     {
         return $this->model
             ->with('branch:id,address')
-            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type) {
-                if (is_null($type)) {
-                    $query->whereUserId($userId);
-                } else {
-                    $query->whereUserId($userId)
-                        ->whereType($type);
-                }
-                $query->orderBy('updated_at', 'DESC');
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId) {
+                $query->whereUserId($userId);
             })
             ->whereId($detaiRewardId)
             ->firstOrFail();
@@ -91,6 +140,21 @@ class DetailRewardRepository extends BaseRepository
                 $query->whereUserId($userId)
                     ->whereIsOpen($unBoxFlag)
                     ->whereIsTray(true);
+            })
+            ->orderBy('updated_at', 'DESC');
+
+        return $data;
+    }
+
+    public function getNftTokens($userId, $type = 0)
+    {
+        $data = $this->model
+            ->with('branch:id,name,address')
+            ->whereHas('user_task_reward', function(Builder $query) use ($userId, $type) {
+                $query->whereUserId($userId)
+                    ->where('type', $type)
+                    ->where('is_open', true)
+                    ->where('is_tray', true);
             })
             ->orderBy('updated_at', 'DESC');
 

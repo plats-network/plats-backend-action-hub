@@ -19,6 +19,7 @@ class QrCode
         if (!isset($_SERVER['HTTP_X_CODE_30SHINE'])) {
             abort(response()->json([
                 'success' => false,
+                'status' => -1,
                 'message' => 'Unauthenticated',], 401));
         }
 

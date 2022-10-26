@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
+use App\Helpers\BaseImage;
 
 class UnboxResource extends JsonResource
 {
@@ -15,41 +16,13 @@ class UnboxResource extends JsonResource
      */
     public function toArray($request)
     {
-        $type_label = $this->getType($this->type);
-
         return [
             'id' => $this->id,
             'name' => 'Bonus',
-            'icon'  => 'https://i.imgur.com/UuCaWFA.png',
+            'icon'  => BaseImage::loadImage(),
             'amount' => $this->amount,
             'type' => (int) $this->type,
-            'type_label' => $type_label,
+            'type_label' => BaseImage::getType($this->type),
         ];
     }
-
-    /**
-     * Get type
-     *
-     * @param $type
-     * @return string
-     */
-    private function getType($type)
-    {
-        switch($type) {
-            case 0:
-                $type_label = 'token';
-                break;
-            case 1:
-                $type_label = 'nft';
-                break;
-            case 2:
-                $type_label = 'voucher';
-                break;
-            default:
-                $type_label = 'card';
-        }
-
-        return $type_label;
-    }
 }
-

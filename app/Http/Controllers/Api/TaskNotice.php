@@ -37,6 +37,7 @@ class TaskNotice extends ApiController
         return $this->respondWithResource(NoticeResource::collection($data));
     }
 
+    // API test notices
     /**
      * Display a listing of the resource.
      * TEST

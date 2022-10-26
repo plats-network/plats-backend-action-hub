@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\{
     Task, TaskLocation, UserTask,
-    Wallet, Box, Vouchers,
+    Wallet, Box, Gifts,
     QrCode, TaskNotice, LockTray,
     QrCodeAction
 };
@@ -34,7 +34,7 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
 
 Route::get('/my-tasks', [UserTask::class, 'histories']);
 Route::resource('boxes', Box::class)->only(['index', 'update', 'show']);
-Route::resource('vouchers', Vouchers::class)->only(['index', 'show']);
+Route::resource('gifts', Gifts::class)->only(['index', 'show']);
 Route::resource('{id}/qr_code', QrCode::class)->only(['index']);
 Route::resource('task_notices', TaskNotice::class)->only(['index']);
 Route::resource('lock_tray', LockTray::class)->only(['index', 'update']);
