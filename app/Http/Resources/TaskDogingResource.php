@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
-use App\Models\Task;
+use App\Models\{Task, TaskLocation};
 
 class TaskDogingResource extends JsonResource
 {
@@ -17,6 +17,7 @@ class TaskDogingResource extends JsonResource
     public function toArray($request)
     {
         $task = Task::find($this->task_id);
+        $taskLocation = TaskLocation::whereId($this->location_id)->first();
 
         return [
             "id" => $this->id,
@@ -37,7 +38,7 @@ class TaskDogingResource extends JsonResource
                 'name' => optional($task)->name,
                 'cover_url' => optional($task)->cover_url,
             ],
-            "task_locations" => $this->taskLocations()->first(),
+            "task_locations" => $taskLocation,
         ];
     }
 }
