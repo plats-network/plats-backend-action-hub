@@ -6,6 +6,7 @@ use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Storage;
 
 /**
  * attrs
@@ -63,5 +64,15 @@ class Reward extends Model
     public function detail_rewards()
     {
         return $this->hasMany(DetailReward::class);
+    }
+
+    public function getImageAttribute()
+    {
+        return Storage::disk('s3')->url('icon/hidden_box.png');
+        // if (is_null($this->image)) {
+        //     return Storage::disk('s3')->url('icon/hidden_box.png');
+        // }
+
+        // return Storage::disk('s3')->url($this->image);
     }
 }
