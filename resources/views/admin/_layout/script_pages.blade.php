@@ -1,6 +1,6 @@
 @switch(request()->route()->getName())
     @case(TASK_EDIT_ADMIN_ROUTER)
-    @case(TASK_EDIT_ADMIN_ROUTER)
+    @case(TASK_CREATE_ADMIN_ROUTER)
     @case(COMPANY_CREATE_ADMIN_ROUTER)
     @case(COMPANY_EDIT_ADMIN_ROUTER)
     <script src="{{ asset('js/admin/theme/plugins/singleimageupload.js') }}"></script>

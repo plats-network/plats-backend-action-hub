@@ -58,9 +58,8 @@ class DetailRewardRepository extends BaseRepository
         return $data;
     }
 
-    public function getGifts($userId) # getVouchers
+    public function getGifts($userId)
     {
-        // $now = Carbon::now();
         $data = $this->model
             ->with('branch:id,name,address')
             ->whereHas('user_task_reward', function(Builder $query) use ($userId) {
@@ -86,7 +85,7 @@ class DetailRewardRepository extends BaseRepository
         return $data;
     }
 
-    public function getGiftUses($userId) # getVoucherUses
+    public function getGiftUses($userId)
     {
         $now = Carbon::now();
         $data = $this->model

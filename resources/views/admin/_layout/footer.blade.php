@@ -1,4 +1,3 @@
-<!-- Layout Footer Start -->
 <footer>
     <div class="footer-content">
         <div class="container">
@@ -23,4 +22,3 @@
         </div>
     </div>
 </footer>
-<!-- Layout Footer End -->

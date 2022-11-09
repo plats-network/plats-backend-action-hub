@@ -5,11 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Repositories\DetailRewardRepository;
-use App\Http\Resources\BoxResource;
-use App\Http\Resources\UnboxResource;
 use Carbon\Carbon;
-use App\Models\UserTaskReward;
-use App\Models\DetailReward;
+use App\Http\Resources\{BoxResource, UnboxResource};
+use App\Models\{DetailReward, UserTaskReward};
 
 class Box extends ApiController
 {
@@ -17,36 +15,8 @@ class Box extends ApiController
         private DetailRewardRepository $detailRewardRepository,
         private UserTaskReward $userTaskReward,
         private DetailReward $detailReward
-    ) {}
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-        $limit = $request->get('limit') ?? PAGE_SIZE;
-        $userId = $request->user()->id;
-        $openFlag = $request->get('type') == 'unbox' ? true : false;
-
-        $boxs = $this->detailRewardRepository
-            ->getBoxs($userId, $openFlag)
-            ->paginate($limit);
-
-        if ($boxs->isEmpty()) {
-            return $this->respondNotFound();
-        }
-
-        $datas = BoxResource::collection($boxs);
-        $pages = [
-            'current_page' => (int)$request->get('page'),
-            'last_page' => $boxs->lastPage(),
-            'per_page'  => (int)$limit,
-            'total' => $boxs->lastPage()
-        ];
-
-        return $this->respondWithIndex($datas, $pages);
+    ) {
+        // CODE: 
     }
 
     /**
@@ -59,8 +29,7 @@ class Box extends ApiController
     {
         try {
             $userId = $request->user()->id;
-            $data = $this->detailRewardRepository
-                ->getReward($userId, $id, null);
+            $data = $this->detailRewardRepository->getReward($userId, $id);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
@@ -79,8 +48,7 @@ class Box extends ApiController
 
         try {
             $userId = $request->user()->id;
-            $data = $this->detailRewardRepository
-                ->getReward($userId, $id, null);
+            $data = $this->detailRewardRepository->getReward($userId, $id);
 
             if ($data->user_task_reward) {
                 if (optional($data->user_task_reward)->is_open == 1) {

@@ -71,7 +71,5 @@ class TaskNotice extends ApiController
         return response()->json([
             'data' => $data
         ], 200);
-
-        // return $this->respondWithResource(new UserTaskRewardResource($task));
     }
 }

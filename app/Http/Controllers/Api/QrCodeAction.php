@@ -35,11 +35,10 @@ class QrCodeAction extends Controller
     public function store(QrCodeRequest $request)
     {
         try {
-            // $encrypted = Crypt::encryptString($a->qr_code);
-            // $d = DetailReward::whereNotNull('qr_code')->first();
-            // $decrypted = Crypt::decryptString($code_voucher);
             $code_voucher = $request->code_voucher;
-            $detailReward = DetailReward::whereNotNull('qr_code')->where('qr_code', $code_voucher)->first();
+            $detailReward = DetailReward::whereNotNull('qr_code')
+                ->where('qr_code', $code_voucher)
+                ->first();
 
             if (!$detailReward) {
                 return response()->json([
@@ -49,7 +48,9 @@ class QrCodeAction extends Controller
                 ], 404);
             }
 
-            $userTaskReward = $this->userTaskReward->where('detail_reward_id', $detailReward->id)->first();
+            $userTaskReward = $this->userTaskReward
+                ->where('detail_reward_id', $detailReward->id)
+                ->first();
 
             if (!$userTaskReward) {
                 return response()->json([

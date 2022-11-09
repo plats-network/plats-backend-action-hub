@@ -28,7 +28,7 @@ class Gifts extends ApiController
         $histories = null;
 
         if ($type == 'token') {
-            $histories = $this->detailRewardRepository->getNftTokens($userId, 0);
+            $histories = $this->detailRewardRepository->getNftTokens($userId, REWARD_TOKEN);
         } elseif ($type == 'nft') {
             $histories = $this->detailRewardRepository->getNftTokens($userId, REWARD_NFT);
         } elseif ($type == 'gift') {

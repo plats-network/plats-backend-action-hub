@@ -6,9 +6,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\MissingValue;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Facades\Http;
-use App\Models\TaskUser;
-use App\Models\Reward;
+use App\Models\{TaskUser, Reward};
 use Carbon\Carbon;
+use App\Http\Resources\TaskGuideResource;
 
 class TaskResource extends JsonResource
 {
@@ -20,6 +20,7 @@ class TaskResource extends JsonResource
      */
     public function toArray($request)
     {
+        // dd ($this->task_guides);
         $creator = $this->getUserDetail($this->creator_id);
         $userId = $request->user()->id;
         $dataTaskProgress = $this->getTaskImprogress($userId, $this->id);
@@ -43,22 +44,23 @@ class TaskResource extends JsonResource
             ->where('user_id', $userId)
             ->where('status', USER_COMPLETED_TASK)
             ->count();
+
+        // Số lượng check-in cần hoàn thành để done task
         $task_done = $task_done_number < $this->valid_amount ? false : true;
         $rewards = Reward::where('end_at', '>=', Carbon::now())->first();
 
-
         return [
-            'id'                => $this->id,
-            'name'              => $this->name,
-            'description'       => $this->description,
-            'duration'          => (int)$this->duration,
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'duration' => (int)$this->duration,
             'order'             => (int)$this->order,
             'valid_amount'      => (int)$this->valid_amount,
             'valid_radius'      => (int)$this->valid_radius,
             'distance'          => $this->distance,
             'deposit_status'    => $this->deposit_status,
             'type'              => $this->type,
-            'created_at'        => DateHelper::parseDateTime($this->created_at),
+            'created_at'        => DateHelper::getDateTime($this->created_at),
             'cover_url'         => $this->cover_url,
             'creator_id'        => $creator ? $creator['id'] : '',
             'creator_name'      => $creator ? $creator['name'] : '',
@@ -68,11 +70,12 @@ class TaskResource extends JsonResource
             'task_done_number'  => $task_done_number,
             'near'              => [
                 'radius'        => (int)$this->valid_radius ?? 100,
-                'units'         => 'm',
+                'units' => 'm',
             ],
-            'locations'         => $this->locations()->get()->toArray(),
-            'galleries'         => $this->galleries()->get()->toArray(),
-            'rewards'           => $rewards,
+            'locations' => $this->locations()->get()->toArray(),
+            'galleries' => GalleryResource::collection($this->galleries()->get()),
+            'guide' => new TaskGuideResource($this->task_guides),
+            'rewards' => $rewards,
         ];
     }
 

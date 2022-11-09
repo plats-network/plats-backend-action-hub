@@ -2,27 +2,20 @@
 
 namespace App\Models;
 
-use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\Uuid;
 
-class TaskGallery extends Model
+class TaskGuide extends Model
 {
     use HasFactory, Uuid;
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'task_galleries';
+    protected $table = 'task_guides';
 
     /**
      * The attributes that are mass assignable.
@@ -31,7 +24,9 @@ class TaskGallery extends Model
      */
     protected $fillable = [
         'task_id',
-        'url'
+        'url_image',
+        'order_num',
+        'status',
     ];
 
     /**
@@ -40,7 +35,14 @@ class TaskGallery extends Model
      * @var array
      */
     protected $hidden = [
-        'id',
         'task_id',
     ];
+
+    /**
+     * Get the task_guide that owns the task.
+     */
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
 }

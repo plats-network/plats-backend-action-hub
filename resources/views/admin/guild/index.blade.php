@@ -1,16 +1,14 @@
 @extends('admin.layout')
+
 @section('content')
     <x-admin::top_page :title="trans('admin.guild.page_name')" :desc="trans('admin.guild.page_desc')">
-        <!-- Add New Button Start -->
         <a href="#" class="btn btn-outline-primary btn-icon btn-icon-start w-100 w-md-auto">
             <i data-acorn-icon="plus"></i>
             <span>{{ trans('admin.create') }}</span>
         </a>
-        <!-- Add New Button End -->
     </x-admin::top_page>
+    <x-alert />
 
-    <x-alert/>
-    <!-- Task List Start -->
     <div class="row">
         <div class="col-12 mb-5">
             <div class="card mb-2 bg-transparent no-shadow d-none d-md-block">
@@ -34,8 +32,9 @@
                     </div>
                 </div>
             </div>
+
             <div id="checkboxTable" class="mb-n2">
-            @for ($i = 0; $i < 20; $i++)
+            @for ($i = 0; $i < 5; $i++)
                 <div class="card mb-2">
                     <div class="row g-0 sh-19 sh-lg-18">
                         <div class="col-auto">
@@ -80,5 +79,4 @@
             </div>
         </div>
     </div>
-    <!-- Task List End -->
 @endsection

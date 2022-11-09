@@ -7,6 +7,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property uuid $id
+ * @property uuid $branch_id
+ * @property uuid $reward_id
+ * @property string $name
+ * @property string $address
+ * @property string $phone
+ * @property string $logo_path
+ * @property datatime $created_at
+ * @property datatime $updated_at
+ */
+
 class DetailReward extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
@@ -32,7 +44,7 @@ class DetailReward extends Model
         'description',
         'url_image',
         'qr_code',
-        'status', //
+        'status', // false: disable, true: enable
         'start_at',
         'end_at',
         'proccess', // true: đã xử lý (cho user), false: chưa xử lý

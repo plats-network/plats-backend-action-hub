@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * attrs
  * @property uuid $id
  * @property uuid $company_id
  * @property string $logo_path
@@ -59,7 +58,7 @@ class Branch extends Model
     ];
 
     /**
-     * Get the user that owns the phone.
+     * Get the branch that owns the company.
      */
     public function company()
     {

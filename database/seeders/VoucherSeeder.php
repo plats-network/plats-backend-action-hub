@@ -4,7 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\{DB, Http};
+use Carbon\Carbon;
 use App\Models\{
     TaskUser,
     Company,
@@ -14,8 +15,6 @@ use App\Models\{
     UserTaskReward,
     CodeVoucher
 };
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Http;
 
 class VoucherSeeder extends Seeder
 {
@@ -29,7 +28,6 @@ class VoucherSeeder extends Seeder
         $res = Http::get(config('app.api_user_url') . '/api/test_user');
         $content = $res->getBody()->getContents();
         $datas = json_decode($content)->data;
-        $vochers = CodeVoucher::all();
 
         print "1. Xoa du lieu cac bang\n";
         DB::table('companies')->delete();

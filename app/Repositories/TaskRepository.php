@@ -66,4 +66,15 @@ class TaskRepository extends BaseRepository
     {
         return $task->locations;
     }
+
+    public function getTasks($creatorId = null)
+    {
+        $data = $this->model;
+
+        if ($creatorId) {
+            $data = $data->whereCreatorId($creatorId);
+        }
+
+        return $data;
+    }
 }

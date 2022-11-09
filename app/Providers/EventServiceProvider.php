@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use App\Events\UserCheckedInLocationEvent;
-use App\Events\UserClaimTokenEvent;
-use App\Events\UserCompletedTaskEvent;
-use App\Listeners\CheckUserCompletedTaskListener;
-use App\Listeners\ClaimRewardListener;
-use App\Listeners\UserWithdrawTokenToBLCListener;
-use App\Listeners\StartLocalAfterCheckInListener;
+use App\Events\{UserCheckedInLocationEvent, UserClaimTokenEvent};
+use App\Listeners\{
+    CheckUserCompletedTaskListener,
+    ClaimRewardListener,
+    UserWithdrawTokenToBLCListener,
+    StartLocalAfterCheckInListener
+};
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -28,9 +28,6 @@ class EventServiceProvider extends ServiceProvider
         UserCheckedInLocationEvent::class => [
             StartLocalAfterCheckInListener::class,
             CheckUserCompletedTaskListener::class,
-        ],
-        UserCompletedTaskEvent::class => [
-            ClaimRewardListener::class
         ],
         UserClaimTokenEvent::class => [
             UserWithdrawTokenToBLCListener::class

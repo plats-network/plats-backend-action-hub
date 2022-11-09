@@ -3,68 +3,35 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\CheckInTaskRequest;
-use App\Http\Requests\CreateTaskRequest;
-use App\Http\Requests\StartTaskRequest;
-use App\Http\Resources\TaskResource;
-use App\Http\Resources\TaskUserResource;
-use App\Http\Resources\TaskDogingResource;
+use App\Http\Requests\{CheckInTaskRequest, CreateTaskRequest, StartTaskRequest};
+use App\Http\Resources\{TaskResource, TaskUserResource, TaskDogingResource};
 use App\Services\TaskService;
 use Illuminate\Http\Request;
 use App\Models\Task as ModelTask;
 use App\Models\TaskUser;
 use Illuminate\Database\QueryException;
-use App\Repositories\LocationHistoryRepository;
-use App\Repositories\TaskRepository;
-use App\Repositories\TaskUserRepository;
+use App\Repositories\{LocationHistoryRepository, TaskRepository, TaskUserRepository};
 use Illuminate\Support\Carbon as SupportCarbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\{DB, Http};
 use Carbon\Carbon;
 
 class Task extends ApiController
 {
     /**
-     * @var \App\Services\TaskService
-     */
-    protected $taskService;
-
-    /**
-     * @var App\Models\Task as ModelTask;
-     */
-    protected $modelTask;
-
-    /**
-     * @var App\Repositories\LocationHistoryRepository;
-     */
-    protected $locationHistoryRepository;
-
-    /**
-     * @var App\Repositories\TaskRepository;
-     */
-    protected $taskRepository;
-
-    /**
-     * @var App\Repositories\TaskUserRepository;
-     */
-    protected $taskUserRepository;
-
-    /**
-     * @param \App\Services\TaskService $taskService
+     * @param $taskService
+     * @param $modelTask
+     * @param $locationHistoryRepository
+     * @param $taskRepository
+     * @param $taskUserRepository
+     * 
      */
     public function __construct(
-        TaskService $taskService,
-        ModelTask $modelTask,
-        LocationHistoryRepository $locationHistoryRepository,
-        TaskRepository $taskRepository,
-        TaskUserRepository $taskUserRepository
-    ) {
-        $this->taskService                  = $taskService;
-        $this->modelTask                    = $modelTask;
-        $this->locationHistoryRepository    = $locationHistoryRepository;
-        $this->taskRepository               = $taskRepository;
-        $this->taskUserRepository           = $taskUserRepository;
-    }
+        private TaskService $taskService,
+        private ModelTask $modelTask,
+        private LocationHistoryRepository $locationHistoryRepository,
+        private TaskRepository $taskRepository,
+        private TaskUserRepository $taskUserRepository
+    ) {}
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -156,7 +123,7 @@ class Task extends ApiController
 
         # Check task done
         $doneTask = $this->taskUserRepository
-            ->userStartedTask($taskId, $userId);
+            ->userStartedTask($taskId, $userId, $locationId);
         if ($doneTask
             && $doneTask->status == USER_COMPLETED_TASK
             && $doneTask->location_id == $locationId) {
@@ -198,14 +165,16 @@ class Task extends ApiController
     {
         $userId = $request->user()->id;
 
-        $checkTaskComplated = $this->taskUserRepository->userStartedTask($taskId, $userId);
+        $checkTaskComplated = $this->taskUserRepository
+            ->userStartedTask($taskId, $userId, $locationId);
 
-        if ($checkTaskComplated && $checkTaskComplated->status == USER_COMPLETED_TASK) {
+        if ($checkTaskComplated
+            && $checkTaskComplated->status == USER_COMPLETED_TASK) {
             return $this->responseMessage('Task checkin done!');
         }
 
         $dataCheckIn = $this->taskService
-            ->checkIn($taskId, $locationId,$userId, $request->image, $request->activity_log);
+            ->checkIn($taskId, $locationId, $userId, $request->image, $request->activity_log);
         
         return $this->respondWithResource(new TaskUserResource($dataCheckIn));
     }
@@ -238,8 +207,14 @@ class Task extends ApiController
     public function cancel(Request $request, $taskId)
     {
         $userId = $request->user()->id;
+        $dataTaskDoing = $this->taskService->getTaskDoing($userId);
 
-        $cancel = $this->taskService->cancel($userId, $taskId);
+        if (!$dataTaskDoing) {
+            return $this->respondNotFound();
+        }
+
+        $cancel = $this->taskService
+            ->cancel($userId, $taskId, $dataTaskDoing->location_id);
 
         if (is_null($cancel)) {
             return $this->respondNotFound();
