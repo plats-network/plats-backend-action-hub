@@ -54,7 +54,7 @@ class TaskLocation extends Model
      */
     public function getCoordinateAttribute()
     {
-        return $this->long . ', ' . $this->lat;
+        return $this->lat . ', ' . $this->long;
     }
 
     /**

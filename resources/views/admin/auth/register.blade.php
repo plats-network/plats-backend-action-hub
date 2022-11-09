@@ -57,14 +57,18 @@
                         <div class="mb-5">
                             <p class="h6">Please use your credentials to login.</p>
                             <p class="h6">
-                                If you are not a member, please
-                                <a href="{{route(REGIS_GET_CREATE)}}">register</a>
+                                If you are is member, please
+                                <a href="{{route(LOGIN_ADMIN_ROUTE)}}">login</a>
                                 .
                             </p>
                         </div>
                         <div>
-                            <x-alert/>
-                            <x-form::open action="{{ route(LOGIN_ADMIN_ROUTE) }}" class="tooltip-end-bottom" id="loginForm">
+                            <x-alert />
+                            <x-form::open action="{{ route(REGIS_POST_CREATE) }}" class="tooltip-end-bottom" id="regisForm">
+                                <div class="mb-3 filled form-group tooltip-end-top">
+                                    <i data-acorn-icon="user"></i>
+                                    <input class="form-control" placeholder="Name" name="name" value="{{ old('name') }}"/>
+                                </div>
                                 <div class="mb-3 filled form-group tooltip-end-top">
                                     <i data-acorn-icon="email"></i>
                                     <input class="form-control" placeholder="Email" name="email" value="{{ old('email') }}"/>
@@ -80,7 +84,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Right Side End -->
         </div>
     </div>
 </div>

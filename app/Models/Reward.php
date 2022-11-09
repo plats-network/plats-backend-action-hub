@@ -69,10 +69,5 @@ class Reward extends Model
     public function getImageAttribute()
     {
         return Storage::disk('s3')->url('icon/hidden_box.png');
-        // if (is_null($this->image)) {
-        //     return Storage::disk('s3')->url('icon/hidden_box.png');
-        // }
-
-        // return Storage::disk('s3')->url($this->image);
     }
 }

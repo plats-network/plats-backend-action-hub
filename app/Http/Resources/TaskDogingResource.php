@@ -5,6 +5,8 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
 use App\Models\{Task, TaskLocation};
+use App\Helpers\DateHelper;
+use App\Http\Resources\TaskGuideResource;
 
 class TaskDogingResource extends JsonResource
 {
@@ -20,25 +22,27 @@ class TaskDogingResource extends JsonResource
         $taskLocation = TaskLocation::whereId($this->location_id)->first();
 
         return [
-            "id" => $this->id,
-            "time_left" => $this->time_left,
-            "duration"  => $this->task()->first()->duration,
-            "time_start" => Carbon::parse($this->time_start)->timestamp,
-            "time_end" => Carbon::parse($this->time_end)->timestamp,
-            "time_start_orginal" => Carbon::parse($this->time_start)->format('Y-m-d H:i:s'),
-            "time_end_orginal" => Carbon::parse($this->time_end)->format('Y-m-d H:i:s'),
-            "wallet_address" => $this->wallet_address,
-            "time_expried"  => Carbon::parse($this->time_end) > Carbon::now() ? false : true,
+            'id' => $this->id,
+            'time_left' => $this->time_left,
+            'duration' => $task->duration,
+            'duration_units' => 'minute',
+            'time_start' => Carbon::parse($this->time_start)->timestamp,
+            'time_end' => Carbon::parse($this->time_end)->timestamp,
+            'time_start_orginal' => DateHelper::parseDate($this->time_start)->format('Y-m-d H:i:s'),
+            'time_end_orginal' => DateHelper::parseDate($this->time_end)->format('Y-m-d H:i:s'),
+            'wallet_address' => $this->wallet_address,
+            'time_expried'  => ($this->time_end && Carbon::now() < $this->time_end) ? false : true,
             'near' => [
-                'radius' => (int)$this->task()->first()->valid_radius ?? 100,
+                'radius' => $task->valid_radius ?? 100,
                 'units' => 'm',
             ],
-            "task" => [
+            'task' => [
                 'id' => optional($task)->id,
                 'name' => optional($task)->name,
                 'cover_url' => optional($task)->cover_url,
             ],
-            "task_locations" => $taskLocation,
+            'guide' => new TaskGuideResource($task->task_guides),
+            'task_locations' => $taskLocation,
         ];
     }
 }

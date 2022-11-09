@@ -49,7 +49,7 @@
                                 <div class="row g-0 h-100 align-content-center">
                                     <div class="col-12 col-md-7 d-flex flex-column mb-lg-0 pe-3 d-flex">
                                         <h4>
-                                            <img class="border-gray" height="50px;" src="{{ Storage::disk('s3')->url($task->cover_url) }}" alt="...">
+                                            <!-- <img class="border-gray" height="50px;" src="{{$task->cover_url}}" alt="{{$task->name}}"> -->
                                             <a href="{{ route(TASK_EDIT_ADMIN_ROUTER, $task->id) }}" class="stretched-link">
                                             {{ $task->name }}
                                         </a>
@@ -78,8 +78,8 @@
                                     <div class="col-6 col-md-2 d-none d-md-flex flex-column justify-content-center align-items-lg-center">
                                         <div class="text-muted text-small d-md-none">Locations/Participants</div>
                                         <div class="h3">
-                                            <span class="text-danger text-small">{{ $task->locations_count }}</span> /
-                                            <span class="text-success">{{ $task->participants_count }}</span>
+                                            <span class="text-danger text-small">{{ $task->locations->count() }}</span> /
+                                            <span class="text-success">{{ $task->participants->count() }}</span>
                                         </div>
                                     </div>
 

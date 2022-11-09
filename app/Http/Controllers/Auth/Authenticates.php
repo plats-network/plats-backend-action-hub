@@ -21,7 +21,7 @@ trait Authenticates
      */
     public function login(Request $request)
     {
-        $this->validateLogin($request);
+        $a = $this->validateLogin($request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
@@ -30,8 +30,6 @@ trait Authenticates
             method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)
         ) {
-            //TODO: FireLockoutEvent
-
             return $this->sendLockoutResponse($request);
         }
 
@@ -164,12 +162,10 @@ trait Authenticates
     public function logout(Request $request)
     {
         $this->guard()->logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
-        return $this->loggedOut($request) ?: redirect('/');
+        return $this->loggedOut($request) ?: redirect('auth/cp');
     }
 
     /**

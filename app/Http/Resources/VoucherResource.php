@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
 use App\Models\Branch;
-use App\Helpers\BaseImage;
+use App\Helpers\{BaseImage, DateHelper};
 
 class VoucherResource extends JsonResource
 {
@@ -28,12 +28,12 @@ class VoucherResource extends JsonResource
             'icon'  => BaseImage::loadImage($conpany->logo_path),
             'url_image' => BaseImage::loadImage($this->url_image),
             'description' => $this->description,
-            'expired'  => is_null($this->end_at) ? null : Carbon::parse($this->end_at)->format('d/m/Y'),
+            'expired'  => DateHelper::parseDate($this->end_at)->format('d/m/Y'),
             'is_expired' => $is_expired,
-            'from_time' => is_null($this->start_at) ? null : Carbon::parse($this->start_at)->format('H:i'),
-            'from_date' => is_null($this->start_at) ? null : Carbon::parse($this->start_at)->format('d/m/Y'),
-            'to_time' => is_null($this->end_at) ? null : Carbon::parse($this->end_at)->format('H:i'),
-            'to_date' => is_null($this->end_at) ? null : Carbon::parse($this->end_at)->format('d/m/Y'),
+            'from_time' => DateHelper::parseDate($this->start_at)->format('H:i'),
+            'from_date' => DateHelper::parseDate($this->start_at)->format('d/m/Y'),
+            'to_time' => DateHelper::parseDate($this->end_at)->format('H:i'),
+            'to_date' => DateHelper::parseDate($this->end_at)->format('d/m/Y'),
             'address' => optional($this->branch)->address,
             'is_open' => $isOpen,
             'open_label' => $isOpen ? 'unbox' : 'box',

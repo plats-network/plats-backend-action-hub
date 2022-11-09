@@ -17,7 +17,7 @@ class CreateTaskRequest extends FormRequest
         return [
             'type'                              => ['integer', 'between:'. CHECKIN . ',' . SUBSCRIBE_AND_INTERACT],
             'name'                              => ['required', 'max:' . INPUT_MAX_LENGTH],
-            'description'                       => ['max:' . INPUT_MAX_LENGTH],
+            'description'                       => ['max: 500'],
             'duration'                          => ['integer', 'min:1'],
             'order'                             => ['integer', Rule::in([OUT_OF_ORDER, IN_ORDER])],
             'valid_amount'                      => ['required', 'min:1'],
@@ -26,14 +26,15 @@ class CreateTaskRequest extends FormRequest
             'reward_amount'                     => ['numeric', 'min:0'],
             'rewards.*.reward_id'               => ['max:' . INPUT_MAX_LENGTH],
             'rewards.*.amount'                  => ['max:' . INPUT_MAX_LENGTH],
+            'gallery'   => ['array'],
             'locations'                         => ['required', 'array'],
             'locations.*.name'                  => ['required', 'max:' . INPUT_MAX_LENGTH],
             'locations.*.phone_number'          => ['numeric', 'digits:10'],
             'locations.*.open_time'             => ['date_format:H:i'],
             'locations.*.close_time'            => ['date_format:H:i, after:open_time'],
             'locations.*.coordinate'            => ['required', 'max:' . INPUT_MAX_LENGTH],
-            'locations.*.lat'                   => ['numeric', 'between:-90,90'],
-            'locations.*.long'                  => ['numeric', 'between:-180,180'],
+            'locations.*.lat'                   => ['numeric', 'between:-90, 90'],
+            'locations.*.long'                  => ['numeric', 'between:-180, 180'],
         ];
     }
 

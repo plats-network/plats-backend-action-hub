@@ -5,8 +5,11 @@ use App\Http\Controllers\Admin\{
     Dashboard, Task, Guild,
     Company, Reward, DetailReward
 };
+use App\Http\Controllers\Auth\Admin\Register;
 
 Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_ADMIN_ROUTER);
+Route::get('register', [Register::class, 'create'])->name('auth.create');
+Route::post('register', [Register::class, 'store'])->name('auth.store');
 
 // Task management
 Route::prefix('tasks')->controller(Task::class)->group(function () {
@@ -39,7 +42,6 @@ Route::prefix('rewards/{reward}')->controller(DetailReward::class)->group(functi
     Route::post('/store', 'store')->name(DETAIL_REWARD_STORE_ADMIN_ROUTER);
 });
 
-// Guilds management
 Route::prefix('guilds')->controller(Guild::class)->group(function () {
     Route::get('/', 'index')->name(GUILD_LIST_ADMIN_ROUTER);
 });

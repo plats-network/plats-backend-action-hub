@@ -47,7 +47,6 @@ class Handler extends ExceptionHandler
     public function report(Throwable $exception)
     {
         $ignoreable_exception_messages = ['Unauthenticated or Token Expired, Please Login'];
-//        $ignoreable_exception_messages[] = 'The refresh token is invalid.';
         $ignoreable_exception_messages[] = 'The resource owner or authorization server denied the request.';
         if (app()->bound('sentry') && $this->shouldReport($exception)) {
             if (!in_array($exception->getMessage(), $ignoreable_exception_messages)) {
@@ -70,7 +69,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-
         if ($request->expectsJson()) {
             if ($exception instanceof PostTooLargeException) {
                 return $this->apiResponse(
@@ -132,19 +130,8 @@ class Handler extends ExceptionHandler
                     500
                 );
             }
-            // if ($exception instanceof HttpResponseException) {
-            //     // $exception = $exception->getResponse();
-            //     return $this->apiResponse(
-            //         [
-            //             'success' => false,
-            //             'message' => "There was some internal error",
-            //             'exception'  => $exception
-            //         ],
-            //         500
-            //     );
-            // }
+
             if ($exception instanceof \Error) {
-                // $exception = $exception->getResponse();
                 return $this->apiResponse(
                     [
                         'success' => false,

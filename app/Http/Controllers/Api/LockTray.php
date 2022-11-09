@@ -59,8 +59,7 @@ class LockTray extends ApiController
     {
         try {
             $userId = $request->user()->id;
-            $data = $this->detailRewardRepository
-                ->getReward($userId, $id, null);
+            $data = $this->detailRewardRepository->getReward($userId, $id);
 
             if ($data) {
                 if ($data->end_at && Carbon::now() < $data->end_at) {

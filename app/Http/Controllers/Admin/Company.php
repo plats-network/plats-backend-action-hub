@@ -19,7 +19,9 @@ class Company extends Controller
     public function __construct(
         private CompanyService $companyService,
         private CompanyRepository $companyRepository
-    ) {}
+    ) {
+        $this->middleware('admin');
+    }
 
     /**
      * Display a listing of the resource.

@@ -69,5 +69,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'debug.api' => DebugJsonHttpResponse::class,
         'qrcode' => \App\Http\Middleware\QrCode::class,
+        'admin' => \App\Http\Middleware\Admin::class,
+        'client_admin' => \App\Http\Middleware\ClientAdmin::class,
     ];
 }

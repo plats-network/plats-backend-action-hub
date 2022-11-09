@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTaskRequest;
-use App\Services\GuildService;
-use App\Services\TaskService;
+use App\Services\{GuildService, TaskService};
+use App\Repositories\TaskRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Auth, Str;
@@ -18,16 +18,24 @@ class Task extends Controller
      */
     public function __construct(
         private TaskService $taskService,
-        private GuildService $guildService
-    ) {}
+        private GuildService $guildService,
+        private TaskRepository $taskRepository
+    ) {
+        $this->middleware('client_admin');
+    }
 
     /**
-     * @return \Illuminate\Contracts\View\View
+     * @return \Illuminate\Contracts\View\View\
      */
     public function index(Request $request)
     {
-        $tasks = $this->taskService
-            ->search(['withCount' => ['participants', 'locations']]);
+        if (Auth::user()->role == CLIENT_ROLE) {
+            $tasks = $this->taskRepository->getTasks(Auth::user()->id);
+        } else {
+            $tasks = $this->taskRepository->getTasks();
+        }
+
+        $tasks = $tasks->orderBy('created_at', 'DESC')->get();
 
         return view(
             'admin.task.index', [
@@ -79,14 +87,13 @@ class Task extends Controller
     {
         $task = $this->taskService->store($request);
 
-        // Push notices by services
-        $token = Auth::user()->token;
-        $this->pushNotices($token, Str::limit($task->title, 50), Str::limit($task->description, 30), $task->id);
-
         // TODO: tạo ví metamark
-        // if (!$request->filled('id')) {
-        //     return redirect()->route(TASK_DEPOSIT_ADMIN_ROUTER, $task->id);
-        // }
+        if (!$request->filled('id')) {
+            // Push notices by services
+            $token = Auth::user()->token;
+            $this->pushNotices($token, Str::limit($task->title, 50), Str::limit($task->description, 30), $task->id);
+            // return redirect()->route(TASK_DEPOSIT_ADMIN_ROUTER, $task->id);
+        }
 
         return redirect()->route(TASK_LIST_ADMIN_ROUTER);
     }

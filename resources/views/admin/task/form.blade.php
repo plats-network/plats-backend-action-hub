@@ -10,13 +10,13 @@
                         <div class="card-body">
                             <div class="col-lg-6">
                                 <x-forms.group :label="trans('admin.task.form.type')">
-                                    <x-forms.select name="type" select2 required
-                                                    :options="trans('admin.task.type')"
-                                                    :selected="old('type')"/>
+                                    <x-forms.select name="type" select2
+                                        :options="trans('admin.task.type')"
+                                        :selected="old('type')" required />
                                 </x-forms.group>
                             </div>
                             <x-forms.group :label="trans('admin.task.form.name')">
-                                <x-forms.input name="name" :value="old('name')" required/>
+                                <x-forms.input name="name" :value="old('name')" required />
                             </x-forms.group>
                             <x-forms.group :label="trans('admin.task.form.desc')">
                                 <x-forms.textarea name="description" :value="old('description')"/>
@@ -29,9 +29,9 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <x-forms.group :label="trans('admin.task.form.order')">
-                                        <x-forms.select name="order" select2 required
+                                        <x-forms.select name="order" select2
                                                         :options="trans('admin.task.order')"
-                                                        :selected="old('order')"/>
+                                                        :selected="old('order')" required />
                                     </x-forms.group>
                                 </div>
                                 <div class="col-lg-6">
@@ -96,8 +96,7 @@
                     <h2 class="small-title mt-3">Task galleries</h2>
                     <div class="card">
                         <div class="card-body">
-                            <div class="dropzone" id="taskGallery">
-                            </div>
+                            <div class="dropzone" id="taskGallery"></div>
                             <div class="fallback"> <!-- this is the fallback if JS isn't working -->
                                 <input name="gallery" type="file" class="d-none" multiple />
                             </div>
@@ -105,35 +104,33 @@
                     </div>
                 </div>
             </div>
-            <!--- END Basic information -->
 
-            <!--- Guilds -->
             @include('admin.task._form.guild')
-            <!--- End Guilds -->
-
 
             <h2 class="small-title mt-3">Locations</h2>
             <div class="card">
                 <div class="card-body js-repeater">
                     <div data-repeater-list="locations">
                         @if((isset($task) && count($task->locations)) || old('locations'))
-                        @php
-                            $locations = old('locations') ? old('locations') : $task->locations
-                        @endphp
-                        @foreach($locations as $key => $location)
-                            <div class="" data-repeater-item="{{ $location->id ?? '' }}">
-                            @include('admin.location.form_js', ['location' => $location])
+                            @php
+                                $locations = old('locations') ? old('locations') : $task->locations
+                            @endphp
+
+                            @foreach($locations as $key => $location)
+                                <div class="" data-repeater-item="{{ $location->id ?? '' }}">
+                                @include('admin.location.form_js', ['location' => $location])
+                                </div>
+                            @endforeach
+
+                            @else
+                            <div class="" data-repeater-item>
+                                @include('admin.location.form_js')
                             </div>
-                        @endforeach
-                        @else
-                        <div class="" data-repeater-item>
-                            @include('admin.location.form_js')
-                        </div>
                         @endif
                     </div>
                     <button data-repeater-create class="btn btn-icon btn-icon-start btn-info" type="button">
                         <i data-acorn-icon="plus"></i>
-                        <span>Add a new location</span>
+                        <span>Add location</span>
                     </button>
                 </div>
             </div>

@@ -64,4 +64,14 @@ class Task extends Model
      * @var array
      */
     protected $appends = ['cover_url'];
+
+    /**
+     * Get the task_guides for the tasks.
+     */
+    public function task_guides()
+    {
+        return $this->hasMany(TaskGuide::class)
+            ->whereStatus(true)
+            ->latest();
+    }
 }

@@ -24,11 +24,12 @@ class TaskUserRepository extends BaseRepository
      *
      * @return null | TaskUser
      */
-    public function userStartedTask($taskId, $userId)
+    public function userStartedTask($taskId, $userId, $locaId)
     {
         return $this->model::with('task:id,name', 'taskLocations')
             ->where('task_id', $taskId)
             ->where('user_id', $userId)
+            ->where('location_id', $locaId)
             ->first();
     }
     

@@ -6,6 +6,8 @@ if (!defined('DEFINE_ADMIN_ROUTER')) {
     //Auth
     define('LOGIN_ADMIN_ROUTE', 'admin.login.route');
     define('LOGOUT_ADMIN_ROUTE', 'admin.logout.route');
+    define('REGIS_GET_CREATE', 'auth.create');
+    define('REGIS_POST_CREATE', 'auth.store');
 
     // Dashboard
     define('DASHBOARD_ADMIN_ROUTER', 'admin.dashboard.route');

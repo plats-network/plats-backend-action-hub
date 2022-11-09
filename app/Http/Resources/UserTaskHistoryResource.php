@@ -17,7 +17,7 @@ class UserTaskHistoryResource extends JsonResource
     {
         unset($request);
 
-        $result         = $this->resource->toArray();
+        $result = $this->resource->toArray();
         $result['task'] = new TaskResource($this->task);
 
         return $result;

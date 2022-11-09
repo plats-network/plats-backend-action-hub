@@ -135,7 +135,7 @@ class TaskService extends BaseService
         // Get and check exists Task and Location
         $taskHasLocal = $this->repository->taskHasLocation($taskId, $locaId);
         $userDoingOtherTasks = $this->taskUserRepository->userDoingOtherTasks($taskId, $userId);
-        $userStartedTask = $this->taskUserRepository->userStartedTask($taskId, $userId);
+        $userStartedTask = $this->taskUserRepository->userStartedTask($taskId, $userId, $locaId);
         $errors = [];
         if ($userDoingOtherTasks || $userStartedTask) {
             $errors ['userDoingOtherTasks'] =  $userDoingOtherTasks;
@@ -152,7 +152,7 @@ class TaskService extends BaseService
                 'ended_at' => null,
             ]);
             //This is the user's first location
-            if (is_null($this->taskUserRepository->userStartedTask($taskId, $userId))) {
+            if (is_null($this->taskUserRepository->userStartedTask($taskId, $userId, $locaId))) {
                 $this->taskUserRepository->create([
                     'user_id'                   => $userId,
                     'task_id'                   => $taskId,
@@ -208,12 +208,8 @@ class TaskService extends BaseService
         $history->save();
 
         // Update taskUser
-        $this->taskUserRepository->updateStatusTask($taskId, $userId, USER_COMPLETED_TASK);
-        // if($localTask->valid_amount == $taskLocation->get()->count()) {
-        //     $this->taskUserRepository->updateStatusTask($taskId, $userId, USER_COMPLETED_TASK);
-        // }
-        //Fire Event
-        // UserCheckedInLocationEvent::dispatch($history, $localTask, $taskId);
+        $this->taskUserRepository
+            ->updateStatusTask($taskId, $userId, USER_COMPLETED_TASK);
 
         return $history;
     }
@@ -245,8 +241,8 @@ class TaskService extends BaseService
     {
         $data = $request->except(['image', 'guilds']);
 
-        $data['status']     = ACTIVE_TASK;
-        $data['type']       = CHECKIN;
+        $data['status']     = $request->status;
+        $data['type']       = $request->type;
         $data['creator_id'] = $request->user()->id;
 
         //Save cover
@@ -310,7 +306,9 @@ class TaskService extends BaseService
 
         //Delete location
         if ($request->filled('location_delete')) {
-            $task->locations()->whereIn('id', $request->input('location_delete', []))->delete();
+            $task->locations()
+                ->whereIn('id', $request->input('location_delete', []))
+                ->delete();
         }
 
         return $task;
@@ -337,14 +335,18 @@ class TaskService extends BaseService
         /**
          * Get user histories with task and map user_status to each location
          */
-        $userHistories = $this->locationHistoryRepository->myHistoryInLocas($userId, $task->locations->pluck('id'));
+        $userHistories = $this->locationHistoryRepository
+            ->myHistoryInLocas($userId, $task->locations->pluck('id'));
+
         if ($userHistories->isEmpty()) {
             return $task;
         }
 
         $task->locations = $task->locations->map(function ($location) use ($userHistories) {
+            $userTask = $userHistories
+                ->where('location_id', $location->id)
+                ->first();
 
-            $userTask = $userHistories->where('location_id', $location->id)->first();
             if (is_null($userTask)) {
                 return $location->user_status = USER_WAITING_TASK;
             }
@@ -366,11 +368,12 @@ class TaskService extends BaseService
      * @param string $userId
      * @param string $taskId
      */
-    public function cancel($userId, $taskId)
+    public function cancel($userId, $taskId, $locaId)
     {
         $task = $this->find($taskId, ['locations']);
 
-        $userTask = $this->taskUserRepository->userStartedTask($taskId, $userId);
+        $userTask = $this->taskUserRepository
+            ->userStartedTask($taskId, $userId, $locaId);
 
         if (is_null($userTask)) {
             return null;
@@ -379,7 +382,8 @@ class TaskService extends BaseService
 
         $userTask->delete();
 
-        $this->locationHistoryRepository->getModel()
+        $this->locationHistoryRepository
+            ->getModel()
             ->ofUser($userId)
             ->whereIn('location_id', $task->locations->pluck('id'))
             ->delete();
