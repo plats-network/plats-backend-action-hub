@@ -105,7 +105,7 @@
                 </div>
             </div>
 
-            @include('admin.task._form.guild')
+            <!-- @include('admin.task._form.guild') -->
 
             <h2 class="small-title mt-3">Locations</h2>
             <div class="card">

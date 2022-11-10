@@ -55,15 +55,23 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-
     'asset_url' => env('ASSET_URL'),
 
     'use_ssl' => env('USE_SSL', false),
 
     'api_user_url' => env('API_URL_USER'),
+
     'api_url_notice' => env('API_URL_NOTICE', ''),
+
     '30shine_hash' => env('30SHINE', ''),
+
     'notice_code' => env('NOTICE_CODE', ''),
+
+    // API Twitter
+    'twitter_token' => env('TWITTER_BEARER_TOKEN', ''),
+    'twitter_gen_url' => env('TWITTER_GEN_URL', ''),
+    'twitter_api_url' => env('TWITTER_API_URL', ''),
+
     /*
     |--------------------------------------------------------------------------
     | API URL

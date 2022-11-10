@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Auth, Str;
 
+use App\Services\Twitter\TwitterGenIdService;
+
 class Task extends Controller
 {
     /**
@@ -19,7 +21,8 @@ class Task extends Controller
     public function __construct(
         private TaskService $taskService,
         private GuildService $guildService,
-        private TaskRepository $taskRepository
+        private TaskRepository $taskRepository,
+        private TwitterGenIdService $twitterGenIdService
     ) {
         $this->middleware('client_admin');
     }
@@ -29,6 +32,9 @@ class Task extends Controller
      */
     public function index(Request $request)
     {
+        $s = 'laputacrypto';
+        $a = $this->twitterGenIdService->getTWitterId($s);
+
         if (Auth::user()->role == CLIENT_ROLE) {
             $tasks = $this->taskRepository->getTasks(Auth::user()->id);
         } else {

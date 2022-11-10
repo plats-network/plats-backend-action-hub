@@ -133,7 +133,7 @@
     </div>
 
     <!-- Guildes Start -->
-    <div class="mb-5">
+    <!-- <div class="mb-5">
         <h2 class="small-title">Guides</h2>
         <div class="row g-2 row-cols-1 row-cols-xl-2 row-cols-xxl-4">
             <div class="col">
@@ -189,7 +189,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Guildes End -->
 
     <div class="row mb-n5">
