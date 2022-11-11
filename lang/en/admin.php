@@ -33,15 +33,37 @@ return [
             IN_ORDER => 'In order',
         ],
         'type' => [
-            CHECKIN => 'Checkin',
-            INSTALL_APP => 'Install Mobile App',
-            VIDEO_WATCH => 'Video Watch',
-            SUBSCRIBE_AND_INTERACT => 'Like / Share / Subcribe',
+            TYPE_CHECKIN => 'Checkin',
+            TYPE_INSTALL_APP => 'Install Mobile App',
+            TYPE_VIDEO_WATCH => 'Video Watch',
+            TYPE_SOCIAL => 'Social',
         ],
         'checkin_type' => [
             ONE_OF_MANY_LOCATIONS => 'One of many locations',
             MULTIPLE_LOCATIONS => 'Multiple locations'
         ],
+        'social' => [
+            'platform' => 'Platform',
+            'action' => 'Action',
+            'name' => 'Name',
+            'url' => 'Url',
+            'type' => [
+                FOLLOW      => 'Follow',
+                // LIKE        => 'Like page / post',
+                // SHARE       => 'Share post',
+                RETWEET     => 'Retweet',
+                TWEET       => 'Tweet',
+                // POST        => 'Post',
+                // JOIN_GROUP  => 'Join group',
+                // HASHTAG     => 'Post/retweet with hashtag',
+            ],
+            'platform_option' => [
+                TWITTER => 'Tweet',
+                // FACEBOOK => 'Facebook',
+                // DISCORD => 'Discord',
+                // TELEGRAM => 'Telegram',
+            ]
+        ]
     ],
     'reward' => [
         'page_name' => 'Quản lý rewards',
@@ -68,10 +90,10 @@ return [
             IN_ORDER => 'In order',
         ],
         'type' => [
-            CHECKIN => 'Checkin',
-            INSTALL_APP => 'Install Mobile App',
-            VIDEO_WATCH => 'Video Watch',
-            SUBSCRIBE_AND_INTERACT => 'Like/Share/Subcribe',
+            TYPE_CHECKIN => 'Checkin',
+            TYPE_INSTALL_APP => 'Install Mobile App',
+            TYPE_VIDEO_WATCH => 'Video Watch',
+            TYPE_SOCIAL => 'Social',
         ],
     ],
     'location' => [

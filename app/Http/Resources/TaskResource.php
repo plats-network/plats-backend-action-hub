@@ -72,10 +72,11 @@ class TaskResource extends JsonResource
                 'radius'        => (int)$this->valid_radius ?? 100,
                 'units' => 'm',
             ],
-            'locations' => $this->locations()->get()->toArray(),
-            'galleries' => GalleryResource::collection($this->galleries()->get()),
-            'guide' => new TaskGuideResource($this->task_guides),
-            'rewards' => $rewards,
+            'locations'         => $this->locations()->get()->toArray(),
+            'socials'           => $this->taskSocials()->get()->toArray(),
+            'galleries'         => GalleryResource::collection($this->galleries()->get()),
+            'guide'             => new TaskGuideResource($this->task_guides),
+            'rewards'           => $rewards,
         ];
     }
 
