@@ -2,67 +2,113 @@
 
 namespace App\Services\Twitter;
 
+use App\Services\Concerns\BaseTwitter;
 use Illuminate\Support\Facades\Http;
 
-class TwitterApiService {
+class TwitterApiService extends BaseTwitter {
     /**
-     * Auto paginate with query parameters
+     * Get user Follow
      *
-     * @param  array  $username
+     * @param $userId
      *
-     * @return id
+     * @return array|void
      */
-
-    public function getTWitterId($username = null)
+    public function getFollows($userId = null)
     {
-        try {
-            $res = Http::get(config('app.twitter_gen_url') . '/api/fetchTwitterId?username=' . $username);
-            $data = json_decode($res->getBody()->getContents());
+        $follows = [];
+        $userId = 571432663; // Mock
 
-            $twitterId = $data->id;
-        } catch (\Exception $e) {
-            $twitterId = 'error';
+        if (is_null($userId) || $userId == 'error') {
+            return $follows;
+        }
+        $uri = "/2/users/{$userId}/followers?max_results=" . TWITTER_LIMIT;
+
+        return $this->fetchData($uri);
+    }
+
+    /**
+     * Get user likes page
+     *
+     * @param $tweetId
+     *
+     * @return array|void
+     */
+    public function getLikes($tweetId = null)
+    {
+        $likes = [];
+
+        $userId = 571432663; // Mock
+
+        if (is_null($userId) || $userId == 'error') {
+            return $follows;
+        }
+        $uri = "/2/users/{$userId}/liked_tweets?max_results=" . TWITTER_LIMIT;
+
+        return $this->fetchData($uri);
+    }
+
+    /**
+     * Get user Retweets page
+     *
+     * @param $tweetId $request
+     *
+     * @return array|void
+     */
+    public function getUserTweets($tweetId = null)
+    {
+        $userIds = [];
+        $tweetId = 1590210694095736833;
+
+        if (is_null($tweetId)) {
+            return $userIds;
         }
 
-        return $twitterId;
-    }
-
-
-    public function getLikes()
-    {
-        // TODO:
-    }
-
-    public function reTweet()
-    {
+        $uri = "/2/tweets/{$tweetId}/retweeted_by?max_results=" . TWITTER_LIMIT;
         
+        return $this->fetchData($uri);
     }
 
-
-    // Get Token
-    private function getToken()
+    private function fetchData($uri = null, $limit = 5)
     {
-        return config('app.twitter_token');
-    }
-
-
-    private callApi($method = 'GET', $uri = null)
-    {
-        switch($method) {
-            case "GET":
-            case "get":
-                $res = Http::withToken($this->getToken())
-                    ->get(config('app.twitter_api_url') . $uri);
-                break;
-            case "POST":
-            case "post":
-                $res = Http::withToken($this->getToken())
-                    ->post(config('app.twitter_api_url') . $uri);
-                break;
-            default:
-                $res null;
+        $datas = [];
+        if (is_null($uri)) {
+            return $datas;
         }
 
-        return $res;
+        $res = $this->callApi($uri);
+
+        if (is_null($res)) {
+            return $datas;
+        }
+
+        $statusCode = $res->getStatusCode();
+        $i = ZERO;
+
+        do {
+            if ($statusCode == 200) {
+                if ($i <= 0) {
+                    $data = json_decode($res->getBody()->getContents());
+                    foreach($data->data as $item) {
+                        $datas[] = $item->username;
+                    }
+                } else {
+                    $nextUri = $uri . "&pagination_token={$data->meta->next_token}";
+                    $nextRes = $this->callApi($nextUri);
+                    $nextData = json_decode($nextRes->getBody()->getContents());
+
+                    if ($nextData->meta->result_count == 0) {
+                        break;
+                    }
+
+                    foreach($nextData->data as $item) {
+                        $datas[] = $item->username;
+                    }
+                }
+            }
+
+            $i++;
+        } while($i < $limit);
+        
+        return $datas;
     }
 }

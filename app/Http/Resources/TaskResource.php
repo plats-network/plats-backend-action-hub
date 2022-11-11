@@ -20,7 +20,6 @@ class TaskResource extends JsonResource
      */
     public function toArray($request)
     {
-        // dd ($this->task_guides);
         $creator = $this->getUserDetail($this->creator_id);
         $userId = $request->user()->id;
         $dataTaskProgress = $this->getTaskImprogress($userId, $this->id);
