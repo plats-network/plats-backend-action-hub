@@ -1,17 +1,14 @@
 import { ethers } from "ethers";
-const platContractABI = require('../../../data/tasks.json')['abi'];
-const platContractAddress = "0x6E440d515E0ddE78de24245d57dF1790fA41eFc4";
-const tokenContractABI = require('../../../data/platToken.json')['abi'];
-const tokenContractAddress = "0x0AE40ea79F109E7D78dDfaA366e1372c3A214ef0";
-
-
+import TronWeb from 'tronweb';
+const tokenContractAddress = "TEVDdsSRWxpPXv1JwGQ2V3ExrRyScpmQPe";
+const tasksContractAddress = "TNeUyFA6ZdeC8JCCma4UQuAEHTfPmx9WYE";
 class Deposit {
     
     constructor() {
         const _this = this;
         ;(async function () {
             try {
-                await _this.isConnected();
+                await _this._makeTransaction();
             } catch (e) {
                 console.log('err 18', e);
                 return true;
@@ -29,25 +26,59 @@ class Deposit {
         $('#deposit_process').show();
         //Start deposit
         ;(async function () {
-            const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-            console.log(provider);
-            // get a signer wallet!
-            const signer = provider.getSigner();
-
-            let platContract = new ethers.Contract(platContractAddress, platContractABI, signer)
             //CAMPAIGN_AMOUNT
-            let depositValue = ethers.utils.parseEther(CAMPAIGN_AMOUNT);
             let taskId = TASK_ID;
-
-            //TODO: Change wallet. Default 0
-            await platContract.connect(signer).createCampaign(taskId, depositValue);
-            // let tokenContract = new ethers.Contract(tokenContractAddress, tokenContractABI, signer);
-            // await tokenContract.connect(signer).approve("0x0C4D42B9BCA84e6aA29bf94dA184b06F56C436b1", depositValue);
-            console.log(res);
+            let contract = await _this.getContractTasks();
+            if (contract) {
+                let depositValue = window.tronWeb.toBigNumber('50000000000000000000').toString();
+                contract.createCampaign(taskId, depositValue).send({
+                    feeLimit: 100_000_000,
+                }).then((data) => {
+                    console.log(data);
+                })
+            }
+            else {
+                console.log("No contract task")
+                window.location.href = "/cp/tasks";
+            }
             return true;
         }());
     }
 
+    /**
+     *
+     * @returns {Promise<boolean>}
+     * @private
+     */
+    walletInstalled(){
+        if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
+            return true;
+        } else {
+            return false;
+        } 
+    }
+
+    /**
+     *
+     * @returns {Promise<boolean>}
+     * @private
+     */
+    connectWallet() {
+        $('#connectWallet').on('click', () => {
+            console.log('connectWallet');
+        })
+    }
+
+    /**
+     *
+     * @returns {Promise<boolean>}
+     * @private
+     */
+    async getContractTasks(){
+        if(this.walletInstalled()){
+            return window.tronWeb.contract().at(tasksContractAddress);
+        }
+    }
     /**
      *
      * @returns boolean
@@ -62,19 +93,6 @@ class Deposit {
      * @returns boolean
      * @private
      */
-    async isConnected() {
-        const accounts = await ethereum.request({method: 'eth_accounts'});       
-        if (accounts.length) {
-            this._makeTransaction();
-           console.log(`You're connected to: ${accounts[0]}`);
-           return true;
-        } else {
-           console.log("Metamask is not connected");
-        }
-
-        return false;
-     }
-
     /**
      *
      * @returns {Promise<boolean>}
