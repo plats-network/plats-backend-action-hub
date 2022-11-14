@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits\Relation;
 
-use App\Models\{TaskGallery, TaskLocation, TaskUser, Task, User};
+use App\Models\{TaskGallery, TaskLocation, TaskUser, Task, TaskSocial, User};
 
 trait TaskRelation {
     /**
@@ -36,5 +36,13 @@ trait TaskRelation {
     public function rewards()
     {
         return $this->belongsToMany(Task::class);
+    }
+    
+    /**
+     * Get the task socials associated with the task.
+     */
+    public function taskSocials()
+    {
+        return $this->hasMany(TaskSocial::class, 'task_id', 'id');
     }
 }

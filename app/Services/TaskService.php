@@ -2,25 +2,19 @@
 
 namespace App\Services;
 
-use App\Events\UserCanceledTaskEvent;
-use App\Events\UserCheckedInLocationEvent;
-use App\Events\UserCheckingLocationEvent;
-use App\Repositories\LocationHistoryRepository;
-use App\Repositories\TaskRepository;
-use App\Repositories\TaskUserRepository;
+use App\Events\{UserCanceledTaskEvent, UserCheckedInLocationEvent, UserCheckingLocationEvent};
+use App\Repositories\{LocationHistoryRepository, TaskRepository, TaskUserRepository};
+use App\Services\Traits\{TaskLocationTrait, TaskSocialTrait};
+use Illuminate\Support\Facades\{DB, Storage};
 use App\Services\Concerns\BaseService;
-use App\Services\Traits\TaskLocationTrait;
-use App\Models\TaskLocationHistory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Carbon as SupportCarbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class TaskService extends BaseService
 {
-    use TaskLocationTrait;
+    use TaskLocationTrait, TaskSocialTrait;
 
     /**
      * @var \App\Repositories\LocationHistoryRepository
@@ -103,21 +97,21 @@ class TaskService extends BaseService
      * @param \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Collection $userHistories
      * @param integer $duration Minute
      */
-    public function timeRemaining($userHistories, $duration)
-    {
-        return $duration;
-        //TODO: Calculate
-        $timeUsed = 0;
-        foreach ($userHistories as $history) {
-            if (is_null($history->ended_at)) {
-                continue;
-            }
-            $calcu = Carbon::parse($history->started_at)->diffInRealMinutes(Carbon::parse($history->ended_at));
-            $timeUsed += 0;
-        }
+    // public function timeRemaining($userHistories, $duration)
+    // {
+    //     return $duration;
+    //     //TODO: Calculate
+    //     $timeUsed = 0;
+    //     foreach ($userHistories as $history) {
+    //         if (is_null($history->ended_at)) {
+    //             continue;
+    //         }
+    //         $calcu = Carbon::parse($history->started_at)->diffInRealMinutes(Carbon::parse($history->ended_at));
+    //         $timeUsed += 0;
+    //     }
 
-        return $duration - $timeUsed;
-    }
+    //     return $duration - $timeUsed;
+    // }
 
     /**
      * User start task at location
@@ -240,10 +234,11 @@ class TaskService extends BaseService
     public function create(Request $request)
     {
         $data = $request->except(['image', 'guilds']);
-
-        $data['status']     = $request->status;
-        $data['type']       = $request->type;
-        $data['creator_id'] = $request->user()->id;
+        $taskType = $request->type;
+        $data['status']         = $request->status;
+        $data['type']           = $taskType;
+        $data['creator_id']     = $request->user()->id;
+        $data['valid_amount']   = $request->valid_amount ?? 1;
 
         //Save cover
         if ($request->hasFile('image')) {
@@ -255,7 +250,14 @@ class TaskService extends BaseService
         $task = $this->repository->create($data);
 
         //Create location
-        $this->createLocation($task, $request->input('locations'));
+        if ($taskType == TYPE_CHECKIN) {
+            $this->createLocation($task, $request->input('locations'));
+        }
+        
+        //Create social
+        if ($taskType == TYPE_SOCIAL) {
+            $this->createSocial($task, $request->input('socials'));
+        }
 
         //Create rewards
         // $this->createRewards($task, $request->input('rewards'));
@@ -287,7 +289,7 @@ class TaskService extends BaseService
         $task = $this->repository->updateByModel($task, $data);
 
         //Update/Create Location
-        if ($request->filled('locations')) {
+        if ($request->filled('locations') && $request->type == TYPE_CHECKIN) {
             $createLocations = [];
             $updateLocations = [];
             foreach ($request->input('locations', []) as $location) {
@@ -302,13 +304,38 @@ class TaskService extends BaseService
             //Create location
             $this->createLocation($task, $createLocations);
             $this->updateLocation($task, $updateLocations);
-        }
 
-        //Delete location
-        if ($request->filled('location_delete')) {
-            $task->locations()
-                ->whereIn('id', $request->input('location_delete', []))
-                ->delete();
+            //Delete location
+            if ($request->filled('list_delete')) {
+                $task->locations()
+                    ->whereIn('id', $request->input('list_delete', []))
+                    ->delete();
+            }
+        }
+        
+        //Update/Create Social
+        if ($request->filled('socials') && $request->type == TYPE_SOCIAL) {
+            $createSocials = [];
+            $updateSocials = [];
+            foreach ($request->input('socials', []) as $social) {
+                if (isset($social['id']) && !empty($social['id'])) {
+                    $updateSocials[] = $social;
+                    continue;
+                }
+
+                $createSocials[] = $social;
+            }
+
+            //Create social
+            $this->createSocial($task, $createSocials);
+            $this->updateSocial($task, $updateSocials);
+
+            //Delete social
+            if ($request->filled('list_delete')) {
+                $task->taskSocials()
+                    ->whereIn('id', $request->input('list_delete', []))
+                    ->delete();
+            }
         }
 
         return $task;

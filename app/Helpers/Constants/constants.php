@@ -53,10 +53,10 @@ if (!defined('DEFINE_CONSTANT')) {
     /**
      * Task type
      */
-    define('CHECKIN', 1);
-    define('INSTALL_APP', 2);
-    define('VIDEO_WATCH', 3);
-    define('SUBSCRIBE_AND_INTERACT', 4);
+    define('TYPE_CHECKIN', 1);
+    define('TYPE_INSTALL_APP', 2);
+    define('TYPE_VIDEO_WATCH', 3);
+    define('TYPE_SOCIAL', 4);
 
     /**
      * Task checkin type
@@ -75,4 +75,23 @@ if (!defined('DEFINE_CONSTANT')) {
 
     // TWITTER
     define('TWITTER_LIMIT', 100);
+    /**
+     * Task type platform
+     */
+    define('TWITTER', 1);
+    define('FACEBOOK', 2);
+    define('DISCORD', 3);
+    define('TELEGRAM', 4);
+
+    /**
+     * Task type action
+     */
+    define('FOLLOW', 1);
+    define('LIKE', 2);
+    define('SHARE', 3);
+    define('RETWEET', 4);
+    define('TWEET', 5);
+    define('POST', 6);
+    define('JOIN_GROUP', 7);
+    define('HASHTAG', 8);
 }

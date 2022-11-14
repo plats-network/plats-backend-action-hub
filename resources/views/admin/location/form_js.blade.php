@@ -1,4 +1,4 @@
-<div class="location-form-item js-location_form border rounded shadow p-3 mb-3">
+<div class="location-form-item js_form border rounded shadow p-3 mb-3">
     <div class="row">
         <div class="col-md-6">
             <x-forms.group :label="trans('admin.location.form.name')">
@@ -61,9 +61,9 @@
     @endisset
 
     <button {{ !isset($location) ? 'data-repeater-delete' : '' }}
-        class="btn btn-sm btn-danger {{ isset($location) ? 'js-location-delete' : '' }}"
+        class="btn btn-sm btn-danger {{ isset($location) ? 'js-delete' : '' }}"
         type="button"
-        data-location-id="{{ $location['id'] ?? '' }}">
+        data-id="{{ $location['id'] ?? '' }}">
         <span>Delete</span>
     </button>
 </div>
