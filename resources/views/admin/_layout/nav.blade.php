@@ -89,8 +89,13 @@
         </li>
         <li class="list-inline-item">
             <a href="#" id="pinButton" class="pin-button">
-                <i data-acorn-icon="lock-on" class="unpin" data-acorn-size="18"></i>
                 <i data-acorn-icon="lock-off" class="pin" data-acorn-size="18"></i>
+            </a>
+        </li>
+        <li class="list-inline-item">
+            <a href="#" id="connectWallet" class="pin-button">
+                <span class="label">Connect Wallet</span>
+                <i data-acorn-icon="wallet" class="unpin" data-acorn-size="18"></i>
             </a>
         </li>
         {{--<li class="list-inline-item">
