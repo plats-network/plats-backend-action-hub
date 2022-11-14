@@ -245,6 +245,7 @@ class TaskService extends BaseService
         $data['type']           = $taskType;
         $data['creator_id']     = $request->user()->id;
         $data['valid_amount']   = $request->valid_amount ?? 1;
+        $data['total_reward']   = $request->total_reward ?? 0;
 
         //Save cover
         if ($request->hasFile('image')) {
