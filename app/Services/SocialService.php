@@ -13,20 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Carbon as SupportCarbon;
 
-class TaskService extends BaseService
+class SocialService extends BaseService
 {
-    use TaskLocationTrait, TaskSocialTrait;
-
-    /**
-     * @var \App\Repositories\LocationHistoryRepository
-     */
-    protected $locationHistoryRepository;
-
-    /**
-     * @var \App\Repositories\TaskUserRepository
-     */
-    protected $taskUserRepository;
-
     /**
      * @param \App\Repositories\TaskRepository $repository
      * @param \App\Repositories\LocationHistoryRepository $locationHistoryRepository

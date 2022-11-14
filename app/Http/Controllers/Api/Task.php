@@ -48,9 +48,10 @@ class Task extends ApiController
                     return $query->where('user_id', $userId);
                 }])
                 ->whereStatus(ACTIVE_TASK)
+                ->whereType(TYPE_CHECKIN)
                 ->paginate($limit);
         } catch (QueryException $e) {
-            return $this->respondInvalidQuery();
+            return $this->respondNotFound();
         }
 
         $datas = TaskResource::collection($tasks);

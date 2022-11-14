@@ -72,7 +72,7 @@ class TaskResource extends JsonResource
                 'units' => 'm',
             ],
             'locations'         => $this->locations()->get()->toArray(),
-            'socials'           => $this->taskSocials()->get()->toArray(),
+            'socials'           => TaskSocialResource::collection($this->taskSocials()->get()),
             'galleries'         => GalleryResource::collection($this->galleries()->get()),
             'guide'             => new TaskGuideResource($this->task_guides),
             'rewards'           => $rewards,

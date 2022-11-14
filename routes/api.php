@@ -4,7 +4,7 @@ use App\Http\Controllers\Api\{
     Task, TaskLocation, UserTask,
     Wallet, Box, Gifts,
     QrCode, TaskNotice, LockTray,
-    QrCodeAction, Twitter
+    QrCodeAction, Twitter, Social
 };
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +30,8 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
     Route::prefix('{id}/locations')->controller(TaskLocation::class)->group(function () {
         Route::post('/', 'create');
     });
+
+    Route::post('/{id}/social/{social_id}', [Social::class, 'update'])->name('task.social.update');
 });
 
 Route::get('/my-tasks', [UserTask::class, 'histories']);
@@ -41,6 +43,7 @@ Route::resource('lock_tray', LockTray::class)->only(['index', 'update']);
 Route::get('get_task', [TaskNotice::class, 'getTask']);
 Route::post('qr_code', [QrCodeAction::class, 'store'])->name('qrcode.store');
 Route::resource('twitter', Twitter::class)->only(['index', 'store']);
+Route::resource('socials', Social::class)->only(['index']);
 
 Route::prefix('wallet')->controller(Wallet::class)->group(function () {
     Route::post('/withdraw', 'withdraw');

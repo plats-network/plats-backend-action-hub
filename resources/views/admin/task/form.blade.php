@@ -9,15 +9,10 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="task-type col-lg-6">
-                                @php
-                                    $flag = old('id') ? true : false;
-                                @endphp
-
                                 <x-forms.group :label="trans('admin.task.form.desc')">
                                     <x-forms.select name="type" select2
                                         :options="trans('admin.task.type')"
-                                        :selected="old('type')"
-                                        :disabled="$flag" required />
+                                        :selected="old('type')" required />
                                 </x-forms.group>
                             </div>
                             

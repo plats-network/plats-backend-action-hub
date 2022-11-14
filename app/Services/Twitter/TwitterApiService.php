@@ -6,6 +6,15 @@ use App\Services\Concerns\BaseTwitter;
 use Illuminate\Support\Facades\Http;
 
 class TwitterApiService extends BaseTwitter {
+    // define('FOLLOW', 1);
+    // define('LIKE', 2);
+    // define('SHARE', 3);
+    // define('RETWEET', 4);
+    // define('TWEET', 5);
+    // define('POST', 6);
+    // define('JOIN_GROUP', 7);
+    // define('HASHTAG', 8);
+
     /**
      * Get user Follow
      *
@@ -13,7 +22,7 @@ class TwitterApiService extends BaseTwitter {
      *
      * @return array|void
      */
-    public function getFollows($userId = null)
+    public function getFollows($userId = null, $name = null)
     {
         $follows = [];
         $userId = 571432663; // Mock
@@ -27,13 +36,34 @@ class TwitterApiService extends BaseTwitter {
     }
 
     /**
+     * Get user Following
+     *
+     * @param $userId
+     *
+     * @return array|void
+     */
+    public function isFollowing($userId = null, $name = null)
+    {
+        $follows = [];
+        $userId = 571432663; // Mock
+        $name = 'tamarincrypto'; // mock
+
+        if (is_null($userId) || $userId == 'error') {
+            return $follows;
+        }
+        $uri = "/2/users/{$userId}/following?max_results=" . TWITTER_LIMIT;
+
+        return $this->fetchData($uri, FOLLOW, $name);
+    }
+
+    /**
      * Get user likes page
      *
      * @param $tweetId
      *
      * @return array|void
      */
-    public function getLikes($tweetId = null)
+    public function getLikes($tweetId = null, $name = null)
     {
         $likes = [];
 
@@ -65,33 +95,44 @@ class TwitterApiService extends BaseTwitter {
 
         $uri = "/2/tweets/{$tweetId}/retweeted_by?max_results=" . TWITTER_LIMIT;
         
-        return $this->fetchData($uri);
+        return $this->fetchData($uri, FOLLOW, '');
     }
 
-    private function fetchData($uri = null, $limit = 5)
+    private function fetchData($uri, $type = LIKE, $key = null, $limit = 10)
     {
         $datas = [];
-        if (is_null($uri)) {
-            return $datas;
-        }
-
+        if (is_null($uri)) { return false; }
         $res = $this->callApi($uri);
 
-        if (is_null($res)) {
-            return $datas;
-        }
-
+        if (is_null($res)) { return false; }
         $statusCode = $res->getStatusCode();
+        $data = json_decode($res->getBody()->getContents());
         $i = ZERO;
 
         do {
             if ($statusCode == 200) {
                 if ($i <= 0) {
-                    $data = json_decode($res->getBody()->getContents());
-                    foreach($data->data as $item) {
-                        $datas[] = $item->username;
+                    switch($type) {
+                        case FOLLOW:
+                        case RETWEET:
+                            foreach($data->data as $item) {
+                                $datas[] = $item->username;
+                            }
+                            break;
+                        default:
+                            foreach($data->data as $item) {
+                                $datas[] = $item->id;
+                            }
+                    }
+
+                    if (in_array($key, $datas)) {
+                        return true;
                     }
                 } else {
+                    if (!isset($data->meta->next_token)) {
+                        break;
+                    }
+
                     $nextUri = $uri . "&pagination_token={$data->meta->next_token}";
                     $nextRes = $this->callApi($nextUri);
                     $nextData = json_decode($nextRes->getBody()->getContents());
@@ -100,8 +141,21 @@ class TwitterApiService extends BaseTwitter {
                         break;
                     }
 
-                    foreach($nextData->data as $item) {
-                        $datas[] = $item->username;
+                    switch($type) {
+                        case FOLLOW:
+                        case RETWEET:
+                            foreach($data->data as $item) {
+                                $datas[] = $item->username;
+                            }
+                            break;
+                        default:
+                            foreach($data->data as $item) {
+                                $datas[] = $item->id;
+                            }
+                    }
+
+                    if (in_array($key, $datas)) {
+                        return true;
                     }
                 }
             }
@@ -109,6 +163,6 @@ class TwitterApiService extends BaseTwitter {
             $i++;
         } while($i < $limit);
         
-        return $datas;
+        return false;
     }
 }

@@ -17,10 +17,10 @@ class Twitter extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $a = $this->twitterApiService->getUserTweets();
-        $b = $this->twitterApiService->getFollows();
+        // $a = $this->twitterApiService->isFollowing();
+        // $b = $this->twitterApiService->getFollows();
     }
 
     /**
