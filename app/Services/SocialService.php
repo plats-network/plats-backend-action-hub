@@ -13,20 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Carbon as SupportCarbon;
 
-class TaskService extends BaseService
+class SocialService extends BaseService
 {
-    use TaskLocationTrait, TaskSocialTrait;
-
-    /**
-     * @var \App\Repositories\LocationHistoryRepository
-     */
-    protected $locationHistoryRepository;
-
-    /**
-     * @var \App\Repositories\TaskUserRepository
-     */
-    protected $taskUserRepository;
-
     /**
      * @param \App\Repositories\TaskRepository $repository
      * @param \App\Repositories\LocationHistoryRepository $locationHistoryRepository
@@ -240,7 +228,6 @@ class TaskService extends BaseService
         $data['type']           = $taskType;
         $data['creator_id']     = $request->user()->id;
         $data['valid_amount']   = $request->valid_amount ?? 1;
-        $data['total_reward']   = $request->total_reward ?? 0;
 
         //Save cover
         if ($request->hasFile('image')) {

@@ -3,6 +3,9 @@
 if (!defined('DEFINE_CONSTANT')) {
     define('DEFINE_CONSTANT', 'DEFINE_CONSTANT');
 
+    // Zero
+    define('ZERO', 0);
+
     define('PAGE_SIZE', 20);
     define('INPUT_MAX_LENGTH', 255);
 
@@ -70,6 +73,8 @@ if (!defined('DEFINE_CONSTANT')) {
     define('REWARD_BOX', 3);
     define('REWARD_WALLET', 4);
 
+    // TWITTER
+    define('TWITTER_LIMIT', 100);
     /**
      * Task type platform
      */

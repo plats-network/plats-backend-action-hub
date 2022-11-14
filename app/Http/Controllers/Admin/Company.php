@@ -31,7 +31,6 @@ class Company extends Controller
     public function index(Request $request)
     {
         $companies = $this->companyRepository->paginate(10);
-        // dd($companies);
 
         return view('admin.company.index', [
             'companies' => $companies

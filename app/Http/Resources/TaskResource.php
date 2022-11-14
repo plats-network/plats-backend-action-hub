@@ -20,7 +20,6 @@ class TaskResource extends JsonResource
      */
     public function toArray($request)
     {
-        // dd ($this->task_guides);
         $creator = $this->getUserDetail($this->creator_id);
         $userId = $request->user()->id;
         $dataTaskProgress = $this->getTaskImprogress($userId, $this->id);
@@ -73,7 +72,7 @@ class TaskResource extends JsonResource
                 'units' => 'm',
             ],
             'locations'         => $this->locations()->get()->toArray(),
-            'socials'           => $this->taskSocials()->get()->toArray(),
+            'socials'           => TaskSocialResource::collection($this->taskSocials()->get()),
             'galleries'         => GalleryResource::collection($this->galleries()->get()),
             'guide'             => new TaskGuideResource($this->task_guides),
             'rewards'           => $rewards,

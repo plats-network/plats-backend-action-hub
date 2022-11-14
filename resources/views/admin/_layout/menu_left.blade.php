@@ -33,14 +33,14 @@
                 <li>
                     <a href="{{ route(TASK_LIST_ADMIN_ROUTER) }}">
                         <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
-                        <span class="label">Checkin Management</span>
+                        <span class="label">Tasks Management</span>
                     </a>
                 </li>
                 @if (auth()->user()->role == ADMIN_ROLE)
                     <li>
                         <a href="#">
                             <i data-acorn-icon="boxes" class="icon d-none" data-acorn-size="18"></i>
-                            <span class="label">Quản lý NFT</span>
+                            <span class="label">NFT Management</span>
                         </a>
                     </li>
                     <li>

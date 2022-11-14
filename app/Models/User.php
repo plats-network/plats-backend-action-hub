@@ -25,6 +25,10 @@ class User implements Authenticatable
         'name',
         'email',
         'role',
+        'twitter',
+        'facebook',
+        'discord',
+        'telegram'
     ];
 
     /**

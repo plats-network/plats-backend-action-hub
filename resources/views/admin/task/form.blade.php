@@ -94,7 +94,6 @@
                                         @if((isset($task) && count($task->taskSocials)) || old('socials'))
                                             @php
                                                 $socials = old('socials') ? old('socials') : $task->taskSocials
-                                                
                                             @endphp
                 
                                             @foreach($socials as $key => $social)
@@ -102,8 +101,7 @@
                                                 @include('admin.social.form_js', ['social' => $social])
                                                 </div>
                                             @endforeach
-                
-                                            @else
+                                        @else
                                             <div class="" data-repeater-item>
                                                 @include('admin.social.form_js')
                                             </div>
@@ -169,8 +167,7 @@
                                     @include('admin.location.form_js', ['location' => $location])
                                     </div>
                                 @endforeach
-
-                                @else
+                            @else
                                 <div class="" data-repeater-item>
                                     @include('admin.location.form_js')
                                 </div>

@@ -34,8 +34,8 @@ return [
         ],
         'type' => [
             TYPE_CHECKIN => 'Checkin',
-            TYPE_INSTALL_APP => 'Install Mobile App',
-            TYPE_VIDEO_WATCH => 'Video Watch',
+            // TYPE_INSTALL_APP => 'Install Mobile App',
+            // TYPE_VIDEO_WATCH => 'Video Watch',
             TYPE_SOCIAL => 'Social',
         ],
         'checkin_type' => [
@@ -91,8 +91,8 @@ return [
         ],
         'type' => [
             TYPE_CHECKIN => 'Checkin',
-            TYPE_INSTALL_APP => 'Install Mobile App',
-            TYPE_VIDEO_WATCH => 'Video Watch',
+            // TYPE_INSTALL_APP => 'Install Mobile App',
+            // TYPE_VIDEO_WATCH => 'Video Watch',
             TYPE_SOCIAL => 'Social',
         ],
     ],

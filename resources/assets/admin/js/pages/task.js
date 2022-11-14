@@ -91,7 +91,7 @@ class TaskControls {
   _deleteLocationItem($this) {
     let locationId = $this.attr('data-id');
     let eFrom = $this.closest('form');
-    console.log(eFrom.length);
+
     $this.closest('div[data-repeater-item=' + locationId + ']').remove();
     eFrom.append('<input type="hidden" name="list_delete[]" value="'+ locationId +'">');
     return true;
