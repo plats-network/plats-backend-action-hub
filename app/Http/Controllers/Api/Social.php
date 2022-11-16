@@ -3,33 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\{CheckInTaskRequest, CreateTaskRequest, StartTaskRequest};
-use App\Http\Resources\{TaskResource, TaskUserResource, TaskDogingResource};
-use App\Services\TaskService;
+use App\Http\Resources\TaskResource;
 use App\Http\Requests\SocialRequest;
-use App\Models\Task as ModelTask;
-use App\Models\TaskUser;
-use Illuminate\Database\QueryException;
-use App\Repositories\{LocationHistoryRepository, TaskRepository, TaskUserRepository};
-use Illuminate\Support\Carbon as SupportCarbon;
-use Illuminate\Support\Facades\{DB, Http};
-use Carbon\Carbon;
+use Illuminate\Http\Request;
+use App\Repositories\{TaskSocialRepository, TaskUserRepository};
+use App\Services\SocialService;
+use App\Helpers\ActionHelper;
 
 class Social extends ApiController
 {
     /**
      * @param $taskService
      * @param $modelTask
-     * @param $locationHistoryRepository
      * @param $taskRepository
      * @param $taskUserRepository
      * 
      */
     public function __construct(
-        private TaskService $taskService,
-        private ModelTask $modelTask,
-        private LocationHistoryRepository $locationHistoryRepository,
-        private TaskRepository $taskRepository,
+        private SocialService $socialService,
+        private TaskSocialRepository $taskSocialRepository,
         private TaskUserRepository $taskUserRepository
     ) {}
 
@@ -74,12 +66,25 @@ class Social extends ApiController
      */
     public function update(SocialRequest $request, $id, $socialId)
     {
-        $user = $request->user();
+        try {
+            $user = $request->user();
+            $type = ActionHelper::getTypeTwitter($request->type);
 
-        if (is_null($user->twitter) || $user->twitter == '') {
+            if (is_null($user->twitter) || $user->twitter == '') {
+                return $this->respondError('Account twitter not connect!');
+            }
 
+            $userSocial = $this->taskSocialRepository->find($socialId);
+            // Service
+            $isSocial = $this->socialService->performTwitter($user, $type, $id, $userSocial);
+
+            if ($isSocial) {
+                return $this->responseMessage('Success!');
+            }
+        } catch (\Exception $e) {
+            return $this->respondError($e->getMessage());
         }
 
-        dd($user);
+        return $this->responseMessage('Not success!');        
     }
 }

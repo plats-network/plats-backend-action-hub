@@ -4,6 +4,7 @@ namespace App\Services\Twitter;
 
 use App\Services\Concerns\BaseTwitter;
 use Illuminate\Support\Facades\Http;
+use Log;
 
 class TwitterApiService extends BaseTwitter {
     // define('FOLLOW', 1);
@@ -20,40 +21,37 @@ class TwitterApiService extends BaseTwitter {
      *
      * @param $userId
      *
-     * @return array|void
+     * @return boolean|void
      */
-    public function getFollows($userId = null, $name = null)
+    public function isHasTag($userTweetId = null, $keyHasTag = null)
     {
-        $follows = [];
-        $userId = 571432663; // Mock
+        $ver = config('app.twitter_api_ver');
 
-        if (is_null($userId) || $userId == 'error') {
-            return $follows;
+        if (is_null($userTweetId) || $userTweetId == 'error') {
+            return false;
         }
-        $uri = "/2/users/{$userId}/followers?max_results=" . TWITTER_LIMIT;
+        $uri = "/{$ver}/users/{$userTweetId}/tweets?max_results=" . TWITTER_LIMIT;
 
-        return $this->fetchData($uri);
+        return $this->fetchData($uri, HASHTAG, $keyHasTag);
     }
 
     /**
      * Get user Following
      *
-     * @param $userId
+     * @param $userTweetId
      *
-     * @return array|void
+     * @return boolean|void
      */
-    public function isFollowing($userId = null, $name = null)
+    public function isFollowing($userTweetId = null, $keyFollow = null)
     {
-        $follows = [];
-        $userId = 571432663; // Mock
-        $name = 'tamarincrypto'; // mock
+        $ver = config('app.twitter_api_ver');
 
-        if (is_null($userId) || $userId == 'error') {
-            return $follows;
+        if (is_null($userTweetId) || $userTweetId == 'error') {
+            return false;
         }
-        $uri = "/2/users/{$userId}/following?max_results=" . TWITTER_LIMIT;
+        $uri = "/{$ver}/users/{$userTweetId}/following?max_results=" . TWITTER_LIMIT;
 
-        return $this->fetchData($uri, FOLLOW, $name);
+        return $this->fetchData($uri, FOLLOW, $keyFollow);
     }
 
     /**
@@ -63,41 +61,45 @@ class TwitterApiService extends BaseTwitter {
      *
      * @return array|void
      */
-    public function getLikes($tweetId = null, $name = null)
+    public function isLikes($userTweetId = null, $keyLike = null)
     {
-        $likes = [];
+        $ver = config('app.twitter_api_ver');
 
-        $userId = 571432663; // Mock
-
-        if (is_null($userId) || $userId == 'error') {
-            return $follows;
+        if (is_null($userTweetId) || $userTweetId == 'error') {
+            return false;
         }
-        $uri = "/2/users/{$userId}/liked_tweets?max_results=" . TWITTER_LIMIT;
+        $uri = "/{$ver}/users/{$userTweetId}/liked_tweets?max_results=" . TWITTER_LIMIT;
 
-        return $this->fetchData($uri);
+        return $this->fetchData($uri, LIKE, $keyLike);
     }
 
     /**
      * Get user Retweets page
      *
-     * @param $tweetId $request
+     * @param $tweetId
      *
      * @return array|void
      */
-    public function getUserTweets($tweetId = null)
+    public function isUserRetweet($userTweetId = null)
     {
-        $userIds = [];
-        $tweetId = 1590210694095736833;
+        $ver = config('app.twitter_api_ver');
 
-        if (is_null($tweetId)) {
-            return $userIds;
+        if (is_null($userTweetId)) {
+            return fasle;
         }
 
-        $uri = "/2/tweets/{$tweetId}/retweeted_by?max_results=" . TWITTER_LIMIT;
+        $uri = "/{$ver}/tweets/{$userTweetId}/retweeted_by?max_results=" . TWITTER_LIMIT;
         
-        return $this->fetchData($uri, FOLLOW, '');
+        return $this->fetchData($uri, RETWEET, $userTweetId);
     }
 
+    /**
+     * Call api twitter
+     *
+     * @param $uri $request
+     *
+     * @return array|void
+     */
     private function fetchData($uri, $type = LIKE, $key = null, $limit = 10)
     {
         $datas = [];
@@ -109,12 +111,16 @@ class TwitterApiService extends BaseTwitter {
         $data = json_decode($res->getBody()->getContents());
         $i = ZERO;
 
+        Log::info('Call api tweets', [
+            'code' => $statusCode,
+            'contents' => $data
+        ]);
+
         do {
             if ($statusCode == 200) {
                 if ($i <= 0) {
                     switch($type) {
                         case FOLLOW:
-                        case RETWEET:
                             foreach($data->data as $item) {
                                 $datas[] = $item->username;
                             }
@@ -143,7 +149,6 @@ class TwitterApiService extends BaseTwitter {
 
                     switch($type) {
                         case FOLLOW:
-                        case RETWEET:
                             foreach($data->data as $item) {
                                 $datas[] = $item->username;
                             }
@@ -162,7 +167,7 @@ class TwitterApiService extends BaseTwitter {
 
             $i++;
         } while($i < $limit);
-        
+
         return false;
     }
 }

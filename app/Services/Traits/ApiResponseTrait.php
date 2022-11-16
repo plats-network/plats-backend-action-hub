@@ -338,20 +338,6 @@ trait ApiResponseTrait
         return $this->respondError($message, 404);
     }
 
-    // /**
-    //  * Respond with failed login.
-    //  *
-    //  * @return \Illuminate\Http\JsonResponse
-    //  */
-    // protected function respondFailedLogin()
-    // {
-    //     return $this->apiResponse([
-    //         'errors' => [
-    //             'email or password' => 'is invalid',
-    //         ]
-    //     ], 422);
-    // }
-
     /**
      * Respond with internal error.
      *

@@ -1,6 +1,4 @@
 <?php
-
-
 namespace App\Services;
 
 use App\Events\{UserCanceledTaskEvent, UserCheckedInLocationEvent, UserCheckingLocationEvent};
@@ -91,28 +89,6 @@ class TaskService extends BaseService
 
         return $this->endFilter();
     }
-
-    /**
-     * Calculate the remaining time of the quest from the start
-     *
-     * @param \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Collection $userHistories
-     * @param integer $duration Minute
-     */
-    // public function timeRemaining($userHistories, $duration)
-    // {
-    //     return $duration;
-    //     //TODO: Calculate
-    //     $timeUsed = 0;
-    //     foreach ($userHistories as $history) {
-    //         if (is_null($history->ended_at)) {
-    //             continue;
-    //         }
-    //         $calcu = Carbon::parse($history->started_at)->diffInRealMinutes(Carbon::parse($history->ended_at));
-    //         $timeUsed += 0;
-    //     }
-
-    //     return $duration - $timeUsed;
-    // }
 
     /**
      * User start task at location

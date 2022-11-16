@@ -14,7 +14,7 @@ abstract class BaseTwitter
     /**
      * @return object | null
      */
-    public function callApi($uri, $method = 'GET')
+    public function callApi($uri, $method = 'GET', $params = [])
     {
         switch($method) {
             case "GET":
@@ -25,7 +25,7 @@ abstract class BaseTwitter
             case "POST":
             case "post":
                 $res = Http::withToken($this->getToken())
-                    ->post(config('app.twitter_api_url') . $uri);
+                    ->post(config('app.twitter_api_url') . $uri, $params);
                 break;
             default:
                 $res = null;

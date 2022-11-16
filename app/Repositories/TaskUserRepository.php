@@ -97,4 +97,20 @@ class TaskUserRepository extends BaseRepository
 
         return $query;
     }
+
+    /**
+     * @param $userId User ID
+     * @param $taskId Task ID
+     * @param $userSocialId User Social ID
+     *
+     * @return mixed
+     */
+    public function firstOrNewSocial($userId, $taskId, $userSocialId)
+    {
+        return $this->model
+            ->firstOrNew(
+                ['user_id' => $userId],
+                ['task_id' => $taskId, 'social_id' => $userSocialId]
+            );
+    }
 }
