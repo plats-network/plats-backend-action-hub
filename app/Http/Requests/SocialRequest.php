@@ -3,6 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Enums\TweetEnum;
+// use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class SocialRequest extends FormRequest
 {
@@ -24,7 +27,7 @@ class SocialRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => ['required', 'string'],
+            'type' => ['required', 'string', new Enum(TweetEnum::class)],
         ];
     }
 }

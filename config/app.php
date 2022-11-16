@@ -69,8 +69,8 @@ return [
 
     // API Twitter
     'twitter_token' => env('TWITTER_BEARER_TOKEN', ''),
-    'twitter_gen_url' => env('TWITTER_GEN_URL', ''),
     'twitter_api_url' => env('TWITTER_API_URL', ''),
+    'twitter_api_ver' => env('TWITTER_API_VER', 1),
 
     /*
     |--------------------------------------------------------------------------
