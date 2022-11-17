@@ -93,14 +93,14 @@ class Task extends Controller
             $icon = $task->cover_url ?? '';
             $res = $this->pushNotices(
                 $token,
-                Str::limit($task->title, 50),
+                Str::limit($task->name, 50),
                 Str::limit($task->description, 30),
                 $task->id,
                 $icon
             );
-            Log::info('Push notices', [
-                'success' => optional($res->data)->success,
-                'failed' => optional($res->data)->fail
+
+            Log::info('Response push notices', [
+                'response' => $res;
             ]);
 
             return redirect()->route(TASK_DEPOSIT_ADMIN_ROUTER, $task->id);
