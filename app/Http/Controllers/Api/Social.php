@@ -6,7 +6,12 @@ use App\Http\Controllers\ApiController;
 use App\Http\Resources\TaskResource;
 use App\Http\Requests\SocialRequest;
 use Illuminate\Http\Request;
-use App\Repositories\{TaskSocialRepository, TaskUserRepository};
+use App\Models\Task as ModelTask;
+use App\Repositories\{
+    TaskRepository,
+    TaskSocialRepository,
+    TaskUserRepository
+};
 use App\Services\SocialService;
 use App\Helpers\ActionHelper;
 
@@ -17,10 +22,13 @@ class Social extends ApiController
      * @param $modelTask
      * @param $taskRepository
      * @param $taskUserRepository
+     * @param $taskSocialRepository
      * 
      */
     public function __construct(
         private SocialService $socialService,
+        private ModelTask $modelTask,
+        private TaskRepository $taskRepository,
         private TaskSocialRepository $taskSocialRepository,
         private TaskUserRepository $taskUserRepository
     ) {}
@@ -85,6 +93,31 @@ class Social extends ApiController
             return $this->respondError($e->getMessage());
         }
 
-        return $this->responseMessage('Not success!');        
+        return $this->responseMessage('Not success!');
+    }
+
+    /**
+     * Start social tasks
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function start($id, Request $request)
+    {
+        try {
+            $userId = $request->user()->id;
+            $task = $this->taskRepository->find($id);
+
+            if ($this->taskUserRepository->countUserTaskSocial($userId, $task->id) > 0) {
+                return $this->responseMessage('Social task started!');
+            }
+
+            $this->socialService->startTaskSocial($userId, $task);
+        } catch(\Exception $e) {
+            return $this->respondError($e->getMessage());
+        }
+
+        return $this->responseMessage('Social task started!');
     }
 }

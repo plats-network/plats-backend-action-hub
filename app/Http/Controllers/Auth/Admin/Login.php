@@ -15,6 +15,10 @@ class Login extends Controller
      */
     public function showFormLogin()
     {
+        if (Auth::guard('api')->user()) {
+            return redirect('/cp');
+        }
+
         return view('admin.auth.login');
     }
 

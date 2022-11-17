@@ -26,7 +26,7 @@ class Reward extends Controller
      */
     public function index(Request $request)
     {
-        $rewards = $this->rewardRepository->paginate(10);
+        $rewards = $this->rewardRepository->paginate(PAGE_SIZE);
 
         return view(
             'admin.reward.index',

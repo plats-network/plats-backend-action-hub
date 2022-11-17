@@ -9,7 +9,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="task-type col-lg-6">
-                                <x-forms.group :label="trans('admin.task.form.desc')">
+                                <x-forms.group :label="trans('admin.task.form.type')">
                                     <x-forms.select name="type" select2
                                         :options="trans('admin.task.type')"
                                         :selected="old('type')" required />
@@ -78,16 +78,25 @@
                             
                             <!-- START Type TYPE_SOCIAL ---->
                             <div class="wrap-type-social">
-                                <div class="col-lg-6">
-                                    <x-forms.group :label="trans('admin.task.form.total_reward')">
-                                        @if (old('id'))
-                                            <div class="form-control-plaintext fw-bold">
-                                                {{ old('total_reward') }}
-                                            </div>
-                                        @else
-                                            <x-forms.input type="number" name="total_reward" :value="old('total_reward')" required/>
-                                        @endif
-                                    </x-forms.group>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <x-forms.group :label="trans('admin.task.form.total_reward')">
+                                            @if (old('id'))
+                                                <div class="form-control-plaintext fw-bold">
+                                                    {{ old('total_reward') }}
+                                                </div>
+                                            @else
+                                                <x-forms.input type="number" name="total_reward" :value="old('total_reward')" required/>
+                                            @endif
+                                        </x-forms.group>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <x-forms.group :label="trans('admin.task.form.status')">
+                                            <x-forms.select name="status" select2 required
+                                                            :options="[INACTIVE_TASK => 'Draft', ACTIVE_TASK => 'Active']"
+                                                            :selected="old('status')"/>
+                                        </x-forms.group>
+                                    </div>
                                 </div>
                                 <div class="js-repeater">
                                     <div data-repeater-list="socials">

@@ -44,6 +44,7 @@ Route::get('get_task', [TaskNotice::class, 'getTask']);
 Route::post('qr_code', [QrCodeAction::class, 'store'])->name('qrcode.store');
 Route::resource('twitter', Twitter::class)->only(['index', 'store']);
 Route::resource('socials', Social::class)->only(['index']);
+Route::post('social-start/{id}', [Social::class, 'start'])->name('social.start.task');
 
 Route::prefix('wallet')->controller(Wallet::class)->group(function () {
     Route::post('/withdraw', 'withdraw');

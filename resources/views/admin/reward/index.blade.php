@@ -47,14 +47,13 @@
                 <div class="card mb-2">
                     <div class="row g-0 sh-19 sh-lg-18">
                         <div class="col-auto">
-                            <img src="{{ Storage::disk('s3')->url($reward->image) }}" alt="alternate text" class="card-img card-img-horizontal sw-20 sh-18">
+                            <img src="{{ $reward->image }}" alt="alternate text" class="card-img card-img-horizontal sw-20 sh-18">
                         </div>
                         <div class="col">
                             <div class="card-body pt-0 pb-0 h-100">
                                 <div class="row g-0 h-100 align-content-center">
                                     <div class="col-12 col-md-7 d-flex flex-column mb-lg-0 pe-3 d-flex">
                                         <h4>
-                                            <img class="border-gray" height="50px;" src="{{ Storage::disk('s3')->url($reward->image) }}" alt="...">
                                             <a href="{{ route(REWARD_EDIT_ADMIN_ROUTER, $reward->id) }}" class="stretched-link">
                                                 {{ $reward->name }}
                                             </a>
@@ -64,11 +63,7 @@
                                         <div class="text-small text-muted d-md-block">
                                             {{ $reward->description }}
                                         </div>
-                                    </div>
-                                    <div class="col-6 col-md-1 d-flex flex-column justify-content-center">
-                                        <div class="text-small text-muted d-md-block">
-                                            {{ $reward->image }}
-                                        </div>
+                                        {{ $reward->description }}
                                     </div>
                                     <div class="col-6 col-md-1 d-flex flex-column justify-content-center">
                                         <div class="text-small text-muted d-md-block">

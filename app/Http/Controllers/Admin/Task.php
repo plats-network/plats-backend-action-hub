@@ -87,11 +87,18 @@ class Task extends Controller
     {
         $task = $this->taskService->store($request);
 
-        // TODO: tạo ví metamark
         if (!$request->filled('id')) {
             // Push notices by services
             $token = Auth::user()->token;
-            $this->pushNotices($token, Str::limit($task->title, 50), Str::limit($task->description, 30), $task->id);
+            $icon = $task->cover_url ?? '';
+            $this->pushNotices(
+                $token,
+                Str::limit($task->title, 50),
+                Str::limit($task->description, 30),
+                $task->id,
+                $icon
+            );
+
             return redirect()->route(TASK_DEPOSIT_ADMIN_ROUTER, $task->id);
         }
         return redirect()->route(TASK_LIST_ADMIN_ROUTER);

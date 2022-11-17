@@ -4,6 +4,7 @@ namespace App\Services\Twitter;
 
 use App\Services\Concerns\BaseTwitter;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Log;
 
 class TwitterApiService extends BaseTwitter {
@@ -125,6 +126,16 @@ class TwitterApiService extends BaseTwitter {
                                 $datas[] = $item->username;
                             }
                             break;
+                        case HASHTAG:
+                            foreach($data->data as $item) {
+                                // $key: string | array
+                                $contains = Str::contains($item->text, $key);
+
+                                if ($contains) {
+                                    return true;
+                                }
+                            }
+                            break;
                         default:
                             foreach($data->data as $item) {
                                 $datas[] = $item->id;
@@ -151,6 +162,16 @@ class TwitterApiService extends BaseTwitter {
                         case FOLLOW:
                             foreach($data->data as $item) {
                                 $datas[] = $item->username;
+                            }
+                            break;
+                        case HASHTAG:
+                            foreach($data->data as $item) {
+                                // $key: string | array
+                                $contains = Str::contains($item->text, $key);
+
+                                if ($contains) {
+                                    return true;
+                                }
                             }
                             break;
                         default:

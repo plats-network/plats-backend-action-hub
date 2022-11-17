@@ -41,4 +41,20 @@ class TaskReward extends Model
         'reward_id',
         'deleted_at',
     ];
+
+    /**
+     * Get the task that owns the task_rewards.
+     */
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
+
+    /**
+     * Get the reward that owns the task_rewards.
+     */
+    public function reward()
+    {
+        return $this->belongsTo(Reward::class);
+    }
 }

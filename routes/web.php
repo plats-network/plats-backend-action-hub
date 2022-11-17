@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,8 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', function () {
-    abort(403);
-});
+    return redirect('/cp');
+    // abort(403);
+})->middleware('auth');
 
 Route::resource('voucher', HomeController::class)->only(['show']);

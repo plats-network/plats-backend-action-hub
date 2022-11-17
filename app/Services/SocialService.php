@@ -1,20 +1,10 @@
 <?php
-
-
 namespace App\Services;
-
-use App\Services\Traits\{TaskLocationTrait, TaskSocialTrait};
-use Illuminate\Support\Facades\{DB, Storage};
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Carbon as SupportCarbon;
 
 use App\Services\Concerns\BaseService;
 use App\Services\Twitter\TwitterApiService;
 use App\Repositories\{LocationHistoryRepository, TaskUserRepository};
-
-
+use Carbon\Carbon;
 
 class SocialService extends BaseService
 {
@@ -42,7 +32,6 @@ class SocialService extends BaseService
         $isSocial = false;
         $twitterUserId = $user->twitter;
 
-
         if (empty($user) || ($user && (is_null($user->twitter) || $user->twitter == ''))) {
             return $isSocial;
         }
@@ -62,11 +51,11 @@ class SocialService extends BaseService
                 break;
             case RETWEET:
                 // url demo: https://twitter.com/NEARProtocol/status/1586347120872808448
+                // params: {userTweetId}
                 $isSocial = $this->twitterApiService->isUserRetweet($twitterUserId);
                 break;
             case HASHTAG:
-                // url demo: https://twitter.com/NEARProtocol
-                // params {userTweetId, pageID(NEARProtocol)}
+                // params {userTweetId, $key: string | array }
                 $isSocial = $this->twitterApiService->isHasTag($twitterUserId, $key);
                 break;
             default:
@@ -74,7 +63,8 @@ class SocialService extends BaseService
         }
 
         if ($isSocial) {
-            $user = $this->taskUserRepository->firstOrNewSocial($user->id, $taskId, $userSocial->id);
+            $user = $this->taskUserRepository
+                ->firstOrNewSocial($user->id, $taskId, $userSocial->id);
 
             $user->fill([
                 'status' => USER_COMPLETED_TASK,
@@ -85,5 +75,23 @@ class SocialService extends BaseService
         }
 
         return $isSocial;
+    }
+
+
+    public function startTaskSocial($userId, $task)
+    {
+        foreach($task->taskSocials()->get() as $taskSocial) {
+            $user = $this->taskUserRepository->firstOrNewSocial($userId, $task->id, $taskSocial->id);
+
+            if (is_null($user->id) || !$user->id) {
+                $user->fill([
+                    'status' => USER_PROCESSING_TASK,
+                    'started_at' => Carbon::now(),
+                    'activity_log' => null
+                ]);
+
+                $user->save();
+            }
+        }
     }
 }

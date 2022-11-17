@@ -91,7 +91,7 @@ class TaskUserRepository extends BaseRepository
             ->where('status', $status);
 
         if ($type) {
-            $now = Carbon::now()->subMinutes(10); // 10 phút
+            $now = Carbon::now()->subMinutes(10);
             $query->where('time_end', '>=', $now)->where('time_end', '<=', Carbon::now());
         }
 
@@ -108,9 +108,24 @@ class TaskUserRepository extends BaseRepository
     public function firstOrNewSocial($userId, $taskId, $userSocialId)
     {
         return $this->model
-            ->firstOrNew(
-                ['user_id' => $userId],
-                ['task_id' => $taskId, 'social_id' => $userSocialId]
-            );
+            ->firstOrNew([
+                'user_id' => $userId,
+                'task_id' => $taskId,
+                'social_id' => $userSocialId
+            ]);
+    }
+
+    /**
+     * @param $userId User ID
+     * @param $taskId Task ID
+     *
+     * @return mixed
+     */
+    public function countUserTaskSocial($userId, $taskId)
+    {
+        return $this->model
+            ->whereUserId($userId)
+            ->whereTaskId($taskId)
+            ->count();
     }
 }
