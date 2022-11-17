@@ -59,7 +59,7 @@ host('stg')
     ->set('hostname', '{{ip_stg}}')
     ->set('stage', 'staging')
     ->set('remote_user', 'deploy')
-    ->set('identityFile', '~/.ssh/id_techld')
+    ->set('identityFile', '~/.ssh/stg-plats')
     ->set('branch', 'staging')
     ->set('deploy_path', '{{stg_action_path}}');
 
