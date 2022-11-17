@@ -100,7 +100,7 @@ class Task extends Controller
             );
 
             Log::info('Response push notices', [
-                'response' => $res;
+                'response' => $res
             ]);
 
             return redirect()->route(TASK_DEPOSIT_ADMIN_ROUTER, $task->id);
