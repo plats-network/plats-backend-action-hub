@@ -8,7 +8,7 @@ use App\Services\{GuildService, TaskService};
 use App\Repositories\TaskRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Auth, Str;
+use Auth, Str, Log;
 
 class Task extends Controller
 {
@@ -91,13 +91,17 @@ class Task extends Controller
             // Push notices by services
             $token = Auth::user()->token;
             $icon = $task->cover_url ?? '';
-            $this->pushNotices(
+            $res = $this->pushNotices(
                 $token,
                 Str::limit($task->title, 50),
                 Str::limit($task->description, 30),
                 $task->id,
                 $icon
             );
+            Log::info('Push notices', [
+                'success' => optional($res->data)->success,
+                'failed' => optional($res->data)->fail
+            ]);
 
             return redirect()->route(TASK_DEPOSIT_ADMIN_ROUTER, $task->id);
         }
@@ -120,15 +124,15 @@ class Task extends Controller
 
     private function pushNotices($token, $title, $desc, $taskId, $icon = null)
     {
-        Http::withToken($token)
+        $res = Http::withToken($token)
             ->post(config('app.api_url_notice') . "/api/push_tasks", [
                 "title" => $title ?? '🙂🙂🙂 Có tin mới!',
-                "description" => $desc ?? '🙂🙂🙂 Bạn có tin nhắn từ Plats',
+                "desc" => $desc ?? '🙂🙂🙂 Bạn có tin nhắn từ Plats',
                 "type" => "new_task",
-                "task_id" => $taskId,
+                "type_id" => $taskId,
                 "icon"  => $icon
             ]);
 
-        return;
+        return json_decode($res->getBody()->getContents());
     }
 }
