@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Resources\TaskResource;
+use App\Http\Resources\SocialResource;
 use App\Http\Requests\SocialRequest;
 use Illuminate\Http\Request;
 use App\Models\Task as ModelTask;
@@ -54,7 +54,7 @@ class Social extends ApiController
             return $this->respondNotFound();
         }
 
-        $datas = TaskResource::collection($socials);
+        $datas = SocialResource::collection($socials);
         $pages = [
             'current_page' => (int)$request->get('page'),
             'last_page' => $socials->lastPage(),

@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\{CheckInTaskRequest, CreateTaskRequest, StartTaskRequest};
-use App\Http\Resources\{TaskResource, TaskUserResource, TaskDogingResource};
+use App\Http\Resources\{TaskResource, TaskUserResource, TaskDogingResource, SocialResource};
+use App\Repositories\{LocationHistoryRepository, TaskRepository, TaskUserRepository};
 use App\Services\TaskService;
 use Illuminate\Http\Request;
 use App\Models\Task as ModelTask;
 use App\Models\TaskUser;
 use Illuminate\Database\QueryException;
-use App\Repositories\{LocationHistoryRepository, TaskRepository, TaskUserRepository};
 use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\{DB, Http};
 use Carbon\Carbon;
@@ -76,11 +76,18 @@ class Task extends ApiController
         
         try {
             $task = $this->taskService->mapUserHistory($id, $userId);
+
+            if ($task->type == TYPE_CHECKIN) {
+                $data = new TaskResource($task);
+            } else {
+                $data = new SocialResource($task);
+            }
+
         } catch (ModelNotFoundException $e) {
-            return $this->respondNoContent();
+            return $this->respondNotFound();
         }
 
-        return $this->respondWithResource(new TaskResource($task));
+        return $this->respondWithResource($data);
     }
 
     /**

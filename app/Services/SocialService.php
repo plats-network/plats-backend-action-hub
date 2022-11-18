@@ -81,7 +81,8 @@ class SocialService extends BaseService
     public function startTaskSocial($userId, $task)
     {
         foreach($task->taskSocials()->get() as $taskSocial) {
-            $user = $this->taskUserRepository->firstOrNewSocial($userId, $task->id, $taskSocial->id);
+            $user = $this->taskUserRepository
+                ->firstOrNewSocial($userId, $task->id, $taskSocial->id);
 
             if (is_null($user->id) || !$user->id) {
                 $user->fill([

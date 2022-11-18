@@ -75,6 +75,7 @@ if (!defined('DEFINE_CONSTANT')) {
 
     // TWITTER
     define('TWITTER_LIMIT', 100);
+
     /**
      * Task type platform
      */

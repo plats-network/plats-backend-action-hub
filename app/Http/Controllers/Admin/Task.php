@@ -90,7 +90,7 @@ class Task extends Controller
         if (!$request->filled('id')) {
             // Push notices by services
             $token = Auth::user()->token;
-            $icon = $task->cover_url ?? '';
+            $icon = $task->cover_url;
             $res = $this->pushNotices(
                 $token,
                 Str::limit($task->name, 50),

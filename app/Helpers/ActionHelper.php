@@ -2,16 +2,14 @@
 
 namespace App\Helpers;
 
-
-use Carbon\Carbon;
+use Storage;
 
 class ActionHelper
 {
     /**
-     * Return date timestamp format.
      *
-     * @param  Carbon|\App\Models\Instance\SpecialDate|string|null  $date
-     * @return string|null
+     * @param  string|null  $tpye
+     * @return int|null
      */
     public static function getTypeTwitter($tpye): ?string
     {
@@ -33,5 +31,29 @@ class ActionHelper
         }
 
         return $tweetType;
+    }
+
+    /**
+     *
+     * @param  string|null  $tpye
+     * @return int|null
+     */
+    public static function iconSocial($platform)
+    {
+        switch($platform) {
+            case TWITTER:
+                $icon = Storage::disk('s3')->url('icon/tweeter.png');
+                break;
+            case FACEBOOK:
+                $icon = Storage::disk('s3')->url('icon/facebook.png');
+                break;
+            case DISCORD:
+                $icon = Storage::disk('s3')->url('icon/discord.png');
+                break;
+            default:
+                $icon = Storage::disk('s3')->url('icon/telegram.png');
+        }
+
+        return $icon;
     }
 }

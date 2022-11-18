@@ -20,8 +20,9 @@ class TaskResource extends JsonResource
      */
     public function toArray($request)
     {
-        $creator = $this->getUserDetail($this->creator_id);
         $userId = $request->user()->id;
+        $token = $request->user()->token;
+        $creator = $this->getUserDetail($token, $this->creator_id);
         $dataTaskProgress = $this->getTaskImprogress($userId, $this->id);
 
         if (!$dataTaskProgress) {
@@ -61,8 +62,7 @@ class TaskResource extends JsonResource
             'type'              => $this->type,
             'created_at'        => DateHelper::getDateTime($this->created_at),
             'cover_url'         => $this->cover_url,
-            'creator_id'        => $creator ? $creator['id'] : '',
-            'creator_name'      => $creator ? $creator['name'] : '',
+            'post_by' => $creator ? $creator['name'] : 'Admin Plasts',
             'improgress_flag'   => $task_improgress ? true : false,
             'task_done'         => $task_done,
             'task_improgress'   => $task_improgress,
@@ -72,7 +72,6 @@ class TaskResource extends JsonResource
                 'units' => 'm',
             ],
             'locations'         => $this->locations()->get()->toArray(),
-            'socials'           => TaskSocialResource::collection($this->taskSocials()->get()),
             'galleries'         => GalleryResource::collection($this->galleries()->get()),
             'guide'             => new TaskGuideResource($this->task_guides),
             'rewards'           => $rewards,
@@ -85,12 +84,12 @@ class TaskResource extends JsonResource
      * @param $userId
      *
      */
-    protected function getUserDetail($userId)
+    protected function getUserDetail($token, $userId)
     {
         try {
             $url = config('app.api_user_url') . '/api/profile/' . $userId;
-            $response = Http::withToken(request()->bearerToken())->get($url);
-        } catch (ModelNotFoundException $e) {
+            $response = Http::withToken($token)->get($url);
+        } catch (\Exception $e) {
             return null;
         }
 
