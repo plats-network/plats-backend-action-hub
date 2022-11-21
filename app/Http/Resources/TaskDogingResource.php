@@ -28,8 +28,8 @@ class TaskDogingResource extends JsonResource
             'duration_units' => 'minute',
             'time_start' => Carbon::parse($this->time_start)->timestamp,
             'time_end' => Carbon::parse($this->time_end)->timestamp,
-            'time_start_orginal' => DateHelper::parseDate($this->time_start)->format('Y-m-d H:i:s'),
-            'time_end_orginal' => DateHelper::parseDate($this->time_end)->format('Y-m-d H:i:s'),
+            'time_start_orginal' => !is_null($this->time_start) ? DateHelper::parseDate($this->time_start)->format('Y-m-d H:i:s') : null,
+            'time_end_orginal' => !is_null($this->time_end) ? DateHelper::parseDate($this->time_end)->format('Y-m-d H:i:s') : null,
             'wallet_address' => $this->wallet_address,
             'time_expried'  => ($this->time_end && Carbon::now() < $this->time_end) ? false : true,
             'near' => [
