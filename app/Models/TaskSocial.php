@@ -6,6 +6,7 @@ use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Enums\TweetEnum;
 
 class TaskSocial extends Model
 {
@@ -30,7 +31,7 @@ class TaskSocial extends Model
         'url',
         'platform'
     ];
-    
+
     /**
      * Get the task that owns the task social.
      */

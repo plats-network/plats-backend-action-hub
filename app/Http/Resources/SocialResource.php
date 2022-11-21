@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\MissingValue;
-use App\Helpers\DateHelper;
+use App\Helpers\{DateHelper};
 use Illuminate\Support\Facades\Http;
 use App\Models\{TaskUser, Reward};
 use Carbon\Carbon;
@@ -32,7 +32,7 @@ class SocialResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'type' => $this->type,
+            'type' => 'social',
             'task_start' => $checkUserTask > 0 ? true : false,
             'cover_url' => $this->cover_url,
             'post_by' => $creator ? $creator['name'] : 'Admin Plasts',

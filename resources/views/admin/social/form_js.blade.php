@@ -4,30 +4,24 @@
             <x-forms.group :label="trans('admin.task.social.platform')">
                 <x-forms.select name="platform" select2
                     :options="trans('admin.task.social.platform_option')"
-                    :selected="old('platform')" required />
+                    :selected="$social['platform'] ?? ''" required />
             </x-forms.group>
         </div>
         <div class="col-md-6">
             <x-forms.group :label="trans('admin.task.social.action')">
                 <x-forms.select name="type_social" select2
                     :options="trans('admin.task.social.type')"
-                    :selected="old('type_social')" required />
+                    :selected="$social['type'] ?? ''" required />
             </x-forms.group>
         </div>
         <div class="col-md-12">
             <x-forms.group :label="trans('admin.task.social.name')">
-                <x-forms.input
-                    name="name"
-                    :value="$social['name'] ?? ''"
-                    required/>
+                <x-forms.input name="name" :value="$social['name'] ?? ''" required/>
             </x-forms.group>
         </div>
         <div class="col-md-12">
             <x-forms.group :label="trans('admin.task.social.url')">
-                <x-forms.input
-                    name="url"
-                    :value="$social['url'] ?? ''"
-                    required />
+                <x-forms.input name="url" :value="$social['url'] ?? ''" required />
             </x-forms.group>
         </div>
     </div>

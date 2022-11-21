@@ -255,7 +255,7 @@ class TaskService extends BaseService
     {
         $task = $this->find($request->input('id'));
 
-        $data = $request->except(['image', 'locations', 'guilds']);
+        $data = $request->except(['image', 'locations', 'guilds', 'socials']);
 
         //Save cover
         if ($request->hasFile('image')) {
@@ -285,9 +285,7 @@ class TaskService extends BaseService
 
             //Delete location
             if ($request->filled('list_delete')) {
-                $task->locations()
-                    ->whereIn('id', $request->input('list_delete', []))
-                    ->delete();
+                $task->locations()->whereIn('id', $request->input('list_delete', []))->delete();
             }
         }
         
@@ -310,9 +308,7 @@ class TaskService extends BaseService
 
             //Delete social
             if ($request->filled('list_delete')) {
-                $task->taskSocials()
-                    ->whereIn('id', $request->input('list_delete', []))
-                    ->delete();
+                $task->taskSocials()->whereIn('id', $request->input('list_delete', []))->delete();
             }
         }
 

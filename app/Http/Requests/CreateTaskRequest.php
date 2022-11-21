@@ -23,7 +23,7 @@ class CreateTaskRequest extends FormRequest
             'gallery'   => ['array']
         ];
         switch ($taskType) {
-            case TYPE_CHECKIN;
+            case TYPE_CHECKIN:
                 $validateFileds = array_merge($validateFileds,
                     [
                         'description'                       => ['max: 500'],

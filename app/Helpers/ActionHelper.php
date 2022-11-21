@@ -23,8 +23,41 @@ class ActionHelper
             case 'retweet':
                 $tweetType = RETWEET;
                 break;
+            case 'tweet':
+                $tweetType = TWEET;
+                break;
             case 'hastag';
                 $tweetType = HASHTAG;
+                break;
+            default:
+                $tweetType = null;
+        }
+
+        return $tweetType;
+    }
+
+    /**
+     *
+     * @param  integer|null $tpye
+     * @return string|null
+     */
+    public static function getTypeStr($tpye)
+    {
+        switch($tpye) {
+            case LIKE:
+                $tweetType = 'like';
+                break;
+            case FOLLOW:
+                $tweetType = 'follow';
+                break;
+            case RETWEET:
+                $tweetType = 'retweet';
+                break;
+            case TWEET:
+                $tweetType = 'tweet';
+                break;
+            case HASHTAG:
+                $tweetType = 'hastag';
                 break;
             default:
                 $tweetType = null;

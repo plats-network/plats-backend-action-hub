@@ -50,6 +50,10 @@ class Social extends ApiController
                 ->whereStatus(ACTIVE_TASK)
                 ->whereType(TYPE_SOCIAL)
                 ->paginate($limit);
+
+            if (count($socials) <= 0) {
+                return $this->respondNotFound();
+            }
         } catch (QueryException $e) {
             return $this->respondNotFound();
         }
@@ -62,7 +66,7 @@ class Social extends ApiController
             'total' => $socials->lastPage()
         ];
 
-        return $this->respondWithIndex($datas, $pages);
+        return $this->respondWithIndex($datas, $pages, 'List socials!');
     }
 
     /**
