@@ -1,8 +1,9 @@
 $(document).ready(function () {
     GLOBAL_CONFIG.init();
 });
-
-const tokenContractAddress = "TEVDdsSRWxpPXv1JwGQ2V3ExrRyScpmQPe";
+// NEAR
+import { Wallet } from '../js/pages/nearWallet';
+const wallet = new Wallet({ createAccessKeyFor: process.env.CONTRACT_NAME });
 
 window.GLOBAL_CONFIG = function () {
     return {
@@ -18,17 +19,16 @@ window.GLOBAL_CONFIG = function () {
             });
 
         },
-        connectWallet(){
-            $('#connectWallet').on('click', async () => {
-                    let contract = await this.getContractToken();
-                    let amountPlat = contract.balanceOf(window.tronWeb.defaultAddress.base58).call().then(function(data) {
-                    let res = window.tronWeb.toDecimal(data["_hex"]);
-                    
-                    return res;
-                });
-                let amountPlatRes = await amountPlat;
-                $('#connectWallet span').text(parseInt(amountPlatRes)/1000000000000000000 + ' PLT')
+        async connectWallet(){
+            $('#connectWallet').on('click', () => {
+                wallet.signIn();
             })
+            let isSignedIn = await wallet.startUp(); 
+            if (isSignedIn) {
+                $('#connectWallet span').text(wallet.accountId)
+            } else {
+                $('#connectWallet span').text('Connect wallet')
+            }
             
         },
 
