@@ -8,13 +8,29 @@
                 <div class="col-lg-7">
                     <div class="card">
                         <div class="card-body">
-                            <div class="task-type col-lg-6">
-                                <x-forms.group :label="trans('admin.task.form.type')">
-                                    <x-forms.select name="type" select2
-                                        :options="trans('admin.task.type')"
-                                        :selected="old('type')" required />
-                                </x-forms.group>
-                            </div>
+                            @if (old('id') == null)
+                                <div class="task-type col-lg-6">
+                                    <x-forms.group :label="trans('admin.task.form.type')">
+                                        <x-forms.select name="type" select2
+                                            :options="trans('admin.task.type')"
+                                            :selected="old('type')" required />
+                                    </x-forms.group>
+                                </div>
+                            @else
+                                <div class="task-type col-lg-6">
+                                    <label class="col-form-label col-md-6">Select type</label>
+                                    <select name="type_" class="form-select" disabled>
+                                        @foreach (trans('admin.task.type') as $key => $value)
+                                            <option value="{{ $key }}"
+                                            @if ($key == old('type', old('type')))
+                                                selected="selected"
+                                            @endif
+                                            >{{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="hidden" name="type" value="{{ old('type') }}">
+                                </div>
+                            @endif
                             <x-forms.group :label="trans('admin.task.form.name')">
                                 <x-forms.input name="name" :value="old('name')" required />
                             </x-forms.group>

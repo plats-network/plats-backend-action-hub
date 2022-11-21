@@ -26,6 +26,7 @@ class TaskSocial extends Model
      */
     protected $fillable = [
         'name',
+        'description',
         'task_id',
         'type',
         'url',

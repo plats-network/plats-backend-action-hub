@@ -30,7 +30,7 @@
                                     STATUS
                                 </div>
                                 <div class="col-6 col-md-2 d-flex align-items-center text-alternate text-medium text-muted text-small text-uppercase">
-                                    Locations / Participants
+                                    Locations / Socials
                                 </div>
                             </div>
                         </div>
@@ -49,7 +49,6 @@
                                 <div class="row g-0 h-100 align-content-center">
                                     <div class="col-12 col-md-7 d-flex flex-column mb-lg-0 pe-3 d-flex">
                                         <h4>
-                                            <!-- <img class="border-gray" height="50px;" src="{{$task->cover_url}}" alt="{{$task->name}}"> -->
                                             <a href="{{ route(TASK_EDIT_ADMIN_ROUTER, $task->id) }}" class="stretched-link">
                                             {{ $task->name }}
                                         </a>
@@ -76,10 +75,14 @@
                                         </div>
                                     </div>
                                     <div class="col-6 col-md-2 d-none d-md-flex flex-column justify-content-center align-items-lg-center">
-                                        <div class="text-muted text-small d-md-none">Locations/Participants</div>
+                                        <div class="text-muted text-small d-md-none">Locations Or Socials</div>
                                         <div class="h3">
-                                            <span class="text-danger text-small">{{ $task->locations->count() }}</span> /
-                                            <span class="text-success">{{ $task->participants->count() }}</span>
+                                            @if ($task->type == TYPE_CHECKIN)
+                                                <span class="text-danger text-small">{{ $task->locations->count() }}</span>
+                                            @else
+                                                <span class="text-danger text-small">{{ $task->taskSocials->count() }}</span>
+                                            @endif
+                                            {{-- <span class="text-success">{{ $task->participants->count() }}</span> --}}
                                         </div>
                                     </div>
 

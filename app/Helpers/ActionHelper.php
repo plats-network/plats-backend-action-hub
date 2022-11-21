@@ -14,9 +14,6 @@ class ActionHelper
     public static function getTypeTwitter($tpye): ?string
     {
         switch($tpye) {
-            case 'like':
-                $tweetType = LIKE;
-                break;
             case 'follow':
                 $tweetType = FOLLOW;
                 break;
@@ -30,7 +27,7 @@ class ActionHelper
                 $tweetType = HASHTAG;
                 break;
             default:
-                $tweetType = null;
+                $tweetType = LIKE;
         }
 
         return $tweetType;
@@ -43,27 +40,25 @@ class ActionHelper
      */
     public static function getTypeStr($tpye)
     {
+        $datas = [];
         switch($tpye) {
-            case LIKE:
-                $tweetType = 'like';
-                break;
             case FOLLOW:
-                $tweetType = 'follow';
+                $datas = ['follow', 'Follow'];
                 break;
             case RETWEET:
-                $tweetType = 'retweet';
+                $datas = ['retweet', 'Retweet'];
                 break;
             case TWEET:
-                $tweetType = 'tweet';
+                $datas = ['tweet', 'Tweet'];
                 break;
             case HASHTAG:
-                $tweetType = 'hastag';
+                $datas = ['hastag', 'Hastag'];
                 break;
             default:
-                $tweetType = null;
+                $datas = ['like', 'Like'];
         }
 
-        return $tweetType;
+        return $datas;
     }
 
     /**
@@ -73,18 +68,19 @@ class ActionHelper
      */
     public static function iconSocial($platform)
     {
+        $s3 = Storage::disk('s3');
         switch($platform) {
             case TWITTER:
-                $icon = Storage::disk('s3')->url('icon/tweeter.png');
+                $icon = $s3->url('icon/tweeter.png');
                 break;
             case FACEBOOK:
-                $icon = Storage::disk('s3')->url('icon/facebook.png');
+                $icon = $s3->url('icon/facebook.png');
                 break;
             case DISCORD:
-                $icon = Storage::disk('s3')->url('icon/discord.png');
+                $icon = $s3->url('icon/discord.png');
                 break;
             default:
-                $icon = Storage::disk('s3')->url('icon/telegram.png');
+                $icon = $s3->url('icon/telegram.png');
         }
 
         return $icon;

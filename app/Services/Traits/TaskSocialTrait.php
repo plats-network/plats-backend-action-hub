@@ -17,10 +17,11 @@ trait TaskSocialTrait
         $socialData = [];
         foreach ($socials as $social) {
             $socialData[] = [
-                'name'              => $social['name'],
-                'url'               => $social['url'],
-                'type'              => $social['type_social'],
-                'platform'          => $social['platform']
+                'name' => $social['name'],
+                'description' => $social['description'],
+                'url' => $social['url'],
+                'type' => $social['type_social'],
+                'platform' => $social['platform']
             ];
         }
 
@@ -45,10 +46,11 @@ trait TaskSocialTrait
 
         foreach ($socials as $social) {
             $socialData = [
-                'name'              => $social['name'],
-                'url'               => $social['url'],
-                'type'              => $social['type_social'],
-                'platform'          => $social['platform']
+                'name' => $social['name'],
+                'description' => $social['description'],
+                'url' => $social['url'],
+                'type' => $social['type_social'],
+                'platform' => $social['platform']
             ];
 
             $task->taskSocials()->where('id', $social['id'])->update($socialData);

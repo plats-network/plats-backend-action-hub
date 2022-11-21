@@ -20,6 +20,11 @@
             </x-forms.group>
         </div>
         <div class="col-md-12">
+            <x-forms.group :label="trans('admin.task.form.desc')">
+                <x-forms.textarea name="description" :value="$social['description'] ?? ''" required/>
+            </x-forms.group>
+        </div>
+        <div class="col-md-12">
             <x-forms.group :label="trans('admin.task.social.url')">
                 <x-forms.input name="url" :value="$social['url'] ?? ''" required />
             </x-forms.group>
