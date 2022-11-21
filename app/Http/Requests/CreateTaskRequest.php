@@ -48,11 +48,12 @@ class CreateTaskRequest extends FormRequest
             case TYPE_SOCIAL:
                 $validateFileds = array_merge($validateFileds,
                     [
-                        'socials'                               => ['required', 'array'],
-                        'socials.*.name'                        => ['required', 'max:' . INPUT_MAX_LENGTH],
-                        'socials.*.platform'                    => ['required', 'between:'.TWITTER . ', ' . TELEGRAM],
-                        'socials.*.type_social'                 => ['required', 'between:'.FOLLOW . ', ' . HASHTAG],
-                        'socials.*.url'                         => ['required', 'url'],
+                        'socials' => ['required', 'array'],
+                        'socials.*.name' => ['required', 'max:' . INPUT_MAX_LENGTH],
+                        'socials.*.description' => ['required', 'max:' . 500],
+                        'socials.*.platform' => ['required', 'between:'.TWITTER . ', ' . TELEGRAM],
+                        'socials.*.type_social' => ['required', 'between:'.FOLLOW . ', ' . HASHTAG],
+                        'socials.*.url' => ['required', 'url'],
                     ]
                 );
                 break;
@@ -100,6 +101,7 @@ class CreateTaskRequest extends FormRequest
             'locations.*.lat'                   => 'latitude',
             'locations.*.long'                  => 'longitude',
             'socials.*.name'                    => 'social name',
+            'socials.*.description'             => 'social description',
             'socials.*.platform'                => 'social platform',
             'socials.*.type'                    => 'social type',
             'socials.*.url'                     => 'social url',

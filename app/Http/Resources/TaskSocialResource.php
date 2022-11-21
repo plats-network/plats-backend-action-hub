@@ -47,6 +47,7 @@ class TaskSocialResource extends JsonResource
             'id' => $this->id,
             'task_id' => $this->task_id,
             'name' => $this->name,
+            'description' => $this->description,
             'type' => ActionHelper::getTypeStr($this->type),
             'url' => $this->url,
             'start' => $start,
