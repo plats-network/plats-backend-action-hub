@@ -75,7 +75,7 @@ class TwitterApiService extends BaseTwitter {
     {
         Log::info('Call like tweeter: ', [
             'user_tweeter_id' => $userTweetId,
-            'key_like' => $keyFollow
+            'key_like' => $keyLike
         ]);
 
         $ver = config('app.twitter_api_ver');
