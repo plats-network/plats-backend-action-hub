@@ -27,6 +27,9 @@ class TaskUserRepository extends BaseRepository
     public function userStartedTask($taskId, $userId, $locaId)
     {
         return $this->model::with('task:id,name', 'taskLocations')
+            ->whereHas('task', function($query) {
+                $query->where('type', TYPE_CHECKIN);
+            })
             ->where('task_id', $taskId)
             ->where('user_id', $userId)
             ->where('location_id', $locaId)
@@ -60,7 +63,10 @@ class TaskUserRepository extends BaseRepository
      */
     public function userDoingTask($userId)
     {
-        return $this->model::with('task:id,name', 'taskLocations')
+        return $this->model::with('task:id,name,type', 'taskLocations')
+            ->whereHas('task', function($query) {
+                $query->where('type', TYPE_CHECKIN);
+            })
             ->where('user_id', $userId)
             ->where('status', USER_PROCESSING_TASK)
             ->first();

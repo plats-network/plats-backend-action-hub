@@ -29,10 +29,10 @@ class SocialService extends BaseService
      */
     public function performTwitter($user, $twitterUserId, $type = LIKE, $taskId, $userSocial)
     {
-        $isSocial = false;
+        $socialRes = [false, 'Not success!'];
 
         if (empty($user) || ($user && (is_null($user->twitter) || $user->twitter == ''))) {
-            return $isSocial;
+            return $socialRes;
         }
 
         $key = ($userSocial && $userSocial->url) ? last(explode('/', $userSocial->url)) : null;
@@ -41,37 +41,44 @@ class SocialService extends BaseService
             case LIKE:
                 // url demo: https://twitter.com/NEARProtocol/status/1586347120872808448
                 // params {userTweetId, tweetId(1586347120872808448)}
-                $isSocial = $this->twitterApiService->isLikes($twitterUserId, $key);
+                $socialRes = $this->twitterApiService->isLikes($twitterUserId, $key);
                 break;
             case FOLLOW:
                 // url demo: https://twitter.com/NEARProtocol
                 // params {userTweetId, pageID(NEARProtocol)}
-                $isSocial = $this->twitterApiService->isFollowing($twitterUserId, $key);
+                $socialRes = $this->twitterApiService->isFollowing($twitterUserId, $key);
                 break;
             case RETWEET:
                 // url demo: https://twitter.com/NEARProtocol/status/1586347120872808448
                 // params: {userTweetId}
-                $isSocial = $this->twitterApiService->isUserRetweet($twitterUserId, $key);
+                $socialRes = $this->twitterApiService->isUserRetweet($twitterUserId, $key);
                 break;
             case HASHTAG:
                 // params {userTweetId, $key: string | array }
-                $isSocial = $this->twitterApiService->isHasTag($twitterUserId, $key);
+                $socialRes = $this->twitterApiService->isHasTag($twitterUserId, $key);
                 break;
             default:
-                $isSocial = false;
+                $socialRes;
         }
 
-        if ($isSocial) {
+        if ($socialRes[0]) {
             $user = $this->taskUserRepository->firstOrNewSocial($user->id, $taskId, $userSocial->id);
-
             $user->fill(['status' => USER_COMPLETED_TASK]);
             $user->save();
         }
 
-        return $isSocial;
+        return $socialRes;
     }
 
 
+    /**
+     * Start social task
+     *
+     * @param string $userId
+     * @param object $task
+     *
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
     public function startTaskSocial($userId, $task)
     {
         foreach($task->taskSocials()->get() as $taskSocial) {
@@ -88,5 +95,7 @@ class SocialService extends BaseService
                 $user->save();
             }
         }
+
+        return;
     }
 }

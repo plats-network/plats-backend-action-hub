@@ -92,7 +92,7 @@ class Social extends ApiController
             // Service
             $isSocial = $this->socialService->performTwitter($user, $tweetId, $type, $id, $userSocial);
 
-            if ($isSocial) {
+            if ($isSocial[0]) {
                 return $this->responseMessage('Success!');
             }
         } catch (\Exception $e) {

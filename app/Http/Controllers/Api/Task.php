@@ -124,14 +124,16 @@ class Task extends ApiController
         }
 
         # Update task time out
-        TaskUser::where('user_id', $userId)
+        TaskUser::whereHas('task', function($query) {
+                $query->where('type', TYPE_CHECKIN);
+            })
+            ->where('user_id', $userId)
             ->where('status', USER_PROCESSING_TASK)
             ->where('time_end', '<', Carbon::now())
             ->update(['status' => USER_TIMEOUT_TASK]);
 
         # Check task done
-        $doneTask = $this->taskUserRepository
-            ->userStartedTask($taskId, $userId, $locationId);
+        $doneTask = $this->taskUserRepository->userStartedTask($taskId, $userId, $locationId);
         if ($doneTask
             && $doneTask->status == USER_COMPLETED_TASK
             && $doneTask->location_id == $locationId) {
@@ -139,7 +141,12 @@ class Task extends ApiController
         }
 
         # Check task inprogress
-        $taskImprogress = TaskUser::whereUserId($userId)->whereStatus(USER_PROCESSING_TASK)->get();
+        $taskImprogress = TaskUser::whereHas('task', function($query) {
+                $query->where('type', TYPE_CHECKIN);
+            })
+            ->whereUserId($userId)
+            ->whereStatus(USER_PROCESSING_TASK)
+            ->get();
 
         if (
             null === $request->get('start_task')
