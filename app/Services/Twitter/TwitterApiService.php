@@ -33,7 +33,7 @@ class TwitterApiService extends BaseTwitter {
         }
         $uri = "/{$ver}/users/{$userTweetId}/tweets?max_results=" . TWITTER_LIMIT;
 
-        return $this->fetchData($uri, HASHTAG, $keyHasTag);
+        return $this->fetchData($uri, HASHTAG, $userTweetId, $keyHasTag);
     }
 
     /**
@@ -52,7 +52,7 @@ class TwitterApiService extends BaseTwitter {
         }
         $uri = "/{$ver}/users/{$userTweetId}/following?max_results=" . TWITTER_LIMIT;
 
-        return $this->fetchData($uri, FOLLOW, $keyFollow);
+        return $this->fetchData($uri, FOLLOW, $userTweetId, $keyFollow);
     }
 
     /**
@@ -71,7 +71,7 @@ class TwitterApiService extends BaseTwitter {
         }
         $uri = "/{$ver}/users/{$userTweetId}/liked_tweets?max_results=" . TWITTER_LIMIT;
 
-        return $this->fetchData($uri, LIKE, $keyLike);
+        return $this->fetchData($uri, LIKE, $userTweetId, $keyLike);
     }
 
     /**
@@ -81,17 +81,13 @@ class TwitterApiService extends BaseTwitter {
      *
      * @return array|void
      */
-    public function isUserRetweet($userTweetId = null)
+    public function isUserRetweet($userTweetId, $keyRetweet = null)
     {
         $ver = config('app.twitter_api_ver');
+        if (is_null($userTweetId)) { return fasle; }
+        $uri = "/{$ver}/tweets/{$keyRetweet}/retweeted_by?max_results=" . TWITTER_LIMIT;
 
-        if (is_null($userTweetId)) {
-            return fasle;
-        }
-
-        $uri = "/{$ver}/tweets/{$userTweetId}/retweeted_by?max_results=" . TWITTER_LIMIT;
-        
-        return $this->fetchData($uri, RETWEET, $userTweetId);
+        return $this->fetchData($uri, RETWEET, $userTweetId, $keyRetweet);
     }
 
     /**
@@ -101,7 +97,7 @@ class TwitterApiService extends BaseTwitter {
      *
      * @return array|void
      */
-    private function fetchData($uri, $type = LIKE, $key = null, $limit = 10)
+    private function fetchData($uri, $type = LIKE, $userTweetId, $key, $limit = 10)
     {
         $datas = [];
         if (is_null($uri)) { return false; }
@@ -110,49 +106,60 @@ class TwitterApiService extends BaseTwitter {
         if (is_null($res)) { return false; }
         $statusCode = $res->getStatusCode();
         $data = json_decode($res->getBody()->getContents());
-        $i = ZERO;
-
         Log::info('Call api tweets', [
-            'code' => $statusCode,
-            'contents' => $data
+            'code' => $statusCode
         ]);
 
+        $i = ZERO;
         do {
             if ($statusCode == 200) {
                 if ($i <= 0) {
                     switch($type) {
                         case FOLLOW:
-                            foreach($data->data as $item) {
-                                $datas[] = $item->username;
+                            if (isset($data->data)) {
+                                foreach($data->data as $item) { $datas[] = $item->username; }
                             }
+                            if (in_array($key, $datas)) { return true; }
                             break;
                         case HASHTAG:
-                            foreach($data->data as $item) {
-                                // $key: string | array
-                                $contains = Str::contains($item->text, $key);
-
-                                if ($contains) {
-                                    return true;
+                            if (isset($data->data)) {
+                                foreach($data->data as $item) {
+                                    // $key: string | array
+                                    $contains = Str::contains($item->text, $key);
+                                    if ($contains) { return true; }
                                 }
                             }
                             break;
-                        default:
-                            foreach($data->data as $item) {
-                                $datas[] = $item->id;
+                        case LIKE:
+                            if (isset($data->data)) {
+                                foreach($data->data as $item) { $datas[] = $item->id; }
                             }
-                    }
+                            if (in_array($key, $datas)) { return true; }
+                            break;
+                        case RETWEET:
+                            if (isset($data->data)) {
+                                foreach($data->data as $item) { $datas[] = $item->id; }
+                            }
 
-                    if (in_array($key, $datas)) {
-                        return true;
+                            if (in_array($userTweetId, $datas)) { return true; }
+                            break;
+                        default:
+                            return false;
                     }
                 } else {
-                    if (!isset($data->meta->next_token)) {
-                        break;
-                    }
+                    if (!isset($data->meta->next_token)) { break; }
 
-                    $nextUri = $uri . "&pagination_token={$data->meta->next_token}";
-                    $nextRes = $this->callApi($nextUri);
-                    $nextData = json_decode($nextRes->getBody()->getContents());
+                    if ($i == 1) {
+                        $nextUri = $uri . "&pagination_token={$data->meta->next_token}";
+                        $nextRes = $this->callApi($nextUri);
+                        $nextData = json_decode($nextRes->getBody()->getContents());
+                    } else {
+                        if (!isset($nextData->meta->next_token)) { break; }
+
+                        $nextUri = $uri . "&pagination_token={$nextData->meta->next_token}";
+                        $nextRes = $this->callApi($nextUri);
+                        $nextData = json_decode($nextRes->getBody()->getContents());
+                    }
 
                     if ($nextData->meta->result_count == 0) {
                         break;
@@ -160,28 +167,34 @@ class TwitterApiService extends BaseTwitter {
 
                     switch($type) {
                         case FOLLOW:
-                            foreach($data->data as $item) {
-                                $datas[] = $item->username;
+                            if (isset($nextData->data)) {
+                                foreach($nextData->data as $item) { $datas[] = $item->username; }
                             }
+                            if (in_array($key, $datas)) { return true; }
                             break;
                         case HASHTAG:
-                            foreach($data->data as $item) {
-                                // $key: string | array
-                                $contains = Str::contains($item->text, $key);
-
-                                if ($contains) {
-                                    return true;
+                            if (isset($nextData->data)) {
+                                foreach($nextData->data as $item) {
+                                    $contains = Str::contains($item->text, $key);
+                                    if ($contains) { return true; }
                                 }
                             }
                             break;
-                        default:
-                            foreach($data->data as $item) {
-                                $datas[] = $item->id;
+                        case LIKE:
+                            if (isset($nextData->data)) {
+                                foreach($nextData->data as $item) { $datas[] = $item->id; }
                             }
-                    }
+                            if (in_array($key, $datas)) { return true; }
+                            break;
+                        case RETWEET:
+                            if (isset($nextData->data)) {
+                                foreach($nextData->data as $item) { $datas[] = $item->id; }
+                            }
 
-                    if (in_array($key, $datas)) {
-                        return true;
+                            if (in_array($userTweetId, $datas)) { return true; }
+                            break;
+                        default:
+                            return false;
                     }
                 }
             }

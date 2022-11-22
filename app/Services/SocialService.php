@@ -27,10 +27,9 @@ class SocialService extends BaseService
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function performTwitter($user, $type = LIKE, $taskId, $userSocial)
+    public function performTwitter($user, $twitterUserId, $type = LIKE, $taskId, $userSocial)
     {
         $isSocial = false;
-        $twitterUserId = $user->twitter;
 
         if (empty($user) || ($user && (is_null($user->twitter) || $user->twitter == ''))) {
             return $isSocial;
@@ -52,7 +51,7 @@ class SocialService extends BaseService
             case RETWEET:
                 // url demo: https://twitter.com/NEARProtocol/status/1586347120872808448
                 // params: {userTweetId}
-                $isSocial = $this->twitterApiService->isUserRetweet($twitterUserId);
+                $isSocial = $this->twitterApiService->isUserRetweet($twitterUserId, $key);
                 break;
             case HASHTAG:
                 // params {userTweetId, $key: string | array }
@@ -63,14 +62,9 @@ class SocialService extends BaseService
         }
 
         if ($isSocial) {
-            $user = $this->taskUserRepository
-                ->firstOrNewSocial($user->id, $taskId, $userSocial->id);
+            $user = $this->taskUserRepository->firstOrNewSocial($user->id, $taskId, $userSocial->id);
 
-            $user->fill([
-                'status' => USER_COMPLETED_TASK,
-                'started_at' => Carbon::now(),
-                'activity_log' => null
-            ]);
+            $user->fill(['status' => USER_COMPLETED_TASK]);
             $user->save();
         }
 
