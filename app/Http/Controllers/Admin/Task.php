@@ -35,7 +35,10 @@ class Task extends Controller
             $tasks = $this->taskRepository->getTasks();
         }
 
-        $tasks = $tasks->orderBy('created_at', 'DESC')->get();
+        $tasks = $tasks
+            ->orderBy('status', 'DESC')
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         return view(
             'admin.task.index', [

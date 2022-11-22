@@ -15,6 +15,7 @@ use App\Repositories\{
 use App\Services\SocialService;
 use App\Helpers\ActionHelper;
 use Illuminate\Support\Facades\{Http};
+use Log;
 
 class Social extends ApiController
 {
@@ -83,6 +84,10 @@ class Social extends ApiController
             $user = $request->user();
             $tweetId = optional($this->getSocialAccount($request))->twitter;
             $type = ActionHelper::getTypeTwitter($request->type);
+            Log::info('Call api: ', [
+                'id' => $id,
+                'type' => $type
+            ]);
 
             if (is_null($tweetId) || $tweetId == '') {
                 return $this->respondError('Account twitter not connect!');
@@ -93,13 +98,13 @@ class Social extends ApiController
             $isSocial = $this->socialService->performTwitter($user, $tweetId, $type, $id, $userSocial);
 
             if ($isSocial[0]) {
-                return $this->responseMessage('Success!');
+                return $this->responseMessage($isSocial[1]);
             }
         } catch (\Exception $e) {
             return $this->respondError($e->getMessage());
         }
 
-        return $this->responseMessage('Not success!');
+        return $this->respondError($isSocial[1], 422);
     }
 
     /**

@@ -5,6 +5,7 @@ use App\Services\Concerns\BaseService;
 use App\Services\Twitter\TwitterApiService;
 use App\Repositories\{LocationHistoryRepository, TaskUserRepository};
 use Carbon\Carbon;
+use App\Helpers\ActionHelper;
 
 class SocialService extends BaseService
 {
@@ -29,7 +30,7 @@ class SocialService extends BaseService
      */
     public function performTwitter($user, $twitterUserId, $type = LIKE, $taskId, $userSocial)
     {
-        $socialRes = [false, 'Not success!'];
+        $socialRes = [false, 'Bạn chưa ' . ActionHelper::getTypeStr($type)[1]];
 
         if (empty($user) || ($user && (is_null($user->twitter) || $user->twitter == ''))) {
             return $socialRes;
@@ -37,7 +38,7 @@ class SocialService extends BaseService
 
         $key = ($userSocial && $userSocial->url) ? last(explode('/', $userSocial->url)) : null;
 
-        switch($type) {
+        switch((int) $type) {
             case LIKE:
                 // url demo: https://twitter.com/NEARProtocol/status/1586347120872808448
                 // params {userTweetId, tweetId(1586347120872808448)}
@@ -58,7 +59,7 @@ class SocialService extends BaseService
                 $socialRes = $this->twitterApiService->isHasTag($twitterUserId, $key);
                 break;
             default:
-                $socialRes;
+                $socialRes = $socialRes;
         }
 
         if ($socialRes[0]) {

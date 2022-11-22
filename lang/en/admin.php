@@ -54,7 +54,7 @@ return [
                 LIKE        => 'Like',
                 // SHARE       => 'Share post',
                 RETWEET     => 'Retweet',
-                TWEET       => 'Tweet',
+                // TWEET       => 'Tweet',
                 // POST        => 'Post',
                 // JOIN_GROUP  => 'Join group',
                 HASHTAG     => 'Hastag',

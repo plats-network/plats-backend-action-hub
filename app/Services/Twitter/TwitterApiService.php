@@ -5,6 +5,7 @@ namespace App\Services\Twitter;
 use App\Services\Concerns\BaseTwitter;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use App\Helpers\ActionHelper;
 use Log;
 
 class TwitterApiService extends BaseTwitter {
@@ -24,8 +25,13 @@ class TwitterApiService extends BaseTwitter {
      *
      * @return boolean|void
      */
-    public function isHasTag($userTweetId = null, $keyHasTag = null)
+    public function isHasTag($userTweetId, $keyHasTag)
     {
+        Log::info('Call hastag: ', [
+            'user_tweeter_id' => $userTweetId,
+            'key_follow' => $keyHasTag
+        ]);
+
         $ver = config('app.twitter_api_ver');
         if (is_null($userTweetId) || $userTweetId == '') { return [false, 'Tweet Id not found!']; }
         if (is_null($keyHasTag) || $keyHasTag == '') { return [false, 'Key hastag not found!']; }
@@ -42,8 +48,13 @@ class TwitterApiService extends BaseTwitter {
      *
      * @return boolean|void
      */
-    public function isFollowing($userTweetId = null, $keyFollow = null)
+    public function isFollowing($userTweetId, $keyFollow)
     {
+        Log::info('Call following: ', [
+            'user_tweeter_id' => $userTweetId,
+            'key_follow' => $keyFollow
+        ]);
+
         $ver = config('app.twitter_api_ver');
         if (is_null($userTweetId) || $userTweetId == '') { return [false, 'Tweet Id not found!']; }
         if (is_null($keyFollow) || $keyFollow == '') { return [false, 'Key following not found!']; }
@@ -60,8 +71,13 @@ class TwitterApiService extends BaseTwitter {
      *
      * @return array|void
      */
-    public function isLikes($userTweetId = null, $keyLike = null)
+    public function isLikes($userTweetId, $keyLike)
     {
+        Log::info('Call like tweeter: ', [
+            'user_tweeter_id' => $userTweetId,
+            'key_like' => $keyFollow
+        ]);
+
         $ver = config('app.twitter_api_ver');
         if (is_null($userTweetId) || $userTweetId == '') { return [false, 'Tweet Id not found!']; }
         if (is_null($keyLike) || $keyLike == '') { return [false, 'Key like not found!']; }
@@ -78,8 +94,13 @@ class TwitterApiService extends BaseTwitter {
      *
      * @return array|void
      */
-    public function isUserRetweet($userTweetId, $keyRetweet = null)
+    public function isUserRetweet($userTweetId, $keyRetweet)
     {
+        Log::info('Call like Rewtweet: ', [
+            'user_tweeter_id' => $userTweetId,
+            'key_retweet' => $keyRetweet
+        ]);
+     
         $ver = config('app.twitter_api_ver');
         if (is_null($userTweetId) || $userTweetId == '') { return [false, 'Tweet Id not found!']; }
         if (is_null($keyRetweet) || $keyRetweet == '') { return [false, 'Retweet not found!']; }
@@ -99,8 +120,8 @@ class TwitterApiService extends BaseTwitter {
     private function fetchData($uri, $type = LIKE, $userTweetId, $key, $limit = 10)
     {
         $datas = [];
-        $resultSuccess = [true, 'Successful!'];
-        $resultErrors = [false, 'Not success!'];
+        $resultSuccess = [true, 'Chúc mừng bạn đã ' . ActionHelper::getTypeStr($type)[1]];
+        $resultErrors = [false, "Bạn chưa " . ActionHelper::getTypeStr($type)[1]];
 
         if (is_null($uri)) { return [false, 'Url not found!']; }
         $res = $this->callApi($uri);
@@ -108,6 +129,7 @@ class TwitterApiService extends BaseTwitter {
         if (is_null($res)) { return [false, 'Data not found!']; }
         $statusCode = $res->getStatusCode();
         $data = json_decode($res->getBody()->getContents());
+
         Log::info('Call api tweets', [
             'code' => $statusCode
         ]);
