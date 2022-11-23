@@ -9,20 +9,9 @@ use App\Helpers\ActionHelper;
 use Log;
 
 class TwitterApiService extends BaseTwitter {
-    // define('FOLLOW', 1);
-    // define('LIKE', 2);
-    // define('SHARE', 3);
-    // define('RETWEET', 4);
-    // define('TWEET', 5);
-    // define('POST', 6);
-    // define('JOIN_GROUP', 7);
-    // define('HASHTAG', 8);
-
     /**
      * Get user Follow
-     *
      * @param $userId
-     *
      * @return boolean|void
      */
     public function isHasTag($userTweetId, $keyHasTag)
@@ -73,7 +62,7 @@ class TwitterApiService extends BaseTwitter {
      */
     public function isLikes($userTweetId, $keyLike)
     {
-        Log::info('Call like tweeter: ', [
+        Log::info('Call api like: ', [
             'user_tweeter_id' => $userTweetId,
             'key_like' => $keyLike
         ]);
@@ -96,7 +85,7 @@ class TwitterApiService extends BaseTwitter {
      */
     public function isUserRetweet($userTweetId, $keyRetweet)
     {
-        Log::info('Call like Rewtweet: ', [
+        Log::info('Call retweet: ', [
             'user_tweeter_id' => $userTweetId,
             'key_retweet' => $keyRetweet
         ]);
@@ -152,7 +141,6 @@ class TwitterApiService extends BaseTwitter {
                         case HASHTAG:
                             if (isset($data->data)) {
                                 foreach($data->data as $item) {
-                                    // $key: string | array
                                     $contains = Str::contains($item->text, $key);
                                     if ($contains) { return $resultSuccess; }
                                 }

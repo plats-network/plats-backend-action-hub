@@ -7,6 +7,7 @@ use App\Http\Resources\SocialResource;
 use App\Http\Requests\SocialRequest;
 use Illuminate\Http\Request;
 use App\Models\Task as ModelTask;
+use App\Models\{TaskUser, UserTaskReward, DetailReward};
 use App\Repositories\{
     TaskRepository,
     TaskSocialRepository,
@@ -15,6 +16,7 @@ use App\Repositories\{
 use App\Services\SocialService;
 use App\Helpers\ActionHelper;
 use Illuminate\Support\Facades\{Http};
+use Illuminate\Support\Str;
 use Log;
 
 class Social extends ApiController
@@ -22,6 +24,7 @@ class Social extends ApiController
     /**
      * @param $taskService
      * @param $modelTask
+     * @param $taskUser
      * @param $taskRepository
      * @param $taskUserRepository
      * @param $taskSocialRepository
@@ -30,6 +33,7 @@ class Social extends ApiController
     public function __construct(
         private SocialService $socialService,
         private ModelTask $modelTask,
+        private TaskUser $taskUser,
         private TaskRepository $taskRepository,
         private TaskSocialRepository $taskSocialRepository,
         private TaskUserRepository $taskUserRepository
@@ -94,11 +98,29 @@ class Social extends ApiController
             }
 
             $userSocial = $this->taskSocialRepository->find($socialId);
+            $userTask = $this->taskUser->whereUserId($user->id)
+                ->whereTaskId($userSocial->task_id)
+                ->whereSocialId($userSocial->id)
+                ->first();
+
+            if ($userTask && $userTask->status == USER_COMPLETED_TASK) {
+                $label = ActionHelper::getTypeStr($userSocial->type)[1];
+                return $this->responseMessage($label . ' done!');
+            }
+
             // Service
             $isSocial = $this->socialService->performTwitter($user, $tweetId, $type, $id, $userSocial);
 
             if ($isSocial[0]) {
-                return $this->responseMessage($isSocial[1]);
+                $dataReward = $this->socialService->saveDetailReward($user);
+                return response()->json([
+                    'message' => $isSocial[1],
+                    'data' => [
+                        'amount' => optional($dataReward)->amount,
+                        'units' => 'SP',
+                        'message' => $isSocial[1]
+                    ]
+                ], 200);
             }
         } catch (\Exception $e) {
             return $this->respondError($e->getMessage());

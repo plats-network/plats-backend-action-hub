@@ -36,9 +36,10 @@ class DetailReward extends Model
      * @var string[]
      */
     protected $fillable = [
+        'id',
         'branch_id',
         'reward_id',
-        'type', // 0: token plats, 1: NFTs, 2: Vouchers, 3: card mobile, 4: ticket film
+        'type', // 0: SP (plasts point), 1: NFTs, 2: Vouchers, 3: card mobile, 4: ticket film
         'name',
         'amount',
         'description',
