@@ -62,7 +62,7 @@ class TaskResource extends JsonResource
             'type'              => $this->type,
             'created_at'        => DateHelper::getDateTime($this->created_at),
             'cover_url'         => $this->cover_url,
-            'post_by' => $creator ? $creator['name'] : 'Admin Plasts',
+            'post_by' => $creator ? $creator['name'] : 'Plats Teams',
             'improgress_flag'   => $task_improgress ? true : false,
             'task_done'         => $task_done,
             'task_improgress'   => $task_improgress,

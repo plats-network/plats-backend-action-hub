@@ -21,10 +21,11 @@ class VoucherResource extends JsonResource
         $conpany = Branch::findOrFail(optional($this->branch)->id)->company;
         $isOpen = optional($this->user_task_reward)->is_open == 0 ? false : true;
 
+        $amount = $this->type == 0 ? optional($this->user_task_reward)->amount : $this->amount;
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'amount' => $this->amount,
+            'amount' => $amount,
             'icon'  => BaseImage::loadImage($conpany->logo_path),
             'url_image' => BaseImage::loadImage($this->url_image),
             'description' => $this->description,

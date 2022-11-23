@@ -35,7 +35,7 @@ class SocialResource extends JsonResource
             'type' => 'social',
             'task_start' => $checkUserTask > 0 ? true : false,
             'cover_url' => $this->cover_url,
-            'post_by' => $creator ? $creator['name'] : 'Admin Plasts',
+            'post_by' => $creator ? $creator['name'] : 'Plats Teams',
             'socials' => TaskSocialResource::collection($this->taskSocials()->get()),
             'galleries' => count($galleries) > 0 ? $galleries : $mainImgs,
             'rewards' => $rewards,
