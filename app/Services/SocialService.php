@@ -64,7 +64,7 @@ class SocialService extends BaseService
                 foreach($textArrs as $txt) {
                     if (Str::contains($txt, '#')) { $keys[] = $txt; }
                 }
-                $socialRes = $this->twitterApiService->isHasTag($twitterUserId, $keys);
+                $socialRes = $this->twitterApiService->isHashTag($twitterUserId, $keys);
                 break;
             default:
                 $socialRes = $socialRes;

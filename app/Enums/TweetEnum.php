@@ -7,5 +7,5 @@ enum TweetEnum:string
     case FOLLOW = 'follow';
     case LIKE = 'like';
     case RETWEET = 'retweet';
-    case HASHTAG = 'hastag';
+    case HASHTAG = 'hashtag';
 }

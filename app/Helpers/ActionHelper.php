@@ -23,7 +23,7 @@ class ActionHelper
             case 'tweet':
                 $tweetType = TWEET;
                 break;
-            case 'hastag';
+            case 'hashtag';
                 $tweetType = HASHTAG;
                 break;
             default:
@@ -52,7 +52,7 @@ class ActionHelper
                 $datas = ['tweet', 'Tweet'];
                 break;
             case HASHTAG:
-                $datas = ['hastag', 'Hastag'];
+                $datas = ['hashtag', 'Hashtag'];
                 break;
             default:
                 $datas = ['like', 'Like'];

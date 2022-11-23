@@ -14,20 +14,20 @@ class TwitterApiService extends BaseTwitter {
      * @param $userId
      * @return boolean|void
      */
-    public function isHasTag($userTweetId, $keyHasTag)
+    public function isHashTag($userTweetId, $keyHashTag)
     {
-        Log::info('Call hastag: ', [
+        Log::info('Call hashtag: ', [
             'user_tweeter_id' => $userTweetId,
-            'key_follow' => $keyHasTag
+            'key_hashtag' => $keyHashTag
         ]);
 
         $ver = config('app.twitter_api_ver');
         if (is_null($userTweetId) || $userTweetId == '') { return [false, 'Tweet Id not found!']; }
-        if (is_null($keyHasTag) || $keyHasTag == '') { return [false, 'Key hastag not found!']; }
+        if (is_null($keyHashTag) || $keyHashTag == '') { return [false, 'Key hashtag not found!']; }
 
         $uri = "/{$ver}/users/{$userTweetId}/tweets?max_results=" . TWITTER_LIMIT;
 
-        return $this->fetchData($uri, HASHTAG, $userTweetId, $keyHasTag);
+        return $this->fetchData($uri, HASHTAG, $userTweetId, $keyHashTag);
     }
 
     /**
