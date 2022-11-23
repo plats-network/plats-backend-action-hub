@@ -27,20 +27,10 @@ class TaskSocialResource extends JsonResource
 
         if ($userTask->count() > 0) {
             $userTaskWork = $userTask->whereSocialId($this->id)->first();
-
-            if (!$userTaskWork) {
-                TaskUser::create([
-                    'user_id' => $userId,
-                    'task_id' => $this->task_id,
-                    'social_id' => $this->id,
-                    'status' => USER_PROCESSING_TASK
-                ]);
-            }
-
-            $statusAction = $userTaskWork->status == USER_COMPLETED_TASK ? true : false;
-            $statusLabel = $userTaskWork->status == USER_COMPLETED_TASK
+            $statusAction = optional($userTaskWork)->status == USER_COMPLETED_TASK ? true : false;
+            $statusLabel = optional($userTaskWork)->status == USER_COMPLETED_TASK
                 ? 'complete'
-                : ($userTaskWork->status == USER_PROCESSING_TASK ? 'processing' : 'waitting');
+                : (optional($userTaskWork)->status == USER_PROCESSING_TASK ? 'processing' : 'waitting');
         }
 
         return [
@@ -50,6 +40,7 @@ class TaskSocialResource extends JsonResource
             'description' => $this->description,
             'type' => ActionHelper::getTypeStr($this->type)[0],
             'url' => $this->url,
+            'url_intent' => ActionHelper::getUrlIntent($this->type, $this->url),
             'tbn_label' => ActionHelper::getTypeStr($this->type)[1],
             'start' => $start,
             'action' => [

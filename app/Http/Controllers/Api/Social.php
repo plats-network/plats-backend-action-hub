@@ -94,7 +94,7 @@ class Social extends ApiController
             ]);
 
             if (is_null($tweetId) || $tweetId == '') {
-                return $this->respondError('Account twitter not connect!');
+                return $this->respondError('Account twitter not connect!', 422);
             }
 
             $userSocial = $this->taskSocialRepository->find($socialId);

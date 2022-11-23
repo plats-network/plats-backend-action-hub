@@ -57,11 +57,11 @@ return [
                 // TWEET       => 'Tweet',
                 // POST        => 'Post',
                 // JOIN_GROUP  => 'Join group',
-                HASHTAG     => 'Hastag',
+                HASHTAG     => 'Hashtag',
 
             ],
             'platform_option' => [
-                TWITTER => 'Tweet',
+                TWITTER => 'Twitter',
                 // FACEBOOK => 'Facebook',
                 // DISCORD => 'Discord',
                 // TELEGRAM => 'Telegram',

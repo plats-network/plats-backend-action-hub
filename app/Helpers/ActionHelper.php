@@ -63,6 +63,37 @@ class ActionHelper
 
     /**
      *
+     * @param  integer|null $tpye
+     * @return string|null
+     */
+    public static function getUrlIntent($tpye, $url)
+    {
+        $urlTwitter = 'https://twitter.com/intent';
+        $urlIntent = $url ? last(explode('/', $url)) : null;
+        $datas = [];
+        switch($tpye) {
+            case FOLLOW:
+                $data = $urlTwitter . '/follow?screen_name=' . $urlIntent;
+                break;
+            case RETWEET:
+                $data = $urlTwitter . '/retweet?tweet_id=' . $urlIntent;
+                break;
+            case TWEET:
+                $data = $urlTwitter . '/tweet?hashtags=Plasts';
+                break;
+            case HASHTAG:
+                $data = $urlTwitter . '/tweet?hashtags=Plasts';
+                break;
+            default:
+                $data = $urlTwitter . '/like?tweet_id=' . $urlIntent;
+        }
+
+        return $data;
+    }
+
+
+    /**
+     *
      * @param  string|null  $tpye
      * @return int|null
      */
