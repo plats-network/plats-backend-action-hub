@@ -113,12 +113,14 @@ class SocialService extends BaseService
         try {
             $reward = Reward::first();
             $branch = Branch::first();
+            $amount = random_int(10, 20);
+
             $data = DetailReward::create([
                 'branch_id' => $branch->id,
                 'reward_id' => $reward->id,
                 'type' => 0,
                 'name' => 'Plats point token',
-                'amount' => 0,
+                'amount' => $amount,
                 'description' => "Plats point",
                 'url_image' => 'icon/token-nft.png',
                 'status' => true,
@@ -130,7 +132,7 @@ class SocialService extends BaseService
                 'user_id' => $user->id,
                 'detail_reward_id' => $data->id,
                 'type' => 0,
-                'amount' => random_int(10, 20),
+                'amount' => $amount,
                 'is_open' => false,
                 'is_tray' => false
             ]);
