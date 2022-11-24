@@ -110,7 +110,7 @@ class TwitterApiService extends BaseTwitter {
     {
         $datas = [];
         $resultSuccess = [true, ActionHelper::getTypeStr($type)[1] . ' Success!'];
-        $resultErrors = [false, "Failed to " . ActionHelper::getTypeStr($type)[1]];
+        $resultErrors = [false, "Not " . ActionHelper::getTypeStr($type)[1]] . ' Yet?';
 
         if (is_null($uri)) { return [false, 'Url not found!']; }
         $res = $this->callApi($uri);
