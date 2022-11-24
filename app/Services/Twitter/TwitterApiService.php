@@ -109,8 +109,8 @@ class TwitterApiService extends BaseTwitter {
     private function fetchData($uri, $type = LIKE, $userTweetId, $key, $limit = 10)
     {
         $datas = [];
-        $resultSuccess = [true, 'Chúc mừng bạn đã ' . ActionHelper::getTypeStr($type)[1]];
-        $resultErrors = [false, "Bạn chưa " . ActionHelper::getTypeStr($type)[1]];
+        $resultSuccess = [true, ActionHelper::getTypeStr($type)[1] . ' Success!'];
+        $resultErrors = [false, "Failed to " . ActionHelper::getTypeStr($type)[1]];
 
         if (is_null($uri)) { return [false, 'Url not found!']; }
         $res = $this->callApi($uri);

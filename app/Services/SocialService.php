@@ -32,7 +32,7 @@ class SocialService extends BaseService
      */
     public function performTwitter($user, $twitterUserId, $type = LIKE, $taskId, $userSocial)
     {
-        $socialRes = [false, 'Bạn chưa ' . ActionHelper::getTypeStr($type)[1]];
+        $socialRes = [false, 'Failed to ' . ActionHelper::getTypeStr($type)[1]];
 
         if (empty($user) || ($user && (is_null($user->twitter) || $user->twitter == ''))) {
             return $socialRes;
