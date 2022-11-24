@@ -66,7 +66,7 @@ class ActionHelper
      * @param  integer|null $tpye
      * @return string|null
      */
-    public static function getUrlIntent($tpye, $url)
+    public static function getUrlIntent($tpye, $url, $txtTag = '')
     {
         $urlTwitter = 'https://twitter.com/intent';
         $urlIntent = $url ? last(explode('/', $url)) : null;
@@ -79,10 +79,10 @@ class ActionHelper
                 $data = $urlTwitter . '/retweet?tweet_id=' . $urlIntent;
                 break;
             case TWEET:
-                $data = $urlTwitter . '/tweet?hashtags=Plasts';
+                $data = $urlTwitter . '/tweet?hashtags=' . $txtTag;
                 break;
             case HASHTAG:
-                $data = $urlTwitter . '/tweet?hashtags=Plasts';
+                $data = $urlTwitter . '/tweet?hashtags=' . $txtTag;
                 break;
             default:
                 $data = $urlTwitter . '/like?tweet_id=' . $urlIntent;

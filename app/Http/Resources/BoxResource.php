@@ -19,12 +19,12 @@ class BoxResource extends JsonResource
     {
         $isExpired = is_null($this->end_at) ? true : Carbon::now() > $this->end_at;
         $isOpen = optional($this->user_task_reward)->is_open == 0 ? false : true;
-        $openLabel = optional($this->user_task_reward)->is_consumed == 0 ? 'Chưa mở' : 'Đã mở';
+        $openLabel = optional($this->user_task_reward)->is_consumed == 0 ? 'Unbox' : 'Opened';
         $icon = $isOpen ? BaseImage::loadImage($this->url_image) : BaseImage::loadImage();
 
         return [
             'id' => $this->id,
-            'name' => $isOpen ? 'Box đã được mở' : 'Open the box now!',
+            'name' => $isOpen ? 'Box opened.' : 'Open the box now.',
             'icon'  => $icon,
             'expired_date'  => DateHelper::parseDate($this->end_at)->format('d/m/Y'),
             'expired_time'  => DateHelper::parseDate($this->end_at)->format('H:i'),

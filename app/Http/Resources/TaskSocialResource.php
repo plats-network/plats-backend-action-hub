@@ -8,6 +8,7 @@ use App\Helpers\{ActionHelper};
 use Illuminate\Support\Facades\Http;
 use App\Http\Resources\{TaskGuideResource};
 use App\Models\{TaskUser};
+use Illuminate\Support\Str;
 
 class TaskSocialResource extends JsonResource
 {
@@ -33,6 +34,27 @@ class TaskSocialResource extends JsonResource
                 : (optional($userTaskWork)->status == USER_PROCESSING_TASK ? 'processing' : 'waitting');
         }
 
+        $text = $this->name . ' ' . $this->description;
+        $textArrs = explode(' ', $text);
+        $keys = [];
+        foreach($textArrs as $txt) {
+            if (Str::contains($txt, '#')) { $keys[] = $txt; }
+        }
+
+        $txtTag = '';
+        if (count($keys) <= 0) {
+            $txtTag = 'plats_network';
+        } else {
+            foreach($keys as $key => $value) {
+                if ($key == count($keys) - 1) {
+                    $txtTag = $txtTag . Str::replace('#', '', $value);
+                } else {
+                    $txtTag = $txtTag . Str::replace('#', '', $value) . ',';
+                }
+            }
+        }
+
+
         return [
             'id' => $this->id,
             'task_id' => $this->task_id,
@@ -40,7 +62,7 @@ class TaskSocialResource extends JsonResource
             'description' => $this->description,
             'type' => ActionHelper::getTypeStr($this->type)[0],
             'url' => $this->url,
-            'url_intent' => ActionHelper::getUrlIntent($this->type, $this->url),
+            'url_intent' => ActionHelper::getUrlIntent($this->type, $this->url, $txtTag),
             'tbn_label' => ActionHelper::getTypeStr($this->type)[1],
             'start' => $start,
             'action' => [

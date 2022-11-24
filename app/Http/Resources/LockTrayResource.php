@@ -19,7 +19,7 @@ class LockTrayResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => '1 Boxes đã đến ngày được mở',
+            'name' => 'Open the box now!',
             'icon'  => BaseImage::loadImage(),
             'is_status' => ($this->end_at && Carbon::now() > $this->end_at) ? true : false, // false: not open, true: open
             'time_stamp' => DateHelper::getTimestamp($this->end_at),
