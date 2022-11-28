@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\{CheckInTaskRequest, CreateTaskRequest, StartTaskRequest};
-use App\Http\Resources\{TaskResource, TaskUserResource, TaskDogingResource, SocialResource};
+use App\Http\Resources\{TaskResource, TaskUserResource, TaskDogingResource, SocialResource, CheckInResource};
 use App\Repositories\{LocationHistoryRepository, TaskRepository, TaskUserRepository};
 use App\Services\TaskService;
 use Illuminate\Http\Request;
@@ -191,7 +191,7 @@ class Task extends ApiController
         $dataCheckIn = $this->taskService
             ->checkIn($taskId, $locationId, $userId, $request->image, $request->activity_log);
         
-        return $this->respondWithResource(new TaskUserResource($dataCheckIn));
+        return $this->respondWithResource(new CheckInResource($dataCheckIn));
     }
     /**
      * @param \Illuminate\Http\Request $request
