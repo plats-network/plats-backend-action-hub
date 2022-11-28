@@ -116,4 +116,28 @@ class ActionHelper
 
         return $icon;
     }
+
+    public static function getType($type = 0)
+    {
+        // define('TYPE_CHECKIN', 1);
+        // define('TYPE_INSTALL_APP', 2);
+        // define('TYPE_VIDEO_WATCH', 3);
+        // define('TYPE_SOCIAL', 4);
+
+        switch($type) {
+            case TYPE_CHECKIN:
+                $txtType = 'checkin';
+                break;
+            case TYPE_INSTALL_APP:
+                $txtType = 'install-app';
+                break;
+            case TYPE_VIDEO_WATCH:
+                $txtType = 'video-watch';
+                break;
+            default:
+                $txtType = 'social';
+        }
+
+        return $txtType;
+    }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\MissingValue;
-use App\Helpers\DateHelper;
+use App\Helpers\{DateHelper, ActionHelper};
 use Illuminate\Support\Facades\Http;
 use App\Models\{TaskUser, Reward};
 use Carbon\Carbon;
@@ -59,7 +59,7 @@ class TaskResource extends JsonResource
             'valid_radius'      => (int)$this->valid_radius,
             'distance'          => $this->distance,
             'deposit_status'    => $this->deposit_status,
-            'type'              => $this->type,
+            'type'              => ActionHelper::getType($this->type),
             'created_at'        => DateHelper::getDateTime($this->created_at),
             'cover_url'         => $this->cover_url,
             'post_by' => $creator ? $creator['name'] : 'Plats Teams',
