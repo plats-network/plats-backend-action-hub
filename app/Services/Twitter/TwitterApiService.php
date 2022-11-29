@@ -111,12 +111,16 @@ class TwitterApiService extends BaseTwitter {
         $datas = [];
         $resultSuccess = [true, ActionHelper::getTypeStr($type)[1] . ' Success!'];
         $resultErrors = [false, "Not " . ActionHelper::getTypeStr($type)[1] . ' Yet?'];
-        $resMessage = '';
 
-        if (is_null($uri)) { return [false, 'Url not found!']; }
+        if (is_null($uri)) {
+            return [false, 'Url not found!'];
+        }
         $res = $this->callApi($uri);
 
-        if (is_null($res)) { return [false, 'Data not found!']; }
+        if (is_null($res)) {
+            return [false, 'Data not found!'];
+        }
+
         $statusCode = $res->getStatusCode();
         $data = json_decode($res->getBody()->getContents());
 
@@ -128,51 +132,75 @@ class TwitterApiService extends BaseTwitter {
             return [false, optional($data->errors[0])->message];
         }
 
-        $i = ZERO;
+        $i = 0;
+
         do {
             if ($statusCode == 200) {
                 if ($i <= 0) {
                     switch($type) {
                         case FOLLOW:
                             if (isset($data->data)) {
-                                foreach($data->data as $item) { $datas[] = $item->username; }
+                                foreach($data->data as $item) {
+                                    $datas[] = $item->username;
+                                }
                             }
-                            if (in_array($key, $datas)) { $resMessage = $resultSuccess; }
+                            if (in_array($key, $datas)) {
+                                return $resultSuccess;
+                            }
+
                             break;
                         case HASHTAG:
                             if (isset($data->data)) {
                                 foreach($data->data as $item) {
                                     $contains = Str::contains($item->text, $key);
-                                    if ($contains) { $resMessage = $resultSuccess; }
+
+                                    if ($contains) {
+                                        return $resultSuccess;
+                                    }
                                 }
                             }
+
                             break;
                         case LIKE:
                             if (isset($data->data)) {
-                                foreach($data->data as $item) { $datas[] = $item->id; }
+                                foreach($data->data as $item) {
+                                    $datas[] = $item->id;
+                                }
                             }
-                            if (in_array($key, $datas)) { $resMessage = $resultSuccess; }
+
+                            if (in_array($key, $datas)) {
+                                return $resultSuccess;
+                            }
+
                             break;
                         case RETWEET:
                             if (isset($data->data)) {
-                                foreach($data->data as $item) { $datas[] = $item->id; }
+                                foreach($data->data as $item) {
+                                    $datas[] = $item->id;
+                                }
                             }
 
-                            if (in_array($userTweetId, $datas)) { $resMessage = $resultSuccess; }
+                            if (in_array($userTweetId, $datas)) {
+                                return $resultSuccess;
+                            }
+
                             break;
                         default:
-                            $resMessage = $resultErrors;
-                            break;
+                            return $resultErrors;
                     }
                 } else {
-                    if (!isset($data->meta->next_token)) { break; }
+                    if (!isset($data->meta->next_token)) {
+                        break;
+                    }
 
                     if ($i == 1) {
                         $nextUri = $uri . "&pagination_token={$data->meta->next_token}";
                         $nextRes = $this->callApi($nextUri);
                         $nextData = json_decode($nextRes->getBody()->getContents());
                     } else {
-                        if (!isset($nextData->meta->next_token)) { break; }
+                        if (!isset($nextData->meta->next_token)) {
+                            break;
+                        }
 
                         $nextUri = $uri . "&pagination_token={$nextData->meta->next_token}";
                         $nextRes = $this->callApi($nextUri);
@@ -188,32 +216,50 @@ class TwitterApiService extends BaseTwitter {
                             if (isset($nextData->data)) {
                                 foreach($nextData->data as $item) { $datas[] = $item->username; }
                             }
-                            if (in_array($key, $datas)) { $resMessage = $resultSuccess; }
+
+                            if (in_array($key, $datas)) {
+                                return $resultSuccess;
+                            }
+
                             break;
                         case HASHTAG:
                             if (isset($nextData->data)) {
                                 foreach($nextData->data as $item) {
                                     $contains = Str::contains($item->text, $key);
-                                    if ($contains) { $resMessage = $resultSuccess; }
+
+                                    if ($contains) {
+                                        return $resultSuccess;
+                                    }
                                 }
                             }
+
                             break;
                         case LIKE:
                             if (isset($nextData->data)) {
-                                foreach($nextData->data as $item) { $datas[] = $item->id; }
+                                foreach($nextData->data as $item) {
+                                    $datas[] = $item->id;
+                                }
                             }
-                            if (in_array($key, $datas)) { $resMessage = $resultSuccess; }
+
+                            if (in_array($key, $datas)) {
+                                return $resultSuccess;
+                            }
+
                             break;
                         case RETWEET:
                             if (isset($nextData->data)) {
-                                foreach($nextData->data as $item) { $datas[] = $item->id; }
+                                foreach($nextData->data as $item) {
+                                    $datas[] = $item->id;
+                                }
                             }
 
-                            if (in_array($userTweetId, $datas)) { $resMessage = $resultSuccess; }
+                            if (in_array($userTweetId, $datas)) {
+                                return $resultSuccess;
+                            }
+
                             break;
                         default:
-                            $resMessage = $resultErrors;
-                            break;
+                            return $resultErrors;
                     }
                 }
             }
@@ -221,6 +267,6 @@ class TwitterApiService extends BaseTwitter {
             $i++;
         } while($i < $limit);
 
-        return $resMessage;
+        return $resultErrors;
     }
 }
