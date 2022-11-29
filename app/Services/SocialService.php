@@ -34,9 +34,9 @@ class SocialService extends BaseService
     {
         $socialRes = [false, 'Not ' . ActionHelper::getTypeStr($type)[1] . ' Yet?'];
 
-        if (empty($user) || ($user && (is_null($user->twitter) || $user->twitter == ''))) {
-            return $socialRes;
-        }
+        // if (empty($user) || ($user && (is_null($user->twitter) || $user->twitter == ''))) {
+        //     return $socialRes;
+        // }
 
         $key = ($userSocial && $userSocial->url) ? last(explode('/', $userSocial->url)) : null;
 
