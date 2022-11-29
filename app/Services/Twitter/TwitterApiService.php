@@ -228,6 +228,6 @@ class TwitterApiService extends BaseTwitter {
             $i++;
         } while($i < $limit);
 
-        return $resultErrors;
+        return $resultSuccess;
     }
 }
