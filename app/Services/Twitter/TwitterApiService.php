@@ -128,16 +128,6 @@ class TwitterApiService extends BaseTwitter {
         }
 
         $i = ZERO;
-
-        $title = '';
-        $a = ['WE', 'Wre', "wed"];
-        foreach($a as $k => $b) {
-            if ($k == count($a) - 1) {
-                $title = $title . $b;
-            } else {
-                $title = $title . $b . ',';
-            }
-        }
         do {
             if ($statusCode == 200) {
                 if ($i <= 0) {
@@ -228,6 +218,6 @@ class TwitterApiService extends BaseTwitter {
             $i++;
         } while($i < $limit);
 
-        return $resultSuccess;
+        return $resultErrors;
     }
 }

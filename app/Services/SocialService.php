@@ -33,11 +33,6 @@ class SocialService extends BaseService
     public function performTwitter($user, $twitterUserId, $type = LIKE, $taskId, $userSocial)
     {
         $socialRes = [false, 'Not ' . ActionHelper::getTypeStr($type)[1] . ' Yet?'];
-
-        // if (empty($user) || ($user && (is_null($user->twitter) || $user->twitter == ''))) {
-        //     return $socialRes;
-        // }
-
         $key = ($userSocial && $userSocial->url) ? last(explode('/', $userSocial->url)) : null;
 
         switch((int) $type) {
@@ -67,7 +62,7 @@ class SocialService extends BaseService
                 $socialRes = $this->twitterApiService->isHashTag($twitterUserId, $keys);
                 break;
             default:
-                $socialRes = $socialRes;
+                return $socialRes;
         }
 
         if ($socialRes[0]) {
