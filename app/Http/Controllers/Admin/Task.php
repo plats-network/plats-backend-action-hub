@@ -127,15 +127,21 @@ class Task extends Controller
 
     private function pushNotices($token, $title, $desc, $taskId, $icon = null)
     {
-        $res = Http::withToken($token)
-            ->post(config('app.api_url_notice') . "/api/push_tasks", [
-                "title" => $title ?? '🙂🙂🙂 Có tin mới!',
-                "desc" => $desc ?? '🙂🙂🙂 Bạn có tin nhắn từ Plats',
-                "type" => "new_task",
-                "type_id" => $taskId,
-                "icon"  => $icon
-            ]);
+        try {
+            $res = Http::withToken($token)
+                ->post(config('app.api_url_notice') . "/api/push_tasks", [
+                    "title" => $title ?? '🙂🙂🙂 Có tin mới!',
+                    "desc" => $desc ?? '🙂🙂🙂 Bạn có tin nhắn từ Plats',
+                    "type" => "new_task",
+                    "type_id" => $taskId,
+                    "icon"  => $icon
+                ]);
 
-        return json_decode($res->getBody()->getContents());
+            return json_decode($res->getBody()->getContents());
+        } catch (\Exception $e) {
+            return null;
+        }
+
+        return null;
     }
 }

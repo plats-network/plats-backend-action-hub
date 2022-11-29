@@ -111,6 +111,7 @@ class TwitterApiService extends BaseTwitter {
         $datas = [];
         $resultSuccess = [true, ActionHelper::getTypeStr($type)[1] . ' Success!'];
         $resultErrors = [false, "Not " . ActionHelper::getTypeStr($type)[1] . ' Yet?'];
+        $resMessage = '';
 
         if (is_null($uri)) { return [false, 'Url not found!']; }
         $res = $this->callApi($uri);
@@ -136,13 +137,13 @@ class TwitterApiService extends BaseTwitter {
                             if (isset($data->data)) {
                                 foreach($data->data as $item) { $datas[] = $item->username; }
                             }
-                            if (in_array($key, $datas)) { return $resultSuccess; }
+                            if (in_array($key, $datas)) { $resMessage = $resultSuccess; }
                             break;
                         case HASHTAG:
                             if (isset($data->data)) {
                                 foreach($data->data as $item) {
                                     $contains = Str::contains($item->text, $key);
-                                    if ($contains) { return $resultSuccess; }
+                                    if ($contains) { $resMessage = $resultSuccess; }
                                 }
                             }
                             break;
@@ -150,17 +151,18 @@ class TwitterApiService extends BaseTwitter {
                             if (isset($data->data)) {
                                 foreach($data->data as $item) { $datas[] = $item->id; }
                             }
-                            if (in_array($key, $datas)) { return $resultSuccess; }
+                            if (in_array($key, $datas)) { $resMessage = $resultSuccess; }
                             break;
                         case RETWEET:
                             if (isset($data->data)) {
                                 foreach($data->data as $item) { $datas[] = $item->id; }
                             }
 
-                            if (in_array($userTweetId, $datas)) { return $resultSuccess; }
+                            if (in_array($userTweetId, $datas)) { $resMessage = $resultSuccess; }
                             break;
                         default:
-                            return $resultErrors;
+                            $resMessage = $resultErrors;
+                            break;
                     }
                 } else {
                     if (!isset($data->meta->next_token)) { break; }
@@ -186,13 +188,13 @@ class TwitterApiService extends BaseTwitter {
                             if (isset($nextData->data)) {
                                 foreach($nextData->data as $item) { $datas[] = $item->username; }
                             }
-                            if (in_array($key, $datas)) { return $resultSuccess; }
+                            if (in_array($key, $datas)) { $resMessage = $resultSuccess; }
                             break;
                         case HASHTAG:
                             if (isset($nextData->data)) {
                                 foreach($nextData->data as $item) {
                                     $contains = Str::contains($item->text, $key);
-                                    if ($contains) { return $resultSuccess; }
+                                    if ($contains) { $resMessage = $resultSuccess; }
                                 }
                             }
                             break;
@@ -200,17 +202,18 @@ class TwitterApiService extends BaseTwitter {
                             if (isset($nextData->data)) {
                                 foreach($nextData->data as $item) { $datas[] = $item->id; }
                             }
-                            if (in_array($key, $datas)) { return $resultSuccess; }
+                            if (in_array($key, $datas)) { $resMessage = $resultSuccess; }
                             break;
                         case RETWEET:
                             if (isset($nextData->data)) {
                                 foreach($nextData->data as $item) { $datas[] = $item->id; }
                             }
 
-                            if (in_array($userTweetId, $datas)) { return $resultSuccess; }
+                            if (in_array($userTweetId, $datas)) { $resMessage = $resultSuccess; }
                             break;
                         default:
-                            return $resultErrors;
+                            $resMessage = $resultErrors;
+                            break;
                     }
                 }
             }
@@ -218,6 +221,6 @@ class TwitterApiService extends BaseTwitter {
             $i++;
         } while($i < $limit);
 
-        return $resultErrors;
+        return $resMessage;
     }
 }

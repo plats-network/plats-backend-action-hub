@@ -86,7 +86,8 @@ class Social extends ApiController
     {
         try {
             $user = $request->user();
-            $tweetId = optional($this->getSocialAccount($request))->twitter;
+            $tweetId = optional($this->getSocialAccount($user->token))->twitter;
+
             $type = ActionHelper::getTypeTwitter($request->type);
             Log::info('Call api: ', [
                 'id' => $id,
@@ -155,10 +156,9 @@ class Social extends ApiController
     }
 
 
-    private function getSocialAccount(Request $request)
+    private function getSocialAccount($token)
     {
         try {
-            $token = $request->user()->token;
             $res = Http::withToken($token)
                 ->get(config('app.api_user_url') . '/api/account-socials');
 

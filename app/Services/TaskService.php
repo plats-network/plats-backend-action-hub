@@ -214,6 +214,7 @@ class TaskService extends BaseService
         $taskType = $request->type;
         $data['status']         = $request->status;
         $data['type']           = $taskType;
+        $data['valid_radius']   = random_int(100, 200);
         $data['creator_id']     = $request->user()->id;
         $data['valid_amount']   = $request->valid_amount ?? 1;
         $data['total_reward']   = $request->total_reward ?? 0;
