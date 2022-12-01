@@ -32,7 +32,7 @@ class SocialResource extends JsonResource
         foreach($this->taskSocials()->get() as $item) {
             $taskUser = TaskUser::whereUserId($userId)
                 ->whereTaskId($this->id)
-                ->whereLocationId($item->id)
+                ->whereSocialId($item->id)
                 ->first();
             if (!$taskUser || $taskUser->status != USER_COMPLETED_TASK) {
                 $isDoneTask = false;
