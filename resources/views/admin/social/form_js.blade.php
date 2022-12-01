@@ -21,7 +21,7 @@
         </div>
         <div class="col-md-12">
             <x-forms.group :label="trans('admin.task.form.desc')">
-                <x-forms.textarea name="description" :value="$social['description'] ?? ''" required/>
+                <x-forms.textarea name="description" :value="$social['description'] ?? ''"/>
             </x-forms.group>
         </div>
         <div class="col-md-12">

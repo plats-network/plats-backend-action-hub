@@ -20,17 +20,24 @@ class SocialResource extends JsonResource
      */
     public function toArray($request)
     {
+        $isDoneTask = false;
         $userId = $request->user()->id;
         $token = $request->user()->token;
         $creator = $this->getUserDetail($token, $this->creator_id);
         $rewards = Reward::where('end_at', '>=', Carbon::now())->first();
         $galleries = GalleryResource::collection($this->galleries()->get());
         $checkUserTask = TaskUser::select('id')->whereUserId($userId)->whereTaskId($this->id)->count();
+        $countComplate = TaskUser::select('id')->whereUserId($userId)->whereTaskId($this->id)->whereStatus(USER_COMPLETED_TASK)->count();
+
+        if ($countComplate == $this->taskSocials->count()) {
+            $isDoneTask = true;
+        }
         $mainImgs[] =  ['url' => $this->cover_url];
 
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'is_done' => $isDoneTask,
             'description' => $this->description,
             'type' => ActionHelper::getType($this->type),
             'task_start' => $checkUserTask > 0 ? true : false,

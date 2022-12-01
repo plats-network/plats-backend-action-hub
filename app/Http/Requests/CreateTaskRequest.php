@@ -50,7 +50,7 @@ class CreateTaskRequest extends FormRequest
                     [
                         'socials' => ['required', 'array'],
                         'socials.*.name' => ['required', 'max:' . INPUT_MAX_LENGTH],
-                        'socials.*.description' => ['required', 'max:' . 500],
+                        'socials.*.description' => ['max:' . 500],
                         'socials.*.platform' => ['required', 'between:'.TWITTER . ', ' . TELEGRAM],
                         'socials.*.type_social' => ['required', 'between:'.FOLLOW . ', ' . HASHTAG],
                         'socials.*.url' => ['required', 'url'],
