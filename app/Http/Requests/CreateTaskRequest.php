@@ -28,7 +28,7 @@ class CreateTaskRequest extends FormRequest
                     [
                         'description'                       => ['max: 500'],
                         'duration'                          => ['integer', 'min:1'],
-                        'order'                             => ['integer', Rule::in([OUT_OF_ORDER, IN_ORDER])],
+                        'order'                             => ['integer'],
                         'valid_amount'                      => ['required', 'min:1'],
                         'rewards'                           => ['array'],
                         'reward_amount'                     => ['numeric', 'min:0'],

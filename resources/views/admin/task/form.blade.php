@@ -38,7 +38,7 @@
                                 <x-forms.textarea name="description" :value="old('description')"/>
                             </x-forms.group>
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <x-forms.group :label="trans('admin.task.form.total_reward')">
                                         @if (old('id'))
                                             <div class="form-control-plaintext fw-bold">
@@ -49,11 +49,16 @@
                                         @endif
                                     </x-forms.group>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <x-forms.group :label="trans('admin.task.form.status')">
                                         <x-forms.select name="status" select2 required
                                                         :options="[INACTIVE_TASK => 'Draft', ACTIVE_TASK => 'Active']"
                                                         :selected="old('status')"/>
+                                    </x-forms.group>
+                                </div>
+                                <div class="col-lg-4">
+                                    <x-forms.group :label="trans('admin.task.form.order')">
+                                        <x-forms.input type="number" name="order" :value="old('order')" min=0/>
                                     </x-forms.group>
                                 </div>
                             </div>
@@ -65,13 +70,13 @@
                                             <x-forms.input type="number" name="duration" :value="old('duration')" required/>
                                         </x-forms.group>
                                     </div>
-                                    <div class="col-lg-6">
+                                    {{-- <div class="col-lg-6">
                                         <x-forms.group :label="trans('admin.task.form.order')">
                                             <x-forms.select name="order" select2
                                                             :options="trans('admin.task.order')"
                                                             :selected="old('order')" required />
                                         </x-forms.group>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-lg-6">
                                         <x-forms.group :label="trans('admin.task.form.valid_amount')">
                                             <x-forms.input name="valid_amount" type="number" min="1"  :placeholder="trans('admin.placeholders.valid_amount')" :value="old('valid_amount')" required/>

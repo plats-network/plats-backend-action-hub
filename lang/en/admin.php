@@ -28,10 +28,10 @@ return [
             INACTIVE_TASK => 'Draft',
             ACTIVE_TASK => 'Active',
         ],
-        'order' => [
-            OUT_OF_ORDER => 'Out of order',
-            IN_ORDER => 'In order',
-        ],
+        // 'order' => [
+        //     OUT_OF_ORDER => 'Out of order',
+        //     IN_ORDER => 'In order',
+        // ],
         'type' => [
             TYPE_CHECKIN => 'Checkin',
             // TYPE_INSTALL_APP => 'Install Mobile App',

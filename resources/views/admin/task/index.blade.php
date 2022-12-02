@@ -20,7 +20,7 @@
                     <div class="col">
                         <div class="card-body pt-0 pb-0 h-100">
                             <div class="row g-0 h-100 align-content-center">
-                                <div class="col-12 col-md-7 d-flex align-items-center mb-2 mb-md-0 text-muted text-small">
+                                <div class="col-12 col-md-6 d-flex align-items-center mb-2 mb-md-0 text-muted text-small">
                                     NAME
                                 </div>
                                 <div class="col-6 col-md-1 d-flex align-items-center text-alternate text-medium text-muted text-small">
@@ -31,6 +31,9 @@
                                 </div>
                                 <div class="col-6 col-md-2 d-flex align-items-center text-alternate text-medium text-muted text-small text-uppercase">
                                     Locations / Socials
+                                </div>
+                                <div class="col-6 col-md-1 d-flex align-items-center text-alternate text-medium text-muted text-small text-uppercase">
+                                    Order
                                 </div>
                             </div>
                         </div>
@@ -47,7 +50,7 @@
                         <div class="col">
                             <div class="card-body pt-0 pb-0 h-100">
                                 <div class="row g-0 h-100 align-content-center">
-                                    <div class="col-12 col-md-7 d-flex flex-column mb-lg-0 pe-3 d-flex">
+                                    <div class="col-12 col-md-6 d-flex flex-column mb-lg-0 pe-3 d-flex">
                                         <h4>
                                             <a href="{{ route(TASK_EDIT_ADMIN_ROUTER, $task->id) }}" class="stretched-link">
                                             {{ $task->name }}
@@ -85,7 +88,9 @@
                                             {{-- <span class="text-success">{{ $task->participants->count() }}</span> --}}
                                         </div>
                                     </div>
-
+                                    <div class="col-6 col-md-1 d-none d-md-flex flex-column justify-content-center align-items-lg-center">
+                                        {{$task->order}}
+                                    </div>
                                     <div class="col-12 col-md-1 d-flex flex-column justify-content-center order-last order-md-last">
                                         <a href="{{ route(TASK_EDIT_ADMIN_ROUTER, $task->id) }}"
                                            class="btn btn-sm btn-icon btn-icon-start btn-outline-primary ms-1">

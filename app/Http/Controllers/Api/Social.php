@@ -55,6 +55,7 @@ class Social extends ApiController
                 }])
                 ->whereStatus(ACTIVE_TASK)
                 ->whereType(TYPE_SOCIAL)
+                ->orderBy('order', 'desc')
                 ->paginate($limit);
 
             if (count($socials) <= 0) {
@@ -118,7 +119,7 @@ class Social extends ApiController
                     'message' => $isSocial[1],
                     'data' => [
                         'amount' => optional($dataReward)->amount,
-                        'units' => 'SP',
+                        'units' => 'PSP',
                         'message' => $isSocial[1]
                     ]
                 ], 200);
