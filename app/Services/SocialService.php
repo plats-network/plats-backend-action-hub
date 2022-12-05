@@ -103,19 +103,19 @@ class SocialService extends BaseService
         return;
     }
 
-    public function saveDetailReward($user)
+    public function saveDetailReward($user, $taskSocial)
     {
+        // TODO: spec new, remove logic
         try {
             $reward = Reward::first();
             $branch = Branch::first();
-            $amount = random_int(10, 20);
 
             $data = DetailReward::create([
                 'branch_id' => $branch->id,
                 'reward_id' => $reward->id,
                 'type' => 0,
                 'name' => 'Plats point token',
-                'amount' => $amount,
+                'amount' => $taskSocial->amount ?? 0,
                 'description' => "Plats point",
                 'url_image' => 'icon/token-nft.png',
                 'status' => true,
@@ -127,7 +127,7 @@ class SocialService extends BaseService
                 'user_id' => $user->id,
                 'detail_reward_id' => $data->id,
                 'type' => 0,
-                'amount' => $amount,
+                'amount' => $taskSocial->amount ?? 0,
                 'is_open' => false,
                 'is_tray' => false
             ]);

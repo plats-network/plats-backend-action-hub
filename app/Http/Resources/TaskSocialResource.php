@@ -25,10 +25,12 @@ class TaskSocialResource extends JsonResource
         $statusLabel = 'not_start_task';
         $userId = $request->user()->id;
         $userTask = TaskUser::whereUserId($userId)->whereTaskId($this->task_id);
+        $amount = null;
 
         if ($userTask->count() > 0) {
             $userTaskWork = $userTask->whereSocialId($this->id)->first();
             $statusAction = optional($userTaskWork)->status == USER_COMPLETED_TASK ? true : false;
+            $amount = optional($userTaskWork)->status == USER_COMPLETED_TASK ? $this->amount : null;
             $statusLabel = optional($userTaskWork)->status == USER_COMPLETED_TASK
                 ? 'complete'
                 : (optional($userTaskWork)->status == USER_PROCESSING_TASK ? 'processing' : 'waitting');
@@ -54,7 +56,6 @@ class TaskSocialResource extends JsonResource
             }
         }
 
-
         return [
             'id' => $this->id,
             'task_id' => $this->task_id,
@@ -65,6 +66,10 @@ class TaskSocialResource extends JsonResource
             'url_intent' => ActionHelper::getUrlIntent($this->type, $this->url, $txtTag),
             'tbn_label' => ActionHelper::getTypeStr($this->type)[1],
             'start' => $start,
+            'prize' => [
+                'name' => 'PSP',
+                'amount' => $amount
+            ],
             'action' => [
                 'status' => $statusAction,
                 'label' => $statusLabel

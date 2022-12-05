@@ -30,7 +30,9 @@ class TaskSocial extends Model
         'task_id',
         'type',
         'url',
-        'platform'
+        'platform',
+        'amount',
+        'unit', // 0: $PSP, 1: $PLAT, 2: NFT
     ];
 
     /**

@@ -114,7 +114,7 @@ class Social extends ApiController
             $isSocial = $this->socialService->performTwitter($user, $tweetId, $type, $id, $userSocial);
 
             if ($isSocial[0]) {
-                $dataReward = $this->socialService->saveDetailReward($user);
+                $dataReward = $this->socialService->saveDetailReward($user, $userSocial);
                 return response()->json([
                     'message' => $isSocial[1],
                     'data' => [

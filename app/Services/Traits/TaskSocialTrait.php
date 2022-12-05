@@ -21,7 +21,9 @@ trait TaskSocialTrait
                 'description' => $social['description'],
                 'url' => $social['url'],
                 'type' => $social['type_social'],
-                'platform' => $social['platform']
+                'platform' => $social['platform'],
+                'amount' => random_int(10, 20),
+                'unit' => $social['unit'] ?? 0
             ];
         }
 
