@@ -14,6 +14,15 @@ class BaseImage {
         return Storage::disk('s3')->url($image_url);
     }
 
+    public static function pspIcon($image_url = null)
+    {
+        if (is_null($image_url)) {
+            return Storage::disk('s3')->url('icon/psp-icon.png');
+        }
+
+        return Storage::disk('s3')->url($image_url);
+    }
+
     public static function getType($type)
     {
         switch($type) {
