@@ -6,6 +6,9 @@ use App\Http\Controllers\Api\{
     QrCode, TaskNotice, LockTray,
     QrCodeAction, Twitter, Social
 };
+use App\Http\Controllers\Api\Admin\{
+    Reward
+};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +35,13 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
     });
 
     Route::post('/{id}/social/{social_id}', [Social::class, 'update'])->name('task.social.update');
+});
+
+Route::prefix('rewards')->controller(Reward::class)->group(function () {
+    Route::get('/', 'index');
+    Route::get('/edit/{id}', 'edit')->whereUuid('id');
+    Route::post('/store', 'store');
+    Route::get('/delete/{id}', 'destroy')->whereUuid('id');
 });
 
 Route::get('/my-tasks', [UserTask::class, 'histories']);

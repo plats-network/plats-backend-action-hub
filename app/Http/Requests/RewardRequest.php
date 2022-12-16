@@ -18,10 +18,12 @@ class RewardRequest extends FormRequest
         return [
             'name' => ['required', 'max:' . INPUT_MAX_LENGTH],
             'description' => ['required', 'max:' . INPUT_MAX_LENGTH],
-            'image' => ['required', 'string'],
-            'type' => ['required', 'integer', 'in: [0,1,2,3]'],
-            'start_at' => ['required'],
-            'end_at' => ['required'],
+            'image' => ['required'],
+            'status' => ['required'],
+            'order' => ['required'],
+//            'type' => ['required', 'integer', 'in: [0,1,2,3]'],
+//            'start_at' => ['required'],
+//            'end_at' => ['required'],
         ];
     }
 
