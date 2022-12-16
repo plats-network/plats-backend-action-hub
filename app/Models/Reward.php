@@ -46,6 +46,8 @@ class Reward extends Model
         'region',
         'start_at',
         'end_at',
+        'order',
+        'status',
     ];
 
     /**
@@ -66,8 +68,8 @@ class Reward extends Model
         return $this->hasMany(DetailReward::class);
     }
 
-    public function getImageAttribute()
-    {
-        return Storage::disk('s3')->url('icon/hidden_box.png');
-    }
+//    public function getImageAttribute()
+//    {
+//        return Storage::disk('s3')->url('icon/hidden_box.png');
+//    }
 }
