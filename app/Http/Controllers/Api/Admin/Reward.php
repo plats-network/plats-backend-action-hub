@@ -27,7 +27,7 @@ class Reward extends ApiController
     public function index(Request $request)
     {
         $keyword['name'] = $request->input('name');
-        $rewards = $this->rewardService->search($keyword + ['limit' => 20]);
+        $rewards = $this->rewardService->search($keyword + ['limit' => $request->get('limit') ?? PAGE_SIZE]);
         return $this->respondWithResource(new RewardResource($rewards));
     }
 
