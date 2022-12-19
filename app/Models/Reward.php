@@ -56,7 +56,6 @@ class Reward extends Model
      * @var array
      */
     protected $hidden = [
-        'id',
         'deleted_at',
     ];
 
