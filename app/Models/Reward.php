@@ -74,4 +74,28 @@ class Reward extends Model
             get: fn ($value) => BaseImage::loadImage($value)
         );
     }
+    protected function type(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => (string)$value
+        );
+    }
+    protected function region(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => (string)$value
+        );
+    }
+    protected function order(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => (string)$value
+        );
+    }
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => (string)$value
+        );
+    }
 }
