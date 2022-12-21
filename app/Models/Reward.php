@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Helpers\BaseImage;
 use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Storage;
 
 /**
@@ -66,9 +68,10 @@ class Reward extends Model
     {
         return $this->hasMany(DetailReward::class);
     }
-
-//    public function getImageAttribute()
-//    {
-//        return Storage::disk('s3')->url('icon/hidden_box.png');
-//    }
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => BaseImage::loadImage($value)
+        );
+    }
 }
