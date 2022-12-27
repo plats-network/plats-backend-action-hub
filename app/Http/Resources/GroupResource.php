@@ -3,8 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Carbon\Carbon;
-use App\Models\Branch;
+use App\Models\UserGroup;
 use App\Helpers\{BaseImage, DateHelper};
 
 class GroupResource extends JsonResource
@@ -17,6 +16,9 @@ class GroupResource extends JsonResource
      */
     public function toArray($request)
     {
+        $userId = $request->user()->id;
+        $userGroup = $this->userGroup($userId, $this->id);
+
         return [
             'id' => $this->id,
             'name' => (string)$this->name,
@@ -35,6 +37,20 @@ class GroupResource extends JsonResource
             'youtube_url' => (string)$this->youtube_url,
             'discord_url' => (string)$this->discord_url,
             'instagram_url' => (string)$this->instagram_url,
+            'is_join' => $userGroup > 0 ? true : false,
         ];
+    }
+
+    private function userGroup($userId, $groupId)
+    {
+        try {
+            $userGroup = UserGroup::whereUserId($userId)
+                ->whereGroupId($groupId)
+                ->count();
+        } catch (\Exception $e) {
+            $userGroup = 0;
+        }
+
+        return $userGroup;
     }
 }
