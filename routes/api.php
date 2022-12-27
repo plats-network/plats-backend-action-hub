@@ -4,7 +4,7 @@ use App\Http\Controllers\Api\{
     Task, TaskLocation, UserTask,
     Wallet, Box, Gifts,
     QrCode, TaskNotice, LockTray,
-    QrCodeAction, Twitter, Social
+    QrCodeAction, Twitter, Social, Group
 };
 use App\Http\Controllers\Api\Admin\{
     Reward
@@ -59,3 +59,5 @@ Route::post('social-start/{id}', [Social::class, 'start'])->name('social.start.t
 Route::prefix('wallet')->controller(Wallet::class)->group(function () {
     Route::post('/withdraw', 'withdraw');
 });
+
+Route::resource('groups', Group::class)->only(['index']);
