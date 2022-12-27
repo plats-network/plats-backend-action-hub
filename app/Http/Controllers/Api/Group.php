@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Http\Resources\GroupResource;
-use App\Models\Group as GroupModel;
+use App\Http\Requests\JoinGroupRequest;
+use App\Models\{
+    Group as GroupModel,
+    UserGroup
+};
 
 class Group extends ApiController
 {
@@ -13,7 +17,8 @@ class Group extends ApiController
      * @param $taskService
      */
     public function __construct(
-        private GroupModel $group
+        private GroupModel $group,
+        private UserGroup $userGroup
     ) {}
 
     /**
@@ -47,68 +52,74 @@ class Group extends ApiController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        try {
+            $group = $this->group->findOrFail($id);
+        } catch (\Exception $e) {
+            return $this->respondNotFound();
+        }
+
+        return $this->respondWithResource(new GroupResource($group));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function myGroups(Request $request)
     {
-        //
+        try {
+            $limit = $request->get('limit') ?? PAGE_SIZE;
+            $userId = $request->user()->id;
+            $groups = $this->group->whereHas('user_groups', function($q) use ($userId) {
+                return $q->whereUserId($userId);
+            })
+            ->whereStatus(true)
+            ->paginate($limit);
+
+            $datas = GroupResource::collection($groups);
+            $pages = [
+                'current_page' => (int)$request->get('page'),
+                'last_page' => $groups->lastPage(),
+                'per_page'  => (int)$limit,
+                'total' => $groups->lastPage()
+            ];
+        } catch (\Exception $e) {
+            return $this->respondNotFound();
+        }
+
+        return $this->respondWithIndex($datas, $pages);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function joinGroup(JoinGroupRequest $request)
     {
-        //
-    }
+        try {
+            $id = $request->input('group_id');
+            $userId = $request->user()->id;
+            $this->group->findOrFail($id);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+            $group = $this->userGroup
+                ->whereUserId($userId)
+                ->whereGroupId($id)
+                ->first();
+
+            if ($group) {
+                $group->delete();
+                $mess = 'Leave group success.';
+            } else {
+                $this->userGroup->create([
+                    'user_id' => $userId,
+                    'group_id' => $id
+                ]);
+
+                $mess = 'Join group success.';
+            }
+        } catch (\Exception $e) {
+            return $this->respondNotFound();
+        }
+
+        return $this->responseMessage($mess);
     }
 }
