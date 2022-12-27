@@ -32,7 +32,7 @@ trait TaskScope {
     /**
      * @param $userId
      *
-     * @return \App\Models\Task.\App\Models\Task.load
+     * @return \App\Models\Task.\App\Models\Tasks.load
      */
     public function scopeWithUserStatus($userId)
     {

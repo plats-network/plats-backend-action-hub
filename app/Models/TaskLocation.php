@@ -34,6 +34,7 @@ class TaskLocation extends Model
         'phone_number',
         'open_time',
         'close_time',
+        'description',
     ];
 
     /**
@@ -42,11 +43,9 @@ class TaskLocation extends Model
      * @var array
      */
     protected $hidden = [
-        'task_id',
         'created_at',
         'updated_at',
         'deleted_at',
-        'status',
     ];
 
     /**

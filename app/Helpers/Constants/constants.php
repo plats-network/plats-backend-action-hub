@@ -17,13 +17,13 @@ if (!defined('DEFINE_CONSTANT')) {
     define('CLIENT_ROLE', 3);
 
     /**
-     * Task
+     * Tasks
      */
     define('INACTIVE_TASK', 0);
     define('ACTIVE_TASK', 1);
     define('TYPE_FREE_TASK', 1);
 
-    //User-Task-Status
+    //User-Tasks-Status
     define('USER_WAITING_TASK', 0);
     define('USER_PROCESSING_TASK', 1);
     define('USER_COMPLETED_TASK', 2);
@@ -32,7 +32,7 @@ if (!defined('DEFINE_CONSTANT')) {
     define('USER_REJECT_TASK', 5);
 
     /**
-     * Task Location
+     * Tasks Location
      */
     define('INACTIVE_LOCATION_TASK', 0);
     define('ACTIVE_LOCATION_TASK', 1);
@@ -45,13 +45,13 @@ if (!defined('DEFINE_CONSTANT')) {
     define('WITHDRAWN_STATUS_COMPLETED', 2);
 
     /**
-     * Task order
+     * Tasks order
      */
     define('OUT_OF_ORDER', 0);
     define('IN_ORDER', 1);
 
     /**
-     * Task type
+     * Tasks type
      */
     define('TYPE_CHECKIN', 1);
     define('TYPE_INSTALL_APP', 2);
@@ -59,7 +59,7 @@ if (!defined('DEFINE_CONSTANT')) {
     define('TYPE_SOCIAL', 4);
 
     /**
-     * Task checkin type
+     * Tasks checkin type
      */
     define('ONE_OF_MANY_LOCATIONS', 1);
     define('MULTIPLE_LOCATIONS', 2);
@@ -77,7 +77,7 @@ if (!defined('DEFINE_CONSTANT')) {
     define('TWITTER_LIMIT', 100);
 
     /**
-     * Task type platform
+     * Tasks type platform
      */
     define('TWITTER', 1);
     define('FACEBOOK', 2);
@@ -85,7 +85,7 @@ if (!defined('DEFINE_CONSTANT')) {
     define('TELEGRAM', 4);
 
     /**
-     * Task type action
+     * Tasks type action
      */
     define('FOLLOW', 1);
     define('LIKE', 2);

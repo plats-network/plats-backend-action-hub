@@ -36,7 +36,7 @@ class StartLocalAfterCheckInListener implements ShouldQueue
         $taskId = $event->taskId;
         //Find tak and all locations
         $task = $this->taskService->find($taskId, ['locations']);
-        //Task only once location
+        //Tasks only once location
         if ($task->locations->count() <= 1) {
             return true;
         }

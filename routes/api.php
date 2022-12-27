@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\{
     QrCodeAction, Twitter, Social, Group
 };
 use App\Http\Controllers\Api\Admin\{
-    Reward
+    Reward,Tasks
 };
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +38,12 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
 });
 
 Route::prefix('rewards')->controller(Reward::class)->group(function () {
+    Route::get('/', 'index');
+    Route::get('/edit/{id}', 'edit')->whereUuid('id');
+    Route::post('/store', 'store');
+    Route::get('/delete/{id}', 'destroy')->whereUuid('id');
+});
+Route::prefix('tasks-cws')->controller(Tasks::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/edit/{id}', 'edit')->whereUuid('id');
     Route::post('/store', 'store');

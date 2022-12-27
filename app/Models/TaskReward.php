@@ -27,7 +27,10 @@ class TaskReward extends Model
         'task_id',
         'reward_id',
         'amount',
-        'unit'
+        'unit',
+        'time_public',
+        'time_campaign',
+        'time_reward',
     ];
 
     /**
@@ -36,9 +39,6 @@ class TaskReward extends Model
      * @var array
      */
     protected $hidden = [
-        'id',
-        'task_id',
-        'reward_id',
         'deleted_at',
     ];
 
