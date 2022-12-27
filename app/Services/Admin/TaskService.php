@@ -9,6 +9,7 @@ use App\Services\Concerns\BaseService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -78,6 +79,7 @@ class TaskService extends BaseService
                 $path = 'task/image/banner' . Carbon::now()->format('Ymd');
                 $baseTask['image'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
             }
+            $baseTask['creator_id'] = Auth::user()->id;
             $dataBaseTask = $this->repository->create($baseTask);
             if ($request->hasFile('slider')) {
                 $uploadedFiles = $request->file('slider');

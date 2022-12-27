@@ -7,6 +7,7 @@ use App\Http\Resources\Admin\RewardResource;
 use App\Http\Resources\Admin\TaskResource;
 use App\Services\Admin\TaskService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Tasks extends ApiController
 {
@@ -14,7 +15,7 @@ class Tasks extends ApiController
         private TaskService $taskService
     )
     {
-
+        $this->middleware('client_admin');
     }
 
     public function index(Request $request)
