@@ -11,7 +11,7 @@ use App\Enums\TweetEnum;
 class TaskSocial extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
-    
+
     /**
      * The table associated with the model.
      *
@@ -32,6 +32,8 @@ class TaskSocial extends Model
         'url',
         'platform',
         'amount',
+        'time_start',
+        'time_end',
         'unit', // 0: $PSP, 1: $PLAT, 2: NFT
     ];
 
@@ -42,7 +44,7 @@ class TaskSocial extends Model
     {
         return $this->belongsTo(Task::class);
     }
-    
+
     /**
      * Get the task social results associated with the task social.
      */
