@@ -30,9 +30,12 @@ class Group extends ApiController
     {
         try {
             $limit = $request->get('limit') ?? PAGE_SIZE;
+            $userId = $request->user()->id;
+            $groupIds = $this->userGroup->whereUserId($userId)->pluck('group_id')->toArray();
 
             $groups = $this->group
                 ->whereStatus(true)
+                ->whereNotIn('id', $groupIds)
                 ->orderBy('created_at', 'desc')
                 ->paginate($limit);
 
