@@ -30,18 +30,23 @@ class GroupRequest extends FormRequest
                 $rules = [];
                 break;
             case 'POST':
-                $rules = [
-                    'name'   => ['required', 'unique:groups', 'max: 255'],
-                    'seo_image'     => 'required|mimes:jpeg,jpg,png'
-                ];
-                break;
             case 'PUT':
             case 'PATCH':
                 $rules = [
-                    'category_id'   => 'required',
-                    'name'          => 'required|max:255',
-                    'description'   => 'required|max:255',
-                    'content'       => 'required'
+                    'name' => ['required', 'max: 255'],
+                    'username' => ['required', 'max: 100'],
+                    'avatar' => ['required', 'mimes:jpeg,jpg,png'],
+                    'cover' => ['required', 'mimes:jpeg,jpg,png'],
+                    'desc_vn' => ['required'],
+                    'desc_en' => ['required'],
+                    'site_url' => ['nullable', 'url'],
+                    'twitter_url' => ['nullable', 'url'],
+                    'telegram_url' => ['nullable', 'url'],
+                    'telegram_url' => ['nullable', 'url'],
+                    'facebook_url' => ['nullable', 'url'],
+                    'youtube_url' => ['nullable', 'url'],
+                    'discord_url' => ['nullable', 'url'],
+                    'instagram_url' => ['nullable', 'url'],
                 ];
                 break;
             default:

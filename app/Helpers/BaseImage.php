@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Helpers;
+// use App\Helpers\BaseImage;
 
+use Illuminate\Support\Str;
 use Storage;
 
 class BaseImage {
@@ -40,5 +42,16 @@ class BaseImage {
         }
 
         return $type_label;
+    }
+
+    public static function imgGroup($img)
+    {
+        if (Str::contains($img, ['http://', 'https://'])) {
+            return $img;
+        } elseif ($img) {
+            return Storage::disk('s3')->url($img);
+        }
+
+        return Storage::disk('s3')->url('icon/psp-icon.png');
     }
 }
