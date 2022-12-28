@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('cws')->group(function($router) {
-    $router->resource('groups', CwsGroup::class)->only(['index', 'store', 'show']);
+    $router->resource('groups', CwsGroup::class)->only(['index', 'store', 'show', 'destroy']);
 });
 
 

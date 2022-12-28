@@ -89,8 +89,17 @@ class Group extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        //
+        try {
+            $group = $this->groupModel->findOrFail($id);
+            $status = $group->status == 1 ? false : true;
+            $group->update(['status' => $status]);
+            $mess = $group->status == 1 ? 'Lock group seccess!' : 'Unlock group success!';
+        } catch (\Exception $e) {
+            return $this->respondError($e->getMessage());
+        }
+
+        return $this->responseMessage($mess);
     }
 }

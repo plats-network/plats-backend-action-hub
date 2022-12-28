@@ -27,6 +27,8 @@ class GroupResource extends JsonResource
             'youtube_url' => $this->youtube_url,
             'discord_url' => $this->discord_url,
             'instagram_url' => $this->instagram_url,
+            'status' => $this->status == 1 ? true : false,
+            'status_label' => $this->status == 1 ? 'Active' : 'Disable',
         ];
     }
 }
