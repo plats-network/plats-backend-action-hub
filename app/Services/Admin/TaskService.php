@@ -57,7 +57,7 @@ class TaskService extends BaseService
             // Remove condition after apply query builder
             $this->cleanFilterBuilder('name');
         }
-        $this->builder->with('taskRewards','taskLocation','taskSocial','taskGuides');
+        $this->builder->with('taskRewards','taskLocation','taskSocial','taskGalleries');
         return $this->endFilter();
     }
 
