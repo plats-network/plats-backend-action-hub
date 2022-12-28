@@ -4,6 +4,7 @@ namespace App\Http\Resources\Admin;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Helpers\{BaseImage, DateHelper};
+use App\Models\UserGroup;
 
 class GroupResource extends JsonResource
 {
@@ -29,6 +30,18 @@ class GroupResource extends JsonResource
             'instagram_url' => $this->instagram_url,
             'status' => $this->status == 1 ? true : false,
             'status_label' => $this->status == 1 ? 'Active' : 'Disable',
+            'total_user' => $this->totalUserJoinGroup($this->id),
         ];
+    }
+
+    private function totalUserJoinGroup($groupId)
+    {
+        try {
+            $total = UserGroup::whereGroupId($groupId)->count();
+        } catch (\Exception $e) {
+            $total = 0;
+        }
+
+        return $total;
     }
 }
