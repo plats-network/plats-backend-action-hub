@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Admin\GroupRequest;
 use App\Http\Resources\Admin\GroupResource;
 use App\Models\Group as GroupModel;
+use App\Services\Admin\GroupService;
 
 class Group extends ApiController
 {
@@ -14,7 +15,8 @@ class Group extends ApiController
     * @param $groupModel
     */
     public function __construct(
-        private GroupModel $groupModel
+        private GroupModel $groupModel,
+        private GroupService $groupService
     ) {}
 
     /**
@@ -36,7 +38,7 @@ class Group extends ApiController
             $pages = [
                 'current_page' => (int)$request->get('page'),
                 'last_page' => $groups->lastPage(),
-                'per_page'  => (int)$limit,
+                'per_page' => (int)$limit,
                 'total' => $groups->lastPage()
             ];
         } catch (\Exception $e) {
@@ -54,7 +56,14 @@ class Group extends ApiController
      */
     public function store(GroupRequest $request)
     {
-        // dd($request->all());
+        try {
+            $this->groupService->store($request);
+            $mess = empty($request->input('id')) ? 'Create group done!' : 'Update group done!';
+        } catch (\Exception $e) {
+            return $this->respondError($e->getMessage());
+        }
+
+        return $this->responseMessage($mess);
     }
 
     /**
