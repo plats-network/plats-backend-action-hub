@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 namespace App\Models\Traits\Relation;
 
-use App\Models\{TaskGallery, TaskLocation, TaskUser, Task, TaskSocial, User};
+use App\Models\{TaskGallery, TaskGuide, TaskLocation, TaskUser, Task, TaskSocial, User};
 
 trait TaskRelation {
     /**
@@ -28,7 +28,12 @@ trait TaskRelation {
     {
         return $this->hasMany(TaskGallery::class, 'task_id', 'id');
     }
-    
+
+
+    public function guides()
+    {
+        return $this->hasMany(TaskGuide::class, 'task_id', 'id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -37,7 +42,7 @@ trait TaskRelation {
     {
         return $this->belongsToMany(Task::class);
     }
-    
+
     /**
      * Get the task socials associated with the task.
      */

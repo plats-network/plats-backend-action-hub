@@ -7,6 +7,7 @@ use App\Http\Resources\Admin\RewardResource;
 use App\Http\Resources\Admin\TaskResource;
 use App\Services\Admin\TaskService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Tasks extends ApiController
 {
@@ -14,12 +15,16 @@ class Tasks extends ApiController
         private TaskService $taskService
     )
     {
-
+        $this->middleware('client_admin');
     }
 
     public function index(Request $request)
     {
-        $rewards = $this->taskService->search( ['limit' => $request->get('limit') ?? PAGE_SIZE]);
+        if (Auth::user()->role == CLIENT_ROLE) {
+            $rewards = $this->taskService->search(['limit' => $request->get('limit') ?? PAGE_SIZE ,'creator_id' => Auth::user()->id ]);
+        } else {
+            $rewards = $this->taskService->search( ['limit' => $request->get('limit') ?? PAGE_SIZE]);
+        }
         return $this->respondWithResource(new TaskResource($rewards));
     }
 

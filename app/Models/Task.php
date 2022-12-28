@@ -88,9 +88,9 @@ class Task extends Model
         return $this->hasMany(TaskSocial::class,'task_id');
     }
 
-    public function taskGuides()
+    public function taskGalleries()
     {
-        return $this->hasMany(TaskGuide::class,'task_id');
+        return $this->hasMany(TaskGallery::class,'task_id');
     }
 
     protected function image(): Attribute
