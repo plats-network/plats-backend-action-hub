@@ -49,8 +49,12 @@ class Reward extends ApiController
      */
     public function store(RewardRequest $request)
     {
-        //
-        $reward = $this->rewardService->store($request);
+        try {
+            $reward = $this->rewardService->store($request);
+        } catch (\Exception $e) {
+            return $this->respondError($e->getMessages());
+        }
+
         return $this->respondWithResource(new RewardResource($reward));
     }
 

@@ -7,7 +7,9 @@ use App\Http\Controllers\Api\{
     QrCodeAction, Twitter, Social, Group
 };
 use App\Http\Controllers\Api\Admin\{
-    Reward,Tasks
+    Reward,
+    Tasks,
+    Group as CwsGroup
 };
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +23,12 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::prefix('cws')->group(function($router) {
+    $router->resource('groups', CwsGroup::class)->only(['index', 'store', 'show']);
+});
+
+
 Route::prefix('tasks')->controller(Task::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/doing', 'getTaskDoing');

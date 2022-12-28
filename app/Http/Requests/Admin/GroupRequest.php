@@ -24,7 +24,6 @@ class GroupRequest extends FormRequest
     public function rules()
     {
         $rules = [];
-
         switch ($this->method()) {
             case 'GET':
             case "DELETE":
@@ -32,10 +31,7 @@ class GroupRequest extends FormRequest
                 break;
             case 'POST':
                 $rules = [
-                    'category_id'   => 'required',
-                    'name'          => 'required|unique:posts|max:255',
-                    'description'   => 'required|max:255',
-                    'content'       => 'required',
+                    'name'   => ['required', 'unique:groups', 'max: 255'],
                     'seo_image'     => 'required|mimes:jpeg,jpg,png'
                 ];
                 break;
