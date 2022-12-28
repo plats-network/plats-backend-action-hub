@@ -42,6 +42,13 @@ class TaskService extends BaseService
             // Remove condition after apply query builder
             $this->cleanFilterBuilder('type');
         }
+        if ($this->filter->has('creator_id')) {
+            $this->builder->where(function ($q) {
+                $q->where('creator_id',$this->filter->get('creator_id'));
+            });
+            // Remove condition after apply query builder
+            $this->cleanFilterBuilder('creator_id');
+        }
         if ($this->filter->has('name')) {
             $this->builder->where(function ($q) {
                 $q->where('name', 'LIKE', '%' . $this->filter->get('name') . '%');
@@ -85,8 +92,8 @@ class TaskService extends BaseService
                 $uploadedFiles = $request->file('slider');
                 $path = 'task/image/banner' . Carbon::now()->format('Ymd');
                 foreach ($uploadedFiles as $uploadedFile){
-                    $imageGuides['url_image'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
-                    $dataBaseTask->taskGuides()->create($imageGuides);
+                    $imageGuides['url'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
+                    $dataBaseTask->taskGalleries()->create($imageGuides);
                 }
             }
             $reward = Arr::get($data, 'reward');
