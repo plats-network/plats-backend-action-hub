@@ -57,7 +57,7 @@ class TaskService extends BaseService
             // Remove condition after apply query builder
             $this->cleanFilterBuilder('name');
         }
-        $this->builder->with('taskRewards','taskLocation','taskSocial','taskGuides');
+        $this->builder->with('taskRewards','taskLocation','taskSocial','taskGalleries');
         return $this->endFilter();
     }
 
@@ -96,10 +96,10 @@ class TaskService extends BaseService
                     $dataBaseTask->taskGalleries()->create($imageGuides);
                 }
             }
-            $reward = Arr::get($data, 'reward');
-            if ($reward){
-                $dataBaseTask->taskRewards()->create($reward);
-            }
+//            $reward = Arr::get($data, 'reward');
+//            if ($reward){
+//                $dataBaseTask->taskRewards()->create($reward);
+//            }
             $locations = Arr::get($data, 'locations');
             if ($locations){
                 $dataBaseTask->taskLocation()->createMany($locations);

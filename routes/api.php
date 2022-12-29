@@ -4,7 +4,7 @@ use App\Http\Controllers\Api\{
     Task, TaskLocation, UserTask,
     Wallet, Box, Gifts,
     QrCode, TaskNotice, LockTray,
-    QrCodeAction, Twitter, Social, Group
+    QrCodeAction, Twitter, Social,TaskV2,Group
 };
 use App\Http\Controllers\Api\Admin\{
     Reward,
@@ -45,6 +45,11 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
     Route::post('/{id}/social/{social_id}', [Social::class, 'update'])->name('task.social.update');
 });
 
+Route::prefix('tasks-v2')->controller(TaskV2::class)->group(function () {
+    Route::get('/', 'index');
+    Route::get('/{id}', 'detail')->whereUuid('id');
+});
+
 Route::prefix('rewards')->controller(Reward::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/edit/{id}', 'edit')->whereUuid('id');
@@ -57,6 +62,8 @@ Route::prefix('tasks-cws')->controller(Tasks::class)->group(function () {
     Route::post('/store', 'store');
     Route::get('/delete/{id}', 'destroy')->whereUuid('id');
 });
+
+
 
 Route::get('/my-tasks', [UserTask::class, 'histories']);
 Route::resource('boxes', Box::class)->only(['index', 'update', 'show']);

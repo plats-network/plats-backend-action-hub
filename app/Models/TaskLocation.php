@@ -35,6 +35,8 @@ class TaskLocation extends Model
         'open_time',
         'close_time',
         'description',
+        'amount',
+        'reward_id',
     ];
 
     /**
