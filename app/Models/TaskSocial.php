@@ -34,6 +34,7 @@ class TaskSocial extends Model
         'amount',
         'time_start',
         'time_end',
+        'reward_id',
         'unit', // 0: $PSP, 1: $PLAT, 2: NFT
     ];
 

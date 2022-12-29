@@ -30,7 +30,6 @@ class TaskV2 extends ApiController
                 return $query->where('user_id', $userId);
             }])
                 ->whereStatus(ACTIVE_TASK)
-                ->with('taskRewards')
                 ->paginate($limit);
 
         } catch (QueryException $e) {
@@ -50,6 +49,19 @@ class TaskV2 extends ApiController
     public function detail(Request $request, $id)
     {
         $userId = $request->user()->id;
-        dd($userId);
+        try {
+            $task = $this->taskService->mapUserHistory($id, $userId);
+
+            if ($task->type == TYPE_CHECKIN) {
+                $data = new TaskResource($task);
+            } else {
+                $data = new SocialResource($task);
+            }
+
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        return $this->respondWithResource($data);
     }
 }
