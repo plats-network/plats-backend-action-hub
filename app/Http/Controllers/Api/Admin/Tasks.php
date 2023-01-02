@@ -21,7 +21,7 @@ class Tasks extends ApiController
     public function index(Request $request)
     {
         if (Auth::user()->role == CLIENT_ROLE) {
-            $rewards = $this->taskService->search(['limit' => $request->get('limit') ?? PAGE_SIZE ,'creator_id' => Auth::user()->id ]);
+            $rewards = $this->taskService->search(['limit' => $request->get('limit') ?? PAGE_SIZE , 'creator_id' => Auth::user()->id ]);
         } else {
             $rewards = $this->taskService->search( ['limit' => $request->get('limit') ?? PAGE_SIZE]);
         }

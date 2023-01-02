@@ -52,7 +52,7 @@ class Reward extends ApiController
         try {
             $reward = $this->rewardService->store($request);
         } catch (\Exception $e) {
-            return $this->respondError($e->getMessages());
+            return $this->respondError($e->getMessage());
         }
 
         return $this->respondWithResource(new RewardResource($reward));
@@ -77,7 +77,12 @@ class Reward extends ApiController
      */
     public function edit($id)
     {
-        $reward = RewardModel::findOrFail($id);
+        try {
+            $reward = RewardModel::findOrFail($id);
+        } catch (\Exception $e) {
+            return $this->respondError($e->getMessage());
+        }
+
         return $this->respondWithResource(new RewardResource($reward));
 
     }
@@ -102,7 +107,12 @@ class Reward extends ApiController
      */
     public function destroy($id)
     {
-        $this->rewardService->delete($id);
+        try {
+            $this->rewardService->delete($id);
+        } catch (\Exception $e) {
+            return $this->respondError($e->getMessage());
+        }
+
         return $this->responseMessage('delete success !');
     }
 }

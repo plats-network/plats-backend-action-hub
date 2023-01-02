@@ -13,10 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('task_galleries', function (Blueprint $table) {
+        Schema::create('task_generate_links', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('task_id')->index();
-            $table->string('url');
+            $table->string('name')->nullable()->comment('Name link share');
+            $table->unsignedTinyInteger('type')->default(0)->comment('0: FB, 1: TWITTER, 2: Discord, 3: Telegram...');
+            $table->text('url')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('task_galleries');
+        Schema::dropIfExists('task_generate_links');
     }
 };

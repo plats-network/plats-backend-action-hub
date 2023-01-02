@@ -6,7 +6,7 @@ use App\Services\Twitter\TwitterApiService;
 use App\Repositories\{LocationHistoryRepository, TaskUserRepository};
 use Carbon\Carbon;
 use App\Helpers\ActionHelper;
-use App\Models\{DetailReward, Branch, Reward, UserTaskReward};
+use App\Models\{Reward, UserTaskReward};
 use Illuminate\Support\Str;
 
 class SocialService extends BaseService

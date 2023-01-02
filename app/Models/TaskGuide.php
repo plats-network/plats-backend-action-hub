@@ -27,7 +27,7 @@ class TaskGuide extends Model
     protected $fillable = [
         'task_id',
         'url_image',
-        'order_num',
+        'order',
         'status',
     ];
 

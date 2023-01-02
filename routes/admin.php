@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     Dashboard, Task, Guild,
-    Company, Reward, DetailReward
+    Company, Reward
 };
 use App\Http\Controllers\Auth\Admin\Register;
 
