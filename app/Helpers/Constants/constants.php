@@ -16,6 +16,10 @@ if (!defined('DEFINE_CONSTANT')) {
     define('ADMIN_ROLE', 2);
     define('CLIENT_ROLE', 3);
 
+    // Task LIKE, PIN
+    define('TASK_LIKE', 0);
+    define('TASK_PIN', 1);
+
     /**
      * Tasks
      */

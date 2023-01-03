@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_task_folows', function (Blueprint $table) {
+        Schema::create('user_task_actions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id')->index();
             $table->uuid('task_id')->index();
-            $table->unsignedTinyInteger('type')->default(0)->comment('0: Link, 1: Pinned...');
+            $table->unsignedTinyInteger('type')->default(0)->comment('0: Like, 1: Pinned...');
             $table->timestamps();
         });
     }
