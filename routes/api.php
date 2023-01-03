@@ -29,7 +29,7 @@ Route::prefix('cws')->group(function($router) {
 });
 
 
-Route::prefix('tasks')->controller(Task::class)->group(function () {
+Route::prefix('tasks')->controller(Task::class)->group(function ($router) {
     Route::get('/', 'index');
     Route::get('/doing', 'getTaskDoing');
     Route::post('/', 'create');
@@ -43,6 +43,8 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
     });
 
     Route::post('/{id}/social/{social_id}', [Social::class, 'update'])->name('task.social.update');
+
+    $router->post('like-pin', 'taskAction')->name('task.action');
 });
 
 Route::prefix('tasks-v2')->controller(TaskV2::class)->group(function () {
