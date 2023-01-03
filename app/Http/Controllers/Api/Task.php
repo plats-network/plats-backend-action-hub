@@ -40,15 +40,15 @@ class Task extends ApiController
      */
     public function index(Request $request)
     {
-        $userId = $request->user()->id;
-
         try {
+            $userId = $request->user()->id;
             $limit = $request->get('limit') ?? PAGE_SIZE;
-            $tasks = $this->modelTask->load(['participants' => function ($query) use ($userId) {
-                    return $query->where('user_id', $userId);
-                }])
+
+            $tasks = $this->modelTask
+                ->with(['taskLocations', 'taskSocials'])
                 ->whereStatus(ACTIVE_TASK)
-                ->whereType(TYPE_CHECKIN)
+                ->where('end_at', '>=', Carbon::now())
+                ->orderBy('created_at', 'desc')
                 ->paginate($limit);
         } catch (QueryException $e) {
             return $this->respondNotFound();

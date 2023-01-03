@@ -8,7 +8,7 @@ use App\Helpers\{DateHelper, ActionHelper};
 use Illuminate\Support\Facades\Http;
 use App\Models\{TaskUser, Reward};
 use Carbon\Carbon;
-use App\Http\Resources\TaskGuideResource;
+use App\Http\Resources\{TaskGuideResource, TaskLocationResource};
 
 class TaskResource extends JsonResource
 {
@@ -20,6 +20,25 @@ class TaskResource extends JsonResource
      */
     public function toArray($request)
     {
+        $userId = $request->user()->id;
+        $token = $request->user()->token;
+        $creator = null; //$this->getUserDetail($token, $this->creator_id);
+
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'banner_url' => $this->banner_url,
+            'post_by' => $creator ? $creator['name'] : 'Plats Team',
+            'start_at' => DateHelper::getDateTime($this->start_at),
+            'end_at' => DateHelper::getDateTime($this->end_at),
+            'task_checkin' => $this->taskLocations->count() > 0 ? TaskLocationResource::collection($this->taskLocations) : null,
+        ];
+
+
+
+
+
         $userId = $request->user()->id;
         $token = $request->user()->token;
         $creator = $this->getUserDetail($token, $this->creator_id);

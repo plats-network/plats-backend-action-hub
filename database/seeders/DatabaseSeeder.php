@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             case 'testing':
             case 'staging':
                 $this->call([
-                    GroupSeeder::class
+                    GroupSeeder::class,
+                    MasterDataSeeder::class
                 ]);
 
                 break;
