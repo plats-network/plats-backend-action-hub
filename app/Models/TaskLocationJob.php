@@ -3,21 +3,11 @@
 namespace App\Models;
 
 use App\Models\Traits\Uuid;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * @property uuid $id
- * @property string $name
- * @property string $address
- * @property string $phone
- * @property string $logo_path
- * @property datatime $created_at
- * @property datatime $updated_at
- */
-
-class Company extends Model
+class TaskLocationJob extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
 
@@ -26,7 +16,7 @@ class Company extends Model
      *
      * @var string
      */
-    protected $table = 'companies';
+    protected $table = 'task_location_jobs';
 
     /**
      * The attributes that are mass assignable.
@@ -34,11 +24,14 @@ class Company extends Model
      * @var string[]
      */
     protected $fillable = [
+        'id',
+        'task_location_id',
         'name',
         'address',
-        'phone',
-        'hotline',
-        'logo_path',
+        'lat',
+        'lng',
+        'status',
+        'order',
     ];
 
     /**
@@ -47,14 +40,8 @@ class Company extends Model
      * @var array
      */
     protected $hidden = [
-        'id',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
-
-    /**
-     * Get the comments for the blog post.
-     */
-    public function branches()
-    {
-        return $this->hasMany(Branch::class);
-    }
 }

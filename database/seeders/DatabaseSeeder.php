@@ -20,19 +20,12 @@ class DatabaseSeeder extends Seeder
             case 'testing':
             case 'staging':
                 $this->call([
-                    CompanySeeder::class,
-                    RewardSeeder::class,
-                    TaskSeeder::class,
-                    LocationSeeder::class
+                    GroupSeeder::class
                 ]);
 
                 break;
             case 'production':
                 $this->call([
-                    CompanySeeder::class,
-                    RewardSeeder::class,
-                    TaskSeeder::class,
-                    LocationSeeder::class
                 ]);
 
                 break;

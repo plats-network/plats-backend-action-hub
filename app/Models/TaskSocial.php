@@ -25,17 +25,17 @@ class TaskSocial extends Model
      * @var string[]
      */
     protected $fillable = [
+        'task_id',
+        'reward_id',
         'name',
         'description',
-        'task_id',
-        'type',
+        'platform', // Twitter, Fb, Youtube, Telegram, Discord
+        'type', // Like, Share...
         'url',
-        'platform',
         'amount',
-        'time_start',
-        'time_end',
-        'reward_id',
-        'unit', // 0: $PSP, 1: $PLAT, 2: NFT
+        'order',
+        'lock',
+        'status',
     ];
 
     /**
@@ -44,13 +44,5 @@ class TaskSocial extends Model
     public function task()
     {
         return $this->belongsTo(Task::class);
-    }
-
-    /**
-     * Get the task social results associated with the task social.
-     */
-    public function taskSocialResults()
-    {
-        return $this->hasOne(TaskSocialResult::class);
     }
 }

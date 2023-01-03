@@ -33,17 +33,15 @@ class Task extends Model
     protected $fillable = [
         'name',
         'description',
-        'image',
-        'duration', // Minute
+        'banner_url',
+        'start_at',
+        'end_at',
         'order',
-        'total_reward',
-        'valid_amount',
-        'valid_radius',
-        'deposit_status',
+        'status',
         'type',
         'creator_id',
         'status',
-        'checkin_type',
+        'order',
     ];
 
     /**
@@ -75,25 +73,25 @@ class Task extends Model
 
     public function taskRewards()
     {
-        return $this->hasOne(TaskReward::class,'task_id');
+        return $this->hasOne(TaskReward::class, 'task_id');
     }
 
     public function taskLocation()
     {
-        return $this->hasMany(TaskLocation::class,'task_id');
+        return $this->hasMany(TaskLocation::class, 'task_id');
     }
 
     public function taskSocial()
     {
-        return $this->hasMany(TaskSocial::class,'task_id');
+        return $this->hasMany(TaskSocial::class, 'task_id');
     }
 
     public function taskGalleries()
     {
-        return $this->hasMany(TaskGallery::class,'task_id');
+        return $this->hasMany(TaskGallery::class, 'task_id');
     }
 
-    protected function image(): Attribute
+    protected function banner_url(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => BaseImage::loadImage($value)

@@ -18,8 +18,6 @@ use Storage;
  * @property string $image
  * @property integer $type
  * @property integer $region
- * @property date $start_at
- * @property date $end_at
  * @property datatime $created_at
  * @property datatime $updated_at
  */
@@ -44,10 +42,8 @@ class Reward extends Model
         'name',
         'description',
         'image',
-        'type', // 0:  1:
+        'type',
         'region',
-        'start_at',
-        'end_at',
         'order',
         'status',
     ];

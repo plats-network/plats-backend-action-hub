@@ -9,7 +9,7 @@ use App\Http\Resources\QrCodeResource;
 use App\Http\Resources\LockTrayResource;
 use Carbon\Carbon;
 use App\Models\UserTaskReward;
-use App\Models\DetailReward;
+// use App\Models\DetailReward;
 
 class LockTray extends ApiController
 {

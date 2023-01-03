@@ -15,14 +15,11 @@ return new class extends Migration
     {
         Schema::create('task_users', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
-            $table->uuid('task_id');
-            $table->tinyInteger('status')->default(0);
-            $table->timestamp('time_left')->nullable();
-            $table->string('wallet_address')->nullable();
+            $table->uuid('user_id')->index();
+            $table->uuid('task_id')->index();
+            $table->tinyInteger('status')->default(0)->co;
             $table->timestamps();
             $table->softDeletes();
-            $table->index(['user_id', 'task_id']);
         });
     }
 

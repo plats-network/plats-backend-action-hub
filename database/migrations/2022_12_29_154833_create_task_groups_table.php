@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('task_locations', function (Blueprint $table) {
-            $table->string('phone_number')->nullable()->after('status')->comment('Phone number at this location');
-            $table->string('open_time')->nullable()->after('status')->comment('Opening hours at this location');
+        Schema::create('task_groups', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuid('task_id')->index();
+            $table->uuid('group_id')->index();
+            $table->timestamps();
         });
     }
 
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('task_groups');
     }
 };

@@ -31,7 +31,8 @@ class TaskGallery extends Model
      */
     protected $fillable = [
         'task_id',
-        'url'
+        'url_image',
+        'status',
     ];
 
     /**

@@ -24,19 +24,15 @@ class TaskLocation extends Model
      * @var string[]
      */
     protected $fillable = [
+        'id',
         'task_id',
+        'reward_id',
         'name',
-        'address',
-        'long',
-        'lat',
-        'sort',
-        'status',
-        'phone_number',
-        'open_time',
-        'close_time',
         'description',
         'amount',
-        'reward_id',
+        'job_num',
+        'order',
+        'status',
     ];
 
     /**

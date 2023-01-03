@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('task_socials', function (Blueprint $table) {
-            //
-            $table->uuid('reward_id')->nullable();
+        Schema::create('user_task_folows', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuid('user_id')->index();
+            $table->uuid('task_id')->index();
+            $table->unsignedTinyInteger('type')->default(0)->comment('0: Link, 1: Pinned...');
+            $table->timestamps();
         });
     }
 
@@ -26,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('task_socials', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('user_task_folows');
     }
 };
