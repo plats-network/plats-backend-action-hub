@@ -42,7 +42,6 @@ class Reward extends Model
         'name',
         'description',
         'image',
-        'type',
         'region',
         'order',
         'status',
@@ -64,30 +63,28 @@ class Reward extends Model
     {
         return $this->hasMany(DetailReward::class);
     }
+
     protected function image(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => BaseImage::loadImage($value)
         );
     }
-    protected function type(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => (string)$value
-        );
-    }
+
     protected function region(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => (string)$value
         );
     }
+
     protected function order(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => (string)$value
         );
     }
+
     protected function status(): Attribute
     {
         return Attribute::make(
