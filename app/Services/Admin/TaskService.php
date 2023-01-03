@@ -84,7 +84,7 @@ class TaskService extends BaseService
             if ($request->hasFile('image')) {
                 $uploadedFile = $request->file('image');
                 $path = 'task/image/banner' . Carbon::now()->format('Ymd');
-                $baseTask['image'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
+                $baseTask['banner_url'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
             }
             $baseTask['creator_id'] = Auth::user()->id;
             $dataBaseTask = $this->repository->create($baseTask);
@@ -92,17 +92,23 @@ class TaskService extends BaseService
                 $uploadedFiles = $request->file('slider');
                 $path = 'task/image/banner' . Carbon::now()->format('Ymd');
                 foreach ($uploadedFiles as $uploadedFile){
-                    $imageGuides['url'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
+                    $imageGuides['url_image'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
                     $dataBaseTask->taskGalleries()->create($imageGuides);
                 }
             }
-//            $reward = Arr::get($data, 'reward');
-//            if ($reward){
-//                $dataBaseTask->taskRewards()->create($reward);
-//            }
+            if ($baseTask['group_id']){
+                $dataBaseTask->taskGroup()->create([
+                    'group_id' => $baseTask['group_id'],
+                ]);
+            }
             $locations = Arr::get($data, 'locations');
             if ($locations){
-                $dataBaseTask->taskLocation()->createMany($locations);
+                foreach ($locations as $location){
+                    $idTaskLocation = $dataBaseTask->taskLocation()->create($location);
+                    foreach ($location['detail'] as $item){
+                        $idTaskLocation->taskLocationJob()->create($item);
+                    }
+                }
             }
             $socials = Arr::get($data, 'social');
             if ($socials){
