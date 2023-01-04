@@ -28,13 +28,12 @@ class GroupRequest extends FormRequest
         switch ($this->method()) {
             case 'GET':
             case "DELETE":
+            case 'PUT':
                 break;
             case 'POST':
                 $rules = [
                     'name' => ['required', 'max: 255'],
                     'username' => ['required', 'max: 100'],
-                    'avatar' => ['required', 'mimes:jpeg,jpg,png'],
-                    'cover' => ['required', 'mimes:jpeg,jpg,png'],
                     'desc_vn' => ['required'],
                     'desc_en' => ['required'],
                     'site_url' => ['nullable', 'url'],
@@ -46,23 +45,18 @@ class GroupRequest extends FormRequest
                     'discord_url' => ['nullable', 'url'],
                     'instagram_url' => ['nullable', 'url'],
                 ];
-                break;
-            case 'PUT':
-            case 'PATCH':
-                $rules = [
-                    'name' => ['required', 'max: 255'],
-                    'username' => ['required', 'max: 100'],
-                    'desc_vn' => ['required'],
-                    'desc_en' => ['required'],
-                    'site_url' => ['nullable', 'url'],
-                    'twitter_url' => ['nullable', 'url'],
-                    'telegram_url' => ['nullable', 'url'],
-                    'telegram_url' => ['nullable', 'url'],
-                    'facebook_url' => ['nullable', 'url'],
-                    'youtube_url' => ['nullable', 'url'],
-                    'discord_url' => ['nullable', 'url'],
-                    'instagram_url' => ['nullable', 'url'],
-                ];
+
+                if (!$this->id) {
+                    $rules = array_merge($rules,  [
+                        'avatar' => ['required', 'mimes:jpeg,jpg,png'],
+                        'cover' => ['required', 'mimes:jpeg,jpg,png'],
+                    ]);
+                } else {
+                    $rules = array_merge($rules,  [
+                        'avatar' => ['nullable', 'mimes:jpeg,jpg,png'],
+                        'cover' => ['nullable', 'mimes:jpeg,jpg,png'],
+                    ]);
+                }
                 break;
             default:
                 break;
