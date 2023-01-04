@@ -77,7 +77,7 @@ class Task extends Model
      */
     public function taskLocations()
     {
-        return $this->hasMany(TaskLocation::class);
+        return $this->hasMany(TaskLocation::class)->with('taskLocationJobs');
     }
 
     /**
@@ -96,7 +96,7 @@ class Task extends Model
         return $this->hasMany(TaskGallery::class);
     }
 
-    protected function banner_url(): Attribute
+    protected function bannerUrl(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => BaseImage::loadImage($value)
