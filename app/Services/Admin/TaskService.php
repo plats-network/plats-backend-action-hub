@@ -102,7 +102,7 @@ class TaskService extends BaseService
             $locations = Arr::get($data, 'locations');
             if ($locations){
                 foreach ($locations as $location){
-                    $idTaskLocation = $dataBaseTask->taskLocation()->create($location);
+                    $idTaskLocation = $dataBaseTask->taskLocations()->create($location);
                     if ($location['detail']){
                         foreach ($location['detail'] as $item){
                             $idTaskLocation->taskLocationJob()->create($item);
@@ -112,7 +112,7 @@ class TaskService extends BaseService
             }
             $socials = Arr::get($data, 'social');
             if ($socials){
-                $dataBaseTask->taskSocial()->createMany($socials);
+                $dataBaseTask->taskSocials()->createMany($socials);
             }
             DB::commit();
         } catch (RuntimeException $exception) {
