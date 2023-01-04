@@ -97,7 +97,7 @@ class TaskService extends BaseService
                 }
             }
             if ($baseTask['group_id']){
-                $dataBaseTask->groupTask()->attach($baseTask['group_id']);
+                $dataBaseTask->groupTasks()->attach($baseTask['group_id']);
             }
             $locations = Arr::get($data, 'locations');
             if ($locations){
