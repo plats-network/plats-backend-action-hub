@@ -70,6 +70,10 @@ class TaskLocation extends Model
         return $this->hasMany(TaskLocationHistory::class, 'location_id');
     }
 
+    public function taskLocationJob()
+    {
+        return $this->hasMany(TaskLocationJob::class, 'task_location_id');
+    }
     /**
      * Checkin guild
      *

@@ -67,12 +67,9 @@ class Task extends Model
         return $this->hasMany(TaskGuide::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function taskRewards()
-    {
-        return $this->hasOne(TaskReward::class);
+    public function groupTasks(){
+        return $this->belongsToMany(Group::class,'task_groups','task_id','group_id')->withTimestamps();
+
     }
 
     /**
