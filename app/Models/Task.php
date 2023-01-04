@@ -95,7 +95,7 @@ class Task extends Model
         return $this->hasMany(TaskGallery::class);
     }
 
-    protected function banner_url(): Attribute
+    protected function bannerUrl(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => BaseImage::loadImage($value)
