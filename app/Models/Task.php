@@ -66,7 +66,6 @@ class Task extends Model
     {
         return $this->hasMany(TaskGuide::class);
     }
-
     public function groupTasks(){
         return $this->belongsToMany(Group::class,'task_groups','task_id','group_id')->withTimestamps();
 

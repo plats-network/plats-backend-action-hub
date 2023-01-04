@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Helpers\DateHelper;
 use App\Models\Reward;
+use App\Models\TaskLocationJob;
 use App\Models\TaskUser;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -38,6 +39,7 @@ class TaskV2Resource extends JsonResource
         // Số lượng check-in cần hoàn thành để done task
         $task_done = $task_done_number < $this->valid_amount ? false : true;
         $rewardLocation = $this->locations()->get()->toArray();
+        $groupTasks = $this->groupTasks()->get()->toArray();
         $rewardSocials = $this->taskSocials()->get()->toArray();
         $rewards = array_merge($rewardLocation,$rewardSocials);
         $idReward = [];
@@ -68,6 +70,7 @@ class TaskV2Resource extends JsonResource
             'task_done_number'  => $task_done_number,
             'rewards' => $rewardsConvert,
             'locations'         => $rewardLocation,
+            'group'         => $groupTasks,
             'galleries'         => $this->galleries()->get()->toArray(),
             'socials'           => $rewardSocials,
         ];

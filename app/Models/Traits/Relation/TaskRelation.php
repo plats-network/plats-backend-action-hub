@@ -2,9 +2,10 @@
 
 namespace App\Models\Traits\Relation;
 
-use App\Models\{TaskGallery, TaskGuide, TaskLocation, TaskUser, Task, TaskSocial, User};
+use App\Models\{Group, TaskGallery, TaskGroup, TaskGuide, TaskLocation, TaskUser, Task, TaskSocial, User};
 
-trait TaskRelation {
+trait TaskRelation
+{
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -18,7 +19,13 @@ trait TaskRelation {
      */
     public function locations()
     {
-        return $this->hasMany(TaskLocation::class, 'task_id', 'id')->orderBy('sort')->orderBy('id');
+        return $this->hasMany(TaskLocation::class, 'task_id', 'id')->orderBy('order')->orderBy('id')->with('taskLocationJobs');
+    }
+
+    public function groupTasks()
+    {
+        return $this->belongsToMany(Group::class, 'task_groups', 'group_id', 'task_id');
+
     }
 
     /**
