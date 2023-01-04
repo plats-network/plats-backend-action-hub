@@ -6,9 +6,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\MissingValue;
 use App\Helpers\{DateHelper, ActionHelper};
 use Illuminate\Support\Facades\Http;
-use App\Models\{TaskUser, Reward};
+use App\Models\{TaskUser, Reward, UserTaskAction};
 use Carbon\Carbon;
-use App\Http\Resources\TaskGuideResource;
+use App\Http\Resources\{TaskGuideResource, TaskLocationResource};
 
 class TaskResource extends JsonResource
 {
@@ -22,60 +22,89 @@ class TaskResource extends JsonResource
     {
         $userId = $request->user()->id;
         $token = $request->user()->token;
-        $creator = $this->getUserDetail($token, $this->creator_id);
-        $dataTaskProgress = $this->getTaskImprogress($userId, $this->id);
-
-        if (!$dataTaskProgress) {
-          $task_improgress = null;
-        } else {
-          $formatDate = date("Y-m-d H:i:s", $dataTaskProgress->time_left);
-          $time_start = Carbon::parse($formatDate)->subMinute($this->duration)->timestamp;
-          $task_improgress = [
-            'id'  => $dataTaskProgress->id,
-            'status'  => $dataTaskProgress->status,
-            'time_left' => $dataTaskProgress->time_left,
-            'time_current'  => Carbon::now()->timestamp,
-            'time_start'  => $time_start,
-            'time_end'  => $dataTaskProgress->time_left
-          ];
-        }
-
-        $task_done_number = $this->participants()
-            ->where('user_id', $userId)
-            ->where('status', USER_COMPLETED_TASK)
-            ->count();
-
-        // Số lượng check-in cần hoàn thành để done task
-        $task_done = $task_done_number < $this->valid_amount ? false : true;
-        $rewards = Reward::where('end_at', '>=', Carbon::now())->first();
+        $likeCount = UserTaskAction::whereUserId($userId)->whereTaskId($this->id)->whereType(TASK_LIKE)->count();
+        $pinCount = UserTaskAction::whereUserId($userId)->whereTaskId($this->id)->whereType(TASK_PIN)->count();
+        $creator = null; //$this->getUserDetail($token, $this->creator_id);
 
         return [
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'duration' => (int)$this->duration,
-            'order'             => (int)$this->order,
-            'valid_amount'      => (int)$this->valid_amount,
-            'valid_radius'      => (int)$this->valid_radius,
-            'distance'          => $this->distance,
-            'deposit_status'    => $this->deposit_status,
-            'type'              => $this->type,
-            'created_at'        => DateHelper::getDateTime($this->created_at),
-            'cover_url'         => $this->cover_url,
+            'banner_url' => $this->banner_url,
             'post_by' => $creator ? $creator['name'] : 'Plats Team',
-            'improgress_flag'   => $task_improgress ? true : false,
-            'task_done'         => $task_done,
-            'task_improgress'   => $task_improgress,
-            'task_done_number'  => $task_done_number,
-            'near'              => [
-                'radius'        => (int)$this->valid_radius ?? 100,
-                'units' => 'm',
+            'start_at' => DateHelper::getDateTime($this->start_at),
+            'end_at' => DateHelper::getDateTime($this->end_at),
+            'like' => [
+                'is_like' => $likeCount > 0 ? true : false,
+                'type_like' => $likeCount > 0 ? 'like' : 'unlike'
             ],
-            'locations'         => $this->locations()->get()->toArray(),
-            'galleries'         => GalleryResource::collection($this->galleries()->get()),
-            'guide'             => new TaskGuideResource($this->task_guides),
-            'rewards'           => $rewards,
+            'pin' => [
+                'is_pin' => $pinCount > 0 ? true : false,
+                'type_pin' => $pinCount > 0 ? 'pin' : 'unpin',
+            ],
+            'task_checkin' => $this->taskLocations->count() > 0 ? TaskLocationResource::collection($this->taskLocations) : null,
         ];
+
+
+
+
+
+        // $userId = $request->user()->id;
+        // $token = $request->user()->token;
+        // $creator = $this->getUserDetail($token, $this->creator_id);
+        // $dataTaskProgress = $this->getTaskImprogress($userId, $this->id);
+
+        // if (!$dataTaskProgress) {
+        //   $task_improgress = null;
+        // } else {
+        //   $formatDate = date("Y-m-d H:i:s", $dataTaskProgress->time_left);
+        //   $time_start = Carbon::parse($formatDate)->subMinute($this->duration)->timestamp;
+        //   $task_improgress = [
+        //     'id'  => $dataTaskProgress->id,
+        //     'status'  => $dataTaskProgress->status,
+        //     'time_left' => $dataTaskProgress->time_left,
+        //     'time_current'  => Carbon::now()->timestamp,
+        //     'time_start'  => $time_start,
+        //     'time_end'  => $dataTaskProgress->time_left
+        //   ];
+        // }
+
+        // $task_done_number = $this->participants()
+        //     ->where('user_id', $userId)
+        //     ->where('status', USER_COMPLETED_TASK)
+        //     ->count();
+
+        // // Số lượng check-in cần hoàn thành để done task
+        // $task_done = $task_done_number < $this->valid_amount ? false : true;
+        // $rewards = Reward::where('end_at', '>=', Carbon::now())->first();
+
+        // return [
+        //     'id' => $this->id,
+        //     'name' => $this->name,
+        //     'description' => $this->description,
+        //     'duration' => (int)$this->duration,
+        //     'order'             => (int)$this->order,
+        //     'valid_amount'      => (int)$this->valid_amount,
+        //     'valid_radius'      => (int)$this->valid_radius,
+        //     'distance'          => $this->distance,
+        //     'deposit_status'    => $this->deposit_status,
+        //     'type'              => $this->type,
+        //     'created_at'        => DateHelper::getDateTime($this->created_at),
+        //     'cover_url'         => $this->cover_url,
+        //     'post_by' => $creator ? $creator['name'] : 'Plats Team',
+        //     'improgress_flag'   => $task_improgress ? true : false,
+        //     'task_done'         => $task_done,
+        //     'task_improgress'   => $task_improgress,
+        //     'task_done_number'  => $task_done_number,
+        //     'near'              => [
+        //         'radius'        => (int)$this->valid_radius ?? 100,
+        //         'units' => 'm',
+        //     ],
+        //     'locations'         => $this->locations()->get()->toArray(),
+        //     'galleries'         => GalleryResource::collection($this->galleries()->get()),
+        //     'guide'             => new TaskGuideResource($this->task_guides),
+        //     'rewards'           => $rewards,
+        // ];
     }
 
     /**

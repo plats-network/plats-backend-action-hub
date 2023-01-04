@@ -40,8 +40,6 @@ class Task extends Model
         'status',
         'type',
         'creator_id',
-        'status',
-        'order',
     ];
 
     /**
@@ -64,31 +62,38 @@ class Task extends Model
     /**
      * Get the task_guides for the tasks.
      */
-    public function task_guides()
+    public function taskGuides()
     {
-        return $this->hasMany(TaskGuide::class)
-            ->whereStatus(true)
-            ->latest();
+        return $this->hasMany(TaskGuide::class);
     }
 
-    public function groupTask()
-    {
+    public function groupTasks(){
         return $this->belongsToMany(Group::class,'task_groups','task_id','group_id')->withTimestamps();
+
     }
 
-    public function taskLocation()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function taskLocations()
     {
-        return $this->hasMany(TaskLocation::class, 'task_id');
+        return $this->hasMany(TaskLocation::class);
     }
 
-    public function taskSocial()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function taskSocials()
     {
-        return $this->hasMany(TaskSocial::class, 'task_id');
+        return $this->hasMany(TaskSocial::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function taskGalleries()
     {
-        return $this->hasMany(TaskGallery::class, 'task_id');
+        return $this->hasMany(TaskGallery::class);
     }
 
     protected function banner_url(): Attribute

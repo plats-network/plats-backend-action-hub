@@ -3,9 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\{TaskLocationJobResource};
 
-class TaskLocationResource extends JsonResource
+class TaskLocationJobResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,12 +17,9 @@ class TaskLocationResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'description' => $this->description,
-            'amount' => $this->amount,
-            'job_num' => $this->job_num,
-            'jobs' => $this->taskLocationJobs->count() > 0 ?
-                TaskLocationJobResource::collection($this->taskLocationJobs) :
-                null
+            'address' => $this->address,
+            'lat' => $this->lat,
+            'lng' => $this->lng,
         ];
-      }
+    }
 }

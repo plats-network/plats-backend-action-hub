@@ -3,12 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\{CheckInTaskRequest, CreateTaskRequest, StartTaskRequest};
+use App\Http\Requests\{
+    CheckInTaskRequest,
+    CreateTaskRequest,
+    StartTaskRequest,
+    UserActionRequest
+};
 use App\Http\Resources\{TaskResource, TaskUserResource, TaskDogingResource, SocialResource, CheckInResource};
 use App\Repositories\{LocationHistoryRepository, TaskRepository, TaskUserRepository};
 use App\Services\TaskService;
 use Illuminate\Http\Request;
-use App\Models\Task as ModelTask;
+use App\Models\{
+    Task as ModelTask,
+    UserTaskAction
+};
 use App\Models\TaskUser;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon as SupportCarbon;
@@ -30,7 +38,8 @@ class Task extends ApiController
         private ModelTask $modelTask,
         private LocationHistoryRepository $locationHistoryRepository,
         private TaskRepository $taskRepository,
-        private TaskUserRepository $taskUserRepository
+        private TaskUserRepository $taskUserRepository,
+        private UserTaskAction $userTaskAction
     ) {}
 
     /**
@@ -40,16 +49,17 @@ class Task extends ApiController
      */
     public function index(Request $request)
     {
-        $userId = $request->user()->id;
-
         try {
+            $userId = $request->user()->id;
             $limit = $request->get('limit') ?? PAGE_SIZE;
-            $tasks = $this->modelTask->load(['participants' => function ($query) use ($userId) {
-                    return $query->where('user_id', $userId);
-                }])
+
+            $tasks = $this->modelTask
+                ->with(['taskLocations', 'taskSocials'])
                 ->whereStatus(ACTIVE_TASK)
-                ->whereType(TYPE_CHECKIN)
+                ->where('end_at', '>=', Carbon::now())
+                ->orderBy('created_at', 'desc')
                 ->paginate($limit);
+
         } catch (QueryException $e) {
             return $this->respondNotFound();
         }
@@ -88,6 +98,60 @@ class Task extends ApiController
         }
 
         return $this->respondWithResource($data);
+    }
+
+    public function taskAction(UserActionRequest $request)
+    {
+        try {
+            $type = $request->input('type');
+            $taskId = $request->input('task_id');
+            $userId = $request->user()->id;
+            $typeNum = ($type == 'like' || $type == 'unlike') ? TASK_LIKE : TASK_PIN;
+
+            $userLikePin = $this->userTaskAction
+                ->whereUserId($userId)
+                ->whereTaskId($taskId)
+                ->whereType($typeNum)
+                ->first();
+
+            if ($type == 'like') {
+                if (!$userLikePin) {
+                    $this->userTaskAction->create([
+                        'user_id' => $userId,
+                        'task_id' => $taskId,
+                        'type' => $typeNum
+                    ]);
+                }
+
+                $mess = 'Liked';
+            }
+
+            if ($type == 'unlike') {
+                if ($userLikePin) { $userLikePin->delete(); }
+                $mess = 'Unliked';
+            }
+
+            if ($type == 'pin') {
+                if (!$userLikePin) {
+                    $this->userTaskAction->create([
+                        'user_id' => $userId,
+                        'task_id' => $taskId,
+                        'type' => $typeNum
+                    ]);
+                }
+
+                $mess = 'Pinned';
+            }
+
+            if ($type == 'unpin') {
+                if ($userLikePin) { $userLikePin->delete(); }
+                $mess = 'Unpinned';
+            }
+        } catch (\Exception $e) {
+            return $this->respondNotFound();
+        }
+
+        return $this->responseMessage($mess);
     }
 
     /**
