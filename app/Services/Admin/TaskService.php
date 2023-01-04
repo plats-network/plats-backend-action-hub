@@ -97,16 +97,16 @@ class TaskService extends BaseService
                 }
             }
             if ($baseTask['group_id']){
-                $dataBaseTask->taskGroup()->create([
-                    'group_id' => $baseTask['group_id'],
-                ]);
+                $dataBaseTask->groupTask()->attach($baseTask['group_id']);
             }
             $locations = Arr::get($data, 'locations');
             if ($locations){
                 foreach ($locations as $location){
                     $idTaskLocation = $dataBaseTask->taskLocation()->create($location);
-                    foreach ($location['detail'] as $item){
-                        $idTaskLocation->taskLocationJob()->create($item);
+                    if ($location['detail']){
+                        foreach ($location['detail'] as $item){
+                            $idTaskLocation->taskLocationJob()->create($item);
+                        }
                     }
                 }
             }

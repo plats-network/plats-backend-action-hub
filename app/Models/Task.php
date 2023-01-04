@@ -71,14 +71,9 @@ class Task extends Model
             ->latest();
     }
 
-    public function taskRewards()
+    public function groupTask()
     {
-        return $this->hasOne(TaskReward::class, 'task_id');
-    }
-
-    public function taskGroup()
-    {
-        return $this->hasOne(TaskGroup::class, 'task_id');
+        return $this->belongsToMany(Group::class,'task_groups','task_id','group_id')->withTimestamps();
     }
 
     public function taskLocation()
