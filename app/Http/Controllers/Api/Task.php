@@ -82,22 +82,14 @@ class Task extends ApiController
      */
     public function detail(Request $request, $id)
     {
-        $userId = $request->user()->id;
-        
         try {
-            $task = $this->taskService->mapUserHistory($id, $userId);
-
-            if ($task->type == TYPE_CHECKIN) {
-                $data = new TaskResource($task);
-            } else {
-                $data = new SocialResource($task);
-            }
-
+            $userId = $request->user()->id;
+            $task = $this->modelTask->findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        return $this->respondWithResource($data);
+        return $this->respondWithResource(new TaskResource($task));
     }
 
     public function taskAction(UserActionRequest $request)
