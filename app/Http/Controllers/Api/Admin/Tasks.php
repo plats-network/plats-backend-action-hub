@@ -13,6 +13,7 @@ class Tasks extends ApiController
 {
     public function __construct(
         private TaskService $taskService
+
     )
     {
         $this->middleware('client_admin');
@@ -31,7 +32,7 @@ class Tasks extends ApiController
             'current_page' => (int)$request->get('page'),
             'last_page' => $rewards->lastPage(),
             'per_page'  => (int)$limit,
-            'total' => $rewards->lastPage()
+            'total' => $rewards->total()
         ];
 
         return $this->respondWithIndex($datas, $pages);
