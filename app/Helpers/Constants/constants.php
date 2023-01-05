@@ -63,6 +63,11 @@ if (!defined('DEFINE_CONSTANT')) {
     define('TYPE_SOCIAL', 4);
 
     /**
+     * Tasks status
+     */
+    define('TASK_DRAFT', 0);
+    define('TASK_PUBLIC', 1);
+    /**
      * Tasks checkin type
      */
     define('ONE_OF_MANY_LOCATIONS', 1);
