@@ -2,6 +2,11 @@
 
 namespace App\Services\Admin;
 
+use App\Models\Task;
+use App\Models\TaskGallery;
+use App\Models\TaskGroup;
+use App\Models\TaskLocation;
+use App\Models\TaskLocationJob;
 use App\Repositories\TaskLocationRepository;
 use App\Repositories\TaskRepository;
 use App\Repositories\TaskRewardsRepository;
@@ -67,12 +72,60 @@ class TaskService extends BaseService
             return $this->create($request);
         }
 
-        return $this->update($request);
+        return $this->update($request,$request->input('id'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-
+        $data = Arr::except($request->all(), '__token');
+        $baseTask = Arr::get($data, 'base');
+        DB::beginTransaction();
+        try {
+            if ($request->hasFile('image')) {
+                $uploadedFile = $request->file('image');
+                $path = 'task/image/banner' . Carbon::now()->format('Ymd');
+                $baseTask['banner_url'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
+            }
+            $baseTask['creator_id'] = Auth::user()->id;
+            $dataBaseTask = $this->repository->update($baseTask,$id);
+            if ($request->hasFile('slider')) {
+                TaskGallery::where('task_id',$id)->delete();
+                $uploadedFiles = $request->file('slider');
+                $path = 'task/image/banner' . Carbon::now()->format('Ymd');
+                foreach ($uploadedFiles as $uploadedFile){
+                    $imageGuides['url_image'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
+                    $dataBaseTask->taskGalleries()->create($imageGuides);
+                }
+            }
+            if ($baseTask['group_id']){
+                TaskGroup::where('task_id',$id)->delete();
+                $dataBaseTask->groupTasks()->attach($baseTask['group_id']);
+            }
+            $locations = Arr::get($data, 'locations');
+            if ($locations){
+                TaskLocation::where('task_id',$id)->delete();
+                foreach ($locations as $location){
+                    $idTaskLocation = $dataBaseTask->taskLocations()->create($location);
+                    if ($location['detail']){
+                        foreach ($location['detail'] as $item){
+                            $idTaskLocation->taskLocationJob()->create($item);
+                        }
+                    }
+                }
+            }
+            $socials = Arr::get($data, 'social');
+            if ($socials){
+                $dataBaseTask->taskSocials()->delete();
+                $dataBaseTask->taskSocials()->createMany($socials);
+            }
+            DB::commit();
+        } catch (RuntimeException $exception) {
+            DB::rollBack();
+            throw $exception;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw new RuntimeException($exception->getMessage(), 500062, $exception->getMessage(), $exception);
+        }
     }
 
     public function create(Request $request)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\ApiController;
 use App\Http\Resources\Admin\RewardResource;
 use App\Http\Resources\Admin\TaskResource;
+use App\Models\Task;
 use App\Services\Admin\TaskService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +41,16 @@ class Tasks extends ApiController
 
     public function store(Request $request)
     {
+
+        if ($request->filled('id')) {
+            $checkStatusTask = Task::where('status',TASK_PUBLIC)->where('id',$request->input('id'))->first();
+            if ($checkStatusTask){
+                return $this->responseMessage('false');
+            }
+        }
         $reward = $this->taskService->store($request);
         return $this->responseMessage('success');
     }
+
+
 }
