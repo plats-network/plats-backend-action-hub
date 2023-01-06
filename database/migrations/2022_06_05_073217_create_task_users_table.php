@@ -17,7 +17,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('user_id')->index();
             $table->uuid('task_id')->index();
-            $table->tinyInteger('status')->default(0)->co;
+            $table->dateTimeTz('finish_at')->nullable();
+            $table->tinyInteger('status')->default(0)->comment('0: improgress, 1: done, 2: cancel, 3: exp');
             $table->timestamps();
             $table->softDeletes();
         });

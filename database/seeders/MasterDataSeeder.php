@@ -70,6 +70,35 @@ class MasterDataSeeder extends Seeder
                 'status' => true,
             ]);
 
+            $rewardId = Reward::first()->id;
+            $params = [
+                'task_id' => $uuid,
+                'reward_id' => $rewardId,
+                'name' => 'Flow',
+                'description' => 'Description',
+                'url' => 'https://demo.com',
+                'amount' => random_int(1,10),
+                'order' => random_int(1,10),
+                'lock' => false,
+                'status' => true
+            ];
+
+            // Twittwer
+            TaskSocial::create(array_merge($params, ['platform' => TWITTER,'type' => TWITTER_FOLLOW]));
+            TaskSocial::create(array_merge($params, ['platform' => TWITTER,'type' => TWITTER_LIKE]));
+            TaskSocial::create(array_merge($params, ['platform' => TWITTER,'type' => TWITTER_RETWEET]));
+            TaskSocial::create(array_merge($params, ['platform' => TWITTER,'type' => TWITTER_TWEET]));
+
+            // FB
+            TaskSocial::create(array_merge($params, ['platform' => FACEBOOK,'type' => FACEBOOK_SHARE]));
+            TaskSocial::create(array_merge($params, ['platform' => FACEBOOK,'type' => FACEBOOK_LIKE]));
+            TaskSocial::create(array_merge($params, ['platform' => FACEBOOK,'type' => FACEBOOK_POST]));
+            TaskSocial::create(array_merge($params, ['platform' => FACEBOOK,'type' => FACEBOOK_JOIN_GROUP]));
+
+            // Telegram
+            TaskSocial::create(array_merge($params, ['platform' => TELEGRAM,'type' => TELEGRAM_JOIN]));
+            TaskSocial::create(array_merge($params, ['platform' => DISCORD,'type' => DISCORD_JOIN]));
+
             for($i = 0; $i < 5; $i++) {
                 TaskGallery::create([
                     'task_id' => $uuid,

@@ -93,6 +93,24 @@ if (!defined('DEFINE_CONSTANT')) {
     define('DISCORD', 3);
     define('TELEGRAM', 4);
 
+    // Twitter
+    define('TWITTER_FOLLOW', 0);
+    define('TWITTER_LIKE', 1);
+    define('TWITTER_RETWEET', 2);
+    define('TWITTER_TWEET', 3);
+
+    // Facebook
+    define('FACEBOOK_SHARE', 0);
+    define('FACEBOOK_LIKE', 1);
+    define('FACEBOOK_POST', 2);
+    define('FACEBOOK_JOIN_GROUP', 3);
+
+    // Telegram
+    define('TELEGRAM_JOIN', 0);
+
+    // Discord
+    define('DISCORD_JOIN', 0);
+
     /**
      * Tasks type action
      */

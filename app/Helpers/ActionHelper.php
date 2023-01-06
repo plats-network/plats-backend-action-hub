@@ -79,8 +79,6 @@ class ActionHelper
                 $data = $urlTwitter . '/retweet?tweet_id=' . $urlIntent;
                 break;
             case TWEET:
-                $data = $urlTwitter . '/tweet?hashtags=' . $txtTag;
-                break;
             case HASHTAG:
                 $data = $urlTwitter . '/tweet?hashtags=' . $txtTag;
                 break;
@@ -90,7 +88,6 @@ class ActionHelper
 
         return $data;
     }
-
 
     /**
      *
