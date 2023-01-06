@@ -8,7 +8,6 @@ use App\Helpers\{DateHelper, ActionHelper};
 use Illuminate\Support\Facades\Http;
 use App\Models\{TaskUser, Reward, UserTaskAction};
 use Carbon\Carbon;
-use App\Http\Resources\{TaskGuideResource, TaskLocationResource};
 
 class TaskResource extends JsonResource
 {
@@ -24,7 +23,8 @@ class TaskResource extends JsonResource
         $token = $request->user()->token;
         $likeCount = UserTaskAction::whereUserId($userId)->whereTaskId($this->id)->whereType(TASK_LIKE)->count();
         $pinCount = UserTaskAction::whereUserId($userId)->whereTaskId($this->id)->whereType(TASK_PIN)->count();
-        $creator = null; //$this->getUserDetail($token, $this->creator_id);
+        $checkTaskStart = TaskUser::whereUserId($userId)->whereTaskId($this->id)->whereStatus(0)->count();
+        $creator = null; //$this->getUserDetail($token, $this->creator_id); TODO
 
         return [
             'id' => $this->id,
@@ -34,6 +34,7 @@ class TaskResource extends JsonResource
             'post_by' => $creator ? $creator['name'] : 'Plats Team',
             'start_at' => DateHelper::getDateTime($this->start_at),
             'end_at' => DateHelper::getDateTime($this->end_at),
+            'task_start' => $checkTaskStart > 0 ? true : false,
             'like' => [
                 'is_like' => $likeCount > 0 ? true : false,
                 'type_like' => $likeCount > 0 ? 'like' : 'unlike'
@@ -43,12 +44,10 @@ class TaskResource extends JsonResource
                 'type_pin' => $pinCount > 0 ? 'pin' : 'unpin',
             ],
             'task_checkin' => $this->taskLocations->count() > 0 ? TaskLocationResource::collection($this->taskLocations) : null,
+            'task_socials' => $this->taskSocials->count() > 0 ? TaskSocialResource::collection($this->taskSocials) : null,
         ];
 
-
-
-
-
+        // OLD
         // $userId = $request->user()->id;
         // $token = $request->user()->token;
         // $creator = $this->getUserDetail($token, $this->creator_id);

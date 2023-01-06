@@ -34,7 +34,7 @@ Route::prefix('tasks')->controller(Task::class)->group(function ($router) {
     Route::get('/doing', 'getTaskDoing');
     Route::post('/', 'create');
     Route::get('/{id}', 'detail')->whereUuid('id');
-    Route::post('/{id}/start/{location_id}', 'startTask')->whereUuid('id')->whereUuid('location_id');
+    // Route::post('/{id}/start/{location_id}', 'startTask')->whereUuid('id')->whereUuid('location_id');
     Route::post('/{id}/check-in/{location_id}', 'checkIn')->whereUuid('id')->whereUuid('location_id');
     Route::patch('/{id}/cancel', 'cancel')->whereUuid('id');
 
@@ -45,6 +45,7 @@ Route::prefix('tasks')->controller(Task::class)->group(function ($router) {
     Route::post('/{id}/social/{social_id}', [Social::class, 'update'])->name('task.social.update');
 
     $router->post('like-pin', 'taskAction')->name('task.action');
+    $router->post('start-cancel', 'startTask')->name('task.startTask');
 });
 
 Route::prefix('tasks-v2')->controller(TaskV2::class)->group(function () {

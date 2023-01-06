@@ -15,9 +15,8 @@ use App\Services\TaskService;
 use Illuminate\Http\Request;
 use App\Models\{
     Task as ModelTask,
-    UserTaskAction
+    UserTaskAction, TaskUser
 };
-use App\Models\TaskUser;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\{DB, Http};
@@ -36,6 +35,7 @@ class Task extends ApiController
     public function __construct(
         private TaskService $taskService,
         private ModelTask $modelTask,
+        private TaskUser $taskUser,
         private LocationHistoryRepository $locationHistoryRepository,
         private TaskRepository $taskRepository,
         private TaskUserRepository $taskUserRepository,
@@ -162,15 +162,50 @@ class Task extends ApiController
      * User execute task with location
      *
      * @param \App\Http\Requests\StartTaskRequest $request
-     * @param string $taskId
-     * @param string $locationId
      *
      * @return \Illuminate\Http\Resources\Json\JsonResource
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function startTask(Request $request, $taskId, $locationId)
+    public function startTask(Request $request)
     {
-        $userId = $request->user()->id;
+        try {
+            $userId = $request->user()->id;
+            $taskId = $request->input('task_id');
+            $task = $this->modelTask->findOrFail($taskId);
+            $checkStart = $this->taskUser
+                ->whereUserId($userId)
+                ->whereTaskId($taskId)
+                ->whereStatus(0)
+                ->first();
+
+            if ($request->input('type') == 'start') {
+                if (!$checkStart) {
+                    $this->taskUser->create([
+                        'user_id' => $userId,
+                        'task_id' => $taskId,
+                        'status' => 0,
+                        'finish_at' => $task->end_at,
+                    ]);
+                }
+
+                $mess = 'Start done!';
+            }
+
+            if ($request->input('type') == 'cancel') {
+                if ($checkStart) {
+                    $checkStart->update(['status' => 2]);
+                }
+
+                $mess = 'Cancel done!';
+            }
+        } catch (\Exception $e) {
+            return $this->respondNotFound();
+        }
+
+        return $this->responseMessage($mess);
+
+
+        // OLD
         $token= request()->bearerToken();
         # Check Task
         $task = $this->taskRepository->find($taskId);

@@ -20,6 +20,22 @@ class TaskSocialResource extends JsonResource
      */
     public function toArray($request)
     {
+        return [
+            'id' => $this->id,
+            'reward_id' => $this->reward_id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'platform' => $this->platform,
+            'type' => $this->type,
+            'url' => $this->url,
+            'amount' => $this->amount,
+            // 'order' => $this->order,
+            'lock' => $this->lock,
+            'status' => $this->status,
+        ];
+
+
+        // Old
         $start = false;
         $statusAction = false;
         $statusLabel = 'not_start_task';
