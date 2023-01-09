@@ -97,6 +97,12 @@ class TaskService extends BaseService
                     $dataBaseTask->taskGalleries()->create($imageGuides);
                 }
             }
+            if ($request->input('slider')){
+                foreach ($request->input('slider') as $sliderItem){
+                    $guides['url_image'] = $sliderItem;
+                    $dataBaseTask->taskGalleries()->create($guides);
+                }
+            }
             if ($baseTask['group_id']){
                 TaskGroup::where('task_id',$id)->delete();
                 $dataBaseTask->groupTasks()->attach($baseTask['group_id']);
