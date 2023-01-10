@@ -52,7 +52,7 @@ class Tasks extends ApiController
         if ($request->filled('id')) {
             $checkStatusTask = Task::where('status',TASK_PUBLIC)->where('id',$request->input('id'))->first();
             if ($checkStatusTask){
-                return $this->responseMessage('false');
+                return $this->respondError('Không thể chỉnh sửa bản ghi này',422);
             }
         }
         $reward = $this->taskService->store($request);
