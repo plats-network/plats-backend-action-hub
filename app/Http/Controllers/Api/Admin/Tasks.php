@@ -80,7 +80,7 @@ class Tasks extends ApiController
                 $checkStatusTask->taskLocations()->delete();
                 return $this->responseMessage('success');
             }
-            return $this->respondError('Không thể xoá bản ghi này',422);
+            return $this->respondError('Can’t delete a published task',422);
             DB::commit();
         } catch (RuntimeException $exception) {
             DB::rollBack();
