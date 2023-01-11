@@ -88,8 +88,8 @@ class TaskService extends BaseService
             }
             $baseTask['creator_id'] = Auth::user()->id;
             $dataBaseTask = $this->repository->update($baseTask,$id);
+            TaskGallery::where('task_id',$id)->delete();
             if ($request->hasFile('slider')) {
-                TaskGallery::where('task_id',$id)->delete();
                 $uploadedFiles = $request->file('slider');
                 $path = 'task/image/banner' . Carbon::now()->format('Ymd');
                 foreach ($uploadedFiles as $uploadedFile){
