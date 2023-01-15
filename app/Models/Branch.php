@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property datatime $updated_at
  */
 
+// Bỏ đi ko dùng nữa 
 class Branch extends Model
 {
     use HasFactory, Uuid, SoftDeletes;

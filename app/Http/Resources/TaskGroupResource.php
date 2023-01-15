@@ -3,8 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\MissingValue;
 
-class TaskLocationJobResource extends JsonResource
+class TaskGroupResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +18,6 @@ class TaskLocationJobResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'address' => $this->address,
-            'lat' => (float) $this->lat,
-            'lng' => (float) $this->lng,
         ];
     }
 }

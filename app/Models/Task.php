@@ -38,7 +38,7 @@ class Task extends Model
         'end_at',
         'order',
         'status',
-        'type',
+        'type', // 0: default, 1: event
         'creator_id',
     ];
 
@@ -67,9 +67,9 @@ class Task extends Model
         return $this->hasMany(TaskGuide::class);
     }
 
-    public function groupTasks(){
+    public function groupTasks()
+    {
         return $this->belongsToMany(Group::class,'task_groups','task_id','group_id')->withTimestamps();
-
     }
 
     /**
@@ -78,6 +78,11 @@ class Task extends Model
     public function taskLocations()
     {
         return $this->hasMany(TaskLocation::class)->with('taskLocationJobs');
+    }
+
+    public function taskUsers()
+    {
+        return $this->hasMany(TaskUser::class);
     }
 
     /**
@@ -99,7 +104,7 @@ class Task extends Model
     protected function bannerUrl(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => BaseImage::loadImage($value)
+            get: fn ($value) => BaseImage::imgGroup($value)
         );
     }
 }

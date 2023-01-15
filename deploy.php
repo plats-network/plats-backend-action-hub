@@ -76,7 +76,9 @@ task('npm:run:stg', function () {
 
 // Run npm production
 // exec: dep npm:run:prod prod
-task('npm:run:prod', function () {
+task('npm:run:prod', function ($args) {
+    var_dump($args);
+    die;
     run('cd {{prod_action_path}}/current && npm install && npm run prod && php artisan storage:link');
 });
 
