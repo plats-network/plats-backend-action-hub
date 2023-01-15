@@ -4,30 +4,20 @@ namespace Deployer;
 require 'vendor/autoload.php';
 require 'recipe/common.php';
 require 'recipe/laravel.php';
-require 'contrib/npm.php';
 
-// Ip hosts
-set('ip_prod', '43.206.124.177'); // TODO: ip ec2 prod
+// Set env
+set('ip_prod', '54.64.206.43');
 set('ip_stg', '194.233.72.10');
-// Project name
-set('prod', 'plats_action');
+set('prod', 'prod_action');
 set('stg', 'plats_action');
-
-// Project repository
 set('repository', 'git@github.com:plats-network/plats-backend-action-hub.git');
-
-// Set release_or_current_path
-set('prod_action_path', '/var/www/html/{{prod}}');
-set('stg_action_path', '/home/deploy/apps/{{stg}}');
-
-// Set number of releases to keep
+set('prod_path', '/var/www/apps/{{prod}}');
+set('stg_path', '/home/deploy/apps/{{stg}}');
 set('keep_releases', 5);
-
-// Writable dirs by web server
 set('allow_anonymous_stats', false);
-
-// [Optional] Allocate tty for git clone. Default value is false.
 set('git_tty', true);
+set('use_relative_symlink', false);
+set('ssh_multiplexing', false);
 
 // Shared files/dirs between deploys 
 add('shared_files', ['.env']);
@@ -53,31 +43,33 @@ host('prod')
     ->set('remote_user', 'deploy')
     ->set('identityFile', '~/.ssh/prod_plats')
     ->set('branch', 'main')
-    ->set('deploy_path', '{{prod_action_path}}');
+    ->set('deploy_path', '{{prod_path}}');
 
 host('stg')
     ->set('hostname', '{{ip_stg}}')
     ->set('stage', 'staging')
     ->set('remote_user', 'deploy')
-    ->set('identityFile', '~/.ssh/id_techld')
+    ->set('identityFile', '~/.ssh/plats')
     ->set('branch', 'staging')
-    ->set('deploy_path', '{{stg_action_path}}');
+    ->set('deploy_path', '{{stg_path}}');
 
-// Reset php
+// restart php-fpm
 task('reload:php-fpm', function () {
     run('sudo /usr/sbin/service php8.1-fpm reload');
 });
 
-// Run npm staging
-// exec: dep npm:run:stg stg
-task('npm:run:stg', function () {
-    run('cd {{stg_action_path}}/current && npm install && npm run prod && php artisan storage:link');
-});
+// Run npm
+task('npm:run', function () {
+    $envStage = get('stage');
+    writeln("Run npm: " . $envStage);
 
-// Run npm production
-// exec: dep npm:run:prod prod
-task('npm:run:prod', function () {
-    run('cd {{prod_action_path}}/current && npm install && npm run prod && php artisan storage:link');
+    if ($envStage == 'production') {
+        run('cd {{prod_path}}/current && npm install && npm run prod && php artisan storage:link');
+    } elseif ($envStage == 'staging') {
+        run('cd {{stg_path}}/current && npm install && npm run prod && php artisan storage:link');
+    } else {
+        run('cd {{dev_path}}/current && npm install && npm run prod && php artisan storage:link');
+    }
 });
 
 task('deploy', [
@@ -85,8 +77,9 @@ task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
     'deploy:symlink',
+    'npm:run',
     'reload:php-fpm',
-    'deploy:cleanup'
+    'deploy:cleanup',
 ]);
 
 // [Optional] if deploy fails automatically unlock.
