@@ -6,9 +6,11 @@ use App\Http\Controllers\ApiController;
 use App\Http\Resources\Admin\RewardResource;
 use App\Http\Resources\Admin\TaskResource;
 use App\Models\Task;
+use App\Models\TaskGallery;
 use App\Models\TaskGroup;
 use App\Models\TaskLocation;
 use App\Models\TaskLocationJob;
+use App\Models\TaskSocial;
 use App\Services\Admin\TaskService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -75,9 +77,9 @@ class Tasks extends ApiController
         TaskLocationJob::whereIn('task_location_id', $getIdLocatios)->delete();
         Task::where('status', TASK_DRAFT)->where('id', $id)->delete();
         TaskGroup::where('task_id', $id)->delete();
-        $checkStatusTask->taskGalleries()->delete();
-        $checkStatusTask->taskSocials()->delete();
-        $checkStatusTask->taskLocations()->delete();
+        TaskGallery::where('task_id', $id)->delete();
+        TaskSocial::where('task_id', $id)->delete();
+        TaskLocation::where('task_id', $id)->delete();
         return $this->responseMessage('success');
     }
 }
