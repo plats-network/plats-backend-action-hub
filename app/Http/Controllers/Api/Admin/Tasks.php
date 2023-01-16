@@ -67,8 +67,8 @@ class Tasks extends ApiController
 
     public function destroy($id)
     {
-        $checkStatusTask = Task::where('status', TASK_DRAFT)->where('id', $id)->first();
-        if (!$checkStatusTask) {
+        $checkStatusTask = Task::where('status', TASK_PUBLIC)->where('id', $id)->first();
+        if ($checkStatusTask) {
             return $this->respondError('Can’t delete a published task', 422);
         }
         $getIdLocatios = TaskLocation::where('task_id', $id)->pluck('id');
