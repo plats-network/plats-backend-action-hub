@@ -71,23 +71,13 @@ class Tasks extends ApiController
         if (!$checkStatusTask) {
             return $this->respondError('Can’t delete a published task', 422);
         }
-        DB::beginTransaction();
-        try {
-            $getIdLocatios = TaskLocation::where('task_id', $id)->pluck('id');
-            TaskLocationJob::whereIn('task_location_id', $getIdLocatios)->delete();
-            Task::where('status', TASK_DRAFT)->where('id', $id)->delete();
-            TaskGroup::where('task_id', $id)->delete();
-            $checkStatusTask->taskGalleries()->delete();
-            $checkStatusTask->taskSocials()->delete();
-            $checkStatusTask->taskLocations()->delete();
-            return $this->responseMessage('success');
-            DB::commit();
-        } catch (RuntimeException $exception) {
-            DB::rollBack();
-            throw $exception;
-        } catch (Exception $exception) {
-            DB::rollBack();
-            throw new RuntimeException($exception->getMessage(), 500062, $exception->getMessage(), $exception);
-        }
+        $getIdLocatios = TaskLocation::where('task_id', $id)->pluck('id');
+        TaskLocationJob::whereIn('task_location_id', $getIdLocatios)->delete();
+        Task::where('status', TASK_DRAFT)->where('id', $id)->delete();
+        TaskGroup::where('task_id', $id)->delete();
+        $checkStatusTask->taskGalleries()->delete();
+        $checkStatusTask->taskSocials()->delete();
+        $checkStatusTask->taskLocations()->delete();
+        return $this->responseMessage('success');
     }
 }
