@@ -23,12 +23,14 @@ class Event extends ApiController
     public function index(Request $request)
     {
         try {
-            dd(1);
+            $limit = $request->input('limit') ?? PAGE_SIZE;
+            $event = $this->eventModel->with('task','taskEventDetail')->orderBy('created_at', 'desc')
+                ->orderBy('status', 'desc')
+                ->paginate($limit);
+            return $this->respondWithResource(new EventResource($event));
         } catch (\Exception $e) {
             return $this->respondError($e->getMessage());
         }
-
-        return $this->respondWithIndex();
     }
 
     /**

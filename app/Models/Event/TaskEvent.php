@@ -43,7 +43,7 @@ class TaskEvent extends Model
      * @var array
      */
     protected $hidden = [
-        'id',
+
     ];
 
     public function task(): BelongsTo
