@@ -12,7 +12,9 @@ class BaseImage {
         if (is_null($image_url)) {
             return Storage::disk('s3')->url('icon/hidden_box.png');
         }
-
+        if (strpos($image_url ,'https') !== false){
+            return $image_url;
+        }
         return Storage::disk('s3')->url($image_url);
     }
 

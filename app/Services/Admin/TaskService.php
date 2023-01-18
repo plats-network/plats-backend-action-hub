@@ -88,13 +88,19 @@ class TaskService extends BaseService
             }
             $baseTask['creator_id'] = Auth::user()->id;
             $dataBaseTask = $this->repository->update($baseTask,$id);
+            TaskGallery::where('task_id',$id)->delete();
             if ($request->hasFile('slider')) {
-                TaskGallery::where('task_id',$id)->delete();
                 $uploadedFiles = $request->file('slider');
                 $path = 'task/image/banner' . Carbon::now()->format('Ymd');
                 foreach ($uploadedFiles as $uploadedFile){
                     $imageGuides['url_image'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
                     $dataBaseTask->taskGalleries()->create($imageGuides);
+                }
+            }
+            if ($request->input('slider')){
+                foreach ($request->input('slider') as $sliderItem){
+                    $guides['url_image'] = $sliderItem;
+                    $dataBaseTask->taskGalleries()->create($guides);
                 }
             }
             if ($baseTask['group_id']){

@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\{
 use App\Http\Controllers\Api\Admin\{
     Reward,
     Tasks,
+    Event as CwsEvent,
     Group as CwsGroup
 };
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('cws')->group(function($router) {
     $router->resource('groups', CwsGroup::class)->only(['index', 'store', 'show', 'destroy']);
+    $router->resource('events', CwsEvent::class)->only(['index', 'store', 'show', 'destroy']);
 });
 
 
