@@ -51,7 +51,7 @@ class TaskEvent extends Model
         return $this->belongsTo(Task::class);
     }
 
-    public function taskEventDetail()
+    public function eventDetails()
     {
         return $this->hasMany(TaskEventDetail::class);
     }

@@ -24,7 +24,7 @@ class Event extends ApiController
     {
         try {
             $limit = $request->input('limit') ?? PAGE_SIZE;
-            $event = $this->eventModel->with('task','taskEventDetail')->orderBy('created_at', 'desc')
+            $event = $this->eventModel->with('task','eventDetails')->orderBy('created_at', 'desc')
                 ->orderBy('status', 'desc')
                 ->paginate($limit);
             return $this->respondWithResource(new EventResource($event));
@@ -60,7 +60,7 @@ class Event extends ApiController
     public function show($id, Request $request)
     {
         try {
-            $event = $this->eventModel->with('taskEventDetail')->findOrFail($id);
+            $event = $this->eventModel->with('eventDetails')->findOrFail($id);
         } catch (\Exception $e) {
             return $this->respondError($e->getMessage());
         }
