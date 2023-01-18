@@ -1,45 +1,47 @@
-<p align="center"><img alt="Plats Network" src=""></p>
+# Requirements
 
+- PHP >= 8.0
+- PostgreSQL: >= 12
 
-## 1. About Plats Network
+# Hướng dẫn deploy
 
-Plats Network is a pioneering on-chain marketing platform, aiming to change how a brand approaches the potential customers and how regular customers interact with a brand ads. Both are in an ACTIVE manner.
+1. Copy 2 file ssh vào thư mục .ssh trên máy của mình
 
-## 2. Deploy (thủ công)
-```shell
-    composer install
+```
+cp deploy/plats ~/.ssh/
+cp deploy/plats.pub ~/.ssh/
 ```
 
-```shell
-    npm install
+Phân quyền cho 2 file ssh trên
+
+```
+sudo chmod 400 ~/.ssh/plats
+sudo chmod 400 ~/.ssh/plats.pub
 ```
 
-```shell
-    npm run prod
+2. Copy file deployer.phar vào thư mục bin trong vendor
+
+```
+cp deploy/deployer.phar vendor/bin/
 ```
 
-```shell
-    php artisan storage:link
+Phân quyền cho file trên
+
+```
+sudo chmod -R 777 vendor/bin/deployer.phar
 ```
 
-## 3. Deploy command (auto from local)
+3. Chạy lênh deploy lên server dev
 
-### production
-```shell
-dep deploy production
 ```
-
-### staging
-```shell
-dep deploy staging
+vendor/bin/deployer.phar deploy dev
 ```
+- Chờ kết quả done thì deploy thành công
 
-### development
-```shell
-dep deploy development
+## Note:
+- Nếu ở bước 3 báo lỗi thì vui lòng chạy các lệnh sau rồi chạy lại bước 3
+
 ```
-
-#### Note: Check routes api
-```shell
-php artisan route:list --path=api
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/plats
 ```
