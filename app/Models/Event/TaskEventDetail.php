@@ -38,12 +38,12 @@ class TaskEventDetail extends Model
      * @var array
      */
     protected $hidden = [
-        'id',
+
     ];
 
 
-    public function taskEvent(): BelongsTo
-    {
-        return $this->belongsTo(TaskEvent::class);
-    }
+//    public function taskEvent(): BelongsTo
+//    {
+//        return $this->belongsTo(TaskEvent::class);
+//    }
 }
