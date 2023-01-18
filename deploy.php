@@ -77,11 +77,11 @@ task('npm:run', function () {
     writeln("Run npm: " . $envStage);
 
     if ($envStage == 'production') {
-        run('cd {{prod_path}}/current && npm install && npm run prod && php artisan storage:link --force');
+        run('cd {{prod_path}}/current && npm install && npm run prod && php artisan storage:link');
     } elseif ($envStage == 'staging') {
-        run('cd {{stg_path}}/current && npm install && npm run prod && php artisan storage:link --force');
+        run('cd {{stg_path}}/current && npm install && npm run prod && php artisan storage:link');
     } else {
-        run('cd {{dev_path}}/current && npm install && npm run prod && php artisan storage:link --force');
+        run('cd {{dev_path}}/current && npm install && npm run prod && php artisan storage:link');
     }
 });
 
