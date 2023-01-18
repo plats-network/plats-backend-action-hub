@@ -83,7 +83,6 @@ class EventService extends BaseService
             }
             $data = $this->repository->create($dataInsertEvent);
             $details = Arr::get($request->all(), 'details');
-            dd($details);
             $rewards = Arr::get($request->all(), 'rewards');
             if ($details) {
                 foreach ($details as $item){
