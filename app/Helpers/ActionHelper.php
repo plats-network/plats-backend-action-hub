@@ -137,4 +137,74 @@ class ActionHelper
 
         return $txtType;
     }
+
+
+    // /**
+    //  * Tasks type platform
+    //  */
+    // define('TWITTER', 1);
+    // define('FACEBOOK', 2);
+    // define('DISCORD', 3);
+    // define('TELEGRAM', 4);
+
+    // // Twitter
+    // define('TWITTER_FOLLOW', 0);
+    // define('TWITTER_LIKE', 1);
+    // define('TWITTER_RETWEET', 2);
+    // define('TWITTER_TWEET', 3);
+
+    // // Facebook
+    // define('FACEBOOK_SHARE', 0);
+    // define('FACEBOOK_LIKE', 1);
+    // define('FACEBOOK_POST', 2);
+    // define('FACEBOOK_JOIN_GROUP', 3);
+
+    // // Telegram
+    // define('TELEGRAM_JOIN', 0);
+
+    // // Discord
+    // define('DISCORD_JOIN', 0);
+
+    public static function commonType($platform, $type)
+    {
+        $labelPlatform = '';
+        $label = '';
+
+        if ($platform == FACEBOOK) {
+            $labelPlatform = 'facebook';
+
+            if ($type == FACEBOOK_SHARE) {
+                $label = 'share';
+            } elseif ($type == FACEBOOK_LIKE) {
+                $label = 'like';
+            } elseif ($type == FACEBOOK_POST) {
+                $label = 'post';
+            } else {
+                $label = 'join_group';
+            }
+        } elseif ($platform == DISCORD) {
+            $labelPlatform = 'discord';
+            $label = 'join';
+        } elseif ($platform == TELEGRAM) {
+            $labelPlatform = 'telegram';
+            $label = 'join';
+        } else {
+            $labelPlatform = 'twitter';
+
+            if ($type == TWITTER_FOLLOW) {
+                $label = 'follow';
+            } elseif ($type == TWITTER_LIKE) {
+                $label = 'like';
+            } elseif ($type == TWITTER_RETWEET) {
+                $label = 'retweet';
+            } else {
+                $label = 'tweet';
+            }
+        }
+
+        return [
+            'platform' => $labelPlatform,
+            'type' => $label
+        ];
+    }
 }

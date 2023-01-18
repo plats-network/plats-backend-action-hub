@@ -28,12 +28,10 @@ if (!defined('DEFINE_CONSTANT')) {
     define('TYPE_FREE_TASK', 1);
 
     //User-Tasks-Status
-    define('USER_WAITING_TASK', 0);
-    define('USER_PROCESSING_TASK', 1);
-    define('USER_COMPLETED_TASK', 2);
-    define('USER_CANCEL_TASK', 3);
-    define('USER_TIMEOUT_TASK', 4);
-    define('USER_REJECT_TASK', 5);
+    define('USER_TASK_DOING', 0);
+    define('USER_TASK_DONE', 1);
+    define('USER_TASK_CANCEL', 2);
+    define('USER_TASK_TIMEOUT', 3);
 
     /**
      * Tasks Location

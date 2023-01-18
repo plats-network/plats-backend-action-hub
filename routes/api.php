@@ -48,6 +48,7 @@ Route::prefix('tasks')->controller(Task::class)->group(function ($router) {
 
     $router->post('like-pin', 'taskAction')->name('task.action');
     $router->post('start-cancel', 'startTask')->name('task.startTask');
+    $router->get('my-tasks', 'myTasks')->name('task.myTasks');
 });
 
 Route::prefix('tasks-v2')->controller(TaskV2::class)->group(function () {
@@ -70,7 +71,7 @@ Route::prefix('tasks-cws')->controller(Tasks::class)->group(function () {
 
 
 
-Route::get('/my-tasks', [UserTask::class, 'histories']);
+// Route::get('/my-tasks', [UserTask::class, 'histories']);
 Route::resource('boxes', Box::class)->only(['index', 'update', 'show']);
 Route::resource('gifts', Gifts::class)->only(['index', 'show']);
 Route::resource('{id}/qr_code', QrCode::class)->only(['index']);

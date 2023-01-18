@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('task_users', function (Blueprint $table) {
+        Schema::create('task_user_action_logs', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id')->index();
             $table->uuid('task_id')->index();
-            $table->dateTimeTz('finish_at')->nullable();
-            $table->tinyInteger('status')->default(0)->comment('0: improgress, 1: done, 2: cancel, 3: timeout');
+            $table->string('ip_address')->nullable();
+            $table->integer('type')->default(0)->comment('0: start task, 1: cancel, 2: timeout');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('task_users');
+        Schema::dropIfExists('task_user_action_logs');
     }
 };

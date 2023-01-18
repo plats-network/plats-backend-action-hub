@@ -38,7 +38,7 @@ return new class extends Migration
             $table->uuid('source_id')->index()->comment('checkin, social, event...');
             $table->tinyInteger('type')->default(0)->comment('0: checkin, 1: social, 2: event...');
             $table->unsignedInteger('amount')->default(0);
-            $table->tinyInteger('status')->default(0)->comment('0: review, 1: done, 2: cancel, 3: reject');
+            $table->tinyInteger('status')->default(0)->comment('0: review, 1: done, 2: reject');
             $table->string('checkin_img')->nullable()->comment('Nếu checkin');
             $table->string('ip_address')->nullable();
             $table->string('agent')->nullable();

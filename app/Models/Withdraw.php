@@ -6,6 +6,7 @@ use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+// Bỏ đi ko dùng nữa 
 class Withdraw extends Model
 {
     use Uuid;

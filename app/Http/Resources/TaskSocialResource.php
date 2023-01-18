@@ -20,18 +20,19 @@ class TaskSocialResource extends JsonResource
      */
     public function toArray($request)
     {
+        $types = ActionHelper::commonType($this->platform, $this->type);
         return [
             'id' => $this->id,
             'reward_id' => $this->reward_id,
             'name' => $this->name,
             'description' => $this->description,
             'platform' => $this->platform,
+            'platform_label' => $types['platform'],
             'type' => $this->type,
+            'type_label' => $types['type'],
             'url' => $this->url,
             'amount' => $this->amount,
-            // 'order' => $this->order,
             'lock' => $this->lock,
-            'status' => $this->status,
         ];
 
 

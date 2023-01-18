@@ -9,7 +9,14 @@ use App\Http\Requests\{
     StartTaskRequest,
     UserActionRequest
 };
-use App\Http\Resources\{TaskResource, TaskUserResource, TaskDogingResource, SocialResource, CheckInResource};
+use App\Http\Requests\Task\TaskStartRequest;
+use App\Http\Resources\{
+    TaskResource,
+    TaskUserResource,
+    TaskDogingResource,
+    SocialResource,
+    CheckInResource
+};
 use App\Repositories\{LocationHistoryRepository, TaskRepository, TaskUserRepository};
 use App\Services\TaskService;
 use Illuminate\Http\Request;
@@ -17,10 +24,12 @@ use App\Models\{
     Task as ModelTask,
     UserTaskAction, TaskUser
 };
+use App\Models\Task\TaskUserActionLog;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\{DB, Http};
 use Carbon\Carbon;
+use Log;
 
 class Task extends ApiController
 {
@@ -36,6 +45,7 @@ class Task extends ApiController
         private TaskService $taskService,
         private ModelTask $modelTask,
         private TaskUser $taskUser,
+        private TaskUserActionLog $logTask,
         private LocationHistoryRepository $locationHistoryRepository,
         private TaskRepository $taskRepository,
         private TaskUserRepository $taskUserRepository,
@@ -56,8 +66,8 @@ class Task extends ApiController
             $tasks = $this->modelTask
                 ->with(['taskLocations', 'taskSocials'])
                 ->whereStatus(ACTIVE_TASK)
-                ->where('end_at', '>=', Carbon::now())
                 ->orderBy('created_at', 'desc')
+                ->orderBy('end_at', 'asc')
                 ->paginate($limit);
 
         } catch (QueryException $e) {
@@ -92,30 +102,22 @@ class Task extends ApiController
         return $this->respondWithResource(new TaskResource($task));
     }
 
+    // Task like and pinned
     public function taskAction(UserActionRequest $request)
     {
+        DB::beginTransaction();
+
         try {
             $type = $request->input('type');
             $taskId = $request->input('task_id');
             $userId = $request->user()->id;
             $typeNum = ($type == 'like' || $type == 'unlike') ? TASK_LIKE : TASK_PIN;
-
-            $userLikePin = $this->userTaskAction
-                ->whereUserId($userId)
-                ->whereTaskId($taskId)
-                ->whereType($typeNum)
-                ->first();
+            $userLikePin = $this->userTaskAction->whereUserId($userId)->whereTaskId($taskId)->whereType($typeNum)->first();
+            $mess = 'Liked';
+            $params = ['user_id' => $userId, 'task_id' => $taskId, 'type' => $typeNum];
 
             if ($type == 'like') {
-                if (!$userLikePin) {
-                    $this->userTaskAction->create([
-                        'user_id' => $userId,
-                        'task_id' => $taskId,
-                        'type' => $typeNum
-                    ]);
-                }
-
-                $mess = 'Liked';
+                if (!$userLikePin) { $this->userTaskAction->create($params); }
             }
 
             if ($type == 'unlike') {
@@ -125,11 +127,7 @@ class Task extends ApiController
 
             if ($type == 'pin') {
                 if (!$userLikePin) {
-                    $this->userTaskAction->create([
-                        'user_id' => $userId,
-                        'task_id' => $taskId,
-                        'type' => $typeNum
-                    ]);
+                    $this->userTaskAction->create($params);
                 }
 
                 $mess = 'Pinned';
@@ -139,23 +137,14 @@ class Task extends ApiController
                 if ($userLikePin) { $userLikePin->delete(); }
                 $mess = 'Unpinned';
             }
+
+            DB::commit();
         } catch (\Exception $e) {
+            DB::rollBack();
             return $this->respondNotFound();
         }
 
         return $this->responseMessage($mess);
-    }
-
-    /**
-     * @param \App\Http\Requests\CreateTaskRequest $request
-     *
-     * @return \Illuminate\Http\Resources\Json\JsonResource
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     */
-    public function create(CreateTaskRequest $request)
-    {
-        $data = $this->taskService->create($request);
-        return $this->respondWithResource(new TaskUserResource($data), 'Create successful task.', 201);
     }
 
     /**
@@ -166,98 +155,80 @@ class Task extends ApiController
      * @return \Illuminate\Http\Resources\Json\JsonResource
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function startTask(Request $request)
+    public function startTask(TaskStartRequest $request)
     {
+        DB::beginTransaction();
+
         try {
             $userId = $request->user()->id;
             $taskId = $request->input('task_id');
             $task = $this->modelTask->findOrFail($taskId);
-            $checkStart = $this->taskUser
-                ->whereUserId($userId)
-                ->whereTaskId($taskId)
-                ->whereStatus(0)
-                ->first();
+            $checkStart = $this->taskUser->whereUserId($userId)->whereTaskId($taskId)->first();
+            $actionParams = ['user_id' => $userId, 'task_id' => $taskId];
+            $mess = 'Start done!';
+
+            if (!$checkStart) {
+                $checkStart = $this->taskUser->create(array_merge($actionParams, ['status' => 0, 'finish_at' => $task->end_at]));
+            }
 
             if ($request->input('type') == 'start') {
-                if (!$checkStart) {
-                    $this->taskUser->create([
-                        'user_id' => $userId,
-                        'task_id' => $taskId,
-                        'status' => 0,
-                        'finish_at' => $task->end_at,
-                    ]);
-                }
-
-                $mess = 'Start done!';
-            }
-
-            if ($request->input('type') == 'cancel') {
-                if ($checkStart) {
-                    $checkStart->update(['status' => 2]);
-                }
-
+                $checkStart->update(['status' => 0]);
+                $this->logTask->create(array_merge($actionParams, ['status' => 0]));
+            } else {
+                $checkStart->update(['status' => 2]);
+                $this->logTask->create(array_merge($actionParams, ['status' => 1]));
                 $mess = 'Cancel done!';
             }
+
+            DB::commit();
         } catch (\Exception $e) {
+            DB::rollBack();
+            Log::err($e->getMessage());
             return $this->respondNotFound();
         }
 
         return $this->responseMessage($mess);
+    }
 
+    public function myTasks(Request $request)
+    {
+        try {
+            $userId = $request->user()->id;
+            $limit = $request->get('limit') ?? PAGE_SIZE;
 
-        // OLD
-        $token= request()->bearerToken();
-        # Check Task
-        $task = $this->taskRepository->find($taskId);
+            $tasks = $this->modelTask
+                ->with(['taskLocations', 'taskSocials', 'taskUsers'])
+                ->whereHas('taskUsers', function($q) use ($request, $userId) {
+                    $q->whereUserId($userId);
 
-        if (empty($task)) {
-            return $this->respondNotFound('Task not found!');
+                    if ($request->has('type') && $request->input('type') == 'doing') {
+                        $q->whereStatus(USER_TASK_DOING);
+                    } elseif ($request->has('type') && $request->input('type') == 'done') {
+                        $q->whereStatus(USER_TASK_DONE);
+                    } elseif($request->has('type') && $request->input('type') == 'cancel') {
+                        $q->whereStatus(USER_TASK_CANCEL);
+                    } elseif($request->has('type') && $request->input('type') == 'expired') {
+                        $q->whereStatus(USER_TASK_TIMEOUT);
+                    }
+                })
+                ->whereStatus(ACTIVE_TASK)
+                ->orderBy('created_at', 'desc')
+                ->orderBy('end_at', 'asc')
+                ->paginate($limit)
+                ;
+        } catch (\Exception $e) {
+            return $this->respondNotFound();
         }
 
-        # Update task time out
-        TaskUser::whereHas('task', function($query) {
-                $query->where('type', TYPE_CHECKIN);
-            })
-            ->where('user_id', $userId)
-            ->where('status', USER_PROCESSING_TASK)
-            ->where('time_end', '<', Carbon::now())
-            ->update(['status' => USER_TIMEOUT_TASK]);
+        $datas = TaskResource::collection($tasks);
+        $pages = [
+            'current_page' => (int)$request->get('page'),
+            'last_page' => $tasks->lastPage(),
+            'per_page'  => (int)$limit,
+            'total' => $tasks->lastPage()
+        ];
 
-        # Check task done
-        $doneTask = $this->taskUserRepository->userStartedTask($taskId, $userId, $locationId);
-        if ($doneTask
-            && $doneTask->status == USER_COMPLETED_TASK
-            && $doneTask->location_id == $locationId) {
-            return $this->responseMessage('Task checkin done!');
-        }
-
-        # Check task inprogress
-        $taskImprogress = TaskUser::whereHas('task', function($query) {
-                $query->where('type', TYPE_CHECKIN);
-            })
-            ->whereUserId($userId)
-            ->whereStatus(USER_PROCESSING_TASK)
-            ->get();
-
-        if (
-            null === $request->get('start_task')
-            || empty($request->get('start_task'))
-        ) {
-
-            if ($taskImprogress->count() > 0) {
-                $datas = ['is_improgress' => true];
-
-                return $this->respondWithResource(new TaskUserResource($datas), "Có task đang chạy!");
-            } else {
-                $this->createTask($taskId, $userId, $locationId, $task, $taskImprogress);
-            }
-        } else {
-            $this->createTask($taskId, $userId, $locationId, $task, $taskImprogress);
-        }
-
-        $datas = ['is_improgress' => false];
-
-        return $this->respondWithResource(new TaskUserResource($datas), 'Start doing the task now.');
+        return $this->respondWithIndex($datas, $pages);
     }
 
     /**
@@ -284,6 +255,7 @@ class Task extends ApiController
         
         return $this->respondWithResource(new CheckInResource($dataCheckIn));
     }
+
     /**
      * @param \Illuminate\Http\Request $request
      *
