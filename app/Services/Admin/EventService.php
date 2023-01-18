@@ -46,12 +46,14 @@ class EventService extends BaseService
             $rewards = Arr::get($request->all(), 'rewards');
             if ($details) {
                 TaskEventDetail::where('task_event_id',$id)->delete();
-                $data->taskEventDetail()->createMany($details);
+                foreach ($details as $item){
+                    $data->taskEventDetail()->create($item);
+                }
             }
             $taskId = Arr::get($request->all(), 'task_id');
             if ($taskId){
-                TaskEventReward::where('task_id',$taskId)->delete();
                 if ($rewards) {
+                    TaskEventReward::where('task_id',$taskId)->delete();
                     $rewards['task_id'] = $taskId;
                     $rewards['created_at'] = date("Y-m-d H:i:s");
                     $rewards['updated_at'] = date("Y-m-d H:i:s");
@@ -83,7 +85,9 @@ class EventService extends BaseService
             $details = Arr::get($request->all(), 'details');
             $rewards = Arr::get($request->all(), 'rewards');
             if ($details) {
-                $data->taskEventDetail()->createMany($details);
+                foreach ($details as $item){
+                    $data->taskEventDetail()->create($item);
+                }
             }
             if ($rewards) {
                 $rewards['task_id'] = Arr::get($request->all(), 'task_id');
