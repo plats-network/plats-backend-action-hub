@@ -43,7 +43,7 @@ class Event extends ApiController
     {
         try {
             $this->eventService->store($request);
-            $mess = empty($request->input('id')) ? 'Create event done!' : 'Update group done!';
+            $mess = empty($request->input('id')) ? 'Create event done!' : 'Update event done!';
         } catch (\Exception $e) {
             return $this->respondError($e->getMessage());
         }
