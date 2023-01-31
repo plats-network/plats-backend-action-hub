@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\BaseImage;
+use App\Models\Event\TaskEvent;
 use App\Models\Traits\Attribute\TaskAttribute;
 use App\Models\Traits\Method\TaskMethod;
 use App\Models\Traits\Relation\TaskRelation;
@@ -83,6 +84,11 @@ class Task extends Model
     public function taskUsers()
     {
         return $this->hasMany(TaskUser::class);
+    }
+
+    public function taskEvents()
+    {
+        return $this->hasMany(TaskEvent::class);
     }
 
     /**
