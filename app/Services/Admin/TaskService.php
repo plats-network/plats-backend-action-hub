@@ -169,6 +169,19 @@ class TaskService extends BaseService
                     }
                 }
             }
+            $events = Arr::get($data, 'events');
+            if ($events){
+                foreach ($events as $event){
+                    $path = 'event/image/banner' . Carbon::now()->format('Ymd');
+                    $event['banner_url'] = Storage::disk('s3')->putFileAs($path, $event['banner_url'], $event['banner_url']->hashName());
+                    $idTaskEvent = $dataBaseTask->taskEvents()->create($event);
+                    if ($event['details']){
+                        foreach ($event['details'] as $item){
+                            $idTaskEvent->eventDetails()->create($item);
+                        }
+                    }
+                }
+            }
             $socials = Arr::get($data, 'social');
             if ($socials){
                 $dataBaseTask->taskSocials()->createMany($socials);

@@ -60,7 +60,7 @@ class Event extends ApiController
     public function show($id, Request $request)
     {
         try {
-            $event = $this->eventModel->with('eventDetails')->findOrFail($id);
+            $event = $this->eventModel->with('task','eventDetails')->findOrFail($id);
         } catch (\Exception $e) {
             return $this->respondError($e->getMessage());
         }
