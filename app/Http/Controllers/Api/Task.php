@@ -200,14 +200,15 @@ class Task extends ApiController
                 ->with(['taskLocations', 'taskSocials', 'taskUsers'])
                 ->whereHas('taskUsers', function($q) use ($request, $userId) {
                     $q->whereUserId($userId);
+                    $type = $request->input('type');
 
-                    if ($request->has('type') && $request->input('type') == 'doing') {
+                    if ($request->has('type') && $$type == 'doing') {
                         $q->whereStatus(USER_TASK_DOING);
-                    } elseif ($request->has('type') && $request->input('type') == 'done') {
+                    } elseif ($request->has('type') && $$type == 'done') {
                         $q->whereStatus(USER_TASK_DONE);
-                    } elseif($request->has('type') && $request->input('type') == 'cancel') {
+                    } elseif($request->has('type') && $$type == 'cancel') {
                         $q->whereStatus(USER_TASK_CANCEL);
-                    } elseif($request->has('type') && $request->input('type') == 'expired') {
+                    } elseif($request->has('type') && $$type == 'expired') {
                         $q->whereStatus(USER_TASK_TIMEOUT);
                     }
                 })

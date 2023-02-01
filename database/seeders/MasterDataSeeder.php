@@ -48,7 +48,7 @@ class MasterDataSeeder extends Seeder
 
             Task::create([
                 'id' => $uuid,
-                'name' => 'Task '. $k,
+                'name' => 'Check in at 30Shine Thanh Xuan - Ha Noi',
                 'description' => 'Desc '. $k,
                 'banner_url' => 'https://www.shutterstock.com/image-photo/surreal-image-zebra-two-black-260nw-729088339.jpg',
                 'start_at' => Carbon::now(),
