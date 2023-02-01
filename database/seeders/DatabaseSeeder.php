@@ -27,6 +27,8 @@ class DatabaseSeeder extends Seeder
                 break;
             case 'production':
                 $this->call([
+                    GroupSeeder::class,
+                    MasterDataSeeder::class
                 ]);
 
                 break;
