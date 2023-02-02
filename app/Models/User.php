@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Arr;
+use App\Models\User\UserReward;
 
 class User implements Authenticatable
 {
@@ -103,5 +104,10 @@ class User implements Authenticatable
     public function __get($key)
     {
         return $this->attributes[$key];
+    }
+
+    public function userRewards()
+    {
+        return $this->hasMany(UserReward::class);
     }
 }

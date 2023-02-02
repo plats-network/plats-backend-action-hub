@@ -5,6 +5,7 @@ namespace App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\Uuid;
+use App\Models\Reward;
 
 class UserReward extends Model
 {
@@ -28,4 +29,9 @@ class UserReward extends Model
         'reward_id',
         'amount',
     ];
+
+    public function reward()
+    {
+        return $this->belongsTo(Reward::class);
+    }
 }

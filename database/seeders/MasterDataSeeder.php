@@ -20,7 +20,19 @@ class MasterDataSeeder extends Seeder
     public function run()
     {
         print('Create rewards \n');
-        $rewards = ['$PSP', '$PLATS', '$NFT', '$ETH', '$BTC', '$USDT'];
+        $rewards = [
+            [
+                'symbol' => '$PSP',
+                'name' => 'Point',
+                'img' => 'icon/psp-icon.png'
+            ],
+            [
+                'symbol' => '$PLATS',
+                'name' => 'Plats',
+                'img' => 'icon/psp-icon.png'
+            ]
+        ];
+
         $datas = [
             [
                 'id' => 'c519af43-1349-46bb-ab52-de6b53981d8c',
@@ -95,26 +107,20 @@ class MasterDataSeeder extends Seeder
 
 
         foreach($rewards as $reward) {
-            $reward = Reward::where('symbol', $reward)->first();
-            if ($reward) { continue; }
+            $rewardCheck = Reward::whereSymbol($reward['symbol'])->first();
+            if ($rewardCheck) { continue; }
 
             Reward::create([
-                'name' => "Reward $reward",
-                'description' => "Description $reward",
-                'image' => 'https://www.shutterstock.com/image-photo/surreal-image-zebra-two-black-260nw-729088339.jpg',
-                'order' => random_int(1, 100),
+                'name' => $reward['name'],
+                'description' => "Description",
+                'image' => $reward['img'],
+                'symbol' => $reward['symbol'],
+                'order' => random_int(1, 10),
                 'status' => true
             ]);
         }
 
         print("Create task \n");
-        // $uuids = [
-        //     'c519af43-1349-46bb-ab52-de6b53981d8c',
-        //     '101ed251-5b3c-4c66-80a7-82782476b687',
-        //     'c96b6066-c90c-45ed-aea3-3f74ca2a15b6',
-        //     'b507e645-1f63-48b6-b279-bc90aef65369',
-        //     '8f079b77-ad94-4875-b940-7a253666bd09'
-        // ];
 
         foreach($datas as $data) {
             if (Task::find($data['id'])) {continue;}
@@ -144,12 +150,22 @@ class MasterDataSeeder extends Seeder
             ]);
 
             $rewardId = Reward::first()->id;
+            $names = [
+                'Accelerator Appchain Showcase Series #1',
+                'It is the art of choosing specific words and sounds that will make the user reach the goal we want while fulfilling their task.',
+                'Who is making dope music, has low cost editions available and is committed to community building?',
+                'Drumroll please 🥁🥁 🥁... these are the 5 lucky winners who will be sharing a total prize of 500',
+                'Thanks to these pros you can concentrate on the process of NFTs creation and growing your community. 🤝🎉',
+                'Are you ready for the new month? But lets look over the previous one!',
+                'Allowing users to farm AURORA tokens while demonstrating their solution in action 😎'
+            ];
+
             $params = [
                 'task_id' => $data['id'],
                 'reward_id' => $rewardId,
-                'name' => 'Flow',
+                'name' => $names[array_rand($names, 1)],
                 'description' => $data['description'],
-                'url' => 'https://demo.com',
+                'url' => 'https://plats.network',
                 'amount' => random_int(1,10),
                 'order' => random_int(1,10),
                 'lock' => false,

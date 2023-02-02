@@ -4,8 +4,11 @@ use App\Http\Controllers\Api\{
     Task, TaskLocation, UserTask,
     Wallet, Box, Gifts,
     QrCode, TaskNotice, LockTray,
-    QrCodeAction, Twitter, Social,TaskV2,Group
+    QrCodeAction, Twitter, Social,TaskV2, Group,
+    UserReward
 };
+
+// Admin CWS
 use App\Http\Controllers\Api\Admin\{
     Reward,
     Tasks,
@@ -91,3 +94,4 @@ Route::prefix('wallet')->controller(Wallet::class)->group(function () {
 Route::resource('groups', Group::class)->only(['index', 'show']);
 Route::get('my-groups', [Group::class, 'myGroups'])->name('group.my-groups');
 Route::post('join-group', [Group::class, 'joinGroup'])->name('group.join-group');
+Route::resource('user-rewards', UserReward::class)->only(['index']);
