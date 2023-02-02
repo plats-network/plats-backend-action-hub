@@ -34,7 +34,6 @@ class TaskRequest extends FormRequest
                     'base.name' => ['required', 'max: 255'],
                     'base.description' => ['required', 'max: 100'],
                     'base.order' => ['required','integer'],
-                    'base.duration' => ['required'],
                     'base.status' => ['required'],
                     'base.group_id.*' => ['required'],
                     'social' => ['nullable'],
