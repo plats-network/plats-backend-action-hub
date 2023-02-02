@@ -16,9 +16,10 @@ class UserRewardResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->reward->name,
-            'description' => $this->reward->description,
-            'image' => $this->reward->image,
+            'name' => optional($this->reward)->name,
+            'description' => optional($this->reward)->description,
+            'image' => optional($this->reward)->image,
+            'symbol' => optional($this->reward)->symbol,
             'amount' => $this->amount,
         ];
     }
