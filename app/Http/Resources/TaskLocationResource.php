@@ -17,9 +17,11 @@ class TaskLocationResource extends JsonResource
     public function toArray($request)
     {
         $userId = optional($request->user())->id;
+
+        $jobIds = $this->taskLocationJobs->pluck('id')->toArray();
         $statusJob = UserTaskHistory::whereUserId($userId)
             ->whereTaskId($this->task_id)
-            ->whereSourceId($this->id)
+            ->whereIn('source_id', $jobIds)
             ->count();
 
         return [

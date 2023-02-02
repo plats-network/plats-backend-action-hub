@@ -310,7 +310,7 @@ class Task extends ApiController
                 'user_id' => $userId,
                 'task_id' => $taskId,
                 'reward_id' => $rewardId,
-                'source_id' => $job->id,
+                'source_id' => $jobId,
                 'type' => $type == 'checkin' ? 0 : 1,
                 'amount' => $amount,
                 'status' => 0,
