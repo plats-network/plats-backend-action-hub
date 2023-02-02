@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Admin\TaskRequest;
 use App\Http\Resources\Admin\RewardResource;
 use App\Http\Resources\Admin\TaskResource;
 use App\Models\Task;
@@ -48,7 +49,7 @@ class Tasks extends ApiController
         return $this->respondWithIndex($datas, $pages);
     }
 
-    public function store(Request $request)
+    public function store(TaskRequest $request)
     {
 
         if ($request->filled('id')) {
