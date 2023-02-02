@@ -61,12 +61,12 @@ class TaskService extends BaseService
      *
      * @param string $userId
      */
-    public function getTaskDoing($userId)
-    {
-        $task = $this->taskUserRepository->userDoingTask($userId);
+    // public function getTaskDoing($userId)
+    // {
+    //     $task = $this->taskUserRepository->userDoingTask($userId);
 
-        return $task;
-    }
+    //     return $task;
+    // }
 
     /**
      * Auto paginate with query parameters

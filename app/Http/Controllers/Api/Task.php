@@ -5,11 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\{
     CheckInTaskRequest,
-    CreateTaskRequest,
     StartTaskRequest,
     UserActionRequest
 };
-use App\Http\Requests\Task\TaskStartRequest;
+use App\Http\Requests\Task\{TaskStartRequest, JobRequest};
 use App\Http\Resources\{
     TaskResource,
     TaskUserResource,
@@ -22,8 +21,14 @@ use App\Services\TaskService;
 use Illuminate\Http\Request;
 use App\Models\{
     Task as ModelTask,
-    UserTaskAction, TaskUser
+    UserTaskAction, TaskUser,
+    TaskLocationJob, TaskSocial
 };
+
+use App\Models\User\{
+    UserReward, UserRewardTemp, UserTaskHistory
+};
+
 use App\Models\Task\TaskUserActionLog;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon as SupportCarbon;
@@ -46,10 +51,18 @@ class Task extends ApiController
         private ModelTask $modelTask,
         private TaskUser $taskUser,
         private TaskUserActionLog $logTask,
+        private TaskLocationJob $taskLocationJob,
+        private TaskSocial $taskSocial,
+        private TaskLocation $taskLocation,
+
         private LocationHistoryRepository $locationHistoryRepository,
         private TaskRepository $taskRepository,
         private TaskUserRepository $taskUserRepository,
-        private UserTaskAction $userTaskAction
+        private UserTaskAction $userTaskAction,
+        // 
+        private UserReward $userReward,
+        private UserRewardTemp $userRewardTemp,
+        private UserTaskHistory $userTaskHistory,
     ) {}
 
     /**
@@ -183,7 +196,8 @@ class Task extends ApiController
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::err($e->getMessage());
+            \Log::err($e->getMessage());
+
             return $this->respondNotFound();
         }
 
@@ -232,6 +246,88 @@ class Task extends ApiController
         return $this->respondWithIndex($datas, $pages);
     }
 
+
+    // Tas
+    public function startJob(JobRequest $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $userId = $request->user()->id;
+            $type = $request->input('type');
+            $taskId = $request->input('task_id');
+            $jobId = $request->input('job_id');
+            $this->modelTask->findOrFail($taskId);
+
+            if ($type == 'checkin') {
+                $job = $this->taskLocationJob->findOrFail($jobId);
+                $rewardId = optional($job->taskLocation)->reward_id;
+                $amount = $job->taskLocation->amount;
+            } else {
+                $job = $this->taskSocial->findOrFail($jobId);
+                $rewardId = $job->reward_id;
+                $amount = $job->amount;
+            }
+
+            $checkJob = $this->userTaskHistory
+                ->whereUserId($userId)
+                ->whereTaskId($taskId)
+                ->whereSourceId($job->id)
+                ->first()
+                ;
+
+            if ($checkJob) {
+                return $this->responseMessage('Job started');
+            }
+
+            $checkReward = $this->userReward
+                ->whereUserId($userId)
+                ->whereRewardId($rewardId)
+                ->first()
+                ;
+
+            if ($checkReward) {
+                $userAmmount = $checkReward->amount;
+                $checkReward->update([
+                    'amount' => $userAmmount + $amount
+                ]);
+            } else {
+                $this->userReward->create([
+                    'user_id' => $userId,
+                    'reward_id' => $rewardId,
+                    'amount' => $amount
+                ]);
+            }
+
+            $this->userRewardTemp->create([
+                'user_id' => $userId,
+                'reward_id' => $rewardId,
+                'amount' => $amount,
+                'status' => 0
+            ]);
+
+            $this->userTaskHistory->create([
+                'user_id' => $userId,
+                'task_id' => $taskId,
+                'reward_id' => $rewardId,
+                'source_id' => $job->id,
+                'type' => $type == 'checkin' ? 0 : 1,
+                'amount' => $amount,
+                'status' => 0,
+                'ip_address' => '127.0.0.1',
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            \Log::err("Error: " . $e->getMessage());
+            DB::rollBack();
+
+            return $this->respondNotFound();
+        }
+
+        return $this->responseMessage('Job done!');
+    }
+
     /**
      * @param \App\Http\Requests\CheckInTaskRequest $request
      * @param string $taskId
@@ -262,18 +358,18 @@ class Task extends ApiController
      *
      * @return \App\Http\Resources\TaskUserResource
      */
-    public function getTaskDoing(Request $request)
-    {
-        $userId = $request->user()->id;
+    // public function getTaskDoing(Request $request)
+    // {
+    //     $userId = $request->user()->id;
 
-        $dataTaskDoing = $this->taskService->getTaskDoing($userId);
+    //     $dataTaskDoing = $this->taskService->getTaskDoing($userId);
 
-        if (is_null($dataTaskDoing)) {
-            return $this->respondNotFound();
-        }
+    //     if (is_null($dataTaskDoing)) {
+    //         return $this->respondNotFound();
+    //     }
 
-        return $this->respondWithResource(new TaskDogingResource($dataTaskDoing));
-    }
+    //     return $this->respondWithResource(new TaskDogingResource($dataTaskDoing));
+    // }
 
     /**
      * User cancel task
@@ -300,42 +396,5 @@ class Task extends ApiController
         }
 
         return $this->responseMessage('DONE!');
-    }
-
-    private function createTask($taskId, $userId, $taskLocationId, $task, $taskImprogress)
-    {
-        DB::beginTransaction();
-        try {
-            foreach ($taskImprogress as $taskUser) {
-                $taskUser->update(['status' => USER_CANCEL_TASK]);
-            }
-
-            $this->locationHistoryRepository->create([
-                'user_id' => $userId,
-                'location_id' => $taskLocationId,
-                'started_at' => SupportCarbon::now(),
-                'ended_at' => null
-            ]);
-
-            $this->taskUserRepository->create([
-                'user_id' => $userId,
-                'task_id' => $taskId,
-                'location_id' => $taskLocationId,
-                'status' => USER_PROCESSING_TASK,
-                'location_checked' => null,
-                'wallet_address' => null,
-                'time_left' => SupportCarbon::now()->addMinutes($task->duration),
-                'time_start' => SupportCarbon::now(),
-                'time_end'  => SupportCarbon::now()->addMinutes($task->duration)
-            ]);
-
-            DB::commit();
-        } catch (RuntimeException $exception) {
-            DB::rollBack();
-            throw $exception;
-        } catch (Exception $exception) {
-            DB::rollBack();
-            throw new RuntimeException($exception->getMessage(), 500062, $exception->getMessage(), $exception);
-        }
     }
 }
