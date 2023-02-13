@@ -43,8 +43,7 @@ class TaskGallery extends Model
      * @var array
      */
     protected $hidden = [
-        'id',
-        'task_id',
+
     ];
 
     protected function urlImage(): Attribute

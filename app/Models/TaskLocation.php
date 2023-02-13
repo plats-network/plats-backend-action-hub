@@ -41,6 +41,7 @@ class TaskLocation extends Model
      * @var array
      */
     protected $hidden = [
+        'id',
         'created_at',
         'updated_at',
         'deleted_at',

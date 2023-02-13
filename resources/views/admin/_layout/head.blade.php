@@ -13,3 +13,4 @@
 <link rel="stylesheet" href="{{ asset('css/admin/custom.css') }}"/>
 <!-- Template Base Styles End -->
 <script src="{{ asset('js/admin/theme/base/loader.js') }}"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">

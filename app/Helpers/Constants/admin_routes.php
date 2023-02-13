@@ -11,7 +11,8 @@ if (!defined('DEFINE_ADMIN_ROUTER')) {
 
     // Dashboard
     define('DASHBOARD_ADMIN_ROUTER', 'admin.dashboard.route');
-
+    //Tasks-beta
+    define('TASK_BETA_LIST_ADMIN_ROUTER', 'admin.task.beta.list.route');
     // Tasks
     define('TASK_LIST_ADMIN_ROUTER', 'admin.task.list.route');
     define('TASK_CREATE_ADMIN_ROUTER', 'admin.task.create.route');

@@ -27,7 +27,7 @@ class Tasks extends ApiController
 
     )
     {
-        $this->middleware('client_admin');
+
     }
 
     public function index(Request $request)
@@ -53,10 +53,10 @@ class Tasks extends ApiController
     {
 
         if ($request->filled('id')) {
-            $checkStatusTask = Task::where('status', TASK_PUBLIC)->where('id', $request->input('id'))->first();
-            if ($checkStatusTask) {
-                return $this->respondError('Can’t edit a published task', 422);
-            }
+//            $checkStatusTask = Task::where('status', TASK_PUBLIC)->where('id', $request->input('id'))->first();
+//            if ($checkStatusTask) {
+//                return $this->respondError('Can’t edit a published task', 422);
+//            }
         }
         $reward = $this->taskService->store($request);
         return $this->responseMessage('success');
@@ -64,7 +64,15 @@ class Tasks extends ApiController
 
     public function edit($id)
     {
-        $task = Task::with('taskGalleries', 'groupTasks', 'taskSocials', 'taskLocations')->find($id);
+        $task = Task::with( 'taskSocials', 'taskLocations')->find($id);
+        $taskGroup = TaskGroup::where('task_id',$id)->pluck('group_id');
+        $taskGallery = TaskGallery::where('task_id',$id)->pluck('url_image');
+        $image = [];
+        foreach ($taskGallery as $item){
+            $image[]['url'] = $item;
+        }
+        $task['group_tasks'] = $taskGroup;
+        $task['task_galleries'] = $image;
         return $this->responseMessage($task);
     }
 

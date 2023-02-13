@@ -71,55 +71,48 @@ class TaskService extends BaseService
         if (!$request->filled('id')) {
             return $this->create($request);
         }
-
         return $this->update($request,$request->input('id'));
     }
 
     public function update(Request $request, $id)
     {
         $data = Arr::except($request->all(), '__token');
-        $baseTask = Arr::get($data, 'base');
+        $baseTask = Arr::except($request->all(), '__token');
         DB::beginTransaction();
         try {
-            if ($request->hasFile('image')) {
-                $uploadedFile = $request->file('image');
-                $path = 'task/image/banner' . Carbon::now()->format('Ymd');
-                $baseTask['banner_url'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
-            }
             $baseTask['creator_id'] = Auth::user()->id;
             $dataBaseTask = $this->repository->update($baseTask,$id);
             TaskGallery::where('task_id',$id)->delete();
-            if ($request->hasFile('slider')) {
-                $uploadedFiles = $request->file('slider');
-                $path = 'task/image/banner' . Carbon::now()->format('Ymd');
-                foreach ($uploadedFiles as $uploadedFile){
-                    $imageGuides['url_image'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
-                    $dataBaseTask->taskGalleries()->create($imageGuides);
+            if ($baseTask['task_galleries']){
+                foreach ($baseTask['task_galleries'] as $uploadedFile){
+                    $dataBaseTask->taskGalleries()->create( ['url_image' => empty($uploadedFile['url']) ? $uploadedFile :  $uploadedFile['url']]);
                 }
             }
-            if ($request->input('slider')){
-                foreach ($request->input('slider') as $sliderItem){
-                    $guides['url_image'] = $sliderItem;
-                    $dataBaseTask->taskGalleries()->create($guides);
-                }
-            }
-            if ($baseTask['group_id']){
+            if ($baseTask['group_tasks']){
                 TaskGroup::where('task_id',$id)->delete();
-                $dataBaseTask->groupTasks()->attach($baseTask['group_id']);
+                foreach ($baseTask['group_tasks'] as $item){
+                    DB::table('task_groups')->insert([
+                        'task_id' => $id,
+                        'group_id' => $item,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+                }
+
             }
-            $locations = Arr::get($data, 'locations');
+            $locations = Arr::get($data, 'task_locations');
             if ($locations){
                 TaskLocation::where('task_id',$id)->delete();
                 foreach ($locations as $location){
                     $idTaskLocation = $dataBaseTask->taskLocations()->create($location);
-                    if ($location['detail']){
-                        foreach ($location['detail'] as $item){
+                    if ($location['task_location_jobs']){
+                        foreach ($location['task_location_jobs'] as $item){
                             $idTaskLocation->taskLocationJob()->create($item);
                         }
                     }
                 }
             }
-            $socials = Arr::get($data, 'social');
+            $socials = Arr::get($data, 'task_socials');
             if ($socials){
                 $dataBaseTask->taskSocials()->delete();
                 $dataBaseTask->taskSocials()->createMany($socials);
@@ -137,33 +130,30 @@ class TaskService extends BaseService
     public function create(Request $request)
     {
         $data = Arr::except($request->all(), '__token');
-        $baseTask = Arr::get($data, 'base');
+        $baseTask = Arr::except($request->all(), '__token');
         DB::beginTransaction();
         try {
-            if ($request->hasFile('image')) {
-                $uploadedFile = $request->file('image');
+            if ($request->hasFile('banner_url')) {
+                $uploadedFile = $request->file('banner_url');
                 $path = 'task/image/banner' . Carbon::now()->format('Ymd');
                 $baseTask['banner_url'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
             }
             $baseTask['creator_id'] = Auth::user()->id;
             $dataBaseTask = $this->repository->create($baseTask);
-            if ($request->hasFile('slider')) {
-                $uploadedFiles = $request->file('slider');
-                $path = 'task/image/banner' . Carbon::now()->format('Ymd');
-                foreach ($uploadedFiles as $uploadedFile){
-                    $imageGuides['url_image'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
-                    $dataBaseTask->taskGalleries()->create($imageGuides);
+            if ($baseTask['task_galleries']){
+                foreach ($baseTask['task_galleries'] as $uploadedFile){
+                    $dataBaseTask->taskGalleries()->create( ['url_image' => empty($uploadedFile['url']) ? $uploadedFile :  $uploadedFile['url']]);
                 }
             }
-            if ($baseTask['group_id']){
-                $dataBaseTask->groupTasks()->attach($baseTask['group_id']);
+            if ($baseTask['group_tasks']){
+                $dataBaseTask->groupTasks()->attach($baseTask['group_tasks']);
             }
-            $locations = Arr::get($data, 'locations');
+            $locations = Arr::get($data, 'task_locations');
             if ($locations){
                 foreach ($locations as $location){
                     $idTaskLocation = $dataBaseTask->taskLocations()->create($location);
-                    if ($location['detail']){
-                        foreach ($location['detail'] as $item){
+                    if ($location['task_location_jobs']){
+                        foreach ($location['task_location_jobs'] as $item){
                             $idTaskLocation->taskLocationJob()->create($item);
                         }
                     }
@@ -182,7 +172,7 @@ class TaskService extends BaseService
                     }
                 }
             }
-            $socials = Arr::get($data, 'social');
+            $socials = Arr::get($data, 'task_socials');
             if ($socials){
                 $dataBaseTask->taskSocials()->createMany($socials);
             }
