@@ -26,7 +26,7 @@
                                     PLATS NETWORK
                                 </h1>
                                 <h1 class="display-3 text-white">
-                                    Action-hub for Business
+                                    Action-hub for Business 123456
                                 </h1>
                             </div>
                             <p class="h6 text-white lh-1-5 mb-5">
