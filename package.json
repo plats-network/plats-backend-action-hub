@@ -15,7 +15,8 @@
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
         "sass": "^1.54.9",
-        "sass-loader": "^12.6.0"
+        "sass-loader": "^12.6.0",
+        "vue-loader": "^15.9.8"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.2.0",
@@ -46,6 +47,10 @@
         "@near-wallet-selector/near-wallet": "^7.0.0",
         "@near-wallet-selector/nightly": "^7.0.0",
         "@near-wallet-selector/nightly-connect": "^7.0.0",
-        "@near-wallet-selector/sender": "^7.0.0"
+        "@near-wallet-selector/sender": "^7.0.0",
+        "vue": "^2.7.10",
+        "element-tiptap": "^1.27.1",
+        "element-ui": "^2.15.10",
+        "es6-promise": "^4.2.8"
     }
 }

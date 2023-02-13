@@ -67,6 +67,7 @@ mix
 mix
     .js(resourcePath_admin + 'js/vendor.js', js_path_admin)
     .js(resourcePath_admin + 'js/app.js', js_path_admin)
+    .js('resources/js/app.js', js_path_admin).vue();
 /*
  |--------------------------------------------------------------------------
  | Make file of single page
