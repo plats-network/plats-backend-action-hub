@@ -16,15 +16,15 @@ class UserAdminDefaultSeeder extends Seeder
      */
     public function run()
     {
-        User::withoutEvents(function () {
-            User::create([
-                'id'                => (string)Str::orderedUuid(),
-                'name'              => 'Admin Plat System',
-                'email'             => 'admin@plats.network',
-                'password'          => Hash::make('123456a@'),
-                'role'              => ADMIN_ROLE,
-                'email_verified_at' => now(),
-            ]);
-        });
+//        User::withoutEvents(function () {
+//            User::create([
+//                'id'                => (string)Str::orderedUuid(),
+//                'name'              => 'Admin Plat System',
+//                'email'             => 'admin@plats.network',
+//                'password'          => Hash::make('123456a@'),
+//                'role'              => ADMIN_ROLE,
+//                'email_verified_at' => now(),
+//            ]);
+//        });
     }
 }
