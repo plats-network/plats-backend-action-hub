@@ -13,12 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('withdraw_histories', function (Blueprint $table) {
+        Schema::create('providers', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('user_id')->index();
-            $table->decimal('amount', 12, 2)->nullable()->default(0);
-            $table->tinyInteger('status')->nullable()->default(0);
+            $table->string('provider');
+            $table->string('provider_id');
+            $table->uuid('user_id')->unasinged();
+            $table->string('avatar')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -29,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('withdraw_histories');
+        Schema::dropIfExists('providers');
     }
 };
