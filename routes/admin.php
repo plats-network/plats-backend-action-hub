@@ -13,7 +13,7 @@ Route::post('register', [Register::class, 'store'])->name('auth.store');
 
 // Task management
 Route::prefix('tasks-beta')->controller(\App\Http\Controllers\Admin\TaskBeta::class)->group(function () {
-    Route::get('/', 'index');
+    Route::get('/', 'index')->name(TASK_BETA_LIST_ADMIN_ROUTER);
     Route::get('edit/{id}', 'edit')->whereUuid('id');
     Route::get('create', 'create');
     Route::post('/save-avatar-api', 'uploadAvatar');

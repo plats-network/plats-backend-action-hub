@@ -39,7 +39,7 @@ class Task extends ApiController
      * @param $locationHistoryRepository
      * @param $taskRepository
      * @param $taskUserRepository
-     * 
+     *
      */
     public function __construct(
         private TaskService $taskService,
@@ -60,7 +60,7 @@ class Task extends ApiController
     public function index(Request $request)
     {
         try {
-            $userId = $request->user()->id;
+//            $userId = $request->user()->id;
             $limit = $request->get('limit') ?? PAGE_SIZE;
 
             $tasks = $this->modelTask
@@ -252,7 +252,7 @@ class Task extends ApiController
 
         $dataCheckIn = $this->taskService
             ->checkIn($taskId, $locationId, $userId, $request->image, $request->activity_log);
-        
+
         return $this->respondWithResource(new CheckInResource($dataCheckIn));
     }
 
