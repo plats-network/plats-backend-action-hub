@@ -13,7 +13,8 @@ use App\Http\Controllers\Api\Admin\{
     Group as CwsGroup
 };
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Auth\Api\{Register, Login, RegisterAdmin};
+use App\Http\Controllers\Api\{Profile, ResetPassword, TestUser, User};
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,6 +25,43 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+// Register
+Route::post('register_admin', [RegisterAdmin::class, 'store']);
+Route::post('register', [Register::class, 'register']);
+Route::post('register/confirm-email', [Register::class, 'confirmEmail']);
+Route::post('register/resend-confirm-email', [Register::class, 'resendOtp']);
+
+// Login
+Route::post('login', [Login::class, 'login']);
+Route::post('login/social', [Login::class, 'socialLogin']);
+Route::get('login/apple', [Login::class, 'loginApple']);
+Route::post('login/{providerName}/callback', [Login::class, 'callbackProvider']);
+
+Route::resource('test_user', TestUser::class)->only(['index']);
+
+// Reset password
+Route::post('reset-password', [ResetPassword::class, 'sendMail']);
+Route::post('check-recovery-code', [ResetPassword::class, 'verifyCode']);
+Route::put('reset-password', [ResetPassword::class, 'reset']);
+
+Route::middleware('auth:api')->group(function () {
+    Route::post('refresh', [Login::class, 'refresh']);
+
+    Route::prefix('profile')->group(function () {
+        Route::get('/{userId}', [Profile::class, 'index']);
+        Route::patch('/', [Profile::class, 'update']);
+        Route::post('/upload-avatar', [Profile::class, 'updateAvatar']);
+        Route::post('/password', [Profile::class, 'changePassword']);
+        Route::post('/update-social', [Profile::class, 'updateSocialAccount']);
+    });
+
+    Route::prefix('wallet')->group(function () {
+        Route::post('withdraw', [Wallet::class, 'withdraw']);
+    });
+
+    Route::get('account-socials', [User::class, 'getAccountSocial'])->name('account.social');
+    Route::delete('delete-account', [User::class, 'deleteAccount'])->name('delete.account');
+});
 
 Route::prefix('cws')->group(function($router) {
     $router->resource('groups', CwsGroup::class)->only(['index', 'store', 'show', 'destroy']);

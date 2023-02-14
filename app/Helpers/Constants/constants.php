@@ -120,4 +120,24 @@ if (!defined('DEFINE_CONSTANT')) {
     define('POST', 6);
     define('JOIN_GROUP', 7);
     define('HASHTAG', 8);
+
+    /**
+     * Error code
+     */
+    define('CREDENTIALS_NOT_MATCH', 2);
+    define('RESET_CODE_INVALID', 3);
+    define('CONFIRM_CODE_INVALID', 4);
+    define('EMAIL_UNVERIFIED', 5);
+    define('TIME_INVALID', 6);
+    define('ACCOUNT_ACTIVED', 7);
+    define('REQUIRE_LOGIN_SOCIAL', 8);
+    define('VALIDATE_FAILED', 9);
+    define('MODEL_NOT_FOUND', 10);
+    define('UNAUTHENTICATED_OR_TOKEN_EXPIRED', 11);
+    define('QUERY_EXCEPTION', 12);
+    define('INTERNAL_ERROR', 13);
+    define('LOGIN_FACEBOOK_ERROR', 14);
+    define('LOGIN_GOOGLE_ERROR', 15);
+    define('LOGIN_APPLE_ERROR', 16);
+    define('LOGIN_SOCIAL_ERROR', 17);
 }

@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Guards\JwtGuard;
+use App\Models\PersonalAccessToken;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\Sanctum;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -24,30 +26,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+
         $this->registerPolicies();
-
-        Auth::extend('jwt', function ($app, $name, array $config) {
-            unset($name);
-            // Return an instance of Illuminate\Contracts\Auth\Guard...
-            $guard = new JWTGuard(
-                $app['tymon.jwt'],
-                $app['auth']->createUserProvider($config['provider']),
-                $app['session.store'],
-                $app['request'],
-                $app['events']
-            );
-
-            $app->refresh('request', $guard, 'setRequest');
-
-            return $guard;
-        });
-
-        Auth::provider('token', function ($app, array $config) {
-            return new PlatsUserProvider();
-        });
-
-        /*if (! $this->app->routesAreCached()) {
-            Passport::routes();
-        }*/
     }
 }

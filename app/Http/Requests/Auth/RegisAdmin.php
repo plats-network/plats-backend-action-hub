@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
-use App\Enums\Social;
 
-class SocialRequest extends FormRequest
+class RegisAdmin extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +24,9 @@ class SocialRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => ['required', new Enum(Social::class)],
-            'account' => ['required']
+            'name' => ['required', 'min: 5', 'max: 50'],
+            'email' => ['required', 'email', 'unique:users'],
+            'password' => ['required', 'min: 8', 'max: 50']
         ];
     }
 }

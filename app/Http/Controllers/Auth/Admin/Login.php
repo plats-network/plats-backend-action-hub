@@ -15,7 +15,7 @@ class Login extends Controller
      */
     public function showFormLogin()
     {
-        if (Auth::guard('api')->user()) {
+        if (Auth::guard('web')->user()) {
             return redirect('/cp');
         }
 
@@ -39,6 +39,6 @@ class Login extends Controller
      */
     protected function guard()
     {
-        return Auth::guard('api');
+        return Auth::guard('web');
     }
 }
