@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             case 'staging':
                 $this->call([
                     GroupSeeder::class,
-                    MasterDataSeeder::class
+                    MasterDataSeeder::class,
+                    UserAdminDefaultSeeder::class
                 ]);
 
                 break;
