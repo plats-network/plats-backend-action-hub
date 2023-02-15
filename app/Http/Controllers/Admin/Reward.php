@@ -26,11 +26,9 @@ class Reward extends Controller
      */
     public function index(Request $request)
     {
-        $rewards = $this->rewardRepository->paginate(PAGE_SIZE);
 
         return view(
-            'admin.reward.index',
-            ['rewards' => $rewards]
+            'admin.reward.index'
         );
     }
 
@@ -41,10 +39,6 @@ class Reward extends Controller
      */
     public function create()
     {
-        // Remove flash session fields before from visited
-        if (!empty(request()->old())) {
-            $this->flashReset();
-        }
 
         return view('admin.reward.create');
     }
@@ -79,15 +73,7 @@ class Reward extends Controller
      */
     public function edit($id)
     {
-        $assign = [];
-        $assign['reward'] = RewardModel::findOrFail($id);
-
-        // Save detail to session
-        if (empty(request()->old()) || old('id') != $id) {
-            $this->flashSession($assign['reward']);
-        }
-
-        return view('admin.reward.edit', $assign);
+        return view('admin.reward.edit');
     }
 
     /**

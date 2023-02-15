@@ -22,6 +22,8 @@ if (!defined('DEFINE_ADMIN_ROUTER')) {
 
     // Reward
     define('REWARD_LIST_ADMIN_ROUTER', 'admin.reward.list.route');
+    define('GROUP_LIST_ADMIN_ROUTER', 'admin.group.list.route');
+    define('USER_LIST_ADMIN_ROUTER', 'admin.user.list.route');
     define('REWARD_CREATE_ADMIN_ROUTER', 'admin.reward.create.route');
     define('REWARD_EDIT_ADMIN_ROUTER', 'admin.reward.edit.route');
     define('REWARD_STORE_ADMIN_ROUTER', 'admin.reward.store.route');

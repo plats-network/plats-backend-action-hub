@@ -1,31 +1,26 @@
 <template>
     <el-row>
         <el-row class="mb-1">
-            <h4>Task management</h4>
-            <el-button style="float: right;margin: 5px"
-                type="primary"
-                @click="handleCreate()">
-                <i class="el-icon-plus"></i> Create Task
-            </el-button>
+            <h4>User management</h4>
             <el-descriptions title="" :column="3" border>
                 <el-descriptions-item label="Name" label-class-name="my-label" content-class-name="my-content">
                     <el-col :span="23">
                         <el-input placeholder="typing ..." v-model="formSearch.name" @change="list_data()"></el-input>
                     </el-col>
                 </el-descriptions-item>
-                <el-descriptions-item label="Description" label-class-name="my-label" content-class-name="my-content">
+                <el-descriptions-item label="Email" label-class-name="my-label" content-class-name="my-content">
                     <el-col :span="23">
-                        <el-input placeholder="typing ..." v-model="formSearch.description"
+                        <el-input placeholder="typing ..." v-model="formSearch.email"
                                   @change="list_data()"></el-input>
                     </el-col>
                 </el-descriptions-item>
-                <el-descriptions-item label="Status" label-class-name="my-label" content-class-name="my-content">
+                <el-descriptions-item label="Role" label-class-name="my-label" content-class-name="my-content">
                     <el-row :gutter="2">
                         <el-col :span="23">
                             <el-select class="full-option" @change="list_data()" v-model="formSearch.status"
                                        placeholder="Select">
                                 <el-option
-                                    v-for="item in [{value: null, label: 'All'},{value: '1', label: 'public'}, {value: '0', label: 'draft'}]"
+                                    v-for="item in [{value: null, label: 'All'},{value: 1, label: 'User'}, {value: 2, label: 'Admin'}, {value: 3, label: 'Super Admin'}]"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value">
@@ -34,11 +29,29 @@
                         </el-col>
                     </el-row>
                 </el-descriptions-item>
+                <el-descriptions-item label="Date to *" label-class-name="my-label" content-class-name="my-content">
+                    <el-col :span="23">
+                        <el-date-picker @change="list_data()"
+                                        v-model="formSearch.date_to"
+                                        type="date"
+                                        placeholder="Pick a day">
+                        </el-date-picker>
+                    </el-col>
+                </el-descriptions-item>
+                <el-descriptions-item label="Date from *" label-class-name="my-label" content-class-name="my-content">
+                    <el-col :span="23">
+                        <el-date-picker @change="list_data()"
+                            v-model="formSearch.date_end"
+                            type="date"
+                            placeholder="Pick a day">
+                        </el-date-picker>
+                    </el-col>
+                </el-descriptions-item>
             </el-descriptions>
         </el-row>
         <el-row>
             <el-table
-                :data="tableData"
+                :data="formData"
                 style="width: 100%">
                 <el-table-column
                     type="index"
@@ -50,54 +63,48 @@
                     <template slot-scope="scope">
                         <div class="demo-image__preview">
                             <el-image
-                                :src="scope.row.image"
-                                :preview-src-list="[scope.row.image]"
+                                :src="scope.row.avatar_path"
+                                :preview-src-list="[scope.row.avatar_path]"
                             >
                             </el-image>
                         </div>
                     </template>
+
                 </el-table-column>
                 <el-table-column
                     prop="name"
                     label="Name"
-                    width="180">
+                    >
                 </el-table-column>
                 <el-table-column
-                    prop="description"
-                    label="Description"
-                    width="180">
+                    prop="email"
+                    label="Email"
+                    >
                 </el-table-column>
                 <el-table-column
                     label="Status">
                     <template slot-scope="scope">
-                        <el-tag type="success" v-if="scope.row.status == '0'">draft</el-tag>
-                        <el-tag type="danger" v-if="scope.row.status == '1'">public</el-tag>
+                        <el-tag type="success" v-if="scope.row.role == 1">User</el-tag>
+                        <el-tag type="success" v-if="scope.row.role == 2">Admin</el-tag>
+                        <el-tag type="success" v-if="scope.row.role == 3">Super Admin</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    label="Actions">
+                    prop="created_at"
+                    label="Create"
+                    >
                     <template slot-scope="scope">
-                        <el-button
-                            size="mini"
-                            type="primary"
-                            @click="handleEdit(scope.$index, scope.row)">
-                            <i class="el-icon-edit"></i>
-                        </el-button>
-                        <el-button
-                            size="mini"
-                            type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">
-                            <i class="el-icon-delete-solid"></i>
-                        </el-button>
+                        <span>{{ scope.row.created_at | moment }}</span>
                     </template>
                 </el-table-column>
             </el-table>
             <el-pagination
                 background
+                @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :page-size="10"
                 :current-page.sync="currentPage"
-                layout="total, prev, pager, next"
+                layout="prev, pager, next"
                 :total="this.totalNumber"
                 class="float-right mt-3 text-center"
             >
@@ -107,91 +114,57 @@
 </template>
 
 <script>
-import 'element-tiptap/lib/index.css';
-import {Notification} from 'element-ui';
-import {ElementTiptap} from 'element-tiptap';
-import {
-    // necessary extensions
-    Doc,
-    Text,
-    Paragraph,
-    Heading,
-    Bold,
-    Underline,
-    Italic,
-    Strike,
-    ListItem,
-    BulletList,
-    OrderedList,
-    Image,
-    TodoList,
-    TodoItem,
-    Iframe,
-    Table,
-    TableHeader,
-    TableRow,
-    TableCell,
-    TextAlign,
-    LineHeight,
-    Indent,
-    HorizontalRule,
-    HardBreak,
-    TrailingNode,
-    History,
-    TextColor,
-    TextHighlight,
-    FormatClear,
-    FontType,
-    FontSize,
-    Preview,
-    CodeView,
-    Print,
-    Fullscreen,
-    SelectAll,
-} from 'element-tiptap';
+import {ElementTiptap} from "element-tiptap";
+import moment from "moment";
+import {Notification} from "element-ui";
 
 export default {
-    name: "Index",
+    name: "index",
+    props: ['csrf'],
     components: {
         'el-tiptap': ElementTiptap,
     },
     data() {
         return {
-            input: '',
-            tableData: [],
             currentPage: 1,
             totalNumber: 0,
             page: 1,
             formSearch: {
                 name: '',
-                description: '',
-                status: '',
+                role: '',
+                email: '',
+                date_to: '',
+                date_end: '',
             },
+            formData : [
+                {
+                    id : '',
+                    avatar_path : '',
+                    role : '',
+                    name : '',
+                    email : '',
+                    created_at : '',
+                }
+            ],
         }
     },
     methods: {
-        handleDelete(scope, row){
-            this.$confirm('Bạn có muốn xóa không ?', 'Warning', {
-                confirmButtonText: 'OK',
-                cancelButtonText: 'Hủy',
-                type: 'warning'
-            }).then(() => {
-                axios.get('/api/tasks-cws/delete/'+row.id, ).then(e => {
-                    this.list_data()
-                }).catch((_) => {
-                })
-            }).catch(() => {
-            });
-        },
-        list_data(val = 1) {
+        list_data(val = 1, type = true) {
+            var self = this;
             let rawData =
                 {
-                    'page': this.page,
                     'name': this.formSearch.name,
-                    'description': this.formSearch.description,
-                    'status': this.formSearch.status
+                    'email': this.formSearch.email,
+                    'role': this.formSearch.role,
+                    'date_to': this.formSearch.date_to,
+                    'date_end': this.formSearch.date_end,
                 }
-            this.page = val;
+            if (!type) {
+                rawData['size'] = val;
+            } else {
+                this.page = val;
+                rawData['page'] = val;
+            }
             rawData['page'] = val;
             const loading = this.$loading({
                 lock: true,
@@ -199,24 +172,22 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = '/api/tasks-cws'
+            let url = '/cp/users/list'
             axios.get(url, {
                 params: rawData
             }).then(e => {
-                console.log(e.data)
-                this.tableData = e.data.data;
-                this.totalNumber = e.data.meta.total;
+                console.log(e.data.data)
+                this.formData = e.data.data;
+                this.totalNumber = e.data.total;
+                self.totalItem = e.data.to;
                 loading.close();
 
             }).catch((_) => {
                 loading.close();
             })
         },
-        handleEdit(scope, row) {
-            window.location.href = '/cp/tasks-beta/edit/'+ row.id;
-        },
-        handleCreate() {
-            window.location.href = '/cp/tasks-beta/create';
+        handleSizeChange(val) {
+            this.list_data(val, false);
         },
         handleCurrentChange(val) {
             this.list_data(val);
@@ -225,6 +196,13 @@ export default {
     mounted: function () {
         this.list_data()
     },
+    filters: {
+        moment: function (date) {
+            return moment(date).format('YYYY-MM-DD');
+        }
+        ,
+
+    }
 }
 </script>
 

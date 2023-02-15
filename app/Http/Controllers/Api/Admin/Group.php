@@ -39,7 +39,7 @@ class Group extends ApiController
                 'current_page' => (int)$request->get('page'),
                 'last_page' => $groups->lastPage(),
                 'per_page' => (int)$limit,
-                'total' => $groups->lastPage()
+                'total' => $groups->total()
             ];
         } catch (\Exception $e) {
             return $this->respondError($e->getMessage());
