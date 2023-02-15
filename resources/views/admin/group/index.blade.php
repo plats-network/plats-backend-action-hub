@@ -2,8 +2,8 @@
 
 @section('content')
     <div id="app">
-        <reward csrf="{{ csrf_token() }}">
+        <group csrf="{{ csrf_token() }}">
 
-        </reward>
+        </group>
     </div>
 @endsection

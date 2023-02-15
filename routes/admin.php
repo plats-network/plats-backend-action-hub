@@ -30,19 +30,19 @@ Route::prefix('tasks')->controller(Task::class)->group(function () {
 // Company management
 Route::prefix('companies')->controller(Company::class)->group(function () {
     Route::get('/', 'index')->name(COMPANY_LIST_ADMIN_ROUTER);
-    Route::get('create', 'create')->name(COMPANY_CREATE_ADMIN_ROUTER);
-    Route::get('edit/{id}', 'edit')->name(COMPANY_EDIT_ADMIN_ROUTER)->whereUuid('id');
-    Route::post('store', 'store')->name(COMPANY_STORE_ADMIN_ROUTER);
 });
 
 // Reward management Chua co controller len commnet
 Route::prefix('rewards')->controller(Reward::class)->group(function () {
     Route::get('/', 'index')->name(REWARD_LIST_ADMIN_ROUTER);
-    Route::get('/create', 'create')->name(REWARD_CREATE_ADMIN_ROUTER);
-    Route::get('/edit/{id}', 'edit')->name(REWARD_EDIT_ADMIN_ROUTER)->whereUuid('id');
-    Route::post('/store', 'store')->name(REWARD_STORE_ADMIN_ROUTER);
 });
-
+Route::prefix('groups')->controller(\App\Http\Controllers\Admin\Group::class)->group(function () {
+    Route::get('/', 'index')->name(GROUP_LIST_ADMIN_ROUTER);
+});
+Route::prefix('users')->controller(\App\Http\Controllers\Admin\User::class)->group(function () {
+    Route::get('/', 'index')->name(USER_LIST_ADMIN_ROUTER);
+    Route::get('/list', 'apiListUser');
+});
 Route::prefix('rewards/{reward}')->controller(DetailReward::class)->group(function() {
     Route::get('/lists', 'index')->name(DETAIL_REWARD_LIST_ADMIN_ROUTER);
     Route::get('/create', 'create')->name(DETAIL_REWARD_CREATE_ADMIN_ROUTER);

@@ -12,6 +12,9 @@ Vue.use(ElementTiptapPlugin, { /* plugin options */ });
 Vue.component('task', require('./components/task/Index.vue').default);
 Vue.component('task-edit', require('./components/task/Edit.vue').default);
 Vue.component('task-create', require('./components/task/Create.vue').default);
+Vue.component('reward', require('./components/reward/index.vue').default);
+Vue.component('group', require('./components/group/index.vue').default);
+Vue.component('user', require('./components/user/index.vue').default);
 
 
 

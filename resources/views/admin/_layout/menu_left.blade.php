@@ -36,6 +36,24 @@
                         <span class="label">Tasks Management</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route(REWARD_LIST_ADMIN_ROUTER) }}">
+                        <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
+                        <span class="label">Reward Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route(GROUP_LIST_ADMIN_ROUTER) }}">
+                        <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
+                        <span class="label">Group Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route(USER_LIST_ADMIN_ROUTER) }}">
+                        <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
+                        <span class="label">User Management</span>
+                    </a>
+                </li>
 {{--                @if (auth()->user()->role == ADMIN_ROLE)--}}
 {{--                    <li>--}}
 {{--                        <a href="#">--}}

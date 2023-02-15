@@ -42,6 +42,22 @@ class RewardService extends BaseService
             // Remove condition after apply query builder
             $this->cleanFilterBuilder('name');
         }
+        if ($this->filter->has('description')) {
+            $this->builder->where(function ($q) {
+                $q->where('description', 'LIKE', '%' . $this->filter->get('description') . '%');
+            });
+
+            // Remove condition after apply query builder
+            $this->cleanFilterBuilder('description');
+        }
+        if ($this->filter->has('status')) {
+            $this->builder->where(function ($q) {
+                $q->where('status', 'LIKE', '%' . $this->filter->get('status') . '%');
+            });
+
+            // Remove condition after apply query builder
+            $this->cleanFilterBuilder('status');
+        }
 
         return $this->endFilter();
     }
@@ -57,7 +73,7 @@ class RewardService extends BaseService
 
     public function create(Request $request)
     {
-        $data = $request->except(['image']);
+        $data = $request->except(['']);
         //Save cover
         if ($request->hasFile('image')) {
             $uploadedFile = $request->file('image');
@@ -73,7 +89,7 @@ class RewardService extends BaseService
     {
         $rewardId = $this->find($request->input('id'));
 
-        $data = $request->except(['image']);
+        $data = $request->except(['']);
 
         if ($request->hasFile('image')) {
             $uploadedFile = $request->file('image');

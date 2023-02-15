@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\Concerns\BaseService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{Hash, Storage};
+use Illuminate\Support\Facades\{DB, Hash, Storage};
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
@@ -19,7 +19,7 @@ class UserService extends BaseService
     {
         $this->repository = $repository;
     }
-    
+
     /**
      * @param \Illuminate\Http\Request $request
      *
@@ -34,6 +34,47 @@ class UserService extends BaseService
         }
 
         return $user;
+    }
+
+
+    public function search($conditions = [])
+    {
+        $this->makeBuilder($conditions);
+
+        if ($this->filter->has('name')) {
+            $this->builder->where(function ($q) {
+                $q->where(DB::raw('LOWER(name)'), 'like', '%' . strtolower($this->filter->get('name')) . '%');
+            });
+
+            // Remove condition after apply query builder
+            $this->cleanFilterBuilder('name');
+        }
+        if ($this->filter->has('email')) {
+            $this->builder->where(function ($q) {
+                $q->where(DB::raw('LOWER(email)'), 'like', '%' . strtolower($this->filter->get('email')) . '%');
+            });
+
+            // Remove condition after apply query builder
+            $this->cleanFilterBuilder('email');
+        }
+        if ($this->filter->has('status')) {
+            $this->builder->where(function ($q) {
+                $q->where('status',$this->filter->get('status'));
+            });
+
+            // Remove condition after apply query builder
+            $this->cleanFilterBuilder('status');
+        }
+
+        if ($this->filter->has('date_to') || $this->filter->has('date_end')) {
+            $this->builder->where(function ($q) {
+                $q->whereBetween('created_at', [$this->filter->get('date_to') ?? date('Y-m-d'), $this->filter->get('date_end')?? date('Y-m-d')]);
+            });
+
+            // Remove condition after apply query builder
+            $this->cleanFilterBuilder('date_to');
+        }
+        return $this->endFilter();
     }
 
     /**
@@ -51,7 +92,7 @@ class UserService extends BaseService
 
         return $this->repository->create($data);
     }
-    
+
     /**
      * @param \Illuminate\Http\Request $request
      *
@@ -99,7 +140,7 @@ class UserService extends BaseService
     public function updateAvatar(Request $request, $id = null)
     {
         $user = $this->find($request->user()->id);
-        
+
         if ($request->hasFile('avatar')) {
             $uploadedFile = $request->file('avatar');
             $path = 'uploads/profiles/' . Carbon::now()->format('Ymd');
@@ -200,7 +241,7 @@ class UserService extends BaseService
     {
         $user['email_verified_at'] = now();
         $user['status'] = true;
-        
+
         return User::firstOrCreate(
             ['email' => $user['email']],
             $user

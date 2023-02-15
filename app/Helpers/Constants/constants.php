@@ -6,7 +6,7 @@ if (!defined('DEFINE_CONSTANT')) {
     // Zero
     define('ZERO', 0);
 
-    define('PAGE_SIZE', 20);
+    define('PAGE_SIZE', 10);
     define('INPUT_MAX_LENGTH', 255);
 
     /**
