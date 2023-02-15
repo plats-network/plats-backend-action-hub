@@ -71,10 +71,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->getKey();
     }
 
-//    public function getAvatarPathAttribute()
-//    {
-//        return $this->attributes['avatar_path'] ? Storage::url($this->attributes['avatar_path']) : 'https://lumiere-a.akamaihd.net/v1/images/nt_avatarmcfarlanecomic-con_223_01_2deace02.jpeg';
-//    }
+    public function getAvatarPathAttribute()
+    {
+        return $this->attributes['avatar_path'] ? $this->attributes['avatar_path'] : 'https://lumiere-a.akamaihd.net/v1/images/nt_avatarmcfarlanecomic-con_223_01_2deace02.jpeg';
+    }
 
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.

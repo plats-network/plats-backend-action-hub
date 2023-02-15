@@ -124,28 +124,28 @@
                     <el-form-item label="Name" class="mb-3" prop="name">
                         <el-input v-model="formData.name" placeholder="Name"></el-input>
                     </el-form-item>
-                    <el-form-item label="Description" class="mb-3" prop="description">
+                    <el-form-item label="Description VN" class="mb-3" prop="description">
                         <el-input v-model="formData.desc_vn"  :rows="5" type="textarea" placeholder="Description"></el-input>
                     </el-form-item>
-                    <el-form-item label="Description" class="mb-3" prop="description">
+                    <el-form-item label="Description EN" class="mb-3" prop="description">
                         <el-input v-model="formData.desc_en" :rows="5"  type="textarea" placeholder="Description"></el-input>
                     </el-form-item>
-<!--                    <el-form-item label="Status" prop="region" class="mb-3">-->
-<!--                        <el-select v-model="formData.status" placeholder="Status">-->
-<!--                            <el-option-->
-<!--                                v-for="item in [{value: true, label: 'public'}, {value: false, label: 'draft'}]"-->
-<!--                                :key="item.value"-->
-<!--                                :label="item.label"-->
-<!--                                :value="item.value">-->
-<!--                            </el-option>-->
-<!--                        </el-select>-->
-<!--                    </el-form-item>-->
+                    <el-form-item label="Status" prop="region" class="mb-3">
+                        <el-select v-model="formData.status" placeholder="Status">
+                            <el-option
+                                v-for="item in [{value: true, label: 'public'}, {value: false, label: 'draft'}]"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
                     <el-form-item class="mt-3">
                         <el-button type="primary" @click="submitForm('form')">Edit</el-button>
                     </el-form-item>
                 </el-form>
             </el-drawer>
-            <el-drawer title="Create Group" :visible.sync="drawerEdit">
+            <el-drawer title="Create Group" :visible.sync="drawerCreate">
                 <el-form ref="form" :rules="rules" :model="formData" label-width="100px" style="padding-right: 20px">
                     <el-form-item label="Image" class="mb-3" prop="image">
                         <el-upload
@@ -158,8 +158,17 @@
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                     </el-form-item>
-                    <el-form-item label="Name" class="mb-3" prop="name">
+                    <el-form-item label="Name VN" class="mb-3" prop="name">
                         <el-input v-model="formData.name" placeholder="Name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Name En" class="mb-3" prop="name">
+                        <el-input v-model="formData.name_en" placeholder="Name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="User name" class="mb-3" prop="username">
+                        <el-input v-model="formData.username" placeholder="Name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Country" class="mb-3" prop="country">
+                        <el-input v-model="formData.country" placeholder="Name"></el-input>
                     </el-form-item>
                     <el-form-item label="Description" class="mb-3" prop="description">
                         <el-input v-model="formData.desc_vn" :rows="5" type="textarea" placeholder="Description"></el-input>
@@ -167,16 +176,16 @@
                     <el-form-item label="Description" class="mb-3" prop="description">
                         <el-input v-model="formData.desc_en" :rows="5" type="textarea" placeholder="Description"></el-input>
                     </el-form-item>
-<!--                    <el-form-item label="Status" prop="region" class="mb-3">-->
-<!--                        <el-select v-model="formData.status" placeholder="Status">-->
-<!--                            <el-option-->
-<!--                                v-for="item in [{value: true, label: 'public'}, {value: false, label: 'draft'}]"-->
-<!--                                :key="item.value"-->
-<!--                                :label="item.label"-->
-<!--                                :value="item.value">-->
-<!--                            </el-option>-->
-<!--                        </el-select>-->
-<!--                    </el-form-item>-->
+                    <el-form-item label="Status" prop="region" class="mb-3">
+                        <el-select v-model="formData.status" placeholder="Status">
+                            <el-option
+                                v-for="item in [{value: true, label: 'public'}, {value: false, label: 'draft'}]"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
                     <el-form-item class="mt-3">
                         <el-button type="primary" @click="submitForm('form')">Create</el-button>
                     </el-form-item>
@@ -255,8 +264,11 @@ export default {
                 desc_vn : '',
                 desc_en : '',
                 name : '',
+                name_en : '',
                 total_user : '',
-                // status : '',
+                username : '',
+                country : '',
+                status : '',
             },
             rules: {
                 avatar_url: [
@@ -369,7 +381,10 @@ export default {
                 desc_vn : '',
                 desc_en : '',
                 name : '',
+                name_en : '',
                 total_user : '',
+                username : '',
+                country : '',
                 status : '',
             }
             this.rules =  {
@@ -377,6 +392,12 @@ export default {
                     {required: true, message: 'Hãy upload ảnh', trigger: 'change'},
                 ],
                 name: [
+                    {required: true, message: 'Hãy nhập', trigger: 'change'},
+                ],
+                name_en: [
+                    {required: true, message: 'Hãy nhập', trigger: 'change'},
+                ],
+                country: [
                     {required: true, message: 'Hãy nhập', trigger: 'change'},
                 ],
                 desc_vn: [
