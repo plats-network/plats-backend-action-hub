@@ -48,12 +48,12 @@ class GroupRequest extends FormRequest
 
                 if (!$this->id) {
                     $rules = array_merge($rules,  [
-                        'avatar' => ['required', 'mimes:jpeg,jpg,png'],
-                        'cover' => ['required', 'mimes:jpeg,jpg,png'],
+                        'avatar_url' => ['required'],
+                        'cover' => ['nullable', 'mimes:jpeg,jpg,png'],
                     ]);
                 } else {
                     $rules = array_merge($rules,  [
-                        'avatar' => ['nullable', 'mimes:jpeg,jpg,png'],
+                        'avatar_url' => ['nullable'],
                         'cover' => ['nullable', 'mimes:jpeg,jpg,png'],
                     ]);
                 }
