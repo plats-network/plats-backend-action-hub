@@ -62,11 +62,11 @@
                     label="Name"
                     width="180">
                 </el-table-column>
-                <el-table-column
-                    prop="desc_vn"
-                    label="Description"
-                    >
-                </el-table-column>
+<!--                <el-table-column-->
+<!--                    prop="desc_vn"-->
+<!--                    label="Description"-->
+<!--                    >-->
+<!--                </el-table-column>-->
                 <el-table-column
                     prop="total_user"
                     label="Total User"
