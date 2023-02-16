@@ -25,7 +25,7 @@
 <!--                            <el-select class="full-option" @change="list_data()" v-model="formSearch.status"-->
 <!--                                       placeholder="Select">-->
 <!--                                <el-option-->
-<!--                                    v-for="item in [{value: null, label: 'All'},{value: '1', label: 'public'}, {value: '0', label: 'draft'}]"-->
+<!--                                    v-for="item in [{value: null, label: 'All'},{value: true, label: 'public'}, {value: false, label: 'draft'}]"-->
 <!--                                    :key="item.value"-->
 <!--                                    :label="item.label"-->
 <!--                                    :value="item.value">-->
@@ -72,13 +72,13 @@
                     label="Total User"
                     width="180">
                 </el-table-column>
-<!--                <el-table-column-->
-<!--                    label="Status">-->
-<!--                    <template slot-scope="scope">-->
-<!--                        <el-tag type="success" v-if="scope.row.status === false">draft</el-tag>-->
-<!--                        <el-tag type="danger" v-if="scope.row.status === true">public</el-tag>-->
-<!--                    </template>-->
-<!--                </el-table-column>-->
+                <el-table-column
+                    label="Status">
+                    <template slot-scope="scope">
+                        <el-tag type="success" v-if="scope.row.status === false">draft</el-tag>
+                        <el-tag type="danger" v-if="scope.row.status === true">public</el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column
                     label="Actions">
                     <template slot-scope="scope">
@@ -92,7 +92,7 @@
                             size="mini"
                             type="danger"
                             @click="handleDelete(scope.$index, scope.row)">
-                            <i class="el-icon-delete-solid"></i>
+                            <i class="el-icon-lock"></i>
                         </el-button>
                     </template>
                 </el-table-column>
@@ -170,10 +170,10 @@
                     <el-form-item label="Country" class="mb-3" prop="country">
                         <el-input v-model="formData.country" placeholder="Name"></el-input>
                     </el-form-item>
-                    <el-form-item label="Description" class="mb-3" prop="description">
+                    <el-form-item label="Description VN" class="mb-3" prop="description">
                         <el-input v-model="formData.desc_vn" :rows="5" type="textarea" placeholder="Description"></el-input>
                     </el-form-item>
-                    <el-form-item label="Description" class="mb-3" prop="description">
+                    <el-form-item label="Description EN" class="mb-3" prop="description">
                         <el-input v-model="formData.desc_en" :rows="5" type="textarea" placeholder="Description"></el-input>
                     </el-form-item>
                     <el-form-item label="Status" prop="region" class="mb-3">
@@ -277,6 +277,12 @@ export default {
                 name: [
                     {required: true, message: 'Hãy nhập', trigger: 'change'},
                 ],
+                name_en: [
+                    {required: true, message: 'Hãy nhập', trigger: 'change'},
+                ],
+                country: [
+                    {required: true, message: 'Hãy nhập', trigger: 'change'},
+                ],
                 desc_vn: [
                     {required: true, message: 'Hãy nhập', trigger: 'change'},
                 ],
@@ -295,6 +301,11 @@ export default {
             }).then(() => {
                 axios.delete('/api/cws/groups/'+row.id, ).then(e => {
                     this.list_data()
+                    Notification.success({
+                        title: ' Thành công',
+                        message: ' Block Thành công',
+                        type: 'success',
+                    });
                 }).catch((_) => {
                 })
             }).catch(() => {
