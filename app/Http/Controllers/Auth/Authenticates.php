@@ -165,7 +165,7 @@ trait Authenticates
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return $this->loggedOut($request) ?: redirect('auth/cp');
+        return $this->loggedOut($request) ?: redirect('auth/cws');
     }
 
     /**

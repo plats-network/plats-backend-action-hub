@@ -16,6 +16,8 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'link_share' => env('LINK_SHARE', 'http://localhost'),
+    'link_qrc' => env('LINK_QRC', 'https://event.plats.network/'),
 
     /*
     |--------------------------------------------------------------------------

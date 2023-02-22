@@ -22,7 +22,7 @@ class Admin
         } elseif (Auth::user()) {
             return redirect('cp')->withErrors('message', 'You have not admin access');
         } else {
-            return redirect('auth/cp')->withErrors('message', 'You have not admin access');
+            return redirect('auth/cws')->withErrors('message', 'You have not admin access');
         }
     }
 }

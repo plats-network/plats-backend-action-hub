@@ -2,12 +2,16 @@
 
 namespace App\Services\Admin;
 
+use App\Models\Event\TaskEvent;
 use App\Models\Event\TaskEventDetail;
 use App\Models\Event\TaskEventReward;
+use App\Models\TaskGallery;
 use App\Repositories\EventRepository;
+use App\Repositories\TaskRepository;
 use App\Services\Concerns\BaseService;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,15 +20,18 @@ class EventService extends BaseService
     protected $repository;
 
     public function __construct(
-        EventRepository $eventRepository)
+        EventRepository $eventRepository,
+        TaskRepository $taskRepository
+    )
     {
         $this->repository = $eventRepository;
+        $this->taskRepository = $taskRepository;
     }
 
     public function store($request)
     {
         if ($request->has('id') && $request->filled('id')) {
-            return $this->update($request);
+            return $this->update($request,$request->input('id'));
         }
 
         return $this->create($request);
@@ -35,29 +42,34 @@ class EventService extends BaseService
         DB::beginTransaction();
 
         try {
-            $dataInsertEvent = $request->except(['details', 'rewards']);
-            if ($request->hasFile('banner_url')) {
-                $avatarFile = $request->file('banner_url');
-                $path = 'event/banner/' . Carbon::now()->format('Ymd');
-                $dataInsertEvent['banner_url'] = Storage::disk('s3')->putFileAs($path, $avatarFile, $avatarFile->hashName());
-            }
-            $data = $this->repository->update($dataInsertEvent,$id);
-            $details = Arr::get($request->all(), 'details');
-            $rewards = Arr::get($request->all(), 'rewards');
-            if ($details) {
-                TaskEventDetail::where('task_event_id',$id)->delete();
-                foreach ($details as $item){
-                    $data->eventDetails()->create($item);
+            $data = Arr::except($request->all(), '__token');
+            $data['creator_id'] = Auth::user()->id;
+            $dataBaseTask = $this->taskRepository->update($data,$id);
+            TaskGallery::where('task_id',$id)->delete();
+            if ($data['task_galleries']){
+                foreach ($data['task_galleries'] as $uploadedFile){
+                    $dataBaseTask->taskGalleries()->create( ['url_image' => empty($uploadedFile['url']) ? $uploadedFile :  $uploadedFile['url']]);
                 }
             }
-            $taskId = Arr::get($request->all(), 'task_id');
-            if ($taskId){
-                if ($rewards) {
-                    TaskEventReward::where('task_id',$taskId)->delete();
-                    $rewards['task_id'] = $taskId;
-                    $rewards['created_at'] = date("Y-m-d H:i:s");
-                    $rewards['updated_at'] = date("Y-m-d H:i:s");
-                    TaskEventReward::insert($rewards);
+            $idTaskEvent = TaskEvent::where('task_id',$id)->first();
+            TaskEventDetail::where('task_event_id',$idTaskEvent->id)->delete();
+            TaskEvent::where('task_id',$id)->delete();
+            $sessions = Arr::get($data, 'sessions');
+            unset($sessions['id']);
+            $idTaskEventSessions = $dataBaseTask->taskEvents()->create($sessions);
+            if ($sessions['detail']){
+                foreach ($sessions['detail'] as $item){
+                    unset($item['id']);
+                    $idTaskEventSessions->detail()->create($item);
+                }
+            }
+            $booths = Arr::get($data, 'booths');
+            unset($booths['id']);
+            $idTaskEventBooths = $dataBaseTask->taskEvents()->create($booths);
+            if ($booths['detail']){
+                foreach ($booths['detail'] as $item1){
+                    unset($item1['id']);
+                    $idTaskEventBooths->detail()->create($item1);
                 }
             }
             DB::commit();
@@ -75,26 +87,29 @@ class EventService extends BaseService
         DB::beginTransaction();
 
         try {
-            $dataInsertEvent = $request->except(['details', 'rewards']);
-            if ($request->hasFile('banner_url')) {
-                $avatarFile = $request->file('banner_url');
-                $path = 'event/banner/' . Carbon::now()->format('Ymd');
-                $dataInsertEvent['banner_url'] = Storage::disk('s3')->putFileAs($path, $avatarFile, $avatarFile->hashName());
-            }
-            $data = $this->repository->create($dataInsertEvent);
-            $details = Arr::get($request->all(), 'details');
-            $rewards = Arr::get($request->all(), 'rewards');
-            if ($details) {
-                foreach ($details as $item){
-                    $data->eventDetails()->create($item);
+            $data = Arr::except($request->all(), '__token');
+            $data['creator_id'] = Auth::user()->id;
+            $dataBaseTask = $this->taskRepository->create($data);
+            if ($data['task_galleries']){
+                foreach ($data['task_galleries'] as $uploadedFile){
+                    $dataBaseTask->taskGalleries()->create( ['url_image' => empty($uploadedFile['url']) ? $uploadedFile :  $uploadedFile['url']]);
                 }
             }
-            if ($rewards) {
-                $rewards['task_id'] = Arr::get($request->all(), 'task_id');
-                $rewards['created_at'] = date("Y-m-d H:i:s");
-                $rewards['updated_at'] = date("Y-m-d H:i:s");
-                TaskEventReward::insert($rewards);
+            $sessions = Arr::get($data, 'sessions');
+            $idTaskEventSessions = $dataBaseTask->taskEvents()->create($sessions);
+            if ($sessions['detail']){
+                foreach ($sessions['detail'] as $item){
+                    $idTaskEventSessions->detail()->create($item);
+                }
             }
+            $booths = Arr::get($data, 'booths');
+            $idTaskEventBooths = $dataBaseTask->taskEvents()->create($booths);
+            if ($booths['detail']){
+                foreach ($booths['detail'] as $item){
+                    $idTaskEventBooths->detail()->create($item);
+                }
+            }
+
             DB::commit();
         } catch (RuntimeException $exception) {
             DB::rollBack();

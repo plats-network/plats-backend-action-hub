@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Requests\Admin\TaskRequest;
 use App\Http\Resources\Admin\RewardResource;
 use App\Http\Resources\Admin\TaskResource;
+use App\Models\Event\TaskEvent;
 use App\Models\Task;
 use App\Models\TaskGallery;
 use App\Models\TaskGroup;
@@ -34,9 +35,9 @@ class Tasks extends ApiController
     {
         $limit = $request->get('limit') ?? PAGE_SIZE;
         if (Auth::user()->role == CLIENT_ROLE) {
-            $rewards = $this->taskService->search(['limit' => $limit, 'creator_id' => Auth::user()->id]);
+            $rewards = $this->taskService->search(['limit' => $limit, 'creator_id' => Auth::user()->id,'type' => 0]);
         } else {
-            $rewards = $this->taskService->search(['limit' => $limit]);
+            $rewards = $this->taskService->search(['limit' => $limit,'type' => 0]);
         }
         $datas = TaskResource::collection($rewards);
         $pages = [
@@ -67,12 +68,16 @@ class Tasks extends ApiController
         $task = Task::with( 'taskSocials', 'taskLocations')->find($id);
         $taskGroup = TaskGroup::where('task_id',$id)->pluck('group_id');
         $taskGallery = TaskGallery::where('task_id',$id)->pluck('url_image');
+        $booths = TaskEvent::where('task_id',$id)->with('detail')->where('type',1)->first();
+        $sessions = TaskEvent::where('task_id',$id)->with('detail')->where('type',0)->first();
         $image = [];
         foreach ($taskGallery as $item){
             $image[]['url'] = $item;
         }
         $task['group_tasks'] = $taskGroup;
         $task['task_galleries'] = $image;
+        $task['booths'] = $booths;
+        $task['sessions'] = $sessions;
         return $this->responseMessage($task);
     }
 

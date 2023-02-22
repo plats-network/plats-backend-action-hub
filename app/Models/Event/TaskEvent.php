@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Task;
 use App\Models\Traits\Uuid;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class TaskEvent extends Model
 {
@@ -43,15 +44,27 @@ class TaskEvent extends Model
      * @var array
      */
     protected $hidden = [
-
+//        'id'
     ];
+
+    public static function getTagClassName(): string
+    {
+        return Task::class;
+    }
+
+    public function tags(): MorphToMany
+    {
+        return $this
+            ->morphToMany(self::getTagClassName(), 'taggable', 'taggables', null, 'tag_id')
+            ->orderBy('order_column');
+    }
 
     public function task(): BelongsTo
     {
         return $this->belongsTo(Task::class);
     }
 
-    public function eventDetails()
+    public function detail()
     {
         return $this->hasMany(TaskEventDetail::class);
     }

@@ -17,6 +17,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class TaskService extends BaseService
 {
@@ -62,7 +63,7 @@ class TaskService extends BaseService
             // Remove condition after apply query builder
             $this->cleanFilterBuilder('name');
         }
-        $this->builder->with('taskLocations','taskSocials','taskGalleries');
+        $this->builder->with('taskLocations','taskSocials','taskGalleries','taskGenerateLinks','taskEvents');
         return $this->endFilter();
     }
 
@@ -172,6 +173,7 @@ class TaskService extends BaseService
                     }
                 }
             }
+            $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber());
             $socials = Arr::get($data, 'task_socials');
             if ($socials){
                 $dataBaseTask->taskSocials()->createMany($socials);
@@ -185,5 +187,27 @@ class TaskService extends BaseService
             throw new RuntimeException($exception->getMessage(), 500062, $exception->getMessage(), $exception);
         }
 
+    }
+
+    public function generateNumber()
+    {
+        $type = [
+            'facebook',
+            'twitter',
+            'telegram',
+            'discord',
+            'form',
+        ];
+        $dataLinkGenerate = [];
+        foreach ($type as $key => $item){
+            $dataLinkGenerate[] = [
+                'name' => 'Link share '.$item,
+                'type' => $key,
+                'url' => config('app.link_share').'?fid='.$item.'&hid='.rand(0, 999999999999999).$key,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ];
+        }
+        return $dataLinkGenerate;
     }
 }

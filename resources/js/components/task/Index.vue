@@ -85,6 +85,12 @@
                         </el-button>
                         <el-button
                             size="mini"
+                            type="success"
+                            @click="handleLink(scope.$index, scope.row)">
+                            <i class="el-icon-paperclip"></i>
+                        </el-button>
+                        <el-button
+                            size="mini"
                             type="danger"
                             @click="handleDelete(scope.$index, scope.row)">
                             <i class="el-icon-delete-solid"></i>
@@ -102,6 +108,18 @@
                 class="float-right mt-3 text-center"
             >
             </el-pagination>
+            <el-dialog title="Link Share" :visible.sync="dialogLinks">
+                <el-table :data="dataLink">
+                    <el-table-column property="name" label="Name" width="200"></el-table-column>
+                    <el-table-column property="url" label="Url" ></el-table-column>
+                    <el-table-column label="Copy" width="80">
+                        <template slot-scope="scope">
+                            <el-button size="mini" type="success" @click="copyCode(scope.$index, scope.row)"><i class="el-icon-paperclip"></i>
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-dialog>
         </el-row>
     </el-row>
 </template>
@@ -157,6 +175,8 @@ export default {
     },
     data() {
         return {
+            dataLink: [],
+            dialogLinks : false,
             input: '',
             tableData: [],
             currentPage: 1,
@@ -170,6 +190,11 @@ export default {
         }
     },
     methods: {
+        copyCode(scope, row){
+            console.log(row.url)
+            // row.url.select();
+            // document.execCommand("copy");
+        },
         handleDelete(scope, row){
             this.$confirm('Bạn có muốn xóa không ?', 'Warning', {
                 confirmButtonText: 'OK',
@@ -213,10 +238,14 @@ export default {
             })
         },
         handleEdit(scope, row) {
-            window.location.href = '/cp/tasks-beta/edit/'+ row.id;
+            window.location.href = '/cws/tasks-beta/edit/'+ row.id;
+        },
+        handleLink(scope, row) {
+           this.dataLink = row.links;
+           this.dialogLinks = true
         },
         handleCreate() {
-            window.location.href = '/cp/tasks-beta/create';
+            window.location.href = '/cws/tasks-beta/create';
         },
         handleCurrentChange(val) {
             this.list_data(val);

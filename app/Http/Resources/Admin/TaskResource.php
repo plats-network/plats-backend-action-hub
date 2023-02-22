@@ -10,7 +10,7 @@ class TaskResource extends JsonResource
     public function toArray($request)
     {
         $token = $request->user()->token;
-        $creator = $this->getUserDetail($token, $this->creator_id);
+        $creator = auth()->user()->name;
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -18,10 +18,11 @@ class TaskResource extends JsonResource
             'image'           => $this->banner_url,
             'type'              => $this->type,
             'status'              => $this->status,
-            'post_by' => $creator ? $creator['name'] : 'Plats Team',
+            'post_by' => $creator ? $creator : 'Plats Team',
             'locations'              => $this->taskLocations,
             'socials'              => $this->taskSocials,
             'galleries'              => $this->taskGalleries,
+            'links'              => $this->taskGenerateLinks,
         ];
     }
     protected function getUserDetail($token, $userId)

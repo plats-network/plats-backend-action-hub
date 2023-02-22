@@ -1,23 +1,27 @@
 <?php
 
-namespace App\Models\Event;
+namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Event\TaskEvent;
 use App\Models\Traits\Uuid;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class TaskEventDetail extends Model
+class TaskGenerateLinks extends Model
 {
     use HasFactory, Uuid;
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'task_event_details';
+    protected $table = 'task_generate_links';
 
     /**
      * The attributes that are mass assignable.
@@ -25,11 +29,10 @@ class TaskEventDetail extends Model
      * @var string[]
      */
     protected $fillable = [
-        'id',
-        'task_event_id',
+        'task_id',
         'name',
-        'description',
-        'status',
+        'type',
+        'url',
     ];
 
     /**
@@ -38,12 +41,6 @@ class TaskEventDetail extends Model
      * @var array
      */
     protected $hidden = [
-//        'id',
+
     ];
-
-
-//    public function taskEvent(): BelongsTo
-//    {
-//        return $this->belongsTo(TaskEvent::class);
-//    }
 }

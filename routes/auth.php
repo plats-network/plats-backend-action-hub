@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 |
 |
 */
-Route::prefix('cp')->group(function () {
+Route::prefix('cws')->group(function () {
     Route::get('/', [Login::class, 'showFormLogin'])->name(LOGIN_ADMIN_ROUTE);
     Route::post('/', [Login::class, 'login']);
 
