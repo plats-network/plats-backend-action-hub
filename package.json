@@ -50,6 +50,7 @@
         "near-api-js": "^0.44.2",
         "overlayscrollbars": "^1.13.1",
         "path": "^0.12.7",
+        "qrcode.vue": "^1.7.0",
         "select2": "^4.1.0-rc.0",
         "tronweb": "^4.4.0",
         "vue": "^2.7.10"
