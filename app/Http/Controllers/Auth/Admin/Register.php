@@ -37,12 +37,12 @@ class Register extends Controller
             $code = $res->getStatusCode();
             $user = json_decode($res->getBody()->getContents());
             if ($code == 200 && optional($user)->user) {
-                return redirect('auth/cp')->with('message', 'Tạo tài khoản thành công'); 
+                return redirect('auth/cws')->with('message', 'Tạo tài khoản thành công');
             }
         } catch (Exception $exception) {
-            return redirect('cp/register')->withErrors(['message' => 'Error: Liên hệ admim']);
+            return redirect('cws/register')->withErrors(['message' => 'Error: Liên hệ admim']);
         }
-        
-        return redirect('cp/register')->withErrors(['message' => 'Tài khoản đã tồn tại']);
+
+        return redirect('cws/register')->withErrors(['message' => 'Tài khoản đã tồn tại']);
     }
 }

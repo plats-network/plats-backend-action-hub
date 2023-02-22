@@ -54,6 +54,12 @@
                         <span class="label">User Management</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route(EVENT_LIST_ADMIN_ROUTER) }}">
+                        <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
+                        <span class="label">Event Management</span>
+                    </a>
+                </li>
 {{--                @if (auth()->user()->role == ADMIN_ROLE)--}}
 {{--                    <li>--}}
 {{--                        <a href="#">--}}

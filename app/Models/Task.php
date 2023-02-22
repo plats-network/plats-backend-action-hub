@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Task extends Model
 {
-    use HasFactory, Uuid, SoftDeletes, TaskRelation, TaskScope, TaskAttribute, TaskMethod;
+    use HasFactory, Uuid, SoftDeletes, TaskRelation, TaskScope, TaskAttribute, TaskMethod ;
 
     /**
      * The table associated with the model.
@@ -72,13 +72,17 @@ class Task extends Model
     {
         return $this->belongsToMany(Group::class,'task_groups','task_id','group_id')->withTimestamps();
     }
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function taskLocations()
     {
         return $this->hasMany(TaskLocation::class)->with('taskLocationJobs');
+    }
+
+    public function taskGenerateLinks()
+    {
+        return $this->hasMany(TaskGenerateLinks::class);
     }
 
     public function taskUsers()
@@ -88,7 +92,7 @@ class Task extends Model
 
     public function taskEvents()
     {
-        return $this->hasMany(TaskEvent::class);
+        return $this->hasMany(TaskEvent::class)->with('detail');;
     }
 
     /**

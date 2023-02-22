@@ -8,14 +8,17 @@ use App\Models\Event\TaskEvent;
 use App\Models\Event\TaskEventDetail;
 use App\Models\Event\TaskEventReward;
 use App\Services\Admin\EventService;
+use App\Services\Admin\TaskService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Event extends ApiController
 {
 
     public function __construct(
         private TaskEvent   $eventModel,
-        private EventService $eventService
+        private EventService $eventService,
+        private TaskService $taskService
     )
     {
     }
@@ -23,11 +26,13 @@ class Event extends ApiController
     public function index(Request $request)
     {
         try {
-            $limit = $request->input('limit') ?? PAGE_SIZE;
-            $event = $this->eventModel->with('task','eventDetails')->orderBy('created_at', 'desc')
-                ->orderBy('status', 'desc')
-                ->paginate($limit);
-            return $this->respondWithResource(new EventResource($event));
+            $limit = $request->get('limit') ?? PAGE_SIZE;
+            if (Auth::user()->role == CLIENT_ROLE) {
+                $event = $this->taskService->search(['limit' => $limit, 'creator_id' => Auth::user()->id,'type' => 3]);
+            } else {
+                $event = $this->taskService->search(['limit' => $limit,'type' => 3]);
+            }
+            return response()->json($event);
         } catch (\Exception $e) {
             return $this->respondError($e->getMessage());
         }

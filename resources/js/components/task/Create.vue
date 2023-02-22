@@ -2,7 +2,7 @@
     <div>
         <div style="display: flex;justify-content: space-between">
             <h4>tạo task</h4>
-            <h3><a href="/cp/tasks-beta" >Quay về trang danh sách Task</a>
+            <h3><a href="/cws/tasks-beta" ><el-button type="primary" icon="el-icon-back"></el-button></a>
             </h3>
         </div>
         <el-form ref="form" class="form-style" label-position="top" :model="form" label-width="120px">
@@ -57,7 +57,7 @@
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cp/tasks-beta/save-avatar-api"
+                            action="/cws/tasks-beta/save-avatar-api"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="form.banner_url" :src="form.banner_url" class="avatar">
@@ -67,7 +67,7 @@
                     <el-form-item label="Slider">
                         <el-upload
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cp/tasks-beta/save-sliders-api"
+                            action="/cws/tasks-beta/save-sliders-api"
                             list-type="picture-card"
                             :on-success="handleSuccess"
                             :file-list="form.task_galleries"
@@ -427,6 +427,7 @@ export default {
                             type: 'success',
                         });
                         loading.close();
+                        window.location.href = '/cws/tasks-beta';
                     }).catch(error => {
                         this.errors = error.response.data.message; // this should be errors.
                         Notification.error({

@@ -14,7 +14,7 @@
         @include('admin._layout.nav')
     </div>
     <main>
-        <div class="container">
+        <div>
             <div class="row">
             @include('admin._layout.menu_left')
             <!-- Page Content Start -->

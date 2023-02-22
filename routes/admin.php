@@ -2,8 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
-    Dashboard, Task, Guild,
-    Company, Reward
+    Dashboard, Reward,Event
 };
 use App\Http\Controllers\Auth\Admin\Register;
 
@@ -20,22 +19,15 @@ Route::prefix('tasks-beta')->controller(\App\Http\Controllers\Admin\TaskBeta::cl
     Route::post('/save-sliders-api', 'uploadSliders');
 });
 
-Route::prefix('tasks')->controller(Task::class)->group(function () {
-    Route::get('/', 'index')->name(TASK_LIST_ADMIN_ROUTER);
-    Route::get('create', 'create')->name(TASK_CREATE_ADMIN_ROUTER);
-    Route::get('edit/{id}', 'edit')->name(TASK_EDIT_ADMIN_ROUTER)->whereUuid('id');
-    Route::post('store', 'store')->name(TASK_STORE_ADMIN_ROUTER);
-    Route::get('deposit/{id}', 'deposit')->name(TASK_DEPOSIT_ADMIN_ROUTER)->whereUuid('id');
-});
-// Company management
-Route::prefix('companies')->controller(Company::class)->group(function () {
-    Route::get('/', 'index')->name(COMPANY_LIST_ADMIN_ROUTER);
-});
 
-// Reward management Chua co controller len commnet
 Route::prefix('rewards')->controller(Reward::class)->group(function () {
     Route::get('/', 'index')->name(REWARD_LIST_ADMIN_ROUTER);
 });
+
+Route::prefix('events')->controller(Event::class)->group(function () {
+    Route::get('/', 'index')->name(EVENT_LIST_ADMIN_ROUTER);
+});
+
 Route::prefix('groups')->controller(\App\Http\Controllers\Admin\Group::class)->group(function () {
     Route::get('/', 'index')->name(GROUP_LIST_ADMIN_ROUTER);
 });
@@ -43,13 +35,4 @@ Route::prefix('users')->controller(\App\Http\Controllers\Admin\User::class)->gro
     Route::get('/', 'index')->name(USER_LIST_ADMIN_ROUTER);
     Route::get('/list', 'apiListUser');
 });
-Route::prefix('rewards/{reward}')->controller(DetailReward::class)->group(function() {
-    Route::get('/lists', 'index')->name(DETAIL_REWARD_LIST_ADMIN_ROUTER);
-    Route::get('/create', 'create')->name(DETAIL_REWARD_CREATE_ADMIN_ROUTER);
-    Route::get('/edit/{id}', 'edit')->name(DETAIL_REWARD_EDIT_ADMIN_ROUTER)->whereUuid('id');
-    Route::post('/store', 'store')->name(DETAIL_REWARD_STORE_ADMIN_ROUTER);
-});
 
-Route::prefix('guilds')->controller(Guild::class)->group(function () {
-    Route::get('/', 'index')->name(GUILD_LIST_ADMIN_ROUTER);
-});
