@@ -52,6 +52,7 @@
                             <el-image
                                 :src="scope.row.avatar_url"
                                 :preview-src-list="[scope.row.avatar_url]"
+                                style="width: 30%; height: auto;"
                             >
                             </el-image>
                         </div>
@@ -114,7 +115,7 @@
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cws/tasks-beta/save-avatar-api"
+                            action="/cws/tasks/save-avatar-api"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="formData.avatar_url" :src="formData.avatar_url" class="avatar">
@@ -151,7 +152,7 @@
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cws/tasks-beta/save-avatar-api"
+                            action="/cws/tasks/save-avatar-api"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="formData.avatar_url" :src="formData.avatar_url" class="avatar">

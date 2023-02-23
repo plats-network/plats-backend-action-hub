@@ -1,8 +1,6 @@
 @extends('admin.layout')
 @section('content')
     <div id="app">
-        <dashboard>
-
-        </dashboard>
+        <dashboard></dashboard>
     </div>
 @endsection
