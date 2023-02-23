@@ -18,7 +18,7 @@
             <div class="row">
             @include('admin._layout.menu_left')
             <!-- Page Content Start -->
-                <div class="col">
+                <div class="col main-cws">
                     @yield('content')
                 </div>
             <!-- Page Content End -->
@@ -28,5 +28,15 @@
     @include('admin._layout.footer')
 </div>
 @include('admin._layout.scripts')
+
+<style type="text/css">
+    .main-cws {
+        background-color: #fff;
+    }
+
+    #app {
+        padding: 20px;
+    }
+</style>
 </body>
 </html>

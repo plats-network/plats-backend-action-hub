@@ -2,8 +2,6 @@
 
 @section('content')
     <div id="app">
-        <user csrf="{{ csrf_token() }}">
-
-        </user>
+        <user csrf="{{ csrf_token() }}"></user>
     </div>
 @endsection

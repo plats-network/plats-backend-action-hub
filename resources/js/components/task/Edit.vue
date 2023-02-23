@@ -2,7 +2,7 @@
     <div>
         <div style="display: flex;justify-content: space-between">
             <h4>Edit task</h4>
-            <h3><a href="/cws/tasks-beta" ><el-button type="primary" icon="el-icon-back"></el-button></a>
+            <h3><a href="/cws/tasks" ><el-button type="primary" icon="el-icon-back"></el-button></a>
             </h3>
         </div>
         <el-form ref="form" class="form-style" label-position="top" :model="form" label-width="120px">
@@ -24,7 +24,7 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="Status" prop="region">
+<!--                     <el-form-item label="Status" prop="region">
                         <el-select v-model="form.status" placeholder="Status">
                             <el-option
                                 v-for="item in [{value: 1, label: 'public'}, {value: 0, label: 'draft'}]"
@@ -33,7 +33,7 @@
                                 :value="item.value">
                             </el-option>
                         </el-select>
-                    </el-form-item>
+                    </el-form-item> -->
                     <el-form-item label="Order">
                         <el-input v-model="form.order" placeholder="Order"></el-input>
                     </el-form-item>
@@ -57,7 +57,7 @@
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cws/tasks-beta/save-avatar-api"
+                            action="/cws/tasks/save-avatar-api"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="form.banner_url" :src="form.banner_url" class="avatar">
@@ -67,7 +67,7 @@
                     <el-form-item label="Slider">
                         <el-upload
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cws/tasks-beta/save-sliders-api"
+                            action="/cws/tasks/save-sliders-api"
                             list-type="picture-card"
                             :on-success="handleSuccess"
                             :file-list="form.task_galleries"
@@ -434,7 +434,7 @@ export default {
                             type: 'success',
                         });
                         loading.close();
-                        window.location.href = '/cws/tasks-beta';
+                        window.location.href = '/cws/tasks';
                     }).catch(error => {
                         this.errors = error.response.data.message; // this should be errors.
                         Notification.error({

@@ -15,8 +15,7 @@
                 </el-descriptions-item>
                 <el-descriptions-item label="Description" label-class-name="my-label" content-class-name="my-content">
                     <el-col :span="23">
-                        <el-input placeholder="typing ..." v-model="formSearch.desc_vn"
-                                  @change="list_data()"></el-input>
+                        <el-input placeholder="typing ..." v-model="formSearch.desc_vn" @change="list_data()"></el-input>
                     </el-col>
                 </el-descriptions-item>
             </el-descriptions>
@@ -25,10 +24,7 @@
             <el-table
                 :data="tableData"
                 style="width: 100%">
-                <el-table-column
-                    type="index"
-                    width="50">
-                </el-table-column>
+                <el-table-column type="index" width="50"></el-table-column>
                 <el-table-column
                     label="Image"
                     width="180">
@@ -37,6 +33,7 @@
                             <el-image
                                 :src="scope.row.banner_url"
                                 :preview-src-list="[scope.row.banner_url]"
+                                style="width: 50%"
                             >
                             </el-image>
                         </div>
@@ -88,8 +85,10 @@
                 class="float-right mt-3 text-center"
             >
             </el-pagination>
+
+            <!-- Edit Events -->
             <el-drawer title="Edit events" size="50%" :visible.sync="drawerEdit">
-                <el-form ref="form" class="form-style" :rules="rules" label-position="top" :model="form" label-width="100px" >
+                <el-form ref="form" class="form-style formCreate" :rules="rules" label-position="top" :model="form" label-width="100px" >
                     <el-row :gutter="20">
                         <el-col :span="16">
                             <el-form-item label="Name">
@@ -99,7 +98,7 @@
                                 <el-input type="textarea" :rows="5" placeholder="Description" v-model="form.description"></el-input>
                             </el-form-item>
                             <div class="d-flex">
-                                <el-form-item label="Status" prop="region" style="margin-right: 20px">
+                                <!-- <el-form-item label="Status" prop="region" style="margin-right: 20px">
                                     <el-select v-model="form.status" placeholder="Status">
                                         <el-option
                                             v-for="item in [{value: 1, label: 'public'}, {value: 0, label: 'draft'}]"
@@ -108,7 +107,7 @@
                                             :value="item.value">
                                         </el-option>
                                     </el-select>
-                                </el-form-item>
+                                </el-form-item> -->
                                 <el-form-item label="Order">
                                     <el-input v-model="form.order" placeholder="Order"></el-input>
                                 </el-form-item>
@@ -121,7 +120,7 @@
                                     <el-date-picker type="datetime" placeholder="Select date and time" v-model="form.end_at"></el-date-picker>
                                 </el-form-item>
                             </div>
-                            <div class="d-flex mt-2">
+                            <div class="d-flex mt-4">
                                 <el-button  @click="addSessions()">Sessions</el-button>
                                 <el-button type="primary" @click="addBooths()">Booths</el-button>
                             </div>
@@ -131,7 +130,7 @@
                                 <el-upload
                                     class="avatar-uploader text-center"
                                     :headers="{ 'X-CSRF-TOKEN': csrf }"
-                                    action="/cws/tasks-beta/save-avatar-api"
+                                    action="/cws/tasks/save-avatar-api"
                                     :on-success="handleAvatarSuccess"
                                     :before-upload="beforeAvatarUpload">
                                     <img v-if="form.banner_url" :src="form.banner_url" class="avatar">
@@ -141,7 +140,7 @@
                             <el-form-item label="Slider">
                                 <el-upload
                                     :headers="{ 'X-CSRF-TOKEN': csrf }"
-                                    action="/cws/tasks-beta/save-sliders-api"
+                                    action="/cws/tasks/save-sliders-api"
                                     list-type="picture-card"
                                     :on-success="handleSuccess"
                                     :file-list="form.task_galleries"
@@ -157,8 +156,10 @@
                     </el-form-item>
                 </el-form>
             </el-drawer>
+
+            <!-- Create Event -->
             <el-drawer title="Create events" size="50%" :visible.sync="drawerCreate">
-                <el-form ref="form" class="form-style" :rules="rules" label-position="top" :model="form" label-width="100px" >
+                <el-form ref="form" class="form-style formCreate" :rules="rules" label-position="top" :model="form" label-width="100px" >
                     <el-row :gutter="20">
                         <el-col :span="16">
                             <el-form-item label="Name">
@@ -168,32 +169,27 @@
                                 <el-input type="textarea" :rows="5" placeholder="Description" v-model="form.description"></el-input>
                             </el-form-item>
                             <div class="d-flex">
-                                <el-form-item label="Status" prop="region" style="margin-right: 20px">
-                                    <el-select v-model="form.status" placeholder="Status">
-                                        <el-option
-                                            v-for="item in [{value: 1, label: 'public'}, {value: 0, label: 'draft'}]"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
                                 <el-form-item label="Order">
                                     <el-input v-model="form.order" placeholder="Order"></el-input>
                                 </el-form-item>
                             </div>
                             <div class="d-flex">
                                 <el-form-item label="Start At" style="margin-right: 20px">
-                                    <el-date-picker type="datetime" placeholder="Select date and time" v-model="form.start_at"></el-date-picker>
+                                    <el-date-picker
+                                      type="datetime"
+                                      placeholder="Select date and time"
+                                      v-model="form.start_at"
+                                      :min-date="new Date()"></el-date-picker>
                                 </el-form-item>
                                 <el-form-item label="End At">
-                                    <el-date-picker type="datetime" placeholder="Select date and time" v-model="form.end_at"></el-date-picker>
+                                    <el-date-picker
+                                      type="datetime"
+                                      placeholder="Select date and time"
+                                      v-model="form.end_at"></el-date-picker>
                                 </el-form-item>
                             </div>
-                            <div class="d-flex mt-2">
+                            <div class="d-flex mt-4">
                                 <el-button @click="addSessions()">Sessions</el-button>
-                            </div>
-                            <div class="d-flex mt-2">
                                 <el-button @click="addBooths()">Booths</el-button>
                             </div>
                         </el-col>
@@ -202,7 +198,7 @@
                                 <el-upload
                                     class="avatar-uploader text-center"
                                     :headers="{ 'X-CSRF-TOKEN': csrf }"
-                                    action="/cws/tasks-beta/save-avatar-api"
+                                    action="/cws/tasks/save-avatar-api"
                                     :on-success="handleAvatarSuccess"
                                     :before-upload="beforeAvatarUpload">
                                     <img v-if="form.banner_url" :src="form.banner_url" class="avatar">
@@ -212,7 +208,7 @@
                             <el-form-item label="Slider">
                                 <el-upload
                                     :headers="{ 'X-CSRF-TOKEN': csrf }"
-                                    action="/cws/tasks-beta/save-sliders-api"
+                                    action="/cws/tasks/save-sliders-api"
                                     list-type="picture-card"
                                     :on-success="handleSuccess"
                                     :file-list="form.task_galleries"
@@ -223,54 +219,64 @@
                         </el-col>
                     </el-row>
                     <el-form-item class="mt-5">
-                        <el-button type="primary" @click="submitForm('form')">Edit</el-button>
+                        <el-button type="primary" @click="submitForm('form')">Save</el-button>
                         <el-button>Cancel</el-button>
                     </el-form-item>
                 </el-form>
             </el-drawer>
+
+            <!-- Sessions -->
             <el-drawer title="Sessions" size="50%" :visible.sync="dialogSessions" style="height: auto">
                 <el-row :gutter="20" class="p-5">
                     <el-col :span="18">
                         <div class="d-flex mb-2">
                             <el-input v-model="form.sessions.name" placeholder="Name"></el-input>
-                            <el-input v-model="form.sessions.max_job" style="width: 40%" placeholder="Sl Hoàn thành"></el-input>
+                            <el-input v-model="form.sessions.max_job" style="width: 40%; margin-left: 20px;" placeholder="Number success"></el-input>
                         </div>
-
-                        <el-input v-model="form.sessions.description" class="mb-2" type="textarea" :rows="5" placeholder="Description"></el-input>
+                        <el-input v-model="form.sessions.description" class="mb-2" type="textarea" :rows="3" placeholder="Description"></el-input>
                     </el-col>
                     <el-col :span="6">
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cws/tasks-beta/save-avatar-api"
+                            action="/cws/tasks/save-avatar-api"
                             :on-success="handleAvatarSuccess1"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="form.sessions.banner_url" :src="form.sessions.banner_url" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                     </el-col>
+
+                    <!-- Add session -->
                     <el-col :span="24">
-                        <div v-for="(details, index) in  form.sessions.detail" class="mb-3 mt-3" style="border-radius: 5px;border: 1px solid #DCDFE6;padding: 10px">
+                        <div v-for="(details, index) in  form.sessions.detail" class="mb-3 mt-3">
                             <el-row :gutter="20" >
-                                <el-col :span="2"><div style="margin: 10px 0 0 0px">{{index+1}}</div></el-col>
-                                <el-col :span="20" class="mb-2 d-flex" >
-                                    <el-input v-model="details.name" placeholder="Name" style="width: 70%"></el-input>
-                                    <el-input v-model="details.description" placeholder="Description"></el-input>
+                                <el-col :span="4"><div style="margin: 10px 0 0 0px">Session {{index+1}}</div></el-col>
+                                <el-col :span="18" class="mb-2 d-flex">
+                                    <el-input v-model="details.name" placeholder="Name" style="width: 70%; margin-right: 10px;"></el-input>
+                                    <el-input v-model="details.description" style="margin-left: 20px;" placeholder="Description"></el-input>
                                 </el-col>
-                                <el-col :span="2"><el-button size="mini" type="danger" style="margin-top: 5px" @click.prevent="removeSessions(details)"><i
-                                    class="el-icon-delete"></i></el-button></el-col>
+                                <el-col :span="2">
+                                  <el-button size="mini" type="danger" style="margin-top: 5px" @click.prevent="removeSessions(details)"><i
+                                    class="el-icon-delete"></i></el-button>
+                                  </el-col>
                             </el-row>
                         </div>
-                        <el-button size="mini" type="primary" style="float: right" class="mt-3 mb-2" @click="addDetailSessions"><i class="el-icon-plus"></i>Add Detail</el-button>
+                        <div style="float: right;">
+                            <el-button size="mini" type="success" @click="dialogVisible = false" class="mt-3 mb-2">Done</el-button>
+                            <el-button size="mini" type="primary" class="mt-3 mb-2" @click="addDetailSessions"><i class="el-icon-plus"></i>Add Detail</el-button>
+                        </div>
                     </el-col>
                 </el-row>
             </el-drawer>
+
+            <!-- Booths -->
             <el-drawer title="Booths" size="50%" :visible.sync="dialogBooths" style="height: auto">
                 <el-row :gutter="20" class="p-5">
                     <el-col :span="18">
                         <div class="d-flex mb-2">
                             <el-input v-model="form.booths.name" placeholder="Name"></el-input>
-                            <el-input v-model="form.booths.max_job" style="width: 40%" placeholder="Sl Hoàn thành"></el-input>
+                            <el-input v-model="form.booths.max_job" style="width: 40%; margin-left: 20px;" placeholder="Sl Hoàn thành"></el-input>
                         </div>
 
                         <el-input v-model="form.booths.description" class="mb-2" type="textarea" :rows="5" placeholder="Description"></el-input>
@@ -279,7 +285,7 @@
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cws/tasks-beta/save-avatar-api"
+                            action="/cws/tasks/save-avatar-api"
                             :on-success="handleAvatarSuccess2"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="form.booths.banner_url" :src="form.booths.banner_url" class="avatar">
@@ -287,21 +293,26 @@
                         </el-upload>
                     </el-col>
                     <el-col :span="24">
-                        <div v-for="(details, index) in  form.booths.detail" class="mb-3 mt-3" style="border-radius: 5px;border: 1px solid #DCDFE6;padding: 10px">
+                        <div v-for="(details, index) in  form.booths.detail" class="mb-3 mt-3">
                             <el-row :gutter="20" >
-                                <el-col :span="2"><div style="margin: 10px 0 0 0px">{{index+1}}</div></el-col>
-                                <el-col :span="20" class="mb-2 d-flex" >
+                                <el-col :span="4"><div style="margin: 10px 0 0 0px">Booth {{index+1}}</div></el-col>
+                                <el-col :span="18" class="mb-2 d-flex" >
                                     <el-input v-model="details.name" placeholder="Name" style="width: 70%"></el-input>
-                                    <el-input v-model="details.description" placeholder="Description"></el-input>
+                                    <el-input v-model="details.description" style="margin-left: 20px;" placeholder="Description"></el-input>
                                 </el-col>
-                                <el-col :span="2"><el-button size="mini" type="danger" style="margin-top: 5px" @click.prevent="removeBooths(details)"><i
-                                    class="el-icon-delete"></i></el-button></el-col>
+                                <el-col :span="2">
+                                  <el-button size="mini" type="danger" style="margin-top: 5px" @click.prevent="removeBooths(details)">
+                                    <i class="el-icon-delete"></i>
+                                  </el-button>
+                                </el-col>
                             </el-row>
                         </div>
                         <el-button size="mini" type="primary" style="float: right" class="mt-3 mb-2" @click="addDetailBooths"><i class="el-icon-plus"></i>Add Detail</el-button>
                     </el-col>
                 </el-row>
             </el-drawer>
+
+            <!-- Qrcode view -->
             <el-dialog  title="Link QrCode" :visible.sync="dialogQrCode" style="height: auto">
                 <el-tabs v-model="activeName" @tab-click="handleClickTab">
                     <el-tab-pane label="Sessions" name="first">
@@ -361,12 +372,12 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 import 'element-tiptap/lib/index.css';
 import {Notification} from 'element-ui';
 import {ElementTiptap} from 'element-tiptap';
 import QrcodeVue from 'qrcode.vue'
 import {
-    // necessary extensions
     Doc,
     Text,
     Paragraph,
@@ -404,6 +415,8 @@ import {
     Fullscreen,
     SelectAll,
 } from 'element-tiptap';
+const dialogVisible = ref(false)
+
 export default {
     name: "index",
     props: ['csrf','link_qrc'],
@@ -429,9 +442,16 @@ export default {
             drawerEdit : false,
             drawerCreate : false,
             rules: {
-                banner_url: [
-                    {required: true, message: 'Hãy upload ảnh', trigger: 'change'},
-                ]
+                banner_url: [{
+                    required: true,
+                    message: 'Hãy upload ảnh',
+                    trigger: ['change']
+                }],
+                name: [{
+                    required: true,
+                    message: 'Please input name',
+                    trigger: ['blur', 'change']
+                }]
             },
             dataSessions:[
                 {
@@ -455,7 +475,6 @@ export default {
                 start_at : '',
                 end_at : '',
                 type : 3,
-                status : '',
                 order : '',
                 task_galleries: [],
                 sessions: {
@@ -610,7 +629,6 @@ export default {
                 description : '',
                 start_at : '',
                 end_at : '',
-                status : '',
                 order : '',
                 type : 3,
                 task_galleries: [],
@@ -755,8 +773,22 @@ export default {
 </script>
 
 <style scoped>
-.form-style{
-    padding: 10px;
-    border: 1px solid #DCDFE6 ;
-}
+    .form-style{
+        padding: 10px;
+        border: 1px solid #DCDFE6 ;
+    }
+
+    #el-drawer__title {
+        margin-bottom: 0;
+        background-color: #083777!important;
+        color: #fff;
+
+        span {
+            color: #fff;
+        }
+    }
+
+    .formCreate {
+        padding: 20px 30px;
+    }
 </style>

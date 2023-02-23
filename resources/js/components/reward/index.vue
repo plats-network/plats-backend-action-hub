@@ -52,6 +52,7 @@
                             <el-image
                                 :src="scope.row.image"
                                 :preview-src-list="[scope.row.image]"
+                                style="width: 35%;"
                             >
                             </el-image>
                         </div>
@@ -109,7 +110,7 @@
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cws/tasks-beta/save-avatar-api"
+                            action="/cws/tasks/save-avatar-api"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="formData.image" :src="formData.image" class="avatar">
@@ -146,7 +147,7 @@
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cws/tasks-beta/save-avatar-api"
+                            action="/cws/tasks/save-avatar-api"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="formData.image" :src="formData.image" class="avatar">
@@ -224,6 +225,7 @@ import {
     Fullscreen,
     SelectAll,
 } from 'element-tiptap';
+
 export default {
     name: "index",
     props: ['csrf'],
@@ -269,6 +271,7 @@ export default {
         }
     },
     methods: {
+        // Delete record
         handleDelete(scope, row){
             this.$confirm('Bạn có muốn xóa không ?', 'Warning', {
                 confirmButtonText: 'OK',
@@ -282,6 +285,8 @@ export default {
             }).catch(() => {
             });
         },
+
+        // Submit form
         submitForm(form){
             this.$refs[form].validate((valid) => {
                 if (valid) {
@@ -317,6 +322,8 @@ export default {
                 }
             });
         },
+
+        // List data
         list_data(val = 1, type = true) {
             var self = this;
             let rawData =
@@ -352,9 +359,12 @@ export default {
                 loading.close();
             })
         },
+
+        // Edit data
         handleEdit(scope, row) {
             this.formData = row
             this.drawerEdit = true
+
             this.$refs[form].validate((valid) => {
                 if (valid) {
                     const loading = this.$loading({
@@ -389,6 +399,8 @@ export default {
                 }
             });
         },
+
+        // Handle Create
         handleCreate() {
             this.formData = {
                     image : '',
@@ -413,6 +425,7 @@ export default {
             }
            this.drawerCreate = true
         },
+
         handleSizeChange(val) {
             this.list_data(val, false);
         },
@@ -423,6 +436,8 @@ export default {
             this.formData.image = URL.createObjectURL(file.raw);
             this.formData.image = res;
         },
+
+        // Check Upload image
         beforeAvatarUpload(file) {
             const isJPEG = file.type === 'image/jpeg';
             const isPNG = file.type === 'image/png';
@@ -441,6 +456,8 @@ export default {
             return isLt10M;
         },
     },
+
+    // Mount
     mounted: function () {
         this.list_data()
     },

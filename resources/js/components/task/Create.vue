@@ -1,17 +1,18 @@
 <template>
     <div>
         <div style="display: flex;justify-content: space-between">
-            <h4>tạo task</h4>
-            <h3><a href="/cws/tasks-beta" ><el-button type="primary" icon="el-icon-back"></el-button></a>
+            <h4>Create task</h4>
+            <h3><a href="/cws/tasks" ><el-button type="primary" icon="el-icon-back"></el-button></a>
             </h3>
         </div>
-        <el-form ref="form" class="form-style" label-position="top" :model="form" label-width="120px">
+
+        <el-form ref="form" :rules="rules" class="form-style" label-position="top" :model="form" label-width="120px">
             <el-row :gutter="20">
                 <el-col :span="16">
-                    <el-form-item label="Name">
+                    <el-form-item label="Name" prop="name">
                         <el-input v-model="form.name" placeholder="Name"></el-input>
                     </el-form-item>
-                    <el-form-item label="Description" prop="Description">
+                    <el-form-item label="Description" prop="description">
                         <el-input type="textarea" placeholder="Description" v-model="form.description"></el-input>
                     </el-form-item>
                     <el-form-item label="Group" prop="region">
@@ -24,40 +25,35 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="Status" prop="region">
-                        <el-select v-model="form.status" placeholder="Status">
-                            <el-option
-                                v-for="item in [{value: '1', label: 'public'}, {value: '0', label: 'draft'}]"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
                     <el-form-item label="Order">
                         <el-input v-model="form.order" placeholder="Order"></el-input>
                     </el-form-item>
+                    <el-form-item label="Set Time">
+                        <el-col :span="6" style="padding-left: 0;">
+                            <el-date-picker type="datetime" placeholder="Start at" v-model="form.start_at"></el-date-picker>
+                        </el-col>
+                        <el-col class="text-center" :span="1">-</el-col>
+                        <el-col :span="6">
+                            <el-date-picker type="datetime" placeholder="End at" v-model="form.end_at"></el-date-picker>
+                        </el-col>
+                    </el-form-item>
+                    <!-- <el-form-item label="End At">
+                        <el-date-picker type="datetime" placeholder="Select date and time" v-model="form.end_at" style="width: 50%;"></el-date-picker>
+                    </el-form-item> -->
+
                     <el-button class="mt-2" type="primary"  @click="dialogCheckIn = true">
                         CheckIn
                     </el-button>
                     <el-button  class="mt-2" type="success" @click="dialogSocial = true">
                         Social
                     </el-button>
-                    <el-form-item label="Start At">
-                        <el-date-picker type="datetime" placeholder="Select date and time" v-model="form.start_at"
-                                        style="width: 100%;"></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="End At">
-                        <el-date-picker type="datetime" placeholder="Select date and time" v-model="form.end_at"
-                                        style="width: 100%;"></el-date-picker>
-                    </el-form-item>
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="Image">
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cws/tasks-beta/save-avatar-api"
+                            action="/cws/tasks/save-avatar-api"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="form.banner_url" :src="form.banner_url" class="avatar">
@@ -67,7 +63,7 @@
                     <el-form-item label="Slider">
                         <el-upload
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cws/tasks-beta/save-sliders-api"
+                            action="/cws/tasks/save-sliders-api"
                             list-type="picture-card"
                             :on-success="handleSuccess"
                             :file-list="form.task_galleries"
@@ -396,6 +392,19 @@ export default {
                     }
                 ]
             },
+
+            rules: {
+                name: [{
+                    required: true,
+                    message: 'Please input name',
+                    trigger: ['blur', 'change']
+                }],
+                description: [{
+                    required: true,
+                    message: 'Please input description',
+                    trigger: ['blur', 'change']
+                }]
+            }
         }
     },
     methods: {
@@ -427,7 +436,7 @@ export default {
                             type: 'success',
                         });
                         loading.close();
-                        window.location.href = '/cws/tasks-beta';
+                        window.location.href = '/cws/tasks';
                     }).catch(error => {
                         this.errors = error.response.data.message; // this should be errors.
                         Notification.error({
@@ -546,10 +555,9 @@ export default {
             })
         },
         listRewards(val = 1) {
-            let rawData =
-                {
-                    'limit': 1000,
-                }
+            let rawData = {
+                'limit': 1000,
+            }
             const loading = this.$loading({
                 lock: true,
                 text: 'Loading',
@@ -576,38 +584,45 @@ export default {
 </script>
 
 <style>
-.avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-}
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
 
-.avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-}
+    .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+    }
 
-.el-form-item {
-    margin-bottom: 0px;
-}
+    .el-form-item {
+        margin-bottom: 0px;
+    }
 
-.avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-}
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+    }
 
-.avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-}
-.form-style{
-    padding: 10px;
-    border: 1px solid #DCDFE6 ;
-}
+    .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+    }
+    .form-style{
+        padding: 20px 30px;
+        border: 1px solid #DCDFE6 ;
+    }
+
+    .el-form-item__label {
+        line-height: 0px;
+    }
+    .el-form--label-top .el-form-item__label {
+        margin-top: 25px;
+    }
 </style>
