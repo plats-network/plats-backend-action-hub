@@ -52,6 +52,7 @@
                             <el-image
                                 :src="scope.row.image"
                                 :preview-src-list="[scope.row.image]"
+                                style="width: 40%; height: auto;"
                             >
                             </el-image>
                         </div>
@@ -238,14 +239,14 @@ export default {
             })
         },
         handleEdit(scope, row) {
-            window.location.href = '/cws/tasks-beta/edit/'+ row.id;
+            window.location.href = '/cws/tasks/edit/'+ row.id;
         },
         handleLink(scope, row) {
            this.dataLink = row.links;
            this.dialogLinks = true
         },
         handleCreate() {
-            window.location.href = '/cws/tasks-beta/create';
+            window.location.href = '/cws/tasks/create';
         },
         handleCurrentChange(val) {
             this.list_data(val);

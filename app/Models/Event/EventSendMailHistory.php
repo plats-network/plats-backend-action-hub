@@ -5,8 +5,9 @@ namespace App\Models\Event;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\Uuid;
+use App\Models\{User, Task};
 
-class UserJoinEvent extends Model
+class EventSendMailHistory extends Model
 {
     use HasFactory, Uuid;
 
@@ -15,7 +16,7 @@ class UserJoinEvent extends Model
      *
      * @var string
      */
-    protected $table = 'user_join_events';
+    protected $table = 'event_send_mail_histories';
 
     /**
      * The attributes that are mass assignable.
@@ -25,17 +26,18 @@ class UserJoinEvent extends Model
     protected $fillable = [
         'id',
         'user_id',
-        'task_event_detail_id',
-        'agent',
-        'ip_address',
+        'task_id',
+        'status',
+        'retry_num',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'id',
-    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
 }
