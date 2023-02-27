@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\Event;
+namespace App\Models\Quiz;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\Uuid;
 
-class UserJoinEvent extends Model
+class Quiz extends Model
 {
     use HasFactory, Uuid;
 
@@ -15,7 +15,7 @@ class UserJoinEvent extends Model
      *
      * @var string
      */
-    protected $table = 'user_join_events';
+    protected $table = 'quizs';
 
     /**
      * The attributes that are mass assignable.
@@ -24,18 +24,8 @@ class UserJoinEvent extends Model
      */
     protected $fillable = [
         'id',
-        'user_id',
-        'task_event_detail_id',
-        'agent',
-        'ip_address',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'id',
+        'name',
+        'phone',
+        'email',
     ];
 }

@@ -2,8 +2,7 @@
     <div>
         <div style="display: flex;justify-content: space-between">
             <h4>Create task</h4>
-            <h3><a href="/cws/tasks" ><el-button type="primary" icon="el-icon-back"></el-button></a>
-            </h3>
+            <h3><a href="/cws/tasks" ><el-button type="primary" icon="el-icon-back"></el-button></a></h3>
         </div>
 
         <el-form ref="form" :rules="rules" class="form-style" label-position="top" :model="form" label-width="120px">
@@ -25,10 +24,10 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="Order">
-                        <el-input v-model="form.order" placeholder="Order"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Set Time">
+                    <el-form-item label="Option">
+                        <el-col :span="6">
+                            <el-input v-model="form.order" placeholder="Order" style="padding-left: 0;"></el-input>
+                        </el-col>
                         <el-col :span="6" style="padding-left: 0;">
                             <el-date-picker type="datetime" placeholder="Start at" v-model="form.start_at"></el-date-picker>
                         </el-col>
@@ -37,21 +36,19 @@
                             <el-date-picker type="datetime" placeholder="End at" v-model="form.end_at"></el-date-picker>
                         </el-col>
                     </el-form-item>
-                    <!-- <el-form-item label="End At">
-                        <el-date-picker type="datetime" placeholder="Select date and time" v-model="form.end_at" style="width: 50%;"></el-date-picker>
-                    </el-form-item> -->
-
-                    <el-button class="mt-2" type="primary"  @click="dialogCheckIn = true">
-                        CheckIn
-                    </el-button>
-                    <el-button  class="mt-2" type="success" @click="dialogSocial = true">
-                        Social
-                    </el-button>
+                    <div class="d-flex mt-4">
+                        <el-button type="primary"  @click="dialogCheckIn = true">
+                            CheckIn
+                        </el-button>
+                        <el-button  type="success" @click="dialogSocial = true">
+                            Social
+                        </el-button>
+                    </div>
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="Image">
                         <el-upload
-                            class="avatar-uploader text-center"
+                            class="avatar-uploader"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
                             action="/cws/tasks/save-avatar-api"
                             :on-success="handleAvatarSuccess"
@@ -76,11 +73,11 @@
 
             <el-dialog title="Check In" :visible.sync="dialogCheckIn" style="height: auto">
                 <div v-for="(location, index) in form.task_locations" class="mb-3"
-                     style="border-radius: 5px;border: 1px solid #DCDFE6;padding: 10px">
+                     style="border-radius: 5px;border: 1px solid #DCDFE6; padding: 10px">
                     <el-row :gutter="20">
                         <el-col :span="10">
                             <el-input v-model="location.name" placeholder="Name"></el-input>
-                            <div style="margin-top: 15px;display: flex">
+                            <div style="margin-top: 15px; display: flex; margin-right: 10px;">
                                 <el-select v-model="location.reward_id" placeholder="Reward">
                                     <el-option
                                         v-for="item in dataReward"
@@ -89,25 +86,26 @@
                                         :value="item.id">
                                     </el-option>
                                 </el-select>
-                                <el-input placeholder="Amount" v-model="location.amount"
-                                          class="input-with-select"></el-input>
+                                <el-input placeholder="Amount" v-model="location.amount" class="input-with-select" style="margin-left: 10px;"></el-input>
                             </div>
                         </el-col>
                         <el-col :span="10">
-                            <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 8}" placeholder="Description"
+                            <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 8}" placeholder="Description"
                                       v-model="location.description"></el-input>
                         </el-col>
                         <el-col :span="2">
                             <el-button size="mini" type="danger" @click.prevent="removeLocations(location)"><i
                                 class="el-icon-delete"></i></el-button>
                         </el-col>
+
                         <el-col :span="22" class="mb-2" style="margin-left: 30px">
                             <div v-for="(detail, index) in location.task_location_jobs" class="mb-2 mt-2"
                                  style="border-radius: 5px;border: 1px solid #DCDFE6;padding: 10px">
+                                <h5>Job {{index + 1}}</h5>
                                 <el-row :gutter="20">
                                     <el-col :span="20">
                                         <div class="d-flex justify-content-between mb-2">
-                                            <el-input v-model="detail.name" placeholder="Name"></el-input>
+                                            <el-input v-model="detail.name" placeholder="Name" style="margin-right: 10px;"></el-input>
                                             <el-input v-model="detail.address" placeholder="Address"></el-input>
                                         </div>
                                     </el-col>
@@ -118,19 +116,24 @@
                                     </el-col>
                                 </el-row>
                                 <div class="d-flex justify-content-between">
-                                    <el-input v-model="detail.order" placeholder="Order"></el-input>
-                                    <el-input v-model="detail.lng" placeholder="Long"></el-input>
+                                    <el-input v-model="detail.order" placeholder="Order" style="margin-right: 10px;"></el-input>
+                                    <el-input v-model="detail.lng" placeholder="Long" style="margin-right: 10px;"></el-input>
                                     <el-input v-model="detail.lat" placeholder="Lat"></el-input>
                                 </div>
                             </div>
-                            <el-button size="mini" type="primary" class="mb-2 mt-2"
-                                       @click="addLocationsDetails(location.task_location_jobs)"><i class="el-icon-plus"></i> Add Job
+                            <el-button
+                                size="mini"
+                                type="primary"
+                                class="mb-2 mt-2"
+                                style="float: right"
+                                @click="addLocationsDetails(location.task_location_jobs)">
+                                    <i class="el-icon-plus"></i> Add Job
                             </el-button>
                         </el-col>
                     </el-row>
                 </div>
-                <el-button size="mini" type="primary" class="mt-3 mb-2" @click="addLocations"><i class="el-icon-plus"></i>Add
-                    Check In
+                <el-button size="mini" type="primary" class="mt-3 mb-2" @click="addLocations">
+                    <i class="el-icon-plus"></i>Add Check In
                 </el-button>
             </el-dialog>
             <el-dialog title="Social" :visible.sync="dialogSocial" style="height: auto">
@@ -604,8 +607,8 @@ export default {
         font-size: 28px;
         color: #8c939d;
         width: 178px;
-        height: 178px;
-        line-height: 178px;
+        height: 100px;
+        line-height: 100px;
         text-align: center;
     }
 
