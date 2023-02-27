@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('image')->nullable();
-            $table->string('symbol')->nullable()->comment('$NFT, $PLATS, $PSP...');
+            $table->string('symbol')->nullable()->comment('NFT, PLATS, PSP...');
             $table->integer('order')->default(0);
             $table->tinyInteger('status')->default(1)->comment('0:draft, 1:public');
             $table->timestamps();

@@ -196,7 +196,7 @@
                         <el-col :span="8">
                             <el-form-item label="Image">
                                 <el-upload
-                                    class="avatar-uploader text-center"
+                                    class="avatar-uploader"
                                     :headers="{ 'X-CSRF-TOKEN': csrf }"
                                     action="/cws/tasks/save-avatar-api"
                                     :on-success="handleAvatarSuccess"

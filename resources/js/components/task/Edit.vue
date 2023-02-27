@@ -24,33 +24,26 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-<!--                     <el-form-item label="Status" prop="region">
-                        <el-select v-model="form.status" placeholder="Status">
-                            <el-option
-                                v-for="item in [{value: 1, label: 'public'}, {value: 0, label: 'draft'}]"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-form-item> -->
-                    <el-form-item label="Order">
-                        <el-input v-model="form.order" placeholder="Order"></el-input>
+                    <el-form-item label="Option">
+                        <el-col :span="6" >
+                            <el-input v-model="form.order" placeholder="Order" style="padding-left: 0;"></el-input>
+                        </el-col>
+                        <el-col :span="6" style="padding-right: 10px;">
+                            <el-date-picker type="datetime" placeholder="Start at" v-model="form.start_at"></el-date-picker>
+                        </el-col>
+                        <el-col class="text-center" :span="4">-</el-col>
+                        <el-col :span="6">
+                            <el-date-picker type="datetime" placeholder="End at" v-model="form.end_at"></el-date-picker>
+                        </el-col>
                     </el-form-item>
-                    <el-button class="mt-2" type="primary"  @click="dialogCheckIn = true">
-                        CheckIn
-                    </el-button>
-                    <el-button  class="mt-2" type="success" @click="dialogSocial = true">
-                        Social
-                    </el-button>
-                    <el-form-item label="Start At">
-                        <el-date-picker type="datetime" placeholder="Select date and time" v-model="form.start_at"
-                                        style="width: 100%;"></el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="End At">
-                        <el-date-picker type="datetime" placeholder="Select date and time" v-model="form.end_at"
-                                        style="width: 100%;"></el-date-picker>
-                    </el-form-item>
+                    <div class="d-flex mt-4">
+                        <el-button type="primary"  @click="dialogCheckIn = true">
+                            CheckIn
+                        </el-button>
+                        <el-button  type="success" @click="dialogSocial = true">
+                            Social
+                        </el-button>
+                    </div>
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="Image">
