@@ -96,7 +96,7 @@
                                 <el-input v-model="form.name" placeholder="Name"></el-input>
                             </el-form-item>
                             <el-form-item label="Description" prop="Description">
-                                <el-input type="textarea" :rows="5" placeholder="Description" v-model="form.description"></el-input>
+                                <ckeditor v-model="form.description"  ></ckeditor>
                             </el-form-item>
                             <div class="d-flex">
                                 <el-form-item label="Status" prop="region" style="margin-right: 20px">
@@ -165,7 +165,7 @@
                                 <el-input v-model="form.name" placeholder="Name"></el-input>
                             </el-form-item>
                             <el-form-item label="Description" prop="Description">
-                                <el-input type="textarea" :rows="5" placeholder="Description" v-model="form.description"></el-input>
+                                <ckeditor v-model="form.description" ></ckeditor>
                             </el-form-item>
                             <div class="d-flex">
                                 <el-form-item label="Status" prop="region" style="margin-right: 20px">

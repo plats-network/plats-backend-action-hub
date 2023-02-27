@@ -172,7 +172,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = '/cp/users/list'
+            let url = '/cws/users/list'
             axios.get(url, {
                 params: rawData
             }).then(e => {

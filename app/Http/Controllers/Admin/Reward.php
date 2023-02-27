@@ -17,7 +17,9 @@ class Reward extends Controller
      */
     public function __construct(
         private RewardRepository $rewardRepository
-    ) {}
+    ) {
+        $this->middleware('client_admin');
+    }
 
     /**
      * Display a listing of the resource.

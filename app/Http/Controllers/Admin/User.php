@@ -12,7 +12,9 @@ class User extends  Controller
 
     public function __construct(
         private UserService $userService,
-    ) {}
+    ) {
+        $this->middleware('client_admin');
+    }
 
     public function index(Request $request)
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 
 trait Authenticates
@@ -137,10 +138,12 @@ trait Authenticates
     public function redirectPath()
     {
         if (method_exists($this, 'redirectTo')) {
-            return $this->redirectTo();
+            if (str_contains(URL::current(),'auth/cws')){
+                return $this->redirectTo();
+            }
         }
-
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+        return $this->redirectToWeb();
+//        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
     }
 
     /**
@@ -165,7 +168,10 @@ trait Authenticates
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return $this->loggedOut($request) ?: redirect('auth/cws');
+        if (str_contains(URL::current(),'auth/cws')){
+            return $this->loggedOut($request) ?: redirect('auth/cws');
+        }
+        return $this->loggedOut($request) ?: redirect('events');
     }
 
     /**

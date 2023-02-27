@@ -16,3 +16,4 @@ Route::prefix('cws')->group(function () {
 
     Route::get('/logout', [Login::class, 'logout'])->name(LOGOUT_ADMIN_ROUTE);
 });
+

@@ -7,6 +7,9 @@ import ElementUI from 'element-ui';
 import { ElementTiptapPlugin } from 'element-tiptap';
 import QrcodeVue from 'qrcode.vue'
 import locale from 'element-ui/lib/locale/lang/vi'
+import * as VueGoogleMaps from "vue2-google-maps" // Import package
+import VueSocialSharing from 'vue-social-sharing'
+
 // import DisableAutocomplete from 'vue-disable-autocomplete';
 Vue.use(ElementUI, { locale })
 Vue.use(ElementTiptapPlugin, { /* plugin options */ });
@@ -18,9 +21,20 @@ Vue.component('group', require('./components/group/index.vue').default);
 Vue.component('user', require('./components/user/index.vue').default);
 Vue.component('event', require('./components/event/index.vue').default);
 Vue.component('dashboard', require('./components/dashboard/index.vue').default);
+Vue.component('home', require('./components/web/home.vue').default);
+Vue.component('detail', require('./components/web/detail.vue').default);
+Vue.component('likes', require('./components/web/likes.vue').default);
+import CKEditor from 'ckeditor4-vue';
+Vue.use( CKEditor );
 
-
-
+Vue.use(VueSocialSharing);
+Vue.config.productionTip = false
+Vue.use(VueGoogleMaps, {
+    load: {
+        key: "AIzaSyCXT96ABLIhOwW6sXq2Wi_ziycmm_60vo8",
+        libraries: "places"
+    }
+});
 
 // Vue.use(DisableAutocomplete);
 const app = new Vue({
