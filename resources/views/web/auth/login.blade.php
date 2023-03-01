@@ -43,14 +43,6 @@
                                 <h2 class="cta-1 mb-0 text-primary">Welcome,</h2>
                                 <h2 class="cta-1 text-primary">let's get started!</h2>
                             </div>
-                            <div class="mb-5">
-                                <p class="h6">Please use your credentials to login.</p>
-                                <p class="h6">
-                                    If you are not a member, please
-                                    <a href="{{route(REGIS_GET_CREATE)}}">register</a>
-                                    .
-                                </p>
-                            </div>
                             <div>
                                 <x-alert/>
                                 <x-form::open action="{{ route(LOGIN_WEB_ROUTE) }}" class="tooltip-end-bottom" id="loginForm">
