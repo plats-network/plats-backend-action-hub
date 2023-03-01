@@ -28,12 +28,14 @@ Vue.component('reward', require('./components/reward/index.vue').default);
 Vue.component('group', require('./components/group/index.vue').default);
 Vue.component('user', require('./components/user/index.vue').default);
 Vue.component('event', require('./components/event/index.vue').default);
-Vue.component('dashboard', require('./components/dashboard/index.vue').default);
+// Vue.component('dashboard', require('./components/dashboard/index.vue').default);
 Vue.component('home', require('./components/web/home.vue').default);
 Vue.component('detail', require('./components/web/detail.vue').default);
 Vue.component('likes', require('./components/web/likes.vue').default);
 import CKEditor from 'ckeditor4-vue';
 Vue.use( CKEditor );
+import VueQrcodeReader from "vue-qrcode-reader";
+Vue.use(VueQrcodeReader);
 
 Vue.use(VueSocialSharing);
 Vue.config.productionTip = false

@@ -90,9 +90,7 @@ export default {
     },
     data() {
         return {
-            slider:[
-                'https://www.linkpicture.com/q/pexels-marcin-dampc-1684187-1-1.png','https://jssors8.azureedge.net/demos/img/gallery/980x380/045.jpg'
-            ],
+            slider:[],
             currentDate: new Date(),
             totalNumber:0,
             totalItem:0,
@@ -164,8 +162,8 @@ export default {
                     if (element.like_active === 1){
                         this.selected_options.push(element.id);
                     }
+                    this.slider.push(element.banner_url)
                 });
-                console.log(this.selected_options)
                 this.totalNumber = e.data.meta.total;
                 self.totalItem = e.data.meta.total;
                 loading.close();

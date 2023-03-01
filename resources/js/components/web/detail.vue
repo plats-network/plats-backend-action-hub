@@ -8,6 +8,14 @@
                     >
             </div>
         </div>
+        <div>
+            <p class="error">{{ error }}</p>
+            <p class="decode-result" style="font-size:150%;">
+                QRコードリーダー<br>
+                <b style="color:#f00;">{{ result }}</b>
+            </p>
+            <qrcode-stream @decode="onDecode" @init="onInit" />
+        </div>
         <div class="mt-3">
             <el-row :gutter="10">
                 <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
@@ -222,6 +230,8 @@ export default {
     props: ['detail_id'],
     data() {
         return {
+            result: '',
+            error: '',
             rules: {
                 name: [{
                     required: true,
@@ -274,6 +284,29 @@ export default {
         }
     },
     methods: {
+        onDecode (result) {
+            this.result = result
+        },
+
+        async onInit (promise) {
+            try {
+                await promise
+            } catch (error) {
+                if (error.name === 'NotAllowedError') {
+                    this.error = "ERROR: you need to grant camera access permisson"
+                } else if (error.name === 'NotFoundError') {
+                    this.error = "ERROR: no camera on this device"
+                } else if (error.name === 'NotSupportedError') {
+                    this.error = "ERROR: secure context required (HTTPS, localhost)"
+                } else if (error.name === 'NotReadableError') {
+                    this.error = "ERROR: is the camera already in use?"
+                } else if (error.name === 'OverconstrainedError') {
+                    this.error = "ERROR: installed cameras are not suitable"
+                } else if (error.name === 'StreamApiNotSupportedError') {
+                    this.error = "ERROR: Stream API is not supported in this browser"
+                }
+            }
+        },
         submitForm(form){
             this.$refs[form].validate((valid) => {
                 if (valid) {
