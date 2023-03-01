@@ -1,7 +1,7 @@
 <div class="container nav-content d-flex">
     <!-- Logo Start -->
     <div class="logo position-relative">
-        <a href="/events">
+        <a href="{{url('/')}}">
             <img style="width: 200px!important;" src="{{ asset('img/admin/logo-event.png') }}" alt="logo" />
         </a>
     </div>
@@ -13,7 +13,7 @@
             <a href="{{ route(LOGIN_WEB_ROUTE) }}" class="d-flex position-relative" style="margin-right: 15px">
                 Log In
             </a>
-            <a href="#" class="d-flex position-relative" >
+            <a href="{{ route('web.client.showSignup') }}" class="d-flex position-relative" >
                 Sign Up
             </a>
         </div>
@@ -35,7 +35,7 @@
                                 <a href="/events/likes">Likes</a>
                             </li>
                             <li>
-                                <a href="#">Mini game</a>
+                                <a href="#">Histories Quizzes</a>
                             </li>
                         </ul>
                     </div>

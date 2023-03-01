@@ -76,7 +76,6 @@
                                 <div class="mb-3 filled form-group tooltip-end-top">
                                     <i data-acorn-icon="lock-off"></i>
                                     <input class="form-control pe-7" name="password" type="password" placeholder="Password"/>
-                                    <!-- <a class="text-small position-absolute t-3 e-3" href="#">Forgot?</a> -->
                                 </div>
                                 <button type="submit" class="btn btn-lg btn-primary">Register</button>
                             </x-form::open>

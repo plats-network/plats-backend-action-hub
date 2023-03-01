@@ -2,8 +2,7 @@
     <div class="container">
         <span class="title-like">LIKES</span>
         <div class="container">
-            <div class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;">Events
-            </div>
+            <div class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;">Events</div>
             <el-row>
                 <el-col :md="6" :sm="12" :xs="12" :lg="6" :xl="6" class="p-2" v-for="(event, index) in tableData"  >
                     <el-card shadow="hover" class="height-card" :body-style="{ padding: '5px' }">
@@ -37,7 +36,6 @@ import 'element-tiptap/lib/index.css';
 import {Notification} from 'element-ui';
 import {ElementTiptap} from 'element-tiptap';
 import {
-    // necessary extensions
     Doc,
     Text,
     Paragraph,

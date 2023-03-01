@@ -17,10 +17,11 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
+        dd(Auth::user());
         if (Auth::user() && Auth::user()->role == ADMIN_ROLE) {
             return $next($request);
         } elseif (Auth::user()) {
-            return redirect('cp')->withErrors('message', 'You have not admin access');
+            return redirect('cws')->withErrors('message', 'You have not admin access');
         } else {
             return redirect('auth/cws')->withErrors('message', 'You have not admin access');
         }

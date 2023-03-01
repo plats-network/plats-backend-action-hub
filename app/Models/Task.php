@@ -19,7 +19,9 @@ use Illuminate\Support\Str;
 
 class Task extends Model
 {
-    use HasFactory, Uuid, SoftDeletes, TaskRelation, TaskScope, TaskAttribute, TaskMethod ;
+    use HasFactory, Uuid, SoftDeletes,
+        TaskRelation, TaskScope,
+        TaskAttribute, TaskMethod;
 
     /**
      * The table associated with the model.
@@ -40,6 +42,9 @@ class Task extends Model
         'start_at',
         'end_at',
         'order',
+        'address',
+        'lat',
+        'lng',
         'status',
         'slug',
         'address',

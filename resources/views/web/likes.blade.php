@@ -1,7 +1,6 @@
 @extends('web.layout')
 @section('content')
     <div id="app">
-        <likes>
-        </likes>
+        <likes></likes>
     </div>
 @endsection
