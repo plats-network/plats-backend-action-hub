@@ -55,6 +55,7 @@
         "select2": "^4.1.0-rc.0",
         "tronweb": "^4.4.0",
         "vue": "^2.7.10",
+        "vue-qrcode-reader": "^3.1.1",
         "vue-social-sharing": "^3.0.9",
         "vue2-google-maps": "^0.10.7"
     }
