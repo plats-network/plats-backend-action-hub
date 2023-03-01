@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\{
-    Dashboard
+    Dashboard,Detail
 };
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +22,10 @@ Route::prefix('client')->group(function () {
 });
 Route::get('/events', [Dashboard::class, 'index'])->name(DASHBOARD_WEB_ROUTER);;
 Route::get('/events/likes', [\App\Http\Controllers\Web\Likes::class, 'index'])->name(LIKE_WEB_ROUTER);;
-Route::get('/events/{taskId}', [Dashboard::class, 'detail']);
-Route::get('/events/{taskId}/{detailId}', [\App\Http\Controllers\Web\Detail::class, 'index']);
+Route::get('/events/{slug}', [Detail::class, 'index']);
+Route::get('/events/task/{id}', [Detail::class, 'edit'])->whereUuid('id');
+Route::post('/events/likes', [Detail::class, 'like']);
+Route::get('/events/likes/list', [Detail::class, 'listLike']);
+Route::post('/events/ticket', [Detail::class, 'addTicket']);
 
 

@@ -2,17 +2,17 @@
     <div>
         <div class="demo-image">
             <div class="block">
-                <el-image
+                <img
                     style="width: 100%; height: auto ;border-radius: 20px"
-                    :src="url"
-                    fit="contain"></el-image>
+                    :src="detail.banner_url"
+                    >
             </div>
         </div>
         <div class="mt-3">
             <el-row :gutter="10">
                 <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
                     <div>
-                        <span class="title-event-detail"> ĐÁNH THỨC SỰ GIÀU CÓ 55 - Hà Nội</span>
+                        <span class="title-event-detail"> {{detail.name}}</span>
                     </div>
                     <div v-show='toggle'>
                         <div class="mt-3 mb-3">
@@ -21,83 +21,44 @@
                                     <div class="mb-2"><i class="el-icon-date" style="color: #409EFF"></i> Date and time
                                     </div>
                                     <div>
-                                        <span class="d-block">Fri, Mar 3, 2023, 8:00 AM – Sun, Mar 5, 2023, 10:00 PM Indochina Time Vietnam Time</span>
+                                        <span class="d-block">{{detail.end_at | moment}}</span>
                                     </div>
                                 </el-col>
                                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
                                     <div class="mb-2"><i class="el-icon-location-information"
                                                          style="color: #409EFF"></i> Location
                                     </div>
-                                    <div>Trung tâm Tiệc cưới Louis Palace (đối diện Công viên Thiên Đường Bảo Sơn) Trung
-                                        tâm Tiệc cưới Louis Palace (Km 5+200 Lê Trọng Tấn kéo dài), An Khánh, Hoài Đức,
-                                        Hà Nội Hà Nội Hanoi, Hanoi 100000
+                                    <div>{{detail.address}}
                                     </div>
                                 </el-col>
                             </el-row>
                         </div>
                         <div class="mb-3">
-                            <gmap-map
-                                :zoom="14"
-                                :center="center"
-                                style="width:100%;  height: 300px;"
-                            >
-                                <gmap-marker
-                                    :key="index"
-                                    v-for="(m, index) in locationMarkers"
-                                    :position="m.position"
-                                    @click="center=m.position"
-                                ></gmap-marker>
-                            </gmap-map>
+<!--                            <gmap-map-->
+<!--                                :zoom="14"-->
+<!--                                :center="center"-->
+<!--                                style="width:100%;  height: 300px;"-->
+<!--                            >-->
+<!--                                <gmap-marker-->
+<!--                                    :key="index"-->
+<!--                                    v-for="(m, index) in locationMarkers"-->
+<!--                                    :position="m.position"-->
+<!--                                    @click="center=m.position"-->
+<!--                                ></gmap-marker>-->
+<!--                            </gmap-map>-->
                         </div>
-                        <div class="">
-                            E﻿vent overview
+                        <div class="" v-html="detail.description">
 
-                            At this event, we will explain all about our top-ranked MBA programs, both on-campus in
-                            Tokyo and online, and create an opportunity to experience a free MBA trial class on
-                            leadership.
-
-                            COVID-19 and technological advancements have brought us to the age of disruptions, an era
-                            that will change how we live, work, and do business. The role of leadership has shifted from
-                            control to motivation. Those who know how to effectively build sustainable and resilient
-                            organizations are today's successful leaders.
-
-                            Join this session to learn the Japanese management way and how leaders not only explore and
-                            analyze operating conditions but also understand how to cope with business crises through
-                            empowering and motivating teams to foster a long-lasting organization
-
-                            GLOBIS lecturer and Dean of the English MBA Program, Satoshi Hirose, will teach you
-                            leadership management techniques that you can apply the next day through real business cases
-                            seen in Vietnam.
-
-                            At this event, you will also:
-
-                            Learn about Japan’s No.1 MBA program and have your questions answered by our admissions
-                            advisors
-                            Explore your career opportunities through our partnerships with over 144 companies
-                            Find out how you can apply and get tips for a strong application
-                            Discover our scholarships and loan options for overseas students
-                            A﻿genda
-
-                            15:30 Reception and Individual Q&A
-
-                            16:00 Introduction to GLOBIS
-
-                            16:15 “Japanese Leadership Strategies” MBA Trial class
-
-                            17:25 Program information
-
-                            17:40 Q&A
                         </div>
                         <div class=" mt-3 mb-3">
                             <div class="mb-2"><span class="fw-bold">Share with friends</span></div>
                             <div>
                                 <ShareNetwork style="margin-right: 25px"
                                               network="facebook"
-                                              url="https://news.vuejs.org/issues/180"
-                                              title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
-                                              description="This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You."
-                                              quote="The hot reload is so fast it\'s near instant. - Evan You"
-                                              hashtags="vuejs,vite"
+                                              :url="url"
+                                              title="21212"
+                                              description="1212121"
+                                              hashtags="plats,skc"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
                                          class="bi bi-facebook" viewBox="0 0 16 16">
@@ -107,11 +68,11 @@
                                 </ShareNetwork>
                                 <ShareNetwork style="margin-right: 25px"
                                               network="email"
-                                              url="https://news.vuejs.org/issues/180"
-                                              title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
-                                              description="This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You."
-                                              quote="The hot reload is so fast it\'s near instant. - Evan You"
-                                              hashtags="vuejs,vite"
+                                              :url="url"
+                                              title=""
+                                              description=""
+                                              quote=""
+                                              hashtags=""
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
                                          class="bi bi-envelope" viewBox="0 0 16 16">
@@ -121,11 +82,11 @@
                                 </ShareNetwork>
                                 <ShareNetwork
                                     network="twitter"
-                                    url="https://news.vuejs.org/issues/180"
-                                    title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
-                                    description="This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You."
-                                    quote="The hot reload is so fast it\'s near instant. - Evan You"
-                                    hashtags="vuejs,vite"
+                                    :url="url"
+                                    title=""
+                                    description=""
+                                    quote=""
+                                    hashtags=""
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
                                          class="bi bi-twitter" viewBox="0 0 16 16">
@@ -140,32 +101,40 @@
                                @click='toggle = !toggle'>Hide
                     </el-button>
                     <div>
-                        <el-tabs v-model="activeName" @tab-click="handleClick">
-                            <el-tab-pane label="User" name="first">User</el-tab-pane>
-                            <el-tab-pane label="Config" name="second">Config</el-tab-pane>
-                            <el-tab-pane label="Role" name="third">Role</el-tab-pane>
-                            <el-tab-pane label="Task" name="fourth">Task</el-tab-pane>
+                        <el-tabs  v-model="activeName" @tab-click="handleClick">
+                            <el-tab-pane  label="Booths" name="first">
+                                <div style="height: 200px;">
+                                    <el-steps direction="vertical" :active="2">
+                                        <el-step v-for="(booth, index) in this.detail.booths.detail" :title="booth.name" ></el-step>
+                                    </el-steps>
+                                </div>
+                            </el-tab-pane>
+                            <el-tab-pane  label="Sessions" name="second">
+                                <div style="height: 200px;">
+                                    <el-steps direction="vertical" :active="2">
+                                        <el-step v-for="(session, index) in this.detail.sessions.detail" :title="session.name" ></el-step>
+                                    </el-steps>
+                                </div>
+                            </el-tab-pane>
                         </el-tabs>
                     </div>
                     <div class="mb-5">
                         <div class="">
-                            <div class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;">Events
+                            <div class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;"><a href="/events">Other events</a>
                             </div>
                             <el-row>
-                                <el-col :md="6" :sm="12" :xs="12" :lg="6" :xl="6" class="p-1" v-for="(o, index) in 4"
-                                        :key="o">
+                                <el-col :md="6" :sm="12" :xs="12" :lg="6" :xl="6" class="p-1" v-for="(event, index) in otherEvent">
                                     <el-card shadow="hover" :body-style="{ padding: '3px' }">
                                         <img
-                                            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                                            class="image w-100">
+                                            :src="event.banner_url"
+                                            class="image w-100" style="height: 150px">
                                         <div style="padding: 10px 5px;">
-                                            <span style="font-weight: 800;font-size: 16px"><a href="/events/123/123"
-                                                                                              style="color:black;">ĐÁNH THỨC SỰ GIÀU CÓ 55 - Hà Nội</a></span>
-                                            <div class="bottom clearfix">
+                                            <span style="font-weight: 800;font-size: 16px"><a  v-bind:href="'/events/'+ event.slug" style="color:black;">{{event.name}}</a></span>
+                                            <div class="">
                                                 <el-button type="text" class="button"><i class="el-icon-time"></i> <span
-                                                    style="font-size: 12px">Thu, Feb 23, 10:00 PM + 189</span>
+                                                    style="font-size: 12px">{{event.end_at | moment}}</span>
                                                 </el-button>
-                                                <span class="d-block">Trung tâm Tiệc cưới Louis Palace</span>
+                                                <span class="d-block">{{event.description | truncate(100)}}</span>
                                             </div>
                                         </div>
                                     </el-card>
@@ -176,27 +145,27 @@
                 </el-col>
                 <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
                     <el-card class="box-card fixed" shadow="hover" style="border-radius: 20px">
-                        <span style="display: block;text-align: center" class="mb-2">$0 - $79</span>
+                        <span style="display: block;text-align: center" class="mb-2">Free</span>
                         <el-button @click="dialogFormVisible = true" style="display:block;margin: auto;padding: 12px 80px" type="primary">Get tickets
                         </el-button>
                     </el-card>
                 </el-col>
             </el-row>
-            <el-dialog title="Title" :visible.sync="dialogFormVisible">
-                <el-form :model="form" label-position="top" style="width: 100%">
-                    <el-form-item label="Tên" :label-width="formLabelWidth">
+            <el-dialog title="Thông tin" :visible.sync="dialogFormVisible">
+                <el-form :model="form" ref="form"  :rules="rules" label-position="top" style="width: 100%">
+                    <el-form-item prop="name" label="Tên" :label-width="formLabelWidth">
                         <el-input v-model="form.name" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="Email" :label-width="formLabelWidth">
+                    <el-form-item label="Email" prop="email" :label-width="formLabelWidth">
                         <el-input v-model="form.email" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="Số điện thoại" :label-width="formLabelWidth">
+                    <el-form-item label="Số điện thoại" prop="phone" :label-width="formLabelWidth">
                         <el-input v-model="form.phone" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">Hủy</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">Xác nhận</el-button>
+                <el-button type="primary" @click="submitForm('form')">Xác nhận</el-button>
                 </span>
             </el-dialog>
         </div>
@@ -246,16 +215,32 @@ import {
     Fullscreen,
     SelectAll,
 } from 'element-tiptap';
+import moment from "moment";
 
 export default {
     name: "detail",
+    props: ['detail_id'],
     data() {
         return {
-            url: 'https://www.linkpicture.com/q/pexels-marcin-dampc-1684187-1-1.png',
+            rules: {
+                name: [{
+                    required: true,
+                    message: 'Please input name',
+                    trigger: ['blur', 'change']
+                }],
+                phone: [
+                    { required: true, message: 'phone is required'},
+                ],
+                email: [
+                    { required: true, message: 'Please input email address', trigger: 'blur' },
+                    { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
+                ]
+            },
             center: {
                 lat: 39.7837304,
                 lng: -100.4458825
             },
+            url: window.location.href,
             dialogFormVisible: false,
             toggle: true,
             activeName: 'first',
@@ -266,15 +251,62 @@ export default {
                 name: '',
                 email: '',
                 phone: '',
+                task_id: '',
 
             },
+            props: {
+                idTask:'',
+            },
+            detail:{
+                booths:{
+                    detail:[
+
+                    ]
+                },
+                sessions:{
+                    detail:[
+
+                    ]
+                }
+            },
+            otherEvent:[],
             formLabelWidth: '120px'
         }
     },
-    mounted() {
-        this.locateGeoLocation();
-    },
     methods: {
+        submitForm(form){
+            this.$refs[form].validate((valid) => {
+                if (valid) {
+                    const loading = this.$loading({
+                        lock: true,
+                        text: 'Loading',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+                    axios.post('/events/ticket', this.form).then(e => {
+                        Notification.success({
+                            title: ' Thành công',
+                            message: ' Thành công',
+                            type: 'success',
+                        });
+                        loading.close();
+                        this.dialogFormVisible = false
+                    }).catch(error => {
+                        this.errors = error.response.data.message; // this should be errors.
+                        Notification.error({
+                            title: 'Error',
+                            message: this.errors,
+                            type: 'error',
+                        });
+                        loading.close();
+                    });
+                    console.log(this.form)
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
         handleClick(tab, event) {
             console.log(tab, event);
         },
@@ -288,7 +320,57 @@ export default {
                     lng: res.coords.longitude
                 };
             });
+        },
+        getDetail(){
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+            let url = '/events/task/'+ this.props.idTask;
+            axios.get(url).then(e => {
+                this.detail = e.data.message;
+                this.form.task_id = this.detail.id
+                loading.close();
+
+            }).catch((_) => {
+                loading.close();
+            })
+        },
+        getOtherEvents(){
+            let rawData =
+                {
+                    'limit': 4,
+                }
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+            let url = '/api/cws/events'
+            axios.get(url,{
+                params: rawData
+            }).then(e => {
+                this.otherEvent = e.data.data;
+                loading.close();
+
+            }).catch((_) => {
+                loading.close();
+            })
         }
+    },
+    mounted() {
+        this.props.idTask = this.detail_id
+        this.getDetail();
+        this.getOtherEvents();
+        // this.locateGeoLocation();
+    },
+    filters: {
+        moment: function (date) {
+            return moment(date).format(' YYYY-MM-DD HH:mm:ss ');
+        },
     }
 }
 </script>

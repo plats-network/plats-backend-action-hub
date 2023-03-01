@@ -9,7 +9,15 @@ import QrcodeVue from 'qrcode.vue'
 import locale from 'element-ui/lib/locale/lang/vi'
 import * as VueGoogleMaps from "vue2-google-maps" // Import package
 import VueSocialSharing from 'vue-social-sharing'
+var filter = function(text, length, clamp){
+    clamp = clamp || '...';
+    var node = document.createElement('div');
+    node.innerHTML = text;
+    var content = node.textContent;
+    return content.length > length ? content.slice(0, length) + clamp : content;
+};
 
+Vue.filter('truncate', filter);
 // import DisableAutocomplete from 'vue-disable-autocomplete';
 Vue.use(ElementUI, { locale })
 Vue.use(ElementTiptapPlugin, { /* plugin options */ });

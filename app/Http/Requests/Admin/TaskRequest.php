@@ -31,10 +31,9 @@ class TaskRequest extends FormRequest
                 break;
             case 'POST':
                 $rules = [
-                    'name' => ['required', 'max: 255'],
-                    'description' => ['required', 'max: 100'],
+                    'description' => ['required'],
                     'order' => ['required','integer'],
-                    'status' => ['required'],
+                    'status' => ['nullable'],
                     'end_at' => ['required'],
                     'start_at' => ['required'],
                     'group_id.*' => ['required'],
@@ -77,11 +76,13 @@ class TaskRequest extends FormRequest
                     $rules = array_merge($rules,  [
                         'banner_url' => ['nullable'],
                         'task_galleries.*' => ['nullable'],
+                        'name' => ['required','unique:tasks', 'max: 255'],
                     ]);
                 } else {
                     $rules = array_merge($rules,  [
                         'banner_url' => ['nullable',],
                         'task_galleries.*' => ['nullable',],
+                        'name' => ['required','max: 255'],
                     ]);
                 }
                 break;

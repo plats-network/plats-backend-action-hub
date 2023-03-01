@@ -1,7 +1,7 @@
 @extends('web.layout')
 @section('content')
     <div id="app">
-        <home>
+        <home active="{{$active}}">
 
         </home>
     </div>

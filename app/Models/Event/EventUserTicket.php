@@ -15,7 +15,7 @@ class EventUserTicket extends Model
      *
      * @var string
      */
-    protected $table = 'event_user_guests';
+    protected $table = 'event_user_tickets';
 
     /**
      * The attributes that are mass assignable.
@@ -27,5 +27,8 @@ class EventUserTicket extends Model
         'name',
         'phone',
         'email',
+        'task_id',
+        'type',
+        'user_id',
     ];
 }

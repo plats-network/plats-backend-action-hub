@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::table('tasks', function($table) {
             $table->string('address', 255)->nullable()->comment('Thêm data khi là events')->after('type');
             $table->string('lat')->nullable()->comment('Thêm data khi là events')->after('address');
-            $table->string('lng')->nullable()->comment('Thêm data khi là events')->after('lat');
+            $table->string('slug')->nullable()->comment('slug')->after('lat');
+            $table->string('lng')->nullable()->comment('Thêm data khi là events')->after('slug');
         });
 
         Schema::create('user_event_likes', function (Blueprint $table) {
@@ -29,10 +30,11 @@ return new class extends Migration
         Schema::create('event_user_tickets', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id')->nullable()->comment('Nếu user đã đang ký thì khác null');
+            $table->uuid('task_id')->index();
             $table->string('name')->nullable()->comment('Họ và tên');
             $table->integer('phone')->default(0)->comment('Thời gian trả lời đúng các câu hỏi');
             $table->string('email')->nullable()->comment('Email người nhận vé dự sự kiện');
-            $table->integer('type')->default(0)->comment('0: User, 1: Guest')
+            $table->integer('type')->default(0)->comment('0: User, 1: Guest');
             $table->timestamps();
         });
 
