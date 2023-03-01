@@ -82,7 +82,8 @@ class TaskService extends BaseService
         DB::beginTransaction();
         try {
             $baseTask['creator_id'] = Auth::user()->id;
-            $dataBaseTask = $this->repository->update($baseTask,$id);
+            $baseTask['status'] = true;
+            $dataBaseTask = $this->repository->update($baseTask, $id);
             TaskGallery::where('task_id',$id)->delete();
             if ($baseTask['task_galleries']){
                 foreach ($baseTask['task_galleries'] as $uploadedFile){
@@ -140,6 +141,8 @@ class TaskService extends BaseService
                 $baseTask['banner_url'] = Storage::disk('s3')->putFileAs($path, $uploadedFile, $uploadedFile->hashName());
             }
             $baseTask['creator_id'] = Auth::user()->id;
+            $baseTask['status'] = true;
+
             $dataBaseTask = $this->repository->create($baseTask);
             if ($baseTask['task_galleries']){
                 foreach ($baseTask['task_galleries'] as $uploadedFile){
@@ -161,7 +164,7 @@ class TaskService extends BaseService
                 }
             }
             $events = Arr::get($data, 'events');
-            if ($events){
+            if ($events) {
                 foreach ($events as $event){
                     $path = 'event/image/banner' . Carbon::now()->format('Ymd');
                     $event['banner_url'] = Storage::disk('s3')->putFileAs($path, $event['banner_url'], $event['banner_url']->hashName());
@@ -199,15 +202,16 @@ class TaskService extends BaseService
             'form',
         ];
         $dataLinkGenerate = [];
-        foreach ($type as $key => $item){
+        foreach ($type as $key => $item) {
             $dataLinkGenerate[] = [
                 'name' => 'Link share '.$item,
                 'type' => $key,
-                'url' => config('app.link_share').'?fid='.$item.'&hid='.rand(0, 999999999999999).$key,
+                'url' => config('app.link_share').'?fid=' . Str::random(32),
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ];
         }
+
         return $dataLinkGenerate;
     }
 }

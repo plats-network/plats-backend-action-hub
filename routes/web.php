@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\{
-    Dashboard,Detail
+    Dashboard, Detail, Likes
 };
+use App\Http\Controllers\Web\Auth\{Login, SignUp};
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,13 +16,14 @@ use App\Http\Controllers\Web\{
 |
 */
 Route::prefix('client')->group(function () {
-    Route::get('/login', [\App\Http\Controllers\Web\Auth\Login::class, 'showFormLogin'])->name(LOGIN_WEB_ROUTE);
-    Route::post('/login', [\App\Http\Controllers\Web\Auth\Login::class, 'login']);
-
-    Route::get('/logout', [\App\Http\Controllers\Web\Auth\Login::class, 'logout'])->name(LOGOUT_WEB_ROUTE);
+    Route::get('/login', [Login::class, 'showFormLogin'])->name(LOGIN_WEB_ROUTE);
+    Route::post('/login', [Login::class, 'login']);
+    Route::get('/sign-up', [SignUp::class, 'showSignup'])->name('web.client.showSignup');
+    Route::post('/sign-up', [SignUp::class, 'store'])->name('web.client.signUp');
+    Route::get('/logout', [Login::class, 'logout'])->name(LOGOUT_WEB_ROUTE);
 });
-Route::get('/events', [Dashboard::class, 'index'])->name(DASHBOARD_WEB_ROUTER);;
-Route::get('/events/likes', [\App\Http\Controllers\Web\Likes::class, 'index'])->name(LIKE_WEB_ROUTER);;
+Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_WEB_ROUTER);;
+Route::get('/events/likes', [Likes::class, 'index'])->name(LIKE_WEB_ROUTER);;
 Route::get('/events/{slug}', [Detail::class, 'index']);
 Route::get('/events/task/{id}', [Detail::class, 'edit'])->whereUuid('id');
 Route::post('/events/likes', [Detail::class, 'like']);

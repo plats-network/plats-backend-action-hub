@@ -14,11 +14,8 @@
                             <a href="#" target="_blank" class="btn-link">Privacy</a>
                         </li>
                     </ul>
-{{--                    <p class="mb-0 text-muted text-medium">Action Hub - Plats Network</p>--}}
                 </div>
-                <div class="col-sm-6 d-none d-sm-block">
-
-                </div>
+                <div class="col-sm-6 d-none d-sm-block"></div>
             </div>
         </div>
     </div>

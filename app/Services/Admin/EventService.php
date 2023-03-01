@@ -45,6 +45,7 @@ class EventService extends BaseService
             $data = Arr::except($request->all(), '__token');
             $data['creator_id'] = Auth::user()->id;
             $data['slug'] = $request->input('name');
+            $data['status'] = true;
             $dataBaseTask = $this->taskRepository->update($data,$id);
             TaskGallery::where('task_id',$id)->delete();
             if ($data['task_galleries']){
@@ -90,6 +91,7 @@ class EventService extends BaseService
         try {
             $data = Arr::except($request->all(), '__token');
             $data['creator_id'] = Auth::user()->id;
+            $data['status'] = true;
             $data['slug'] = $request->input('name');
             $dataBaseTask = $this->taskRepository->create($data);
             if ($data['task_galleries']){

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Redirect;
 
 trait Authenticates
 {
@@ -69,10 +70,9 @@ trait Authenticates
      */
     protected function attemptLogin(Request $request)
     {
-        return $this->guard()->attempt(
-            $this->credentials($request),
-            $request->filled('remember'),
-        );
+        $user = $this->credentials($request);
+
+        return $this->guard()->attempt($user, $request->filled('remember'));
     }
 
     /**
@@ -97,9 +97,9 @@ trait Authenticates
         $request->session()->regenerate();
 
         $this->clearLoginAttempts($request);
+        $userCheck = $this->authenticated($request, $this->guard()->user());
 
-        return $this->authenticated($request, $this->guard()->user())
-            ?: redirect()->intended($this->redirectPath());
+        return $userCheck ?: redirect()->intended($this->redirectPath());
     }
 
     /**
@@ -137,12 +137,27 @@ trait Authenticates
      */
     public function redirectPath()
     {
+        if (!in_array(optional(Auth::user())->role, [2, 3])
+            && str_contains(URL::current(), 'auth/cws')) {
+            Redirect::to('/cws');
+        }
+
         if (method_exists($this, 'redirectTo')) {
-            if (str_contains(URL::current(),'auth/cws')){
+            if (str_contains(URL::current(),'auth/cws')
+                && !is_null(Auth::user())
+                && in_array(optional(Auth::user())->role, [2,3])) {
                 return $this->redirectTo();
             }
         }
-        return $this->redirectToWeb();
+
+        if (optional(Auth::user())->role != USER_ROLE
+            && str_contains(URL::current(), 'client/login')) {
+            Auth::logout();
+        } elseif (optional(Auth::user())->role == USER_ROLE
+            && !str_contains(URL::current(), 'client/login')) {
+            Auth::logout();
+            redirect('auth/cws');
+        }
 //        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
     }
 
@@ -171,7 +186,8 @@ trait Authenticates
         if (str_contains(URL::current(),'auth/cws')){
             return $this->loggedOut($request) ?: redirect('auth/cws');
         }
-        return $this->loggedOut($request) ?: redirect('events');
+
+        return $this->loggedOut($request) ?: redirect('/');
     }
 
     /**

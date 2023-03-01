@@ -20,7 +20,7 @@ class ClientWeb
         if (Auth::user() && in_array(Auth::user()->role, [CLIENT_ROLE])) {
             return $next($request);
         } else {
-            return redirect('events')->withErrors('message', 'You have not admin access');
+            return redirect('/')->withErrors('message', 'You have not admin access');
         }
     }
 }
