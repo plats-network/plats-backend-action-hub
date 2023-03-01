@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Requests\Admin\TaskRequest;
 use App\Http\Resources\Admin\EventResource;
 use App\Models\Event\TaskEvent;
 use App\Models\Event\TaskEventDetail;
 use App\Models\Event\TaskEventReward;
+use App\Models\Event\UserEventLike;
 use App\Services\Admin\EventService;
 use App\Services\Admin\TaskService;
 use Illuminate\Http\Request;
@@ -27,10 +29,18 @@ class Event extends ApiController
     {
         try {
             $limit = $request->get('limit') ?? PAGE_SIZE;
-            if (Auth::user()->role == CLIENT_ROLE) {
-                $event = $this->taskService->search(['limit' => $limit, 'creator_id' => Auth::user()->id,'type' => 3]);
-            } else {
+            if (empty(Auth::user()->role)) {
                 $event = $this->taskService->search(['limit' => $limit,'type' => 3]);
+            } else {
+                $event = $this->taskService->search(['limit' => $limit, 'creator_id' => Auth::user()->id,'type' => 3]);
+                foreach ($event as &$item){
+                    $data = UserEventLike::where('task_id',$item->id)->where('user_id',Auth::user()->id)->first();
+                    if ($data){
+                        $item['like_active'] = 1;
+                    }else{
+                        $item['like_active'] = 0;
+                    }
+                }
             }
             return response()->json($event);
         } catch (\Exception $e) {
@@ -44,7 +54,7 @@ class Event extends ApiController
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TaskRequest $request)
     {
         try {
             $this->eventService->store($request);

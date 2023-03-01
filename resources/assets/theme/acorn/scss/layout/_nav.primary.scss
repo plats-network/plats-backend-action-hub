@@ -117,7 +117,7 @@ html[data-placement='vertical'] {
       i {
         font-size: 18px !important;
       }
-      
+
       span {
         font-size: 13px;
       }
@@ -260,8 +260,6 @@ html[data-placement='horizontal'] {
     padding-right: var(--main-spacing-horizontal);
     border-top-right-radius: 0;
     border-top-left-radius: 0;
-    border-bottom-right-radius: var(--border-radius-lg);
-    border-bottom-left-radius: var(--border-radius-lg);
 
     .nav-content {
       flex-direction: row;
@@ -272,8 +270,6 @@ html[data-placement='horizontal'] {
     .nav-shadow {
       border-top-right-radius: 0;
       border-top-left-radius: 0;
-      border-bottom-right-radius: var(--border-radius-lg);
-      border-bottom-left-radius: var(--border-radius-lg);
     }
 
     .menu-container {

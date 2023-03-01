@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Helpers\BaseImage;
 use App\Models\Event\TaskEvent;
+use App\Models\Event\UserEventLike;
 use App\Models\Traits\Attribute\TaskAttribute;
 use App\Models\Traits\Method\TaskMethod;
 use App\Models\Traits\Relation\TaskRelation;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Task extends Model
 {
@@ -39,6 +41,10 @@ class Task extends Model
         'end_at',
         'order',
         'status',
+        'slug',
+        'address',
+        'lng',
+        'lat',
         'type', // 0: default, 1: event
         'creator_id',
     ];
@@ -116,5 +122,8 @@ class Task extends Model
         return Attribute::make(
             get: fn ($value) => BaseImage::imgGroup($value)
         );
+    }
+    public function setSlugAttribute(){
+        $this->attributes['slug'] = Str::slug($this->name , "-");
     }
 }

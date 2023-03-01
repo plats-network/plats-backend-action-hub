@@ -8,6 +8,12 @@ if (!defined('DEFINE_ADMIN_ROUTER')) {
     define('LOGOUT_ADMIN_ROUTE', 'admin.logout.route');
     define('REGIS_GET_CREATE', 'auth.create');
     define('REGIS_POST_CREATE', 'auth.store');
+    //Auth web
+
+    define('LOGIN_WEB_ROUTE', 'web.login.route');
+    define('LOGOUT_WEB_ROUTE', 'web.logout.route');
+    define('DASHBOARD_WEB_ROUTER', 'web.dashboard.route');
+    define('LIKE_WEB_ROUTER', 'web.like.route');
 
     // Dashboard
     define('DASHBOARD_ADMIN_ROUTER', 'admin.dashboard.route');

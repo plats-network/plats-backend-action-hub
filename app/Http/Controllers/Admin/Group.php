@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class Group extends  Controller
 {
+    public function __construct()
+    {
+        $this->middleware('client_admin');
+    }
+
     public function index(Request $request)
     {
 

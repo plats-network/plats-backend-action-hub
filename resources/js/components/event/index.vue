@@ -94,8 +94,22 @@
                             <el-form-item label="Name">
                                 <el-input v-model="form.name" placeholder="Name"></el-input>
                             </el-form-item>
+                            <el-form-item label="Address">
+                                <el-input v-model="form.address" placeholder="Name"></el-input>
+                            </el-form-item>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <el-form-item label="Lat">
+                                        <el-input v-model="form.lat" placeholder="Name"></el-input>
+                                    </el-form-item></div>
+                                <div class="col-md-6">
+                                    <el-form-item label="Lng">
+                                        <el-input v-model="form.lng" placeholder="Name"></el-input>
+                                    </el-form-item>
+                                </div>
+                            </div>
                             <el-form-item label="Description" prop="Description">
-                                <el-input type="textarea" :rows="5" placeholder="Description" v-model="form.description"></el-input>
+                                <ckeditor v-model="form.description"  ></ckeditor>
                             </el-form-item>
                             <div class="d-flex">
                                 <!-- <el-form-item label="Status" prop="region" style="margin-right: 20px">
@@ -165,8 +179,22 @@
                             <el-form-item label="Name">
                                 <el-input v-model="form.name" placeholder="Name"></el-input>
                             </el-form-item>
+                            <el-form-item label="Address">
+                                <el-input v-model="form.address" placeholder="Name"></el-input>
+                            </el-form-item>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <el-form-item label="Lat">
+                                    <el-input v-model="form.lat" placeholder="Name"></el-input>
+                                </el-form-item></div>
+                                <div class="col-md-6">
+                                    <el-form-item label="Lng">
+                                        <el-input v-model="form.lng" placeholder="Name"></el-input>
+                                    </el-form-item>
+                                </div>
+                            </div>
                             <el-form-item label="Description" prop="Description">
-                                <el-input type="textarea" :rows="5" placeholder="Description" v-model="form.description"></el-input>
+                                <ckeditor v-model="form.description" ></ckeditor>
                             </el-form-item>
                             <div class="d-flex">
                                 <el-form-item label="Order">
@@ -471,6 +499,9 @@ export default {
                 id : '',
                 banner_url : '',
                 name : '',
+                lat : '',
+                lng : '',
+                address : '',
                 description : '',
                 start_at : '',
                 end_at : '',
@@ -626,6 +657,9 @@ export default {
             this.form = {
                 banner_url : '',
                 name : '',
+                lat : '',
+                lng : '',
+                address : '',
                 description : '',
                 start_at : '',
                 end_at : '',

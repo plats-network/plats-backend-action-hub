@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Storage;
 
 class TaskBeta extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('client_admin');
+    }
+
     public function index(Request $request)
     {
 

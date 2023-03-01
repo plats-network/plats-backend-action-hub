@@ -71,5 +71,6 @@ class Kernel extends HttpKernel
         'qrcode' => \App\Http\Middleware\QrCode::class,
         'admin' => \App\Http\Middleware\Admin::class,
         'client_admin' => \App\Http\Middleware\ClientAdmin::class,
+        'client_web' => \App\Http\Middleware\ClientWeb::class,
     ];
 }
