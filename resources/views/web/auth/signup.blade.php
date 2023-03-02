@@ -33,7 +33,7 @@
                     <div class="sw-lg-70 bg-foreground d-flex justify-content-center align-items-center shadow-deep py-5 full-page-content-right-border">
                         <div class="sw-lg-50 px-5">
                             <div class="sh-11">
-                                <a href="#">
+                                <a href="{{url('/')}}" title="Plats Event">
                                     <div class="logo-default" style="background-image: url({{ asset('img/admin/logo-light-blue.svg') }})"></div>
                                 </a>
                             </div>

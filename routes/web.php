@@ -28,6 +28,6 @@ Route::get('/events/{slug}', [Detail::class, 'index']);
 Route::get('/events/task/{id}', [Detail::class, 'edit'])->whereUuid('id');
 Route::post('/events/likes', [Detail::class, 'like']);
 Route::get('/events/likes/list', [Detail::class, 'listLike']);
-Route::post('/events/ticket', [Detail::class, 'addTicket']);
+Route::post('/events/ticket', [Detail::class, 'addTicket'])->name('web.event.addTicket');
 
 
