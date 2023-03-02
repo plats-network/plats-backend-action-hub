@@ -30,9 +30,9 @@ class Event extends ApiController
         try {
             $limit = $request->get('limit') ?? PAGE_SIZE;
             if (empty(Auth::user()->role)) {
-                $event = $this->taskService->search(['limit' => $limit,'type' => 3]);
+                $event = $this->taskService->search(['limit' => $limit,'type' => USER_ROLE]);
             } else {
-                $event = $this->taskService->search(['limit' => $limit, 'creator_id' => Auth::user()->id,'type' => 3]);
+                $event = $this->taskService->search(['limit' => $limit, 'creator_id' => Auth::user()->id,'type' => USER_ROLE]);
                 foreach ($event as &$item){
                     $data = UserEventLike::where('task_id',$item->id)->where('user_id',Auth::user()->id)->first();
                     if ($data){
