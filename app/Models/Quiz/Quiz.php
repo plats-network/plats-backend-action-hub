@@ -24,8 +24,14 @@ class Quiz extends Model
      */
     protected $fillable = [
         'id',
+        'task_id',
         'name',
-        'phone',
-        'email',
+        'time_quiz',
+        'order',
+        'status',
     ];
+    public function detail()
+    {
+        return $this->hasMany(QuizAnswer::class);
+    }
 }

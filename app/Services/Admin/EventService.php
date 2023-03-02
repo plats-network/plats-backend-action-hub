@@ -5,6 +5,8 @@ namespace App\Services\Admin;
 use App\Models\Event\TaskEvent;
 use App\Models\Event\TaskEventDetail;
 use App\Models\Event\TaskEventReward;
+use App\Models\Quiz\Quiz;
+use App\Models\Quiz\QuizAnswer;
 use App\Models\TaskGallery;
 use App\Repositories\EventRepository;
 use App\Repositories\TaskRepository;
@@ -74,6 +76,24 @@ class EventService extends BaseService
                     $idTaskEventBooths->detail()->create($item1);
                 }
             }
+            $quiz = Arr::get($data, 'quiz');
+            $idQuizDetail = Quiz::where('task_id',$id)->first();
+            if ($idQuizDetail){
+                QuizAnswer::where('quiz_id',$idQuizDetail->id)->delete();
+            }
+            Quiz::where('task_id',$id)->delete();
+            if ($quiz){
+                foreach ($quiz as $item){
+                    unset($item['id']);
+                    $idQuiz = $dataBaseTask->quizs()->create($item);
+                    if ($item['detail']){
+                        foreach ($item['detail'] as $itemDetail){
+                            unset($itemDetail['id']);
+                            $idQuiz->detail()->create($itemDetail);
+                        }
+                    }
+                }
+            }
             DB::commit();
         } catch (RuntimeException $exception) {
             DB::rollBack();
@@ -93,24 +113,40 @@ class EventService extends BaseService
             $data['creator_id'] = Auth::user()->id;
             $data['status'] = true;
             $data['slug'] = $request->input('name');
+            $data['max_job'] = 0;
             $dataBaseTask = $this->taskRepository->create($data);
             if ($data['task_galleries']){
                 foreach ($data['task_galleries'] as $uploadedFile){
                     $dataBaseTask->taskGalleries()->create( ['url_image' => empty($uploadedFile['url']) ? $uploadedFile :  $uploadedFile['url']]);
                 }
             }
+            $quiz = Arr::get($data, 'quiz');
+            if ($quiz){
+                foreach ($quiz as $item){
+                    $idQuiz = $dataBaseTask->quizs()->create($item);
+                    if ($item['detail']){
+                        foreach ($item['detail'] as $itemDetail){
+                            $idQuiz->detail()->create($itemDetail);
+                        }
+                    }
+                }
+            }
             $sessions = Arr::get($data, 'sessions');
-            $idTaskEventSessions = $dataBaseTask->taskEvents()->create($sessions);
-            if ($sessions['detail']){
-                foreach ($sessions['detail'] as $item){
-                    $idTaskEventSessions->detail()->create($item);
+            if ($sessions){
+                $idTaskEventSessions = $dataBaseTask->taskEvents()->create($sessions);
+                if ($sessions['detail']){
+                    foreach ($sessions['detail'] as $item){
+                        $idTaskEventSessions->detail()->create($item);
+                    }
                 }
             }
             $booths = Arr::get($data, 'booths');
-            $idTaskEventBooths = $dataBaseTask->taskEvents()->create($booths);
-            if ($booths['detail']){
-                foreach ($booths['detail'] as $item){
-                    $idTaskEventBooths->detail()->create($item);
+            if ($booths){
+                $idTaskEventBooths = $dataBaseTask->taskEvents()->create($booths);
+                if ($booths['detail']){
+                    foreach ($booths['detail'] as $item){
+                        $idTaskEventBooths->detail()->create($item);
+                    }
                 }
             }
 
