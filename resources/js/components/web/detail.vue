@@ -10,11 +10,12 @@
         </div>
         <div>
             <p class="error">{{ error }}</p>
-            <p class="decode-result" style="font-size:150%;">
+            <!-- TODO: QRcode -->
+            <!-- <p class="decode-result" style="font-size:150%;">
                 QRコードリーダー<br>
                 <b style="color:#f00;">{{ result }}</b>
             </p>
-            <qrcode-stream @decode="onDecode" @init="onInit" />
+            <qrcode-stream @decode="onDecode" @init="onInit" /> -->
         </div>
         <div class="mt-3">
             <el-row :gutter="10">
@@ -159,7 +160,7 @@
                     </el-card>
                 </el-col>
             </el-row>
-            <el-dialog title="Thông tin" :visible.sync="dialogFormVisible">
+            <el-dialog title="Get ticket" :visible.sync="dialogFormVisible" style="width: 90%; margin: 0 auto;">
                 <el-form :model="form" ref="form"  :rules="rules" label-position="top" style="width: 100%">
                     <el-form-item prop="name" label="Tên" :label-width="formLabelWidth">
                         <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -172,8 +173,8 @@
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">Hủy</el-button>
-                <el-button type="primary" @click="submitForm('form')">Xác nhận</el-button>
+                <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="submitForm('form')">Check out</el-button>
                 </span>
             </el-dialog>
         </div>
@@ -310,22 +311,24 @@ export default {
         submitForm(form){
             this.$refs[form].validate((valid) => {
                 if (valid) {
+
                     const loading = this.$loading({
                         lock: true,
                         text: 'Loading',
                         spinner: 'el-icon-loading',
                         background: 'rgba(0, 0, 0, 0.7)'
                     });
+
                     axios.post('/events/ticket', this.form).then(e => {
                         Notification.success({
-                            title: ' Thành công',
-                            message: ' Thành công',
+                            title: 'Message',
+                            message: 'Get ticket successfully!',
                             type: 'success',
                         });
                         loading.close();
                         this.dialogFormVisible = false
                     }).catch(error => {
-                        this.errors = error.response.data.message; // this should be errors.
+                        this.errors = error.response.data.message;
                         Notification.error({
                             title: 'Error',
                             message: this.errors,
@@ -371,7 +374,7 @@ export default {
                 loading.close();
             })
         },
-        getOtherEvents(){
+        getOtherEvents() {
             let rawData =
                 {
                     'limit': 4,
