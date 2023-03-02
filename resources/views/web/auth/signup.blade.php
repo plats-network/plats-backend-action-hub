@@ -39,7 +39,11 @@
                             </div>
                             <div>
                                 <x-alert/>
-                                <x-form::open action="{{ route(LOGIN_WEB_ROUTE) }}" class="tooltip-end-bottom" id="loginForm">
+                                <x-form::open action="{{ route('web.client.signUp') }}" class="tooltip-end-bottom">
+                                    <div class="mb-3 filled form-group tooltip-end-top">
+                                        <i data-acorn-icon="user"></i>
+                                        <input class="form-control" placeholder="Name" name="name" value="{{ old('name') }}"/>
+                                    </div>
                                     <div class="mb-3 filled form-group tooltip-end-top">
                                         <i data-acorn-icon="email"></i>
                                         <input class="form-control" placeholder="Email" name="email" value="{{ old('email') }}"/>
@@ -47,10 +51,13 @@
                                     <div class="mb-3 filled form-group tooltip-end-top">
                                         <i data-acorn-icon="lock-off"></i>
                                         <input class="form-control pe-7" name="password" type="password" placeholder="Password"/>
-                                        <!-- <a class="text-small position-absolute t-3 e-3" href="#">Forgot?</a> -->
                                     </div>
-                                    <button type="submit" class="btn btn-lg btn-primary">Login</button>
-                                    <a href="{{route('web.client.showSignup')}}" class="pl-5" style="padding-left: 10px;">Sign Up</a>
+                                    <div class="mb-3 filled form-group tooltip-end-top">
+                                        <i data-acorn-icon="lock-off"></i>
+                                        <input class="form-control pe-7" name="password_confirmation" type="password" placeholder="Password Confirmation"/>
+                                    </div>
+                                    <button type="submit" class="btn btn-lg btn-primary">Sign Up</button>
+                                    <a href="{{route(LOGIN_WEB_ROUTE)}}" style="padding-left: 10px;">Login</a>
                                 </x-form::open>
                             </div>
                         </div>

@@ -14,8 +14,9 @@ use App\Repositories\EventUserTicketRepository;
 use App\Repositories\UserEventLikeRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\{Route, Mail, Auth};
+use App\Jobs\SendTicket;
+use App\Mail\SendTicket as EmailSendTicket;
 
 class Detail extends Controller
 {
@@ -24,7 +25,6 @@ class Detail extends Controller
         UserEventLikeRepository $eventLikeRepository
     )
     {
-//        $this->middleware('client_web');
         $this->repository = $eventUserTicketRepository;
         $this->userEventLikeRepository = $eventLikeRepository;
     }
@@ -37,17 +37,28 @@ class Detail extends Controller
 
     public function addTicket(AddTicketRequest $request)
     {
-        $data = Arr::except($request->all(), '__token');
-        if (empty(Auth::user()->id)){
-            $data['user_id'] = null;
-            $data['type'] = 1;
-        }else{
-            $data['user_id'] = Auth::user()->id;
-            $data['type'] = 0;
-        }
-        $dataBaseTask = $this->repository->create($data);
-        return $this->respondSuccess($dataBaseTask);
+        try {
+            $user = Auth::user();
+            $data = Arr::except($request->all(), '__token');
+            $task = Task::findOrFail($data['task_id']);
+            $data['type'] = $user ? 0 : 1;
+            $data['user_id'] = $user ?  $user->id : null;
+            $checkSendMail = $this->repository
+                ->whereEmail($data['email'])
+                ->whereTaskId($data['task_id'])
+                ->first();
 
+            if ($checkSendMail) {
+                Mail::to($data['email'])->send(new EmailSendTicket($task));
+            } else {
+                $this->repository->create($data);
+                Mail::to($data['email'])->send(new EmailSendTicket($task));
+            }
+
+            return $this->respondSuccess('Success');
+        } catch (\Exception $e) {
+            return $this->respondError('Errors save data', 422);
+        }
     }
     public function edit($id)
     {

@@ -108,4 +108,12 @@ class User extends Authenticatable implements JWTSubject
         return Carbon::parse($this->attributes['birth'])->format('d/m/Y');
     }
 
+    /**
+     * Add a mutator to ensure hashed passwords
+     */
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
+
 }

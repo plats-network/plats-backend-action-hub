@@ -111,19 +111,18 @@
                             <el-form-item label="Description" prop="Description">
                                 <ckeditor v-model="form.description"  ></ckeditor>
                             </el-form-item>
+                            <el-form-item label="Address">
+                                <el-input v-model="form.address" placeholder="Address"></el-input>
+                            </el-form-item>
                             <div class="d-flex">
-                                <!-- <el-form-item label="Status" prop="region" style="margin-right: 20px">
-                                    <el-select v-model="form.status" placeholder="Status">
-                                        <el-option
-                                            v-for="item in [{value: 1, label: 'public'}, {value: 0, label: 'draft'}]"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item> -->
                                 <el-form-item label="Order">
-                                    <el-input v-model="form.order" placeholder="Order"></el-input>
+                                    <el-input v-model="form.order" placeholder="Order" style="margin-right: 20px"></el-input>
+                                </el-form-item>
+                                <el-form-item label="Latitude" style="margin-right: 20px">
+                                    <el-input v-model="form.lat" placeholder="0.000000"></el-input>
+                                </el-form-item>
+                                <el-form-item label="Longitude">
+                                    <el-input v-model="form.lng" placeholder="0.000000"></el-input>
                                 </el-form-item>
                             </div>
                             <div class="d-flex">
@@ -137,6 +136,7 @@
                             <div class="d-flex mt-4">
                                 <el-button  @click="addSessions()">Sessions</el-button>
                                 <el-button type="primary" @click="addBooths()">Booths</el-button>
+                                <el-button type="primary">Mini Game</el-button>
                                 <el-button @click="dialogQuiz = true">Quiz</el-button>
                             </div>
                         </el-col>
@@ -199,7 +199,7 @@
                             </el-form-item>
                             <div class="d-flex">
                                 <el-form-item label="Order">
-                                    <el-input v-model="form.order" placeholder="Order"></el-input>
+                                    <el-input v-model="form.order" placeholder="Order" style="margin-right: 20px"></el-input>
                                 </el-form-item>
                             </div>
                             <div class="d-flex">
@@ -220,6 +220,7 @@
                             <div class="d-flex mt-4">
                                 <el-button @click="addSessions()">Sessions</el-button>
                                 <el-button @click="addBooths()">Booths</el-button>
+                                <el-button>Mini Game</el-button>
                                 <el-button @click="dialogQuiz = true">Quiz</el-button>
                             </div>
                         </el-col>
@@ -603,17 +604,17 @@ export default {
                 order : '',
                 task_galleries: [],
                 sessions: {
-                        name:'',
-                        max_job:'',
-                        banner_url:'',
-                        description:'',
-                        type:'',
-                        detail:[
-                            {
-                                name: '',
-                                description: ''
-                            }
-                        ]
+                    name:'',
+                    max_job:'',
+                    banner_url:'',
+                    description:'',
+                    type:'',
+                    detail:[
+                        {
+                            name: '',
+                            description: ''
+                        }
+                    ]
                 },
                 booths: {
                         name:'',
@@ -837,6 +838,7 @@ export default {
                     ]
                 }
             }
+
             this.quiz =[
                 {
                     name: '',
@@ -869,6 +871,7 @@ export default {
             ],
             this.drawerCreate = true
         },
+
         list_data(val = 1, type = true) {
             var self = this;
             let rawData =
@@ -929,6 +932,7 @@ export default {
                             message: this.errors,
                             type: 'error',
                         });
+
                         loading.close();
                     });
                 } else {

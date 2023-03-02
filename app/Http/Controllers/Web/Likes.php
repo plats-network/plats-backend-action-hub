@@ -8,7 +8,7 @@ class Likes extends Controller
 {
     public function __construct()
     {
-        $this->middleware('client_web');
+        // $this->middleware('client_web');
     }
 
     public function index()

@@ -16,8 +16,9 @@ class Login extends Controller
     public function showFormLogin()
     {
         if (Auth::guard('web')->user()) {
-            return redirect('/events');
+            return redirect('/');
         }
+
         return view('web.auth.login');
     }
 
@@ -28,6 +29,7 @@ class Login extends Controller
      */
     public function redirectToWeb()
     {
+        dd(22);
         return route(DASHBOARD_WEB_ROUTER);
     }
 
