@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\BaseImage;
 use App\Models\Event\TaskEvent;
 use App\Models\Event\UserEventLike;
+use App\Models\Quiz\Quiz;
 use App\Models\Traits\Attribute\TaskAttribute;
 use App\Models\Traits\Method\TaskMethod;
 use App\Models\Traits\Relation\TaskRelation;
@@ -84,6 +85,11 @@ class Task extends Model
     public function taskLocations()
     {
         return $this->hasMany(TaskLocation::class)->with('taskLocationJobs');
+    }
+
+    public function quizs()
+    {
+        return $this->hasMany(Quiz::class);
     }
 
     public function taskGenerateLinks()

@@ -3,6 +3,7 @@
 namespace App\Models\Event;
 
 use App\Helpers\BaseImage;
+use App\Models\Quiz\Quiz;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

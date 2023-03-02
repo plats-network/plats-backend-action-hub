@@ -58,19 +58,13 @@ class TaskRequest extends FormRequest
                     'task_locations.*.detail.*.address' => ['required'],
                     'task_locations.*.detail.*.lng' => ['numeric' ],
                     'task_locations.*.detail.*.lat' => ['numeric'],
-//                    'events' => ['nullable',],
-//                    'events.*.name' => ['required'],
-//                    'events.*.description' => ['required'],
-//                    'events.*.type' => ['required'],
-//                    'events.*.max_job' => ['required','numeric', 'min:0'],
-//                    'events.*.status' => ['required'],
-//                    'events.*.amount' => ['required','numeric', 'min:0'],
-//                    'events.*.reward_id' => ['required'],
-//                    'events.*.banner_url' => ['required'],
-//                    'events.*.details' => ['required'],
-//                    'events.*.details.*.name' => ['required'],
-//                    'events.*.details.*.description' => ['required'],
-//                    'events.*.details.*.status' => ['required'],
+                    'quiz.*.name' => ['required',],
+                    'quiz.*.time_quiz' => ['required',],
+                    'quiz.*.order' => ['required',],
+                    'quiz.*.detail' => ['required',],
+                    'quiz.*.detail.*.name' => ['required',],
+
+
                 ];
                 if (!$this->id) {
                     $rules = array_merge($rules,  [

@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\TaskRequest;
 use App\Http\Resources\Admin\RewardResource;
 use App\Http\Resources\Admin\TaskResource;
 use App\Models\Event\TaskEvent;
+use App\Models\Quiz\Quiz;
 use App\Models\Task;
 use App\Models\TaskGallery;
 use App\Models\TaskGroup;
@@ -70,6 +71,12 @@ class Tasks extends ApiController
         $taskGallery = TaskGallery::where('task_id',$id)->pluck('url_image');
         $booths = TaskEvent::where('task_id',$id)->with('detail')->where('type',1)->first();
         $sessions = TaskEvent::where('task_id',$id)->with('detail')->where('type',0)->first();
+        $quiz = Quiz::where('task_id',$id)->with('detail')->get();
+        foreach ($quiz as  $value){
+            foreach ($value['detail'] as $key => $value){
+                $value['key'] = $key;
+            }
+        }
         $image = [];
         foreach ($taskGallery as $item){
             $image[]['url'] = $item;
@@ -78,6 +85,7 @@ class Tasks extends ApiController
         $task['task_galleries'] = $image;
         $task['booths'] = $booths;
         $task['sessions'] = $sessions;
+        $task['quiz'] = $quiz;
         return $this->responseMessage($task);
     }
 

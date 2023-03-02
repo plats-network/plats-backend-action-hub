@@ -137,6 +137,7 @@
                             <div class="d-flex mt-4">
                                 <el-button  @click="addSessions()">Sessions</el-button>
                                 <el-button type="primary" @click="addBooths()">Booths</el-button>
+                                <el-button @click="dialogQuiz = true">Quiz</el-button>
                             </div>
                         </el-col>
                         <el-col :span="8">
@@ -219,6 +220,7 @@
                             <div class="d-flex mt-4">
                                 <el-button @click="addSessions()">Sessions</el-button>
                                 <el-button @click="addBooths()">Booths</el-button>
+                                <el-button @click="dialogQuiz = true">Quiz</el-button>
                             </div>
                         </el-col>
                         <el-col :span="8">
@@ -395,6 +397,53 @@
                     </el-tab-pane>
                 </el-tabs>
             </el-dialog>
+
+            <el-drawer title="Quiz" size="50%" :visible.sync="dialogQuiz">
+                <div class="p-3">
+                    <el-form ref="formQuiz"  label-position="top">
+                        <div>
+                            <el-col :span="24">
+                                <div v-for="(details, index) in  this.quiz" class="mb-3 mt-3">
+                                    <el-row :gutter="20" >
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <el-form-item :label="'Question '+ (index+1)" :label-width="formLabelWidth" style="width: 65%;">
+                                                <el-input v-model="details.name" ></el-input>
+                                            </el-form-item>
+                                            <el-form-item label="Time" :label-width="formLabelWidth" style="width: 15%;">
+                                                <el-input v-model="details.time_quiz" ></el-input>
+                                            </el-form-item>
+                                            <el-form-item label="Order" prop="order" :label-width="formLabelWidth" style="width: 5%;">
+                                                <el-input v-model="details.order" ></el-input>
+                                            </el-form-item>
+                                            <el-form-item label="Status" prop="status" :label-width="formLabelWidth" style="width: 10%;">
+                                                <el-switch v-model="details.status">
+                                                </el-switch>
+                                            </el-form-item>
+                                        </div>
+                                        <div v-for="(answer, index) in  details.detail"
+                                             class="mb-3 mt-3 " style="margin-left: 40px;margin-right: 40px">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <div>Answer {{index+1}}</div>
+                                                <el-input v-model="answer.name"  style="width: 80%;"></el-input>
+                                                <el-checkbox @change="clickAnswer(answer,details.detail)" v-model="answer.status">Option</el-checkbox>
+                                            </div>
+                                        </div>
+                                        <div><el-button size="mini" type="danger" style="margin-top: 5px" @click.prevent="removeQuiz(details)">
+                                            <i class="el-icon-delete"></i>
+                                        </el-button></div>
+                                    </el-row>
+                                </div>
+                                <div style="float: right;">
+                                    <el-button size="mini" type="primary" class="mt-3 mb-2" @click="addQuiz"><i class="el-icon-plus"></i>Add Detail</el-button>
+                                </div>
+                            </el-col>
+                        </div>
+                    </el-form>
+                    <span slot="footer" class="dialog-footer">
+                            <el-button type="primary" @click="submitQuiz()">Add Quiz</el-button>
+                    </span>
+                </div>
+            </el-drawer>
         </el-row>
     </el-row>
 </template>
@@ -454,10 +503,55 @@ export default {
     },
     data() {
         return {
+            ruleQuiz:{
+                name: [{
+                    required: true,
+                    message: 'Please input name',
+                    trigger: ['blur', 'change']
+                }],
+                time_quiz: [{
+                    required: true,
+                    message: 'Please input name',
+                    trigger: ['blur', 'change']
+                }],
+
+            },
+            quiz :[
+                    {
+                        name: '',
+                        time_quiz: '',
+                        order: '',
+                        status: true,
+                        detail:[
+                            {
+                                key:0,
+                                name:'',
+                                status:true
+                            },
+                            {
+                                key:1,
+                                name:'',
+                                status:false
+                            },
+                            {
+                                key:2,
+                                name:'',
+                                status:false
+                            },
+                            {
+                                key:3,
+                                name:'',
+                                status:false
+                            }
+                        ]
+                    }
+                ],
+            formLabelWidth: '120px',
             activeName: 'first',
             size: 120,
             image: '',
             dialogSessions: false,
+            dialogQuiz: false,
             dialogBooths: false,
             dialogQrCode: false,
             currentPage: 1,
@@ -533,11 +627,61 @@ export default {
                                 description: ''
                             }
                         ]
-                }
+                },
             },
         }
     },
     methods: {
+        clickAnswer(item,items){
+            for (let i = 0; i < items.length; i++) {
+                const el = items[i];
+                if (el.key === item.key) {
+                    el.status = true;
+                } else {
+                    el.status = false;
+                }
+            }
+        },
+        addQuiz(){
+            this.quiz.push({
+                name: '',
+                time_quiz: '',
+                order: '',
+                status: true,
+                detail:[
+                    {
+                        key:0,
+                        name:'',
+                        status:true
+                    },
+                    {
+                        key:1,
+                        name:'',
+                        status:false
+                    },
+                    {
+                        key:2,
+                        name:'',
+                        status:false
+                    },
+                    {
+                        key:3,
+                        name:'',
+                        status:false
+                    }
+                ]
+            });
+        },
+        submitQuiz(){
+            this.form.quiz = this.quiz
+            console.log(this.form)
+        },
+        removeQuiz(item){
+            let index = this.quiz.indexOf(item);
+            if (index !== -1) {
+                this.quiz.splice(index, 1);
+            }
+        },
         downloadQrCode(id){
             let canvasImage = document.getElementById(id).querySelector('canvas').toDataURL('image/png');
             // this can be used to download any image from webpage to local disk
@@ -693,6 +837,36 @@ export default {
                     ]
                 }
             }
+            this.quiz =[
+                {
+                    name: '',
+                    time_quiz: '',
+                    order: '',
+                    status: true,
+                    detail:[
+                        {
+                            key:0,
+                            name:'',
+                            status:true
+                        },
+                        {
+                            key:1,
+                            name:'',
+                            status:false
+                        },
+                        {
+                            key:2,
+                            name:'',
+                            status:false
+                        },
+                        {
+                            key:3,
+                            name:'',
+                            status:false
+                        }
+                    ]
+                }
+            ],
             this.drawerCreate = true
         },
         list_data(val = 1, type = true) {
@@ -775,6 +949,7 @@ export default {
             let url = '/api/tasks-cws/edit/'+ row.id;
             axios.get(url).then(e => {
                 this.form = e.data.data.message;
+                this.quiz = e.data.data.message.quiz
                 loading.close();
 
             }).catch((_) => {
