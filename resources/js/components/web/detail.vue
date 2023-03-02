@@ -8,14 +8,6 @@
                     >
             </div>
         </div>
-        <div>
-            <p class="error">{{ error }}</p>
-            <p class="decode-result" style="font-size:150%;">
-                QRコードリーダー<br>
-                <b style="color:#f00;">{{ result }}</b>
-            </p>
-            <qrcode-stream @decode="onDecode" @init="onInit" />
-        </div>
         <div class="mt-3">
             <el-row :gutter="10">
                 <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16">
