@@ -63,7 +63,7 @@ class TaskService extends BaseService
             // Remove condition after apply query builder
             $this->cleanFilterBuilder('name');
         }
-        $this->builder->with('taskLocations','taskSocials','taskGalleries','taskGenerateLinks','taskEvents');
+        $this->builder->with('taskLocations','taskSocials','taskGalleries','taskGenerateLinks','taskEvents','userGetTickets');
         return $this->endFilter();
     }
 
@@ -176,7 +176,7 @@ class TaskService extends BaseService
                     }
                 }
             }
-            $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber());
+            $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
             $socials = Arr::get($data, 'task_socials');
             if ($socials){
                 $dataBaseTask->taskSocials()->createMany($socials);
@@ -192,7 +192,7 @@ class TaskService extends BaseService
 
     }
 
-    public function generateNumber()
+    public function generateNumber($slug)
     {
         $type = [
             'facebook',
@@ -206,7 +206,7 @@ class TaskService extends BaseService
             $dataLinkGenerate[] = [
                 'name' => 'Link share '.$item,
                 'type' => $key,
-                'url' => config('app.link_share').'?fid=' . Str::random(32),
+                'url' => config('app.link_share').'/events/'.$slug.'?'.$item.'=' . Str::random(32),
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ];

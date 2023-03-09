@@ -4,7 +4,7 @@
         <div class="container">
             <div class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;">Events</div>
             <el-row>
-                <el-col :md="6" :sm="12" :xs="12" :lg="6" :xl="6" class="p-2" v-for="(event, index) in tableData"  >
+                <el-col :md="6" :sm="12" :xs="12" :lg="6" :xl="6" class="p-2" v-for="event in tableData"  >
                     <el-card shadow="hover" class="height-card" :body-style="{ padding: '5px' }">
                         <img :src="event.banner_url" class="image w-100 height-card-image">
                         <div>

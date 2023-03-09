@@ -28,6 +28,8 @@ class UserJoinEvent extends Model
         'task_event_detail_id',
         'agent',
         'ip_address',
+        'task_id',
+        'task_event_id',
     ];
 
     /**

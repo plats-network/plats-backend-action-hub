@@ -61,7 +61,7 @@
                 <el-table-column
                     prop="name"
                     label="Name"
-                    width="180">
+                >
                 </el-table-column>
 <!--                <el-table-column-->
 <!--                    prop="desc_vn"-->
@@ -74,7 +74,7 @@
                     width="180">
                 </el-table-column>
                 <el-table-column
-                    label="Status">
+                    label="Status" width="180">
                     <template slot-scope="scope">
                         <el-tag type="success" v-if="scope.row.status === false">draft</el-tag>
                         <el-tag type="danger" v-if="scope.row.status === true">public</el-tag>
