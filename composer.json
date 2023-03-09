@@ -20,6 +20,7 @@
         "mpdf/mpdf": "*",
         "sentry/sentry-laravel": "^3.1",
         "spatie/laravel-tags": "^4.3",
+        "spatie/laravel-backup": "^8.1",
         "symfony/console": "6.0.*",
         "symfony/deprecation-contracts": "3.0.*",
         "symfony/error-handler": "6.0.*",

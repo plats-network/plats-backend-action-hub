@@ -42,6 +42,7 @@ class Reward extends Model
         'name',
         'description',
         'image',
+        'symbol',
         'region',
         'order',
         'status',

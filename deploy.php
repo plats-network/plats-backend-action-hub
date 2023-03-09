@@ -47,7 +47,7 @@ host('prod')
     ->set('stage', 'production')
     ->set('remote_user', 'deploy')
     ->set('identityFile', '~/.ssh/prod_plats')
-    ->set('branch', 'main')
+    ->set('branch', 'release')
     ->set('deploy_path', '{{prod_path}}');
 
 host('stg')

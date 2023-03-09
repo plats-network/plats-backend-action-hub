@@ -4,8 +4,11 @@ use App\Http\Controllers\Api\{
     Task, TaskLocation, UserTask,
     Wallet, Box, Gifts,
     QrCode, TaskNotice, LockTray,
-    QrCodeAction, Twitter, Social,TaskV2,Group
+    QrCodeAction, Twitter, Social,TaskV2, Group,
+    UserReward
 };
+
+// Admin CWS
 use App\Http\Controllers\Api\Admin\{
     Reward,
     Tasks,
@@ -69,30 +72,30 @@ Route::prefix('cws')->group(function($router) {
 });
 
 
-//Route::prefix('tasks')->controller(Task::class)->group(function ($router) {
-//    Route::get('/', 'index');
-//    Route::get('/doing', 'getTaskDoing');
-//    Route::post('/', 'create');
-//    Route::get('/{id}', 'detail')->whereUuid('id');
-//    // Route::post('/{id}/start/{location_id}', 'startTask')->whereUuid('id')->whereUuid('location_id');
-//    Route::post('/{id}/check-in/{location_id}', 'checkIn')->whereUuid('id')->whereUuid('location_id');
-//    Route::patch('/{id}/cancel', 'cancel')->whereUuid('id');
-//
-//    Route::prefix('{id}/locations')->controller(TaskLocation::class)->group(function () {
-//        Route::post('/', 'create');
-//    });
-//
-//    Route::post('/{id}/social/{social_id}', [Social::class, 'update'])->name('task.social.update');
-//
-//    $router->post('like-pin', 'taskAction')->name('task.action');
-//    $router->post('start-cancel', 'startTask')->name('task.startTask');
-//    $router->get('my-tasks', 'myTasks')->name('task.myTasks');
-//});
+Route::prefix('tasks')->controller(Task::class)->group(function ($router) {
+   Route::get('/', 'index');
+   Route::get('/doing', 'getTaskDoing');
+   Route::post('/', 'create');
+   Route::get('/{id}', 'detail')->whereUuid('id');
+   // Route::post('/{id}/start/{location_id}', 'startTask')->whereUuid('id')->whereUuid('location_id');
+   Route::post('/{id}/check-in/{location_id}', 'checkIn')->whereUuid('id')->whereUuid('location_id');
+   Route::patch('/{id}/cancel', 'cancel')->whereUuid('id');
 
-Route::prefix('tasks-v2')->controller(TaskV2::class)->group(function () {
-    Route::get('/', 'index');
-    Route::get('/{id}', 'detail')->whereUuid('id');
+   Route::prefix('{id}/locations')->controller(TaskLocation::class)->group(function () {
+       Route::post('/', 'create');
+   });
+
+   Route::post('/{id}/social/{social_id}', [Social::class, 'update'])->name('task.social.update');
+
+   $router->post('like-pin', 'taskAction')->name('task.action');
+   $router->post('start-cancel', 'startTask')->name('task.startTask');
+   $router->get('my-tasks', 'myTasks')->name('task.myTasks');
 });
+
+// Route::prefix('tasks-v2')->controller(TaskV2::class)->group(function () {
+//     Route::get('/', 'index');
+//     Route::get('/{id}', 'detail')->whereUuid('id');
+// });
 
 Route::prefix('rewards')->controller(Reward::class)->group(function () {
     Route::get('/', 'index');
@@ -128,3 +131,4 @@ Route::prefix('wallet')->controller(Wallet::class)->group(function () {
 Route::resource('groups', Group::class)->only(['index', 'show']);
 Route::get('my-groups', [Group::class, 'myGroups'])->name('group.my-groups');
 Route::post('join-group', [Group::class, 'joinGroup'])->name('group.join-group');
+Route::resource('user-rewards', UserReward::class)->only(['index']);

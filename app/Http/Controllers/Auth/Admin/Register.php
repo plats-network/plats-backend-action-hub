@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\RegisRequest;
 use Illuminate\Support\Facades\Http;
+use App\Models\User;
 
 class Register extends Controller
 {

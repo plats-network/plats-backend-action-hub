@@ -45,4 +45,12 @@ class TaskLocationJob extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    /**
+     * Get the task that owns the task_rewards.
+     */
+    public function taskLocation()
+    {
+        return $this->belongsTo(TaskLocation::class);
+    }
 }

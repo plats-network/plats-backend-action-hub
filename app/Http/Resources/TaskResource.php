@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Api\TaskEventResource;
 use Illuminate\Http\Resources\MissingValue;
 use App\Helpers\{DateHelper, ActionHelper, BaseImage};
 use Illuminate\Support\Facades\Http;
@@ -30,7 +31,7 @@ class TaskResource extends JsonResource
         $groups = $this->groupTasks->count() > 0 ? TaskGroupResource::collection($this->groupTasks) : null;
         $creator = null; //$this->getUserDetail($token, $this->creator_id); TODO
 
-        return [
+        $data = [
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
@@ -39,6 +40,7 @@ class TaskResource extends JsonResource
             'start_at' => DateHelper::getDateTime($this->start_at),
             'end_at' => DateHelper::getDateTime($this->end_at),
             'task_start' => $checkTaskStart > 0 ? true : false,
+            'type' => $this->type == 1 ? 'event' : 'task',
             'like' => [
                 'is_like' => $likeCount > 0 ? true : false,
                 'type_like' => $likeCount > 0 ? 'like' : 'unlike'
@@ -46,11 +48,30 @@ class TaskResource extends JsonResource
             'pin' => [
                 'is_pin' => $pinCount > 0 ? true : false,
                 'type_pin' => $pinCount > 0 ? 'pin' : 'unpin',
-            ],
-            'groups' => $groups,
-            'task_checkin' => $this->taskLocations->count() > 0 ? TaskLocationResource::collection($this->taskLocations) : null,
-            'task_socials' => $this->taskSocials->count() > 0 ? TaskSocialResource::collection($this->taskSocials) : null,
+            ]
         ];
+
+        $dataTask = [
+            'groups' => $groups,
+            'task_checkin' => $this->taskLocations->count() > 0
+                ? TaskLocationResource::collection($this->taskLocations)
+                : null,
+            'task_socials' => $this->taskSocials->count() > 0
+                ? TaskSocialResource::collection($this->taskSocials)
+                : null
+        ];
+
+        $dataEvent = [
+            'task_events' => $this->taskEvents->count() > 0
+                ? TaskEventResource::collection($this->taskEvents)
+                : null
+        ];
+
+        $dataRes = $this->type == 0
+            ? array_merge($data, $dataTask)
+            : array_merge($data, $dataEvent);
+
+        return $dataRes;
     }
 
     /**
