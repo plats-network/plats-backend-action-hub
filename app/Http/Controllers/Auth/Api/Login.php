@@ -47,6 +47,7 @@ class Login extends Controller
     public function login(LoginRequest $request)
     {
         $data = $this->respondWithToken($this->guard()->attempt($this->credentials($request)));
+
         if(!$data->resource || !$data->email_verified_at) {
             return $this->respondError('These credentials do not match our records.', 400, CREDENTIALS_NOT_MATCH);
         }

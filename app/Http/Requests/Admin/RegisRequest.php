@@ -25,7 +25,7 @@ class RegisRequest extends FormRequest
     {
         return [
             'name' => ['required', 'min: 5', 'max: 50'],
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min: 8']
         ];
     }

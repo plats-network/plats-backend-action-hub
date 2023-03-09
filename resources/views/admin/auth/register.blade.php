@@ -59,15 +59,26 @@
                             <p class="h6">
                                 If you are is member, please
                                 <a href="{{route(LOGIN_ADMIN_ROUTE)}}">login</a>
-                                .
                             </p>
                         </div>
                         <div>
                             <x-alert />
                             <x-form::open action="{{ route(REGIS_POST_CREATE) }}" class="tooltip-end-bottom" id="regisForm">
-                                <div class="mb-3 filled form-group tooltip-end-top">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                                <div class="mb-3 filled form-group tooltip-end-top @error('name') is-invalid @enderror">
                                     <i data-acorn-icon="user"></i>
                                     <input class="form-control" placeholder="Name" name="name" value="{{ old('name') }}"/>
+                                    @error('name')
+                                        <div class="alert alert-danger">{{ ＄message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3 filled form-group tooltip-end-top">
                                     <i data-acorn-icon="email"></i>
