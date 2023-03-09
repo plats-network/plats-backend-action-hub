@@ -8,6 +8,7 @@ use App\Models\Event\TaskEventReward;
 use App\Models\Quiz\Quiz;
 use App\Models\Quiz\QuizAnswer;
 use App\Models\TaskGallery;
+use App\Models\TaskGenerateLinks;
 use App\Repositories\EventRepository;
 use App\Repositories\TaskRepository;
 use App\Services\Concerns\BaseService;
@@ -16,6 +17,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class EventService extends BaseService
 {
@@ -94,6 +96,8 @@ class EventService extends BaseService
                     }
                 }
             }
+            TaskGenerateLinks::where('task_id',$id)->delete();
+            $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
             DB::commit();
         } catch (RuntimeException $exception) {
             DB::rollBack();
@@ -149,7 +153,7 @@ class EventService extends BaseService
                     }
                 }
             }
-
+            $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
             DB::commit();
         } catch (RuntimeException $exception) {
             DB::rollBack();
@@ -158,5 +162,27 @@ class EventService extends BaseService
             DB::rollBack();
             throw new RuntimeException($exception->getMessage(), 500062, $exception->getMessage(), $exception);
         }
+    }
+    public function generateNumber($slug)
+    {
+        $type = [
+            'facebook',
+            'twitter',
+            'telegram',
+            'discord',
+            'form',
+        ];
+        $dataLinkGenerate = [];
+        foreach ($type as $key => $item) {
+            $dataLinkGenerate[] = [
+                'name' => 'Link share '.$item,
+                'type' => $key,
+                'url' => config('app.link_share').'/events/'.$slug.'?'.$item.'=' . Str::random(32),
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ];
+        }
+
+        return $dataLinkGenerate;
     }
 }

@@ -61,15 +61,15 @@
                 <el-table-column
                     prop="name"
                     label="Name"
-                    width="180">
+                >
                 </el-table-column>
                 <el-table-column
                     prop="description"
                     label="Description"
-                    width="180">
+                >
                 </el-table-column>
                 <el-table-column
-                    label="Status">
+                    label="Status" width="180">
                     <template slot-scope="scope">
                         <el-tag type="success" v-if="scope.row.status == '0'">draft</el-tag>
                         <el-tag type="danger" v-if="scope.row.status == '1'">public</el-tag>

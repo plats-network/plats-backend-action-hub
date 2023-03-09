@@ -54,23 +54,44 @@
                 <el-table-column
                     label="Actions">
                     <template slot-scope="scope">
+                        <el-tooltip class="item" effect="dark" content="Chỉnh sửa" placement="top">
+                            <el-button
+                                size="mini"
+                                type="primary"
+                                @click="handleEdit(scope.$index, scope.row)">
+                                <i class="el-icon-edit"></i>
+                            </el-button>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" content="Lấy mã QR" placement="top">
                         <el-button
-                            size="mini"
-                            type="primary"
-                            @click="handleEdit(scope.$index, scope.row)">
-                            <i class="el-icon-edit"></i>
-                        </el-button>
-                        <el-button
-                            size="mini"
+                            size="mini" type="warning"
                             @click="handleQrCode(scope.$index, scope.row)">
                             <i class="el-icon-view"></i>
                         </el-button>
+                        </el-tooltip>
+                        <el-tooltip class="item" v-if="scope.row.task_generate_links.length != 0" effect="dark" content="Link Share" placement="top">
                         <el-button
                             size="mini"
-                            type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">
-                            <i class="el-icon-lock"></i>
+                            type="success"
+                            @click="handleLink(scope.$index, scope.row)">
+                            <i class="el-icon-paperclip"></i>
                         </el-button>
+                        </el-tooltip>
+                        <el-tooltip v-if="scope.row.user_get_tickets.length != 0" class="item" effect="dark" content="Danh sách tham gia event" placement="top">
+                                <el-button
+                                    size="mini" plain  type="success"
+                                    @click="handleJoinEvent(scope.$index, scope.row)">
+                                    {{ scope.row.user_get_tickets.length}}&nbsp;<i class="el-icon-s-custom"></i>
+                                </el-button>
+                        </el-tooltip>
+<!--                            <el-tooltip class="item" effect="dark" content="Lấy mã QR" placement="top">-->
+<!--                        <el-button-->
+<!--                            size="mini"-->
+<!--                            type="danger"-->
+<!--                            @click="handleDelete(scope.$index, scope.row)">-->
+<!--                            <i class="el-icon-lock"></i>-->
+<!--                        </el-button>-->
+<!--                            </el-tooltip>-->
                     </template>
                 </el-table-column>
             </el-table>
@@ -264,7 +285,7 @@
                             <el-input v-model="form.sessions.name" placeholder="Name"></el-input>
                             <el-input v-model="form.sessions.max_job" style="width: 40%; margin-left: 20px;" placeholder="Number success"></el-input>
                         </div>
-                        <el-input v-model="form.sessions.description" class="mb-2" type="textarea" :rows="3" placeholder="Description"></el-input>
+                        <ckeditor v-model="form.sessions.description" ></ckeditor>
                     </el-col>
                     <el-col :span="6">
                         <el-upload
@@ -309,8 +330,7 @@
                             <el-input v-model="form.booths.name" placeholder="Name"></el-input>
                             <el-input v-model="form.booths.max_job" style="width: 40%; margin-left: 20px;" placeholder="Sl Hoàn thành"></el-input>
                         </div>
-
-                        <el-input v-model="form.booths.description" class="mb-2" type="textarea" :rows="5" placeholder="Description"></el-input>
+                        <ckeditor v-model="form.booths.description" ></ckeditor>
                     </el-col>
                     <el-col :span="6">
                         <el-upload
@@ -364,7 +384,7 @@
                             >
                                 <template slot-scope="scope">
                                     <div ref="qrcode">
-                                    <qrcode-vue :id="scope.row.id" :value="link_qrc+scope.row.id" :size="size" level="H"></qrcode-vue>
+                                    <qrcode-vue :id="scope.row.id" :value="link_qrc+'/events/'+scope.row.slug" :size="size" level="H"></qrcode-vue>
                                     </div>
                                     <button @click="downloadQrCode(scope.row.id)">Download</button>
                                 </template>
@@ -389,7 +409,7 @@
                             >
                                 <template slot-scope="scope">
                                     <div ref="qrcode">
-                                        <qrcode-vue :id="scope.row.id" :value="link_qrc+scope.row.id" :size="size" level="H"></qrcode-vue>
+                                        <qrcode-vue :id="scope.row.id" :value="link_qrc+'/events/'+scope.row.slug" :size="size" level="H"></qrcode-vue>
                                     </div>
                                     <button @click="downloadQrCode(scope.row.id)">Download</button>
                                 </template>
@@ -398,7 +418,7 @@
                     </el-tab-pane>
                 </el-tabs>
             </el-dialog>
-
+            <!--            quiz-->
             <el-drawer title="Quiz" size="50%" :visible.sync="dialogQuiz">
                 <div class="p-3">
                     <el-form ref="formQuiz"  label-position="top">
@@ -445,6 +465,13 @@
                     </span>
                 </div>
             </el-drawer>
+<!--            link share-->
+            <el-dialog title="Link Share" :visible.sync="dialogLinks">
+                <el-table :data="dataLink">
+                    <el-table-column property="name" label="Name" width="200"></el-table-column>
+                    <el-table-column property="url" label="Url" ></el-table-column>
+                </el-table>
+            </el-dialog>
         </el-row>
     </el-row>
 </template>
@@ -493,7 +520,6 @@ import {
     Fullscreen,
     SelectAll,
 } from 'element-tiptap';
-const dialogVisible = ref(false)
 
 export default {
     name: "index",
@@ -504,6 +530,7 @@ export default {
     },
     data() {
         return {
+            dataLink: [],
             ruleQuiz:{
                 name: [{
                     required: true,
@@ -555,6 +582,8 @@ export default {
             dialogQuiz: false,
             dialogBooths: false,
             dialogQrCode: false,
+            dialogJoinEvent: false,
+            dialogLinks : false,
             currentPage: 1,
             totalNumber: 0,
             page: 1,
@@ -633,6 +662,13 @@ export default {
         }
     },
     methods: {
+        handleJoinEvent(scope, row){
+            window.location.href = "/cws/events/"+row.id;
+        },
+        handleLink(scope, row) {
+            this.dataLink = row.task_generate_links;
+            this.dialogLinks = true
+        },
         clickAnswer(item,items){
             for (let i = 0; i < items.length; i++) {
                 const el = items[i];

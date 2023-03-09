@@ -30,7 +30,7 @@
                                     <div class="mb-2"><i class="el-icon-date" style="color: #409EFF"></i> Date and time
                                     </div>
                                     <div>
-                                        <span class="d-block">{{detail.end_at | moment}}</span>
+                                        <span class="d-block">{{detail.start_at | moment}} - {{detail.end_at | moment}}</span>
                                     </div>
                                 </el-col>
                                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
@@ -228,7 +228,7 @@ import moment from "moment";
 
 export default {
     name: "detail",
-    props: ['detail_id'],
+    props: ['detail_id','key_local'],
     data() {
         return {
             result: '',
@@ -239,9 +239,6 @@ export default {
                     message: 'Please input name',
                     trigger: ['blur', 'change']
                 }],
-                phone: [
-                    { required: true, message: 'phone is required'},
-                ],
                 email: [
                     { required: true, message: 'Please input email address', trigger: 'blur' },
                     { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
@@ -267,6 +264,7 @@ export default {
             },
             props: {
                 idTask:'',
+                key_local:'',
             },
             detail:{
                 booths:{
@@ -311,7 +309,6 @@ export default {
         submitForm(form){
             this.$refs[form].validate((valid) => {
                 if (valid) {
-
                     const loading = this.$loading({
                         lock: true,
                         text: 'Loading',
@@ -327,6 +324,7 @@ export default {
                         });
                         loading.close();
                         this.dialogFormVisible = false
+                        window.open('/events/download-ticket/'+this.form.task_id, '_blank');
                     }).catch(error => {
                         this.errors = error.response.data.message;
                         Notification.error({
@@ -336,7 +334,6 @@ export default {
                         });
                         loading.close();
                     });
-                    console.log(this.form)
                 } else {
                     console.log('error submit!!');
                     return false;
@@ -399,8 +396,10 @@ export default {
     },
     mounted() {
         this.props.idTask = this.detail_id
+        this.props.key_local = this.key_local
         this.getDetail();
         this.getOtherEvents();
+        localStorage.setItem(this.props.key_local, this.props.key_local)
         // this.locateGeoLocation();
     },
     filters: {

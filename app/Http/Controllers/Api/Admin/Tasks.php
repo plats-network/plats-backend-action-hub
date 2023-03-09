@@ -36,9 +36,9 @@ class Tasks extends ApiController
     {
         $limit = $request->get('limit') ?? PAGE_SIZE;
         if (Auth::user()->role == CLIENT_ROLE) {
-            $rewards = $this->taskService->search(['limit' => $limit, 'creator_id' => Auth::user()->id,'type' => 3]);
+            $rewards = $this->taskService->search(['limit' => $limit, 'creator_id' => Auth::user()->id,'type' => 0]);
         } else {
-            $rewards = $this->taskService->search(['limit' => $limit,'type' => 3]);
+            $rewards = $this->taskService->search(['limit' => $limit,'type' => 0]);
         }
         $datas = TaskResource::collection($rewards);
         $pages = [
