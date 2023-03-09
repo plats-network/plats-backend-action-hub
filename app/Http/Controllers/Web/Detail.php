@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Exports\Ticket;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AddTicketRequest;
 use App\Models\Event\EventUserTicket;
@@ -31,8 +32,15 @@ class Detail extends Controller
 
     public function index(Request $request)
     {
+        $keyLocal = '';
+        if ($request->input('facebook') || $request->input('twitter') || $request->input('telegram') || $request->input('discord') || $request->input('form'))
+        {
+            foreach ($request->all() as $key => $part) {
+                $keyLocal= $key;
+            }
+        }
         $getIdTask = Task::where('slug',Route::current()->slug)->first();
-        return view('web.detail',['id' => $getIdTask->id]);
+        return view('web.detail',['id' => $getIdTask->id,'key'=>$keyLocal]);
     }
 
     public function addTicket(AddTicketRequest $request)
@@ -92,5 +100,11 @@ class Detail extends Controller
             ->orderBy('user_event_likes.created_at', 'desc')->paginate(20);
         return response()->json($data);
 
+    }
+
+    public function downloadTicket($id)
+    {
+        $task = Task::find($id);
+        return (new Ticket($task))->downloadPdf();
     }
 }

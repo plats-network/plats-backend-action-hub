@@ -35,7 +35,7 @@
                                 <a href="/events/likes">Likes</a>
                             </li>
                             <li>
-                                <a href="#">Histories Quizzes</a>
+                                <a href="/events/history">Histories</a>
                             </li>
                         </ul>
                     </div>
