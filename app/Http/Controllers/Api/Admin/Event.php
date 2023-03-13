@@ -30,9 +30,9 @@ class Event extends ApiController
         try {
             $limit = $request->get('limit') ?? PAGE_SIZE;
             if (empty(Auth::user())) {
-                $event = $this->taskService->search(['limit' => $limit,'type' => 3]);
+                $event = $this->taskService->search(['limit' => $limit,'type' => 1]);
             } else {
-                $event = $this->taskService->search(['limit' => $limit,'type' => 3]);
+                $event = $this->taskService->search(['limit' => $limit,'type' => 1]);
                 foreach ($event as &$item){
                     $data = UserEventLike::where('task_id',$item->id)->where('user_id',Auth::user()->id)->first();
                     if ($data){
@@ -101,5 +101,17 @@ class Event extends ApiController
         }
 
         return $this->responseMessage($event);
+    }
+
+    public function changeStatus(Request $request)
+    {
+        try {
+            $mess = empty($request->input('id')) ? 'done!' : 'done!';
+            $this->eventService->changeStatus($request->input('status'),$request->input('id'));
+        } catch (\Exception $e) {
+            return $this->respondError($e->getMessage());
+        }
+
+        return $this->responseMessage($mess);
     }
 }

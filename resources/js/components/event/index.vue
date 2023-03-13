@@ -47,8 +47,15 @@
                 <el-table-column  width="180"
                     label="Status">
                     <template slot-scope="scope">
-                        <el-tag type="success" v-if="scope.row.status == 0">draft</el-tag>
-                        <el-tag type="danger" v-if="scope.row.status == 1">public</el-tag>
+                        <el-switch
+                            v-model="scope.row.status"
+                            :active-value="1"
+                            @change="changeStatus(scope.row.status,scope.row.id)"
+                            :inactive-value="0"
+                            active-text="public"
+                            inactive-text="draft"
+                        >
+                        </el-switch>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -384,7 +391,7 @@
                             >
                                 <template slot-scope="scope">
                                     <div ref="qrcode">
-                                    <qrcode-vue :id="scope.row.id" :value="link_qrc+'/events/'+scope.row.slug" :size="size" level="H"></qrcode-vue>
+                                    <qrcode-vue :id="scope.row.id" :value="link_qrc+'/events/code?type=event&id='+scope.row.code" :size="size" level="H"></qrcode-vue>
                                     </div>
                                     <button @click="downloadQrCode(scope.row.id)">Download</button>
                                 </template>
@@ -409,7 +416,7 @@
                             >
                                 <template slot-scope="scope">
                                     <div ref="qrcode">
-                                        <qrcode-vue :id="scope.row.id" :value="link_qrc+'/events/'+scope.row.slug" :size="size" level="H"></qrcode-vue>
+                                        <qrcode-vue :id="scope.row.id" :value="link_qrc+'/events/code?type=event&id='+scope.row.code" :size="size" level="H"></qrcode-vue>
                                     </div>
                                     <button @click="downloadQrCode(scope.row.id)">Download</button>
                                 </template>
@@ -629,7 +636,7 @@ export default {
                 description : '',
                 start_at : '',
                 end_at : '',
-                type : 3,
+                type : 1,
                 order : '',
                 task_galleries: [],
                 sessions: {
@@ -845,7 +852,7 @@ export default {
                 start_at : '',
                 end_at : '',
                 order : '',
-                type : 3,
+                type : 1,
                 task_galleries: [],
                 sessions: {
                     name:'',
@@ -941,6 +948,37 @@ export default {
             }).catch((_) => {
                 loading.close();
             })
+        },
+        changeStatus(status,id){
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+            let rawData =
+                {
+                    'status': status,
+                    'id': id,
+                }
+            axios.post('/api/cws/events/change-status', rawData).then(e => {
+                Notification.success({
+                    title: ' Thành công',
+                    message: ' Thành công',
+                    type: 'success',
+                });
+                this.list_data()
+                loading.close();
+            }).catch(error => {
+                this.errors = error.response.data.message; // this should be errors.
+                Notification.error({
+                    title: 'Error',
+                    message: this.errors,
+                    type: 'error',
+                });
+
+                loading.close();
+            });
         },
         submitForm(form){
             this.$refs[form].validate((valid) => {

@@ -1,6 +1,11 @@
 <template>
     <div >
-        <div> <h3>Lịch sử hoàn thành</h3> </div>
+        <el-row>
+            <el-col :sm="12" :lg="6">
+                <el-result icon="success" title="Thành công" subTitle="Lịch sử hoàn thành event">
+                </el-result>
+            </el-col>
+        </el-row>
         <el-row :gutter="10">
             <el-col :span="24" :md="8" v-for="item in tableData">
                 <el-card shadow="hover" class="box-card mb-2" >

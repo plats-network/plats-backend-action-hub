@@ -34,9 +34,9 @@
                             <li>
                                 <a href="/events/likes">Likes</a>
                             </li>
-                            <li>
-                                <a href="/events/history">Histories</a>
-                            </li>
+{{--                            <li>--}}
+{{--                                <a href="/events/history">Histories</a>--}}
+{{--                            </li>--}}
                         </ul>
                     </div>
                 </div>

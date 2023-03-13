@@ -49,7 +49,6 @@ class EventService extends BaseService
             $data = Arr::except($request->all(), '__token');
             $data['creator_id'] = Auth::user()->id;
             $data['slug'] = $request->input('name');
-            $data['status'] = true;
             $dataBaseTask = $this->taskRepository->update($data,$id);
             TaskGallery::where('task_id',$id)->delete();
             if ($data['task_galleries']){
@@ -57,41 +56,78 @@ class EventService extends BaseService
                     $dataBaseTask->taskGalleries()->create( ['url_image' => empty($uploadedFile['url']) ? $uploadedFile :  $uploadedFile['url']]);
                 }
             }
-            $idTaskEvent = TaskEvent::where('task_id',$id)->first();
-            TaskEventDetail::where('task_event_id',$idTaskEvent->id)->delete();
-            TaskEvent::where('task_id',$id)->delete();
             $sessions = Arr::get($data, 'sessions');
-            unset($sessions['id']);
-            $idTaskEventSessions = $dataBaseTask->taskEvents()->create($sessions);
+            $sessionsUn = Arr::get($data, 'sessions');
+            unset($sessionsUn['detail']);
+            unset($sessionsUn['id']);
+            TaskEvent::where('id',$sessions['id'])->update($sessionsUn);
             if ($sessions['detail']){
-                foreach ($sessions['detail'] as $item){
-                    unset($item['id']);
-                    $idTaskEventSessions->detail()->create($item);
+                foreach ($sessions['detail'] as $key => $item){
+                    if (empty($item['id'])){
+                        $item['code'] = $this->generateBarcodeNumber().$key;
+                        $item['task_event_id'] = $sessions['id'];
+                        TaskEventDetail::create($item);
+                    }else{
+                        $itemUn = $item;
+                        unset($itemUn['id']);
+                        TaskEventDetail::where('id',$item['id'])->update($itemUn);
+                    }
                 }
             }
             $booths = Arr::get($data, 'booths');
-            unset($booths['id']);
-            $idTaskEventBooths = $dataBaseTask->taskEvents()->create($booths);
+            $boothsUn = Arr::get($data, 'booths');
+            unset($boothsUn['detail']);
+            unset($boothsUn['id']);
+            TaskEvent::where('id',$booths['id'])->update($boothsUn);
             if ($booths['detail']){
-                foreach ($booths['detail'] as $item1){
-                    unset($item1['id']);
-                    $idTaskEventBooths->detail()->create($item1);
+                foreach ($booths['detail'] as $key => $item){
+                    if (empty($item['id'])){
+                        $item['code'] = $this->generateBarcodeNumber().$key;
+                        $item['task_event_id'] = $booths['id'];
+                        TaskEventDetail::create($item);
+                    }else{
+                        $itemUn = $item;
+                        unset($itemUn['id']);
+                        TaskEventDetail::where('id',$item['id'])->update($itemUn);
+                    }
                 }
             }
             $quiz = Arr::get($data, 'quiz');
-            $idQuizDetail = Quiz::where('task_id',$id)->first();
-            if ($idQuizDetail){
-                QuizAnswer::where('quiz_id',$idQuizDetail->id)->delete();
-            }
-            Quiz::where('task_id',$id)->delete();
             if ($quiz){
-                foreach ($quiz as $item){
-                    unset($item['id']);
-                    $idQuiz = $dataBaseTask->quizs()->create($item);
-                    if ($item['detail']){
-                        foreach ($item['detail'] as $itemDetail){
-                            unset($itemDetail['id']);
-                            $idQuiz->detail()->create($itemDetail);
+                foreach ($quiz as &$item){
+                    $quizUn = $item;
+                    unset($quizUn['detail']);
+                    if (empty($item['id'])){
+                        $item['task_id'] = $id;
+                        $idQ = Quiz::create($item);
+                        if ($item['detail']){
+                            foreach ($item['detail'] as $itemDetail){
+                                unset($itemDetail['key']);
+                                if (empty($itemDetail['id'])){
+                                    $itemDetail['quiz_id'] =$idQ->id ;
+                                    QuizAnswer::create($itemDetail);
+                                }else{
+                                    $itemAUn = $itemDetail;
+                                    unset($itemAUn['id']);
+                                    QuizAnswer::where('id',$itemDetail['id'])->update($itemAUn);
+                                }
+                            }
+                        }
+                    }else{
+                        unset($quizUn['id']);
+                        Quiz::where('id',$item['id'])->update($quizUn);
+                        if ($item['detail']){
+                            foreach ($item['detail'] as $itemDetail){
+                                unset($itemDetail['key']);
+                                if (empty($itemDetail['id'])){
+                                    $itemDetail['quiz_id'] =$item['id'] ;
+                                    QuizAnswer::create($itemDetail);
+                                }else{
+                                    $itemAUn = $itemDetail;
+                                    unset($itemAUn['id']);
+                                    QuizAnswer::where('id',$itemDetail['id'])->update($itemAUn);
+                                }
+                            }
                         }
                     }
                 }
@@ -139,7 +175,8 @@ class EventService extends BaseService
             if ($sessions){
                 $idTaskEventSessions = $dataBaseTask->taskEvents()->create($sessions);
                 if ($sessions['detail']){
-                    foreach ($sessions['detail'] as $item){
+                    foreach ($sessions['detail'] as $key => $item){
+                        $item['code'] = $this->generateBarcodeNumber().$key;
                         $idTaskEventSessions->detail()->create($item);
                     }
                 }
@@ -148,7 +185,8 @@ class EventService extends BaseService
             if ($booths){
                 $idTaskEventBooths = $dataBaseTask->taskEvents()->create($booths);
                 if ($booths['detail']){
-                    foreach ($booths['detail'] as $item){
+                    foreach ($booths['detail'] as $key => $item){
+                        $item['code'] = $this->generateBarcodeNumber().$key;
                         $idTaskEventBooths->detail()->create($item);
                     }
                 }
@@ -163,6 +201,12 @@ class EventService extends BaseService
             throw new RuntimeException($exception->getMessage(), 500062, $exception->getMessage(), $exception);
         }
     }
+
+    public function generateBarcodeNumber() {
+        $number = mt_rand(10000000, 99999999);
+        return $number;
+    }
+
     public function generateNumber($slug)
     {
         $type = [
@@ -184,5 +228,21 @@ class EventService extends BaseService
         }
 
         return $dataLinkGenerate;
+    }
+
+    public function changeStatus($status,$id)
+    {
+        $data = [
+            'status' => $status
+        ];
+        try {
+            $dataBaseTask = $this->taskRepository->update($data,$id);
+        } catch (RuntimeException $exception) {
+            DB::rollBack();
+            throw $exception;
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw new RuntimeException($exception->getMessage(), 500062, $exception->getMessage(), $exception);
+        }
     }
 }

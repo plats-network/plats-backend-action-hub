@@ -9,21 +9,52 @@ use App\Models\Event\UserJoinEvent;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class HistoryJoinEventTask extends Controller
 {
-    public function index()
+
+    public function __construct()
     {
-        return view('web.history');
+        // $this->middleware('client_web');
+    }
+
+    public function index(Request $request)
+    {
+        $code = $request->input('id');
+        $user = Auth::user();
+        $session = session()->put('code', $code);
+        if ($user){
+            return view('web.history');
+        }
+        return redirect('/client/login');
     }
 
     public function apiList()
     {
         $user = Auth::user();
-        $eventDetails = UserJoinEvent::where('user_id',$user->id)->get();
-        $eventTaskJoins= $this->getEventTaskJoin($eventDetails);
+        $code = session()->get('code');
+        $getIdEventDetail = TaskEventDetail::where('code',$code)->first();
+        $getIdTask = TaskEvent::where('id',$getIdEventDetail->task_event_id)->first();
+        if (!$getIdEventDetail){
+            return true;
+        }
+        $dataInsert = [
+            'user_id' => $user->id,
+            'task_event_detail_id' => $getIdEventDetail->id,
+            'task_id' => $getIdTask->task_id,
+            'task_event_id' => $getIdEventDetail->task_event_id,
+        ];
+        $check = UserJoinEvent::where('task_event_detail_id',$getIdEventDetail->id)->first();
+        if (!$check){
+            UserJoinEvent::create($dataInsert);
+        }
+        $getIdEvent = TaskEvent::where('id',$getIdEventDetail->task_event_id)->first();
+        $eventDetailsJoin = UserJoinEvent::where('user_id',$user->id)->where('task_event_id',$getIdEventDetail->task_event_id)->where('task_id',$getIdTask->task_id)->get();
+        $eventTaskJoins= $this->getEventTaskJoin($eventDetailsJoin);
         $eventTasks= $this->getEventTask($eventTaskJoins);
         $rawData = $this->mergeArray($eventTasks,$eventTaskJoins);
+        session()->forget('code');
         return $this->respondSuccess($rawData);
     }
 
