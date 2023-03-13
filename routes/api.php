@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Api\{
     Task, TaskLocation, UserTask,
-    Wallet, Box, Gifts,
-    QrCode, TaskNotice, LockTray,
+    Wallet,
+    QrCode, TaskNotice,
     QrCodeAction, Twitter, Social,TaskV2, Group,
     UserReward
 };
@@ -116,11 +116,11 @@ Route::prefix('tasks-cws')->controller(Tasks::class)->group(function () {
 
 
 // Route::get('/my-tasks', [UserTask::class, 'histories']);
-Route::resource('boxes', Box::class)->only(['index', 'update', 'show']);
-Route::resource('gifts', Gifts::class)->only(['index', 'show']);
+// Route::resource('boxes', Box::class)->only(['index', 'update', 'show']);
+// Route::resource('gifts', Gifts::class)->only(['index', 'show']);
 // Route::resource('{id}/qr_code', QrCode::class)->only(['index']);
 Route::resource('task_notices', TaskNotice::class)->only(['index']);
-Route::resource('lock_tray', LockTray::class)->only(['index', 'update']);
+// Route::resource('lock_tray', LockTray::class)->only(['index', 'update']);
 Route::get('get_task', [TaskNotice::class, 'getTask']);
 Route::post('qr_code', [QrCodeAction::class, 'store'])->name('qrcode.store');
 Route::resource('twitter', Twitter::class)->only(['index', 'store']);

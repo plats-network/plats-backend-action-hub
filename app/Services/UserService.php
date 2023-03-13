@@ -137,20 +137,22 @@ class UserService extends BaseService
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection|mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function updateAvatar(Request $request, $id = null)
+    public function updateAvatar(Request $request)
     {
         $user = $this->find($request->user()->id);
 
         if ($request->hasFile('avatar')) {
             $uploadedFile = $request->file('avatar');
             $path = 'uploads/profiles/' . Carbon::now()->format('Ymd');
-            $imageUploaded = Storage::putFileAs($path, $uploadedFile, $this->getFileName($request->avatar->extension()));
+            $imageUploaded = Storage::disk('s3')
+                ->putFileAs($path, $uploadedFile, $this->getFileName($request->avatar->extension()));
 
             if($imageUploaded) {
                 !is_null($user->avatar_path) && Storage::delete($user->avatar_path);
             }
         }
-        $userUpdated = $this->repository->updateByModel($user, ['avatar_path'  => $imageUploaded]);
+        $userUpdated = $this->repository
+            ->updateByModel($user, ['avatar_path'  => $imageUploaded]);
 
         return $userUpdated->avatar_path;
     }

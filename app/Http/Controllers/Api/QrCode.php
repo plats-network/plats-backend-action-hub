@@ -43,10 +43,12 @@ class QrCode extends ApiController
 
     public function qrEvent(EventRequest $request)
     {
+        $data = [];
         try {
             $userId = $request->user()->id;
             $code = $request->input('code');
             $eventDetail = $this->taskEventDetail->whereCode($code)->first();
+            $taskEvent = $this->taskEvent->findOrFail($eventDetail->task_event_id);
             $userJoinEvent = $this->userJoinEvent
                 ->whereUserId($userId)
                 ->whereTaskEventDetailId(optional($eventDetail)->id)
@@ -57,7 +59,6 @@ class QrCode extends ApiController
             }
 
             if (!$userJoinEvent) {
-                $taskEvent = $this->taskEvent->findOrFail($eventDetail->task_event_id);
 
                 $this->userJoinEvent->create([
                     'user_id' => $userId,
@@ -66,10 +67,14 @@ class QrCode extends ApiController
                     'task_event_id' => $eventDetail->task_event_id
                 ]);
             }
+
+            $data = [
+                'task_id' => $taskEvent->task_id
+            ];
         } catch (\Exception $e) {
             return $this->respondError('Errors');
         }
 
-        return $this->responseMessage('Done');
+        return $this->respondWithData($data, 'Done');
     }
 }

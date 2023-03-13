@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Helpers\BaseImage;
 use Laravel\Sanctum\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Carbon\Carbon;
@@ -73,7 +74,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function getAvatarPathAttribute()
     {
-        return $this->attributes['avatar_path'] ? $this->attributes['avatar_path'] : 'https://lumiere-a.akamaihd.net/v1/images/nt_avatarmcfarlanecomic-con_223_01_2deace02.jpeg';
+        return BaseImage::loadImage($this->attributes['avatar_path']);
     }
 
     /**
