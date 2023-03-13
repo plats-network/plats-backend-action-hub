@@ -59,12 +59,12 @@ class Detail extends Controller
                 ->whereTaskId($data['task_id'])
                 ->first();
 
-//            if ($checkSendMail) {
-//                Mail::to($data['email'])->send(new EmailSendTicket($task));
-//            } else {
+            if ($checkSendMail) {
+                Mail::to($data['email'])->send(new EmailSendTicket($task));
+            } else {
                 $this->repository->create($data);
-//                Mail::to($data['email'])->send(new EmailSendTicket($task));
-//            }
+                Mail::to($data['email'])->send(new EmailSendTicket($task));
+            }
 
             return $this->respondSuccess('Success');
         } catch (\Exception $e) {
