@@ -8,7 +8,10 @@ use App\Http\Requests\{
     SocialRequest,
     UpdateProfileRequest
 };
-use App\Http\Requests\Api\User\AvatarRequest;
+use App\Http\Requests\Api\User\{
+    AvatarRequest,
+    ProfileRequest
+};
 
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
@@ -49,11 +52,17 @@ class Profile extends ApiController
      * @return \Illuminate\Http\Resources\Json\JsonResource
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function update(UpdateProfileRequest $request)
+    public function update(ProfileRequest $request)
     {
-        return new UserResource(
-            $this->userService->update($request->merge(['id' => $request->user()->id]))
-        );
+        try {
+            $user = $request->user();
+            $request['gender'] = $request->input('gender') == 'male' ? 0 : 1;
+            $user->update($request->all());
+        } catch (\Exception $e) {
+            return $this->respondError('Errors');
+        }
+
+        return new UserResource($user);
     }
 
     /**

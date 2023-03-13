@@ -7,7 +7,7 @@ use App\Http\Resources\SocialResource;
 use App\Http\Requests\SocialRequest;
 use Illuminate\Http\Request;
 use App\Models\Task as ModelTask;
-use App\Models\{TaskUser, UserTaskReward, DetailReward};
+use App\Models\{TaskUser, UserTaskReward};
 use App\Repositories\{
     TaskRepository,
     TaskSocialRepository,
@@ -114,7 +114,7 @@ class Social extends ApiController
             $isSocial = $this->socialService->performTwitter($user, $tweetId, $type, $id, $userSocial);
 
             if ($isSocial[0]) {
-                $dataReward = $this->socialService->saveDetailReward($user, $userSocial);
+                // $dataReward = $this->socialService->saveDetailReward($user, $userSocial);
                 return response()->json([
                     'message' => $isSocial[1],
                     'data' => [

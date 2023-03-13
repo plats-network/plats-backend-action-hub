@@ -21,6 +21,8 @@ class TaskEventResource extends JsonResource
             'description' => $this->description,
             'banner_url' => $this->banner_url,
             'max_job' => $this->max_job,
+            'type' => $this->type,
+            'type' => $this->type == 0 ? 'Session' : 'Booth',
             'jobs' => $this->detail->count() >= 0
                 ? TaskEventDetailResource::collection($this->detail)
                 : null

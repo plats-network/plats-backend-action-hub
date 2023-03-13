@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Repositories\DetailRewardRepository;
 use Carbon\Carbon;
 
 class HomeController extends Controller
 {
     public function __construct(
-        private DetailRewardRepository $detailRewardRepository
     ) {}
 
     /**
@@ -21,7 +19,7 @@ class HomeController extends Controller
     public function show($id)
     {
         try {
-            $detail = $this->detailRewardRepository->getDetail($id);
+            $detail = null; // ToDO
         } catch(\Exception $e) {
             abort(404);
         }

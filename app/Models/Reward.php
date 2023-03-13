@@ -57,14 +57,6 @@ class Reward extends Model
         'deleted_at',
     ];
 
-    /**
-     * Get the comments for the blog post.
-     */
-    public function detail_rewards()
-    {
-        return $this->hasMany(DetailReward::class);
-    }
-
     protected function image(): Attribute
     {
         return Attribute::make(
