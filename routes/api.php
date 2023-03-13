@@ -40,7 +40,7 @@ Route::post('login/social', [Login::class, 'socialLogin']);
 Route::get('login/apple', [Login::class, 'loginApple']);
 Route::post('login/{providerName}/callback', [Login::class, 'callbackProvider']);
 
-Route::resource('test_user', TestUser::class)->only(['index']);
+// Route::resource('test_user', TestUser::class)->only(['index']);
 
 // Reset password
 Route::post('reset-password', [ResetPassword::class, 'sendMail']);
@@ -49,7 +49,6 @@ Route::put('reset-password', [ResetPassword::class, 'reset']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('refresh', [Login::class, 'refresh']);
-
     Route::prefix('profile')->group(function () {
         Route::get('/', [Profile::class, 'index']);
         Route::patch('/', [Profile::class, 'update']);
@@ -94,6 +93,11 @@ Route::prefix('tasks')->controller(Task::class)->group(function ($router) {
 });
 Route::get('top-events', [Task::class, 'getEventTaskHots'])->name('task.event.top-events');
 
+Route::prefix('qr')->controller(QrCode::class)->group(function($router) {
+    $router->post('qr-event', 'qrEvent')->name('qr.qrEvent');
+    // $router->post('qr-checkin', 'qrCheckin')->name('qr.qrCheckin');
+});
+
 
 Route::prefix('rewards')->controller(Reward::class)->group(function () {
     Route::get('/', 'index');
@@ -113,7 +117,7 @@ Route::prefix('tasks-cws')->controller(Tasks::class)->group(function () {
 // Route::get('/my-tasks', [UserTask::class, 'histories']);
 Route::resource('boxes', Box::class)->only(['index', 'update', 'show']);
 Route::resource('gifts', Gifts::class)->only(['index', 'show']);
-Route::resource('{id}/qr_code', QrCode::class)->only(['index']);
+// Route::resource('{id}/qr_code', QrCode::class)->only(['index']);
 Route::resource('task_notices', TaskNotice::class)->only(['index']);
 Route::resource('lock_tray', LockTray::class)->only(['index', 'update']);
 Route::get('get_task', [TaskNotice::class, 'getTask']);
