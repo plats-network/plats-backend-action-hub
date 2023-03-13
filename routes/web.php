@@ -23,7 +23,7 @@ Route::prefix('client')->group(function () {
     Route::get('/logout', [Login::class, 'logout'])->name(LOGOUT_WEB_ROUTE);
 });
 Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_WEB_ROUTER);
-Route::get('/events/history', [HistoryJoinEventTask::class, 'index']);
+Route::get('/events/code', [HistoryJoinEventTask::class, 'index']);
 Route::get('/events/history/list', [HistoryJoinEventTask::class, 'apiList']);
 Route::get('/events/likes', [Likes::class, 'index'])->name(LIKE_WEB_ROUTER);;
 Route::get('/events/{slug}', [Detail::class, 'index']);
