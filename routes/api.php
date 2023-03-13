@@ -51,7 +51,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('refresh', [Login::class, 'refresh']);
 
     Route::prefix('profile')->group(function () {
-        Route::get('/{userId}', [Profile::class, 'index']);
+        Route::get('/', [Profile::class, 'index']);
         Route::patch('/', [Profile::class, 'update']);
         Route::post('/upload-avatar', [Profile::class, 'updateAvatar']);
         Route::post('/password', [Profile::class, 'changePassword']);
@@ -91,11 +91,8 @@ Route::prefix('tasks')->controller(Task::class)->group(function ($router) {
    $router->post('start-cancel', 'startTask')->name('task.startTask');
    $router->get('my-tasks', 'myTasks')->name('task.myTasks');
 });
+Route::get('top-events', [Task::class, 'getEventTaskHots'])->name('task.event.top-events');
 
-// Route::prefix('tasks-v2')->controller(TaskV2::class)->group(function () {
-//     Route::get('/', 'index');
-//     Route::get('/{id}', 'detail')->whereUuid('id');
-// });
 
 Route::prefix('rewards')->controller(Reward::class)->group(function () {
     Route::get('/', 'index');

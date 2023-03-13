@@ -29,21 +29,17 @@ class Register extends Controller
     public function store(RegisRequest $request)
     {
         try {
-            $res = Http::post(config('app.api_user_url') . '/api/register_admin', [
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => $request->password
+            User::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => $request->input('password'),
+                'role' => CLIENT_ROLE,
+                'email_verified_at' => now()
             ]);
-
-            $code = $res->getStatusCode();
-            $user = json_decode($res->getBody()->getContents());
-            if ($code == 200 && optional($user)->user) {
-                return redirect('auth/cws')->with('message', 'Tạo tài khoản thành công');
-            }
         } catch (Exception $exception) {
-            return redirect('cws/register')->withErrors(['message' => 'Error: Liên hệ admim']);
+            return redirect('/cws')->withErrors(['message' => 'Error: Liên hệ admim']);
         }
 
-        return redirect('cws/register')->withErrors(['message' => 'Tài khoản đã tồn tại']);
+        return redirect('/cws')->with('success', 'Create account successful');
     }
 }

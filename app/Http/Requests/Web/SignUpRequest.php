@@ -30,7 +30,11 @@ class SignUpRequest extends FormRequest
             'password' => [
                 'required',
                 'string',
-                Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(),
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
                 'confirmed'
             ]  
         ];
