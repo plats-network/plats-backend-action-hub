@@ -153,7 +153,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = '/api/cws/events'
+            let url = '/api/cws/events/list'
             axios.get(url, {
                 params: rawData
             }).then(e => {
