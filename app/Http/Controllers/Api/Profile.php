@@ -8,6 +8,8 @@ use App\Http\Requests\{
     SocialRequest,
     UpdateProfileRequest
 };
+use App\Http\Requests\Api\User\AvatarRequest;
+
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -59,13 +61,10 @@ class Profile extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function updateAvatar(Request $request)
+    public function updateAvatar(AvatarRequest $request)
     {
-        $request->validate([
-            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:4086',
-        ]);
-        $data = $this->userService->updateAvatar($request->merge(['id' => $request->user()->id]));
-        
+        $data = $this->userService->updateAvatar($request);
+
         return $this->respondWithData($data, 'Update successful');
     }
 

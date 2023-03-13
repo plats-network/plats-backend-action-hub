@@ -9,7 +9,7 @@ use App\Helpers\{DateHelper, ActionHelper, BaseImage};
 use Illuminate\Support\Facades\Http;
 use App\Models\{
     TaskUser, Reward, UserTaskAction,
-    TaskGroup, Group
+    TaskGroup, Group, User
 };
 use Carbon\Carbon;
 
@@ -29,14 +29,17 @@ class TaskResource extends JsonResource
         $pinCount = UserTaskAction::whereUserId($userId)->whereTaskId($this->id)->whereType(TASK_PIN)->count();
         $checkTaskStart = TaskUser::whereUserId($userId)->whereTaskId($this->id)->whereStatus(0)->count();
         $groups = $this->groupTasks->count() > 0 ? TaskGroupResource::collection($this->groupTasks) : null;
-        $creator = null; //$this->getUserDetail($token, $this->creator_id); TODO
+        $creator = User::whereId($this->creator_id)->first();
 
         $data = [
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
             'banner_url' => $this->banner_url,
-            'post_by' => $creator ? $creator['name'] : 'Plats Team',
+            'post_by' => $creator ? $creator->name : 'Plats Team',
+            'address' => $this->address,
+            'lat' => $this->lat,
+            'lng' => $this->lng,
             'start_at' => DateHelper::getDateTime($this->start_at),
             'end_at' => DateHelper::getDateTime($this->end_at),
             'task_start' => $checkTaskStart > 0 ? true : false,
@@ -72,35 +75,5 @@ class TaskResource extends JsonResource
             : array_merge($data, $dataEvent);
 
         return $dataRes;
-    }
-
-    /**
-     * Retrieve a user by userId
-     *
-     * @param $userId
-     *
-     */
-    protected function getUserDetail($token, $userId)
-    {
-        try {
-            $url = config('app.api_user_url') . '/api/profile/' . $userId;
-            $response = Http::withToken($token)->get($url);
-        } catch (\Exception $e) {
-            return null;
-        }
-
-        return $response->json('data') ?? null;
-    }
-
-    protected function getTaskImprogress($userId, $taskId)
-    {
-        try {
-            return TaskUser::where('user_id', $userId)
-                ->where('task_id', $taskId)
-                ->where('status', USER_PROCESSING_TASK)
-                ->first();
-        } catch (ModelNotFoundException $e) {
-            return null;
-        }
     }
 }
