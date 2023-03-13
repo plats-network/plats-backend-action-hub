@@ -389,7 +389,6 @@ class Task extends ApiController
         if ($type == 'event') {
             $tasks = $this->modelTask->whereId($cacheEventIds)->get();
         } else {
-            // dd(2211, $cacheEventIds, $cacheTaskIds);
             $tasks = $this->modelTask->whereId($cacheTaskIds)->get();
         }
 
