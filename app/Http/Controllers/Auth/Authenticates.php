@@ -98,7 +98,9 @@ trait Authenticates
 
         $this->clearLoginAttempts($request);
         $userCheck = $this->authenticated($request, $this->guard()->user());
-
+        if (session()->get('code') != null){
+            return Redirect::to('/events/code/'.session()->get('code'));
+        }
         return $userCheck ?: redirect()->intended($this->redirectPath());
     }
 

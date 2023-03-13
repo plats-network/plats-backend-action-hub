@@ -5,182 +5,272 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <title>Tickỉt</title>
 </head>
 <body>
-<div class="box-content-letters container">
-    <div class="box-body-letters">
-        <div class="box-info-event">
-            <p class="info-event-date">June 30, 2023</p>
-            <p class="info-event-name">{{$ticket->name}}</p>
-            <p class="info-event-tikcet">Free Event Ticket</p>
-            <p class="info-event-tikcet">for</p>
-            <p class="info-event-des">{{Str::limit($ticket->name, 25)}}</p>
-        </div>
-        <div class="box-info-address">
-            <div class="box-content-address">
-                <div class="box-event-logo">
-                    <img src="https://d37c8ertxcodlq.cloudfront.net/icon/logo-event.png" class="image-full" alt="">
-                </div>
-                <div class="box-event-address">
-                    <p class="info-event-address">Address: {{$ticket->address}}</p>
-                    <p class="info-event-time">
-                        <span>Start: {{$ticket->end_at}}</span>
-                        <span>
-                                <span>
-                                    End: {{$ticket->end_at}}
-                                </span>
-                            </span>
-                    </p>
-                </div>
-                <div class="box-event-qrcode">
-                    <img src="https://images.viblo.asia/5974cb6b-ec70-41d0-9074-d4319b62f4c7.png" class="image-full" alt="">
-                </div>
+<div class="ticket">
+    <div class="left">
+        <div class="image">
+            <p class="admit-one">
+            </p>
+            <div class="ticket-number">
+                <p>
+                    #20200702
+                </p>
             </div>
+        </div>
+        <div class="ticket-info">
+            <p class="date">
+                <span>TUESDAY</span>
+                <span class="nov-10">DECEMBER 13th</span>
+                <span>2022</span>
+            </p>
+            <div class="show-name">
+                <h1>#SaveWarriorNun</h1>
+                <h2>Simon Barry</h2>
+            </div>
+            <div class="time">
+                <p>12:49 PM <span>TO</span> TBD</p>
+            </div>
+            <div class="tagline">
+                <p>IN THIS LIFE OR THE NEXT</p>
+            </div>
+            <p class="location"><span>THE CAT'S CRADLE</span>
+                <span class="separator"><i class="fa-solid fa-cross"></i></span><span>ANDALUCÍA, SPAIN</span>
+            </p>
+        </div>
+    </div>
+    <div class="right">
+        <p class="admit-one">
+            <span>ADMIT ONE</span>
+            <span>ADMIT ONE</span>
+            <span>ADMIT ONE</span>
+        </p>
+        <div class="right-info-container">
+            <div class="show-name">
+                <h1>#SaveWarriorNun</h1>
+            </div>
+            <div class="time">
+                <p>13.10.2022</p>
+                <p>12:49 PM <span>TO</span> TBD</p>
+            </div>
+            <div class="barcode">
+                <img src="https://i.imgur.com/HMAAsVO.png" alt="QR code">
+            </div>
+            <p class="ticket-number">
+                #20200702
+            </p>
         </div>
     </div>
 </div>
 </body>
 </html>
 <style lang="scss" scoped>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-    html, body {
+    @import url("https://fonts.googleapis.com/css2?family=Barlow&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap");
+
+    * {
         margin: 0;
         padding: 0;
-        overflow-x: hidden;
-        height: 100%;
-        background: #ffffff;
-    }
-    .box-content-letters {
-        font-family: 'Roboto', sans-serif;
-        /*    rgb(33, 131, 217)    */
-        background-image: linear-gradient(140deg, #2183d9 0%, #2183d9 50%, #2183d9 75%);
-        padding: 30px 0;
-        color: #252525;
-    }
-    .box-body-letters{
-        border-top: 2px solid;
-        border-bottom: 2px solid;
-    }
-    .box-info-event {
-        text-align: center;
-        padding: 45px 0;
-    }
-    .box-info-event .info-event-date {
-        font-size: 30px;
-        font-weight: bold;
-    }
-    .box-info-event .info-event-name {
-        font-size: 33px;
-        font-weight: bold;
-    }
-    .box-info-event .info-event-tikcet {
-        font-size: 18px;
-    }
-    .box-info-event .info-event-des {
-        font-size: 30px;
-        font-weight: bold;
-        margin: 0;
-    }
-    .box-info-address {
-        border-top: 2px dashed;
-        border-spacing: 10px;
-    }
-    .box-content-address {
-        display: flex;
-        margin: 20px 20px;
-        background: #ffffff;
-        justify-content: space-evenly;
-        align-items: center;
-        padding: 0;
-    }
-    .box-event-logo {
-        width: 150px;
-    }
-    .box-event-qrcode {
-        width: 100px;
-    }
-    .image-full {
-        width: 100%;
-        height: auto;
-    }
-    .info-event-address {
-        font-size: 18px;
-    }
-    .info-event-time {
-        display: flex;
-        justify-content: space-evenly;
+        box-sizing: border-box;
     }
 
-    @media screen and (max-width: 768px) {
-        .box-content-address {
-            display: flex;
-            gap:20px;
-            flex-direction: column;
-            margin: 20px 20px;
-            background: #ffffff;
-            justify-content: space-evenly;
-            align-items: center;
-            padding: 20px;
-        }
-        .info-event-time {
-            margin: 0;
-        }
-        .box-content-letters {
-            height: 100vh;
-        }
-        .box-info-event .info-event-date {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .box-info-event .info-event-name {
-            font-size: 23px;
-            font-weight: bold;
-        }
-        .box-info-event .info-event-tikcet {
-            font-size: 16px;
-        }
-        .box-info-event .info-event-des {
-            font-size: 20px;
-            font-weight: bold;
-            margin: 0;
-        }
-        .info-event-address {
-            font-size: 16px;
-        }
-        .info-event-time {
-            font-size: 14px;
-        }
+    body,
+    html {
+        height: 100vh;
+        display: grid;
+        font-family: "Barlow", sans-serif;
+        background: #520a71;
+        color: black;
+        font-size: 14px;
+        letter-spacing: 0.1em;
     }
-    @media screen and (max-width: 375px) {
-        .box-info-event {
-            text-align: center;
-            padding: 35px 0;
-        }
-        .box-content-address {
-            display: flex;
-            gap:10px;
-            flex-direction: column;
-            margin: 20px 20px;
-            background: #ffffff;
-            justify-content: space-evenly;
-            align-items: center;
-            padding: 15px;
-        }
-        .box-info-event .info-event-date {
-            margin-bottom: 8px;
-        }
-        .box-info-event .info-event-name {
-            margin-bottom: 8px;
-        }
-        .box-info-event .info-event-tikcet {
-            margin-bottom: 8px;
-        }
-        .box-info-event .info-event-des {
-            font-size: 20px;
-            font-weight: bold;
-            margin: 0;
-        }
+
+    .ticket {
+        margin: auto;
+        display: flex;
+        background: white;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
     }
+
+    .left {
+        display: flex;
+    }
+
+    .image {
+        height: 250px;
+        width: 350px;
+        background-image: url("https://resizing.flixster.com/y-PEwHu4ubvhRi49JP-PQ3eAK_s=/fit-in/1152x864/v2/https://flxt.tmsimg.com/assets/p18463999_i_h9_aa.jpg");
+        background-size: 100%;
+        background-repeat: no-repeat;
+        opacity: 1;
+    }
+
+    .admit-one {
+        position: absolute;
+        color: darkgray;
+        height: 250px;
+        padding: 0 10px;
+        letter-spacing: 0.15em;
+        font-size: 12px;
+        display: flex;
+        text-align: center;
+        justify-content: space-around;
+        writing-mode: vertical-rl;
+        transform: rotate(-180deg);
+    }
+
+    .admit-one span:nth-child(2) {
+        color: white;
+        font-weight: 700;
+    }
+
+    .left .ticket-number {
+        height: 250px;
+        width: 350px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+        padding: 10px;
+        color: white;
+    }
+
+    .ticket-info {
+        padding: 10px 20px;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .date {
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        padding: 5px 0;
+        font-weight: 700;
+    }
+
+    .date span:first-child {
+        text-align: left;
+        width: 100px;
+    }
+
+    .date span:last-child {
+        text-align: right;
+        width: 100px;
+    }
+
+    .date .nov-10 {
+        color: #d62839;
+        font-size: 20px;
+        width: 150px;
+    }
+
+    .show-name {
+        font-size: 20px;
+        color: #d62839;
+        font-weight: 700;
+    }
+
+    .show-name h1 {
+        font-size: 36px;
+        letter-spacing: 0.05em;
+        margin-bottom: 4px;
+        color: #93229f;
+        font-family: "Saira Stencil One", sans-serif;
+    }
+
+    .time {
+        color: #505050;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        font-weight: 700;
+    }
+
+    .time span {
+        font-weight: 400;
+        color: gray;
+    }
+
+    .left .time {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .tagline {
+        font-style: italic;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    .location {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding-top: 8px;
+        border-top: 1px solid gray;
+        font-weight: 700;
+    }
+
+    .location span:first-child {
+        text-align: left;
+    }
+
+    .location span:last-child {
+        text-align: right;
+    }
+
+    .location .separator {
+        font-size: 20px;
+    }
+
+    .right {
+        width: 225px;
+        border-left: 1px dashed #404040;
+    }
+
+    .right .admit-one {
+        color: darkgray;
+    }
+
+    .right .admit-one span:nth-child(2) {
+        color: #505050;
+    }
+
+    .right .right-info-container {
+        height: 250px;
+        padding: 10px 10px 10px 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .right .show-name h1 {
+        font-size: 18px;
+        font-family: "Barlow", sans-serif;
+    }
+
+    .right .time {
+        margin-top: 10px;
+    }
+
+    .barcode {
+        height: 135px;
+    }
+
+    .barcode img {
+        height: 100%;
+    }
+
+    .right .ticket-number {
+        color: #505050;
+        font-weight: 700;
+    }
+
 </style>

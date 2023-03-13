@@ -48,6 +48,9 @@ class Detail extends Controller
         try {
             $user = Auth::user();
             $data = Arr::except($request->all(), '__token');
+            if ($data['phone'] == null){
+                $data['phone'] = 0;
+            }
             $task = Task::findOrFail($data['task_id']);
             $data['type'] = $user ? 0 : 1;
             $data['user_id'] = $user ?  $user->id : null;
@@ -56,12 +59,12 @@ class Detail extends Controller
                 ->whereTaskId($data['task_id'])
                 ->first();
 
-            if ($checkSendMail) {
-                Mail::to($data['email'])->send(new EmailSendTicket($task));
-            } else {
+//            if ($checkSendMail) {
+//                Mail::to($data['email'])->send(new EmailSendTicket($task));
+//            } else {
                 $this->repository->create($data);
-                Mail::to($data['email'])->send(new EmailSendTicket($task));
-            }
+//                Mail::to($data['email'])->send(new EmailSendTicket($task));
+//            }
 
             return $this->respondSuccess('Success');
         } catch (\Exception $e) {
@@ -105,6 +108,7 @@ class Detail extends Controller
     public function downloadTicket($id)
     {
         $task = Task::find($id);
+//        return view('mails.send_ticket',['ticket'=> $task]);
         return (new Ticket($task))->downloadPdf();
     }
 }

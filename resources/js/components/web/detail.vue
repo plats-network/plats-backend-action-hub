@@ -113,14 +113,14 @@
                         <el-tabs  v-model="activeName" @tab-click="handleClick">
                             <el-tab-pane  label="Booths" name="first">
                                 <div style="height: 200px;">
-                                    <el-steps direction="vertical" :active="2">
+                                    <el-steps direction="vertical">
                                         <el-step v-for="(booth, index) in this.detail.booths.detail" :title="booth.name" ></el-step>
                                     </el-steps>
                                 </div>
                             </el-tab-pane>
                             <el-tab-pane  label="Sessions" name="second">
                                 <div style="height: 200px;">
-                                    <el-steps direction="vertical" :active="2">
+                                    <el-steps direction="vertical">
                                         <el-step v-for="(session, index) in this.detail.sessions.detail" :title="session.name" ></el-step>
                                     </el-steps>
                                 </div>

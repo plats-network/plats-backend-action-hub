@@ -17,7 +17,7 @@ class ClientWeb
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user() && in_array(Auth::user()->role, [CLIENT_ROLE])) {
+        if (Auth::user() && in_array(Auth::user()->role, [USER_ROLE])) {
             return $next($request);
         } else {
             return redirect('/')->withErrors('message', 'You have not admin access');

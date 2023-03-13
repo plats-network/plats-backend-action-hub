@@ -30,6 +30,7 @@ class TaskEventDetail extends Model
         'name',
         'description',
         'status',
+        'code',
     ];
 
     /**
