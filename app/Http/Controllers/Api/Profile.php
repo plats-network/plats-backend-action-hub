@@ -30,9 +30,9 @@ class Profile extends ApiController
      * @return \Illuminate\Http\Resources\Json\JsonResource
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function index($userId)
+    public function index(Request $request)
     {
-        $user = $this->userService->index($userId);
+        $user = $request->user();
 
         if (!$user) {
             return $this->respondNotFound();

@@ -35,6 +35,7 @@ use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\{DB, Http};
 use Carbon\Carbon;
 use Log;
+use Cache;
 
 class Task extends ApiController
 {
@@ -342,7 +343,8 @@ class Task extends ApiController
         $userId = $request->user()->id;
 
         $checkTaskComplated = $this->taskUserRepository
-            ->userStartedTask($taskId, $userId, $locationId);
+            ->userStartedTask($taskId, $userId, $locationId)
+            ;
 
         if ($checkTaskComplated
             && $checkTaskComplated->status == USER_COMPLETED_TASK) {
@@ -355,23 +357,45 @@ class Task extends ApiController
         return $this->respondWithResource(new CheckInResource($dataCheckIn));
     }
 
-    /**
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \App\Http\Resources\TaskUserResource
-     */
-    // public function getTaskDoing(Request $request)
-    // {
-    //     $userId = $request->user()->id;
+    // Get Event Hot
+    public function getEventTaskHots(Request $request)
+    {
+        $type = $request->input('type');
+        $typeId = isset($type) && $type == 'event' ? 1 : 0;
 
-    //     $dataTaskDoing = $this->taskService->getTaskDoing($userId);
+        $expiresAt = Carbon::now()->endOfDay();
+        $cacheEventIds = Cache::get('eventIds');
+        $cacheTaskIds = Cache::get('taskIds');
 
-    //     if (is_null($dataTaskDoing)) {
-    //         return $this->respondNotFound();
-    //     }
+        if (!$cacheEventIds && $typeId == 1) {
+            $eventIds =  $this->modelTask
+                ->whereType(1)
+                ->inRandomOrder()
+                ->limit(4)->pluck('id')->toArray();
+            Cache::put('eventIds', $eventIds, $expiresAt);
+            $cacheEventIds = Cache::get('eventIds');
+        }
 
-    //     return $this->respondWithResource(new TaskDogingResource($dataTaskDoing));
-    // }
+        if (!$cacheTaskIds) {
+            $taskIds =  $this->modelTask
+                ->whereType(0)
+                ->inRandomOrder()
+                ->limit(4)->pluck('id')->toArray();
+            Cache::put('taskIds', $taskIds, $expiresAt);
+            $cacheTaskIds = Cache::get('taskIds');
+        }
+        // dd($cacheTaskIds);
+
+        if ($type == 'event') {
+            $tasks = $this->modelTask->whereId($cacheEventIds)->get();
+        } else {
+            $tasks = $this->modelTask->whereId($cacheTaskIds)->get();
+        }
+
+        $datas = TaskResource::collection($tasks);
+
+        return $this->respondWithResource($datas);
+    }
 
     /**
      * User cancel task

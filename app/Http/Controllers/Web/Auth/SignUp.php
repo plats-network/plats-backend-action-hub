@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Web\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Admin\RegisRequest;
+// use App\Http\Requests\Admin\RegisRequest;
 use App\Http\Requests\Web\SignUpRequest;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
@@ -42,6 +42,6 @@ class SignUp extends Controller
             return redirect('/')->withErrors(['message' => 'Error: Liên hệ admim']);
         }
 
-        return redirect('client/login')->withErrors(['message' => 'Login success']);
+        return redirect('client/login')->with(['message' => 'Login success']);
     }
 }

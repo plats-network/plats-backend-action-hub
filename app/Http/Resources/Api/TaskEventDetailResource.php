@@ -24,7 +24,8 @@ class TaskEventDetailResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'status_done' => $checkDoneJob > 0 ? true : false
+            'code' => $this->code,
+            'status_done' => $checkDoneJob > 0 ? true : false,
         ];
     }
 }
