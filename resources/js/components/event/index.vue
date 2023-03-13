@@ -416,7 +416,7 @@
                             >
                                 <template slot-scope="scope">
                                     <div ref="qrcode">
-                                        <qrcode-vue :id="scope.row.id" :value="link_qrc+'/events/'+scope.row.id" :size="size" level="H"></qrcode-vue>
+                                        <qrcode-vue :id="scope.row.id" :value="link_qrc+'/events/code?type=event&id='+scope.row.code" :size="size" level="H"></qrcode-vue>
                                     </div>
                                     <button @click="downloadQrCode(scope.row.id)">Download</button>
                                 </template>
