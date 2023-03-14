@@ -9,7 +9,7 @@
 <div>
     Tài khoản của bạn tại website Plats đang chờ kích hoạt. Để kích hoạt, bạn hãy click vào link dưới đây:
     <br/>
-    URL : <a href="{{ \URL::temporarySignedRoute(VERIFY_EMAIL,now()->addMinutes(config('auth.url_reset_password_timeout')), $confirmation_code) }}">{{ \URL::temporarySignedRoute(VERIFY_EMAIL,now()->addHours(config('auth.url_reset_password_timeout')), $confirmation_code) }}</a>
+    URL : <a href="/cws/verify/{{$confirmation_code}}">Link kích hoạt</a>
     <br/>
     Trân trọng,
 </div>
