@@ -70,6 +70,7 @@ class Detail extends Controller
 
             return $this->respondSuccess('Success');
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return $this->respondError('Errors save data', 422);
         }
     }
