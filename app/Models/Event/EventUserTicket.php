@@ -30,5 +30,9 @@ class EventUserTicket extends Model
         'task_id',
         'type',
         'user_id',
+        'is_checkin',
+        'hash_code',
+        'sesion_code',
+        'booth_code',
     ];
 }

@@ -13,8 +13,7 @@ use App\Http\Resources\{
     TaskResource,
     TaskUserResource,
     TaskDogingResource,
-    SocialResource,
-    CheckInResource
+    SocialResource
 };
 use App\Repositories\{LocationHistoryRepository, TaskRepository, TaskUserRepository};
 use App\Services\TaskService;
@@ -329,32 +328,6 @@ class Task extends ApiController
         }
 
         return $this->responseMessage('Job done!');
-    }
-
-    /**
-     * @param \App\Http\Requests\CheckInTaskRequest $request
-     * @param string $taskId
-     * @param string $locationId
-     *
-     * @return \App\Http\Resources\TaskUserResource
-     */
-    public function checkIn(CheckInTaskRequest $request, $taskId, $locationId)
-    {
-        $userId = $request->user()->id;
-
-        $checkTaskComplated = $this->taskUserRepository
-            ->userStartedTask($taskId, $userId, $locationId)
-            ;
-
-        if ($checkTaskComplated
-            && $checkTaskComplated->status == USER_COMPLETED_TASK) {
-            return $this->responseMessage('Task checkin done!');
-        }
-
-        $dataCheckIn = $this->taskService
-            ->checkIn($taskId, $locationId, $userId, $request->image, $request->activity_log);
-
-        return $this->respondWithResource(new CheckInResource($dataCheckIn));
     }
 
     // Get Event Hot
