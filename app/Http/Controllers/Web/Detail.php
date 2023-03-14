@@ -76,25 +76,44 @@ class Detail extends Controller
 
     public function edit($id)
     {
-        $task = Task::find($id);
-        $booths = TaskEvent::where('task_id',$id)->with('detail')->where('type',1)->first();
-        $sessions = TaskEvent::where('task_id',$id)->with('detail')->where('type',0)->first();
-        $task['booths'] = $booths;
-        $task['sessions'] = $sessions;
+        try {
+            $task = Task::find($id);
+            $booths = TaskEvent::where('task_id',$id)->with('detail')->where('type',1)->first();
+            $sessions = TaskEvent::where('task_id',$id)->with('detail')->where('type',0)->first();
+            $task['booths'] = $booths;
+            $task['sessions'] = $sessions;
+        } catch (\Exception $e) {
+            return $this->respondError('Errors', 500);
+        }
 
         return $this->respondSuccess($task);
     }
 
     public function like(Request $request)
     {
-        $data = Arr::except($request->all(), '__token');
-        $check = $this->userEventLikeRepository->where('user_id',Auth::user()->id)->where('task_id',$data['task_id'])->first();
-        if ($check){
-            $dataBaseTask = $this->userEventLikeRepository->where('user_id',Auth::user()->id)->where('task_id',$data['task_id'])->delete();
-            return $this->respondSuccess($dataBaseTask);
+        try {
+            $userId = Auth::user()->id;
+            $data = Arr::except($request->all(), '__token');
+            $check = $this->userEventLikeRepository
+                ->where('user_id', $userId)
+                ->where('task_id',$data['task_id'])
+                ->first();
+
+            if ($check){
+                $dataBaseTask = $this->userEventLikeRepository
+                    ->where('user_id', $userId)
+                    ->where('task_id',$data['task_id'])
+                    ->delete();
+
+                return $this->respondSuccess($dataBaseTask);
+            }
+
+            $data['user_id'] = $userId;
+            $dataBaseTask = $this->userEventLikeRepository->create($data);
+        } catch (\Exception $e) {
+            return $this->respondError('Errors', 500);
         }
-        $data['user_id'] = Auth::user()->id;
-        $dataBaseTask = $this->userEventLikeRepository->create($data);
+
         return $this->respondSuccess($dataBaseTask);
     }
 
