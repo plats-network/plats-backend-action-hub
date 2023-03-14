@@ -320,6 +320,7 @@ export default {
                             message: 'Get ticket successfully!',
                             type: 'success',
                         });
+                        this.form.reset();
                         loading.close();
                         this.dialogFormVisible = false
                         window.open('/events/download-ticket/'+this.form.task_id, '_blank');
