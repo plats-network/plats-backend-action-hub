@@ -355,7 +355,7 @@
                 TO <br>
                 {{date("Y-m-d H:i:s", strtotime($ticket->end_at))}}</div>
             <br/>
-            {{--            <div class="name">John Smith</div>--}}
+                        <div class="name">{{$ticket->address}}</div>
             <div class="ticket-id"> #{{mt_rand(1000000000, 9999999900)}}</div>
         </div>
     </div>

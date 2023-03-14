@@ -13,6 +13,13 @@
     <!-- Background Start -->
     <div class="fixed-background" style="background-image: url({{ asset('img/admin/background/background-blue.webp') }})"></div>
     <!-- Background End -->
+    @if (\Session::has('success'))
+        <div class="alert alert-success">
+            <ul>
+                <li>{!! \Session::get('success') !!}</li>
+            </ul>
+        </div>
+    @endif
 
     <div class="container-fluid p-0 h-100 position-relative">
         <div class="row g-0 h-100">
@@ -76,6 +83,10 @@
                                 <div class="mb-3 filled form-group tooltip-end-top">
                                     <i data-acorn-icon="lock-off"></i>
                                     <input class="form-control pe-7" name="password" type="password" placeholder="Password"/>
+                                </div>
+                                <div class="mb-3 filled form-group tooltip-end-top">
+                                    <i data-acorn-icon="lock-off"></i>
+                                    <input class="form-control pe-7" name="password_confirmation" type="password" placeholder="Password Confirmation"/>
                                 </div>
                                 <button type="submit" class="btn btn-lg btn-primary">Register</button>
                             </x-form::open>

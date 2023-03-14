@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
@@ -24,7 +25,12 @@ trait Authenticates
     public function login(Request $request)
     {
         $this->validateLogin($request);
-
+        $check = User::where('email',$request->input('email'))->first();
+        if ($check){
+            if ($check->confirmation_code != null){
+                return redirect('cws/register')->with(['success' => 'Tài khoản chưa xác nhận']);
+            }
+        }
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.

@@ -8,7 +8,7 @@ if (!defined('DEFINE_CONSTANT')) {
 
     define('PAGE_SIZE', 10);
     define('INPUT_MAX_LENGTH', 255);
-
+    define('CONFIRM', 1);
     /**
      * User
      */
