@@ -74,10 +74,10 @@ Route::middleware('auth:api')->group(function ($router) {
 });
 
 Route::prefix('cws')->group(function($router) {
-    $router->get('events/list', [CwsEvent::class, 'webList']);
+    Route::get('events/list', [CwsEvent::class, 'webList']);
+    Route::post('events/change-status', [CwsEvent::class, 'changeStatus']);
     $router->resource('groups', CwsGroup::class)->only(['index', 'store', 'show', 'destroy']);
     $router->resource('events', CwsEvent::class)->only(['index', 'store', 'show', 'destroy']);
-    $router->post('events/change-status', [CwsEvent::class, 'changeStatus']);
 });
 
 Route::prefix('tasks')->controller(Task::class)->group(function ($router) {

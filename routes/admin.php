@@ -9,7 +9,7 @@ use App\Http\Controllers\Auth\Admin\Register;
 Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_ADMIN_ROUTER);
 Route::get('register', [Register::class, 'create'])->name('auth.create');
 Route::post('register', [Register::class, 'store'])->name('auth.store');
-
+Route::get('/verify/{code}', [Register::class, 'verify'])->name(VERIFY_EMAIL)->middleware('signed');
 // Task management
 Route::prefix('tasks')->controller(\App\Http\Controllers\Admin\TaskBeta::class)->group(function () {
     Route::get('/', 'index')->name(TASK_LIST_ADMIN_ROUTER);

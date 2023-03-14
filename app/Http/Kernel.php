@@ -72,5 +72,6 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\Admin::class,
         'client_admin' => \App\Http\Middleware\ClientAdmin::class,
         'client_web' => \App\Http\Middleware\ClientWeb::class,
+        'check_verify_code' => \App\Http\Middleware\VerifyCode::class,
     ];
 }

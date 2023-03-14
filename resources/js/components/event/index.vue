@@ -233,14 +233,14 @@
                             <div class="d-flex">
                                 <el-form-item label="Start At" style="margin-right: 20px">
                                     <el-date-picker
-                                      type="datetime"
+                                      type="datetime" :picker-options="pickerOptions"
                                       placeholder="Select date and time"
                                       v-model="form.start_at"
                                       :min-date="new Date()"></el-date-picker>
                                 </el-form-item>
                                 <el-form-item label="End At">
                                     <el-date-picker
-                                      type="datetime"
+                                      type="datetime" :picker-options="pickerOptions"
                                       placeholder="Select date and time"
                                       v-model="form.end_at"></el-date-picker>
                                 </el-form-item>
@@ -537,6 +537,11 @@ export default {
     },
     data() {
         return {
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() < Date.now();
+                },
+            },
             dataLink: [],
             ruleQuiz:{
                 name: [{

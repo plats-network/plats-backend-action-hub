@@ -111,4 +111,5 @@ return [
     */
 
     'password_timeout' => 10800,
+    'url_reset_password_timeout' => 48,
 ];

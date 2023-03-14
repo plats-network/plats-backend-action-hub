@@ -8,6 +8,8 @@ if (!defined('DEFINE_ADMIN_ROUTER')) {
     define('LOGOUT_ADMIN_ROUTE', 'admin.logout.route');
     define('REGIS_GET_CREATE', 'auth.create');
     define('REGIS_POST_CREATE', 'auth.store');
+    define('VERIFY_EMAIL', 'admin.auth.verify');
+
     //Auth web
 
     define('LOGIN_WEB_ROUTE', 'web.login.route');
