@@ -69,12 +69,9 @@
                         <div>
                             <x-alert />
                             <x-form::open action="{{ route(REGIS_POST_CREATE) }}" class="tooltip-end-bottom">
-                                <div class="mb-3 filled form-group tooltip-end-top>
+                                <div class="mb-3 filled form-group tooltip-end-top">
                                     <i data-acorn-icon="user"></i>
                                     <input class="form-control" placeholder="Name" name="name" value="{{ old('name') }}"/>
-                                    @error('name')
-                                        <div class="alert alert-danger">{{ ＄message }}</div>
-                                    @enderror
                                 </div>
                                 <div class="mb-3 filled form-group tooltip-end-top">
                                     <i data-acorn-icon="email"></i>
