@@ -47,7 +47,7 @@ class Register extends Controller
         } catch (Exception $exception) {
             return redirect('cws/register')->withErrors(['message' => 'Error: Liên hệ admim']);
         }
-        return redirect('auth/cws')->with(['success' => 'Đăng ký thành công']);
+        return redirect('auth/cws')->with(['success' => 'Đăng ký thành công vui lòng kiểm tra email để xác nhận']);
     }
 
     public function verify($code)
