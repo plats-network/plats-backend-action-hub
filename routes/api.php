@@ -24,7 +24,6 @@ use App\Http\Controllers\Auth\Api\{
 use App\Http\Controllers\Api\{
     Profile,
     ResetPassword,
-    TestUser,
     User
 };
 
@@ -50,12 +49,11 @@ Route::post('login/social', [Login::class, 'socialLogin']);
 Route::get('login/apple', [Login::class, 'loginApple']);
 Route::post('login/{providerName}/callback', [Login::class, 'callbackProvider']);
 
-// Route::resource('test_user', TestUser::class)->only(['index']);
-
 // Reset password
 Route::post('reset-password', [ResetPassword::class, 'sendMail']);
 Route::post('check-recovery-code', [ResetPassword::class, 'verifyCode']);
 Route::put('reset-password', [ResetPassword::class, 'reset']);
+Route::get('ticket/{id}', [User::class, 'getTicket'])->name('user.getTicket');
 
 Route::middleware('auth:api')->group(function ($router) {
     $router->post('refresh', [Login::class, 'refresh']);
