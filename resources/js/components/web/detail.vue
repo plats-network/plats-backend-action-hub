@@ -326,6 +326,7 @@ export default {
                             name: '',
                             email: '',
                             phone: '',
+                            task_id: this.task_id
                         };
                     }).catch(error => {
                         this.errors = error.response.data.message;
