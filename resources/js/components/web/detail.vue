@@ -42,7 +42,7 @@
                                 </el-col>
                             </el-row>
                         </div>
-                        <div class="mb-3">
+                        <!-- <div class="mb-3"> -->
 <!--                            <gmap-map-->
 <!--                                :zoom="14"-->
 <!--                                :center="center"-->
@@ -55,10 +55,9 @@
 <!--                                    @click="center=m.position"-->
 <!--                                ></gmap-marker>-->
 <!--                            </gmap-map>-->
-                        </div>
-                        <div class="" v-html="detail.description">
-
-                        </div>
+                        <!-- </div> -->
+                        <!-- Desc -->
+                        <div class="" v-html="detail.description"></div>
                         <div class=" mt-3 mb-3">
                             <div class="mb-2"><span class="fw-bold">Share with friends</span></div>
                             <div>
@@ -109,7 +108,7 @@
                     <el-button style="display: block;margin: auto;padding: 10px 100px;" type="primary"
                                @click='toggle = !toggle'>Hide
                     </el-button>
-                    <div>
+                    <!-- <div>
                         <el-tabs  v-model="activeName" @tab-click="handleClick">
                             <el-tab-pane  label="Booths" name="first">
                                 <div style="height: 200px;">
@@ -126,7 +125,7 @@
                                 </div>
                             </el-tab-pane>
                         </el-tabs>
-                    </div>
+                    </div> -->
                     <div class="mb-5">
                         <div class="">
                             <div class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;"><a href="/events">Other events</a>
@@ -186,7 +185,6 @@ import 'element-tiptap/lib/index.css';
 import {Notification} from 'element-ui';
 import {ElementTiptap} from 'element-tiptap';
 import {
-    // necessary extensions
     Doc,
     Text,
     Paragraph,
@@ -322,6 +320,7 @@ export default {
                             message: 'Get ticket successfully!',
                             type: 'success',
                         });
+                        this.form.reset();
                         loading.close();
                         this.dialogFormVisible = false
                         window.open('/events/download-ticket/'+this.form.task_id, '_blank');

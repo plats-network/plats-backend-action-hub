@@ -18,6 +18,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\{Route, Mail, Auth};
 use App\Jobs\SendTicket;
 use App\Mail\SendTicket as EmailSendTicket;
+use Str;
 
 class Detail extends Controller
 {
@@ -54,16 +55,17 @@ class Detail extends Controller
             $task = Task::findOrFail($data['task_id']);
             $data['type'] = $user ? 0 : 1;
             $data['user_id'] = $user ?  $user->id : null;
+            $data['hash_code'] = Str::random(32);
             $checkSendMail = $this->repository
                 ->whereEmail($data['email'])
                 ->whereTaskId($data['task_id'])
                 ->first();
 
             if ($checkSendMail) {
-                Mail::to($data['email'])->send(new EmailSendTicket($task));
+                dispatch(new SendTicket($task, $data['email']));
             } else {
                 $this->repository->create($data);
-                Mail::to($data['email'])->send(new EmailSendTicket($task));
+                dispatch(new SendTicket($task, $data['email']));
             }
 
             return $this->respondSuccess('Success');
@@ -71,6 +73,7 @@ class Detail extends Controller
             return $this->respondError('Errors save data', 422);
         }
     }
+
     public function edit($id)
     {
         $task = Task::find($id);

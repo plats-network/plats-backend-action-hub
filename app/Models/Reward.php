@@ -42,6 +42,7 @@ class Reward extends Model
         'name',
         'description',
         'image',
+        'symbol',
         'region',
         'order',
         'status',
@@ -55,14 +56,6 @@ class Reward extends Model
     protected $hidden = [
         'deleted_at',
     ];
-
-    /**
-     * Get the comments for the blog post.
-     */
-    public function detail_rewards()
-    {
-        return $this->hasMany(DetailReward::class);
-    }
 
     protected function image(): Attribute
     {

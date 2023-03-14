@@ -25,6 +25,9 @@ class Task extends Model
         TaskRelation, TaskScope,
         TaskAttribute, TaskMethod;
 
+    protected const TASK = 0;
+    protected const EVENT = 1;
+
     /**
      * The table associated with the model.
      *
@@ -52,7 +55,7 @@ class Task extends Model
         'address',
         'lng',
         'lat',
-        'type', // 0: default, 1: event
+        'type', // 0: task, 1: event
         'creator_id',
     ];
 

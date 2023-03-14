@@ -8,6 +8,11 @@ use App\Http\Requests\{
     SocialRequest,
     UpdateProfileRequest
 };
+use App\Http\Requests\Api\User\{
+    AvatarRequest,
+    ProfileRequest
+};
+
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -30,9 +35,9 @@ class Profile extends ApiController
      * @return \Illuminate\Http\Resources\Json\JsonResource
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function index($userId)
+    public function index(Request $request)
     {
-        $user = $this->userService->index($userId);
+        $user = $request->user();
 
         if (!$user) {
             return $this->respondNotFound();
@@ -47,11 +52,17 @@ class Profile extends ApiController
      * @return \Illuminate\Http\Resources\Json\JsonResource
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function update(UpdateProfileRequest $request)
+    public function update(ProfileRequest $request)
     {
-        return new UserResource(
-            $this->userService->update($request->merge(['id' => $request->user()->id]))
-        );
+        try {
+            $user = $request->user();
+            $request['gender'] = $request->input('gender') == 'male' ? 0 : 1;
+            $user->update($request->all());
+        } catch (\Exception $e) {
+            return $this->respondError('Errors');
+        }
+
+        return new UserResource($user);
     }
 
     /**
@@ -59,13 +70,10 @@ class Profile extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function updateAvatar(Request $request)
+    public function updateAvatar(AvatarRequest $request)
     {
-        $request->validate([
-            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:4086',
-        ]);
-        $data = $this->userService->updateAvatar($request->merge(['id' => $request->user()->id]));
-        
+        $data = $this->userService->updateAvatar($request);
+
         return $this->respondWithData($data, 'Update successful');
     }
 

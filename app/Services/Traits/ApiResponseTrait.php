@@ -52,6 +52,23 @@ trait ApiResponseTrait
     }
 
     /**
+     * Return generic json response with the given data.
+     *
+     * @param       $data
+     * @param message $message
+     *
+     * @return JsonResponse
+     */
+    protected function respondWithData($data = [], $message = '')
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+            'message' => $message
+        ]);
+    }
+
+    /**
      * @param JsonResource $resource
      * @param null $message
      * @param int $statusCode

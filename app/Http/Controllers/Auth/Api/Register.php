@@ -36,6 +36,7 @@ class Register extends Controller
     public function register(RegisterRequest $request)
     {
         $user = $this->userService->findByEmail($request->input('email'));
+
         if($user) {
             if(!is_null($user->email_verified_at)) {
                 return $this->respondError('Your account has been activated.', 400, ACCOUNT_ACTIVED);

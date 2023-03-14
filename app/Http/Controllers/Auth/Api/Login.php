@@ -47,6 +47,7 @@ class Login extends Controller
     public function login(LoginRequest $request)
     {
         $data = $this->respondWithToken($this->guard()->attempt($this->credentials($request)));
+
         if(!$data->resource || !$data->email_verified_at) {
             return $this->respondError('These credentials do not match our records.', 400, CREDENTIALS_NOT_MATCH);
         }
@@ -75,8 +76,9 @@ class Login extends Controller
      */
     protected function respondWithToken($token, $user = null)
     {
+        $refreshTtl = $this->guard()->factory()->getTTL() * config('jwt.refresh_ttl');
         return (new UserResource($this->guard()->user() ?? $user))
-            ->withToken($token, $this->guard()->factory()->getTTL() * config('jwt.refresh_ttl'));
+            ->withToken($token, $refreshTtl);
     }
 
     /**
@@ -207,7 +209,7 @@ class Login extends Controller
         } catch (RuntimeException $exception) {
             DB::rollBack();
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             DB::rollBack();
             throw new RuntimeException($exception->getMessage(), 500062, $exception->getMessage(), $exception);
         }

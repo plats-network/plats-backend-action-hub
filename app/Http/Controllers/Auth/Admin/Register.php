@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Auth\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\SignUpRequest;
 use App\Mail\VerifyCodeEmail;
-use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\RegisRequest;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\User;
 
 class Register extends Controller
 {

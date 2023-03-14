@@ -102,39 +102,4 @@ class SocialService extends BaseService
 
         return;
     }
-
-    public function saveDetailReward($user, $taskSocial)
-    {
-        // TODO: spec new, remove logic
-        try {
-            $reward = Reward::first();
-            $branch = Branch::first();
-
-            $data = DetailReward::create([
-                'branch_id' => $branch->id,
-                'reward_id' => $reward->id,
-                'type' => 0,
-                'name' => 'Plats point token',
-                'amount' => $taskSocial->amount ?? 0,
-                'description' => "Plats point",
-                'url_image' => 'icon/token-nft.png',
-                'status' => true,
-                'start_at' => Carbon::now(),
-                'end_at' => Carbon::now()
-            ]);
-
-            $rewardUser = UserTaskReward::create([
-                'user_id' => $user->id,
-                'detail_reward_id' => $data->id,
-                'type' => 0,
-                'amount' => $taskSocial->amount ?? 0,
-                'is_open' => false,
-                'is_tray' => false
-            ]);
-        } catch (\Exception $e) {
-            $rewardUser = null;
-        }
-
-        return $rewardUser;
-    }
 }

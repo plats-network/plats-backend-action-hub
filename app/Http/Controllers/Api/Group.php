@@ -50,7 +50,6 @@ class Group extends ApiController
             return $this->respondNotFound();
         }
 
-
         return $this->respondWithIndex($datas, $pages);
     }
 
@@ -102,21 +101,14 @@ class Group extends ApiController
             $id = $request->input('group_id');
             $userId = $request->user()->id;
             $this->group->findOrFail($id);
-
-            $group = $this->userGroup
-                ->whereUserId($userId)
-                ->whereGroupId($id)
-                ->first();
+            $group = $this->userGroup->whereUserId($userId)->whereGroupId($id)->first();
 
             if ($group) {
                 $group->delete();
                 $mess = 'Leave group success.';
             } else {
-                $this->userGroup->create([
-                    'user_id' => $userId,
-                    'group_id' => $id
-                ]);
-
+                $data = ['user_id' => $userId, 'group_id' => $id];
+                $this->userGroup->create($data);
                 $mess = 'Join group success.';
             }
         } catch (\Exception $e) {
