@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\QrCode;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class EventRequest extends FormRequest
 {
@@ -24,7 +25,7 @@ class EventRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => ['required'],
+            'type' => ['required', Rule::in(['checkin', 'event'])],
             'code' => ['required']
         ];
     }
