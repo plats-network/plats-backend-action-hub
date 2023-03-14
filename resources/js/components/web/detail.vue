@@ -313,7 +313,7 @@ export default {
                         spinner: 'el-icon-loading',
                         background: 'rgba(0, 0, 0, 0.7)'
                     });
-
+                    window.open('/events/download-ticket/'+this.form.task_id, '_blank');
                     axios.post('/events/ticket', this.form).then(e => {
                         Notification.success({
                             title: 'Message',
@@ -322,7 +322,6 @@ export default {
                         });
                         loading.close();
                         this.dialogFormVisible = false
-                        window.open('/events/download-ticket/'+this.form.task_id, '_blank');
                         this.form = {
                             name: '',
                             email: '',
