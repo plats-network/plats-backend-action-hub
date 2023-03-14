@@ -320,10 +320,15 @@ export default {
                             message: 'Get ticket successfully!',
                             type: 'success',
                         });
-                        this.form.reset();
                         loading.close();
                         this.dialogFormVisible = false
                         window.open('/events/download-ticket/'+this.form.task_id, '_blank');
+                        this.form = {
+                            name: '',
+                            email: '',
+                            phone: '',
+                            task_id: ''
+                        };
                     }).catch(error => {
                         this.errors = error.response.data.message;
                         Notification.error({
