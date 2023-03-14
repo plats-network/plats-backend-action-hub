@@ -322,11 +322,7 @@ export default {
                         });
                         loading.close();
                         this.dialogFormVisible = false
-                        this.form = {
-                            name: '',
-                            email: '',
-                            phone: '',
-                        };
+                        location.reload();
                     }).catch(error => {
                         this.errors = error.response.data.message;
                         Notification.error({
