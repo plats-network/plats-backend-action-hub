@@ -322,12 +322,7 @@ export default {
                         });
                         loading.close();
                         this.dialogFormVisible = false
-                        this.form = {
-                            name: '',
-                            email: '',
-                            phone: '',
-                            task_id: this.task_id
-                        };
+                        location.reload();
                     }).catch(error => {
                         this.errors = error.response.data.message;
                         Notification.error({
