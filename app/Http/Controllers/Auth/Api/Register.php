@@ -35,23 +35,29 @@ class Register extends Controller
      */
     public function register(RegisterRequest $request)
     {
-        $user = $this->userService->findByEmail($request->input('email'));
+        try {
+            $user = $this->userService->findByEmail($request->input('email'));
 
-        if($user) {
-            if(!is_null($user->email_verified_at)) {
-                return $this->respondError('Your account has been activated.', 400, ACCOUNT_ACTIVED);
-            } else {
-                if (!$this->isExpired($user)) {
-                    return $this->respondError('Please check confirmation code in email and wait 10 minutes from the time of sending the mail.', 400, TIME_INVALID);
+            if($user) {
+                if(!is_null($user->email_verified_at)) {
+                    return $this->respondError('Email not active!', 400, ACCOUNT_ACTIVED);
+                } else {
+                    if (!$this->isExpired($user)) {
+                        return $this->respondError('Please check confirmation code', 400, TIME_INVALID);
+                    }
                 }
             }
+
+            $userCreated = new UserResource($this->userService->createOrUpdate($request));
+
+            if ($userCreated) {
+                dispatch(new SendRegisterEmail($userCreated));
+            }
+        } catch (\Exception $e) {
+            return $this->respondError('Error server', 500);
         }
 
-        $userCreated = new UserResource($this->userService->createOrUpdate($request));
-        if ($userCreated) {
-            dispatch(new SendRegisterEmail($userCreated));
-        }
-        return $this->respondSuccess('We have sent you an activation email at ' . $userCreated->email);
+        return $this->respondSuccess('Please check email confirm ' . $userCreated->email);
     }
 
     /**
@@ -61,12 +67,19 @@ class Register extends Controller
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function confirmEmail(RegisterConfirmRequest $request) {
-        $user = $this->userService->confirmEmail($request);
-        if (!$user) {
-            return $this->respondError('Please check your email and confirmation code again.', 400, CONFIRM_CODE_INVALID);
+        try {
+            $user = $this->userService->confirmEmail($request);
+
+            if (!$user) {
+                return $this->respondError('User not found.', 400, CONFIRM_CODE_INVALID);
+            }
+
+            dispatch(new SendWelcomeEmail($user));
+        } catch (\Exception $e) {
+            return $this->respondError('Error system!', 500);
         }
-        dispatch(new SendWelcomeEmail($user));
-        return $this->respondSuccess('Email confirmation successful.');
+
+        return $this->respondSuccess('Confirmation dome.');
     }
 
     /**
@@ -77,19 +90,27 @@ class Register extends Controller
      */
     public function resendOtp(Request $request)
     {
-        $this->validateEmailUnique($request);
-        $user = new UserResource($this->userService->findByEmail($request->only('email')));
-        if(!is_null($user->email_verified_at)) {
-            return $this->respondError('Your account has been activated.', 400, ACCOUNT_ACTIVED);
+        try {
+            $this->validateEmailUnique($request);
+
+            $user = new UserResource($this->userService->findByEmail($request->only('email')));
+            if(!is_null($user->email_verified_at)) {
+                return $this->respondError('Your account has been activated.', 400, ACCOUNT_ACTIVED);
+            }
+
+            if (!$this->isExpired($user)) {
+                return $this->respondError('Please wait 10 minutes from the time of sending the mail.', 400, TIME_INVALID);
+            }
+
+            if ($user) {
+                $user = $this->userService->updateConfirmationCode($request->only('email'));
+                dispatch(new SendRegisterEmail($user));
+            }
+        } catch (\Exception $e) {
+            return $this->respondError('Error system!', 500);
         }
-        if (!$this->isExpired($user)) {
-            return $this->respondError('Please wait 10 minutes from the time of sending the mail.', 400, TIME_INVALID);
-        }
-        if ($user) {
-            $user = $this->userService->updateConfirmationCode($request->only('email'));
-            dispatch(new SendRegisterEmail($user));
-        }
-        return $this->respondSuccess('We have sent you an activation email at ' . $user->email);
+
+        return $this->respondSuccess('Send code done ' . $user->email);
     }
 
     /**
@@ -100,7 +121,9 @@ class Register extends Controller
      */
     public function isExpired($model)
     {
-        return $model ? Carbon::parse($model->updated_at)->addMinutes(10)->isPast() : false;
+        return $model
+            ? Carbon::parse($model->updated_at)->addMinutes(10)->isPast()
+            : false;
     }
 
     /**
