@@ -5,10 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Http\Resources\SocialResource;
-use App\Models\{
-    User as UserModel,
-    Task
-};
+use App\Models\{Event\EventUserTicket, User as UserModel, Task};
 use App\Exports\Ticket;
 
 class User extends ApiController
@@ -62,9 +59,11 @@ class User extends ApiController
         try {
             $user = $request->user();
             $task = $this->task->findOrFail($id);
-
-            // TODO: Send mail
-            return (new Ticket($task))->downloadPdf();
+            if ($user){
+                $userTicket = EventUserTicket::where('user_id',$user->id)->first();
+                // TODO: Send mail
+                return (new Ticket($task,$userTicket))->downloadPdf();
+            }
         } catch (\Exception $e) {
             return $this->respondError("Errors {$e->getMessage()}");
         }
