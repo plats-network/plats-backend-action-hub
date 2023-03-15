@@ -15,15 +15,17 @@ class SendTicket extends Mailable
     use Queueable, SerializesModels;
 
     protected $ticket;
+    protected $user;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($ticket)
+    public function __construct($ticket,$user)
     {
         $this->ticket = $ticket;
+        $this->user = $user;
     }
 
     /**
@@ -35,7 +37,8 @@ class SendTicket extends Mailable
     {
         return $this->subject('Ticket Join Event')
             ->view('mails.send_ticket', [
-                'ticket' => $this->ticket
+                'ticket' => $this->ticket,
+                'user' => $this->user,
             ]);
     }
 
