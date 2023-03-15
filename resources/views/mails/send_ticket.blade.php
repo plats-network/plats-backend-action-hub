@@ -2,10 +2,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
     <style>
         body {
@@ -95,11 +93,8 @@
 
     <div class="column-2">
         <div class="qr-holder">
-            <div><?php
-                $qrcode=\QrCode::size(160)->generate(config('app.link_qrc_confirm').'events/ticket?type=checkin&code='.$user->hash_code);
-                $code = (string)$qrcode;
-                ?>
-                {!! substr($code,38);!!}
+            <div>
+                <img src="data:image/png;base64, {!! base64_encode(\QrCode::format('png')->size(100)->generate(config('app.link_qrc_confirm').'events/ticket?type=checkin&code='.$user->hash_code)) !!} ">
             </div>
             <div style="color: white">{{$user->name}}</div>
             <div class="ticket-id"> #{{Str::limit($user->hash_code , 15)}}</div>
