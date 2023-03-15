@@ -221,7 +221,7 @@ class EventService extends BaseService
             $dataLinkGenerate[] = [
                 'name' => 'Link share '.$item,
                 'type' => $key,
-                'url' => config('app.link_share').'/events/'.$slug.'?'.$item.'=' . Str::random(32),
+                'url' => config('app.link_share').'events/'.$slug.'?'.$item.'=' . Str::random(32),
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ];
