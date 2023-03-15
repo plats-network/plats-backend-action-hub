@@ -5,12 +5,21 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Http\Resources\SocialResource;
-use App\Models\User as UserModel;
+use App\Models\{
+    User as UserModel,
+    Task
+};
+use App\Exports\Ticket;
 
 class User extends ApiController
 {
-    public function __construct(private UserModel $user)
-    {}
+    public function __construct (
+        private UserModel $user,
+        private Task $task
+    )
+    {
+        // code auth
+    }
 
     /**
      * Display a listing of the resource.
@@ -46,5 +55,19 @@ class User extends ApiController
         }
 
         return $this->responseMessage('Delete account successful!');
+    }
+
+    public function getTicket($id, Request $request)
+    {
+        try {
+            $user = $request->user();
+            $task = $this->task->findOrFail($id);
+
+            // TODO: Send mail
+            return (new Ticket($task))->downloadPdf();
+        } catch (\Exception $e) {
+            return $this->respondError("Errors {$e->getMessage()}");
+        }
+        return $this->respondError('Ticket not found', 404);
     }
 }
