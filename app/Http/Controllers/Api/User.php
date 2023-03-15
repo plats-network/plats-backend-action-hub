@@ -61,8 +61,10 @@ class User extends ApiController
             $task = $this->task->findOrFail($id);
             if ($user){
                 $userTicket = EventUserTicket::where('user_id',$user->id)->first();
-                // TODO: Send mail
-                return (new Ticket($task,$userTicket))->downloadPdf();
+                if ($userTicket){
+                    // TODO: Send mail
+                    return (new Ticket($task,$userTicket))->downloadPdf();
+                }
             }
         } catch (\Exception $e) {
             return $this->respondError("Errors {$e->getMessage()}");
