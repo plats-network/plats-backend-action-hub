@@ -60,13 +60,13 @@ class Detail extends Controller
                 ->whereEmail($data['email'])
                 ->whereTaskId($data['task_id'])
                 ->first();
-
+            session()->put('hash_code', $data['hash_code']);
             if ($checkSendMail) {
-                dispatch(new SendTicket($task, $data['email']));
+                dispatch(new SendTicket($task, $data['email'],$checkSendMail));
             } else {
                 $this->repository->create($data);
-               session()->put('hash_code', $data['hash_code']);
-                dispatch(new SendTicket($task, $data['email']));
+                $user = $this->repository->whereHashCode($data['hash_code'])->first();
+                dispatch(new SendTicket($task, $data['email'],$user));
             }
 
             return $this->respondSuccess('Success');

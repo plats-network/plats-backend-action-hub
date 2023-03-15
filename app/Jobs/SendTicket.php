@@ -17,16 +17,18 @@ class SendTicket implements ShouldQueue
 
     protected $ticket;
     protected $email;
+    protected $user;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($ticket, $email)
+    public function __construct($ticket, $email,$user)
     {
         $this->ticket = $ticket;
         $this->email = $email;
+        $this->user = $user;
     }
 
     /**
@@ -36,6 +38,6 @@ class SendTicket implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->email)->send(new EmailSendTicket($this->ticket));
+        Mail::to($this->email)->send(new EmailSendTicket($this->ticket,$this->user));
     }
 }
