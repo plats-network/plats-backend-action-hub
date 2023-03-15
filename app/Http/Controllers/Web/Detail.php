@@ -65,6 +65,7 @@ class Detail extends Controller
                 dispatch(new SendTicket($task, $data['email']));
             } else {
                 $this->repository->create($data);
+               session()->put('hash_code', $data['hash_code']);
                 dispatch(new SendTicket($task, $data['email']));
             }
 
@@ -130,7 +131,21 @@ class Detail extends Controller
     public function downloadTicket($id)
     {
         $task = Task::find($id);
-//        return view('mails.send_ticket',['ticket'=> $task]);
-        return (new Ticket($task))->downloadPdf();
+        $code = session()->get('hash_code');
+        $user = $this->repository->whereHashCode($code)->first();
+//        return view('mails.send_ticket',['ticket'=> $task,'user' =>$user]);
+        return (new Ticket($task,$user))->downloadPdf();
+    }
+
+    public function confirmTicket(Request $request)
+    {
+        $data = Arr::except($request->all(), '__token');
+        $checkHashCode = $this->repository->whereHashCode($data['code'])->first();
+        if ($checkHashCode){
+            $this->repository->whereHashCode($data['code'])->update(['is_checkin' => true
+            ]);
+        }
+        return view('web.confirm_ticket');
+
     }
 }

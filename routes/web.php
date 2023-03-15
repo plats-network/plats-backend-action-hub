@@ -33,5 +33,6 @@ Route::get('/events/download-ticket/{id}', [Detail::class, 'downloadTicket']);
 Route::get('/events/likes/list', [Detail::class, 'listLike']);
 Route::get('/events/user/ticket', [Detail::class, 'userTicket']);
 Route::post('/events/ticket', [Detail::class, 'addTicket'])->name('web.event.addTicket');
+Route::get('/events/ticket/confirm', [Detail::class, 'confirmTicket']);
 
 

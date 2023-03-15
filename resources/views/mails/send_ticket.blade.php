@@ -1,6 +1,12 @@
+
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
     <style>
         body {
             font-size: 16px;
@@ -41,7 +47,6 @@
             width: 160px;
             height: 160px;
             margin: 20px;
-            background-color: #fff;
             text-align: center;
             line-height: 30px;
             z-index: 1;
@@ -52,14 +57,15 @@
         }
 
         .event {
-            font-size: 24px;
+            font-size: 18px;
             color: #fff;
             letter-spacing: 1px;
         }
 
         .date {
-            font-size: 18px;
-            line-height: 30px;
+            font-size: 14px;
+            margin-top: 5px;
+            line-height: 16px;
             color: #a8bbf8;
         }
 
@@ -78,17 +84,25 @@
             <div class="event">{{Str::limit($ticket->name , 80)}}</div>
             <div class="date">
                 {{date("Y-m-d H:i:s", strtotime($ticket->start_at))}} <br>
-                TO <br>
+                - <br>
                 {{date("Y-m-d H:i:s", strtotime($ticket->end_at))}}</div>
             <br/>
-                        <div class="name">{{$ticket->address}}</div>
-            <div class="ticket-id"> #{{mt_rand(1000000000, 9999999900)}}</div>
+            <div class="name">
+                Address : <br>{{$ticket->address}}</div>
+
         </div>
     </div>
 
     <div class="column-2">
         <div class="qr-holder">
-            <img src="https://images.viblo.asia/5974cb6b-ec70-41d0-9074-d4319b62f4c7.png" width="120px" height="120px"/>
+            <div><?php
+                $qrcode=\QrCode::size(160)->generate(config('app.link_qrc_confirm').'events/ticket?type=checkin&code='.$user->hash_code);
+                $code = (string)$qrcode;
+                ?>
+                {!! substr($code,38);!!}
+            </div>
+            <div style="color: white">{{$user->name}}</div>
+            <div class="ticket-id"> #{{Str::limit($user->hash_code , 15)}}</div>
         </div>
     </div>
 </div>
