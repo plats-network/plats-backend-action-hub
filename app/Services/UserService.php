@@ -70,10 +70,10 @@ class UserService extends BaseService
             $this->builder->where(function ($q) {
                 $q->whereBetween('created_at', [$this->filter->get('date_to') ?? date('Y-m-d'), $this->filter->get('date_end')?? date('Y-m-d')]);
             });
-
             // Remove condition after apply query builder
             $this->cleanFilterBuilder('date_to');
         }
+
         return $this->endFilter();
     }
 
@@ -85,12 +85,18 @@ class UserService extends BaseService
      */
     public function create(Request $request)
     {
-        $data                           = $request->toArray();
-        $data['password']               = Hash::make($request->input('password'));
-        $data['role']                   = USER_ROLE;
-        $data['confirmation_code']      = rand(100000,999999);
+        try {
+            $data = $request->toArray();
+            $data['password'] = Hash::make($request->input('password'));
+            $data['role'] = USER_ROLE;
+            $data['confirmation_code'] = rand(100000,999999);
+            $user = $this->repository->create($data);
+            
+        } catch (\Exception $e) {
+            return false;
+        }
 
-        return $this->repository->create($data);
+        return $user;
     }
 
     /**
@@ -100,11 +106,19 @@ class UserService extends BaseService
      */
     public function confirmEmail(Request $request)
     {
-        $user = $this->repository->findByConfirmCode($request->input('email'), $request->input('confirmation_code'));
-        if($user) {
-            $user->email_verified_at = now();
-            $user->confirmation_code = null;
-            $user->save();
+        try {
+            $email = $request->input('email');
+            $code = $request->input('confirmation_code');
+            $user = $this->repository->findByConfirmCode($email, $code);
+
+            if($user) {
+                $user->update([
+                    'email_verified_at' => Carbon::now(),
+                    'confirmation_code' => null
+                ]);
+            }
+        } catch (\Exception $e) {
+            return false;
         }
 
         return $user;
@@ -119,15 +133,19 @@ class UserService extends BaseService
      */
     public function update(Request $request, $id = null)
     {
-        $user = $this->find($id ?? $request->input('id'));
+        try {
+            $user = $this->find($id ?? $request->input('id'));
 
-        return $this->repository->updateByModel($user, [
-            'name'  => $request->name ?? null,
-            'email' => $request->email ?? null,
-            'gender' => $request->gender ?? null,
-            'birth' => $request->birth ? Carbon::parse($request->birth)->format('Y-m-d') : null,
-            'confirmation_code' => $user->email_verified_at ? null : rand(100000,999999)
-        ]);
+            return $this->repository->updateByModel($user, [
+                'name'  => $request->name ?? null,
+                'email' => $request->email ?? null,
+                'gender' => $request->gender ?? null,
+                'birth' => $request->birth ? Carbon::parse($request->birth)->format('Y-m-d') : null,
+                'confirmation_code' => $user->email_verified_at ? null : rand(100000,999999)
+            ]);
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -139,20 +157,21 @@ class UserService extends BaseService
      */
     public function updateAvatar(Request $request)
     {
-        $user = $this->find($request->user()->id);
+        try {
+            $user = $this->find($request->user()->id);
 
-        if ($request->hasFile('avatar')) {
-            $uploadedFile = $request->file('avatar');
-            $path = 'uploads/profiles/' . Carbon::now()->format('Ymd');
-            $imageUploaded = Storage::disk('s3')
-                ->putFileAs($path, $uploadedFile, $this->getFileName($request->avatar->extension()));
-
-            if($imageUploaded) {
-                !is_null($user->avatar_path) && Storage::delete($user->avatar_path);
+            if ($request->hasFile('avatar')) {
+                $uploadedFile = $request->file('avatar');
+                $path = 'uploads/profiles/' . Carbon::now()->format('Ymd');
+                $imageUploaded = Storage::disk('s3')->putFileAs($path, $uploadedFile, $this->getFileName($request->avatar->extension()));
+                if($imageUploaded) {
+                    !is_null($user->avatar_path) && Storage::delete($user->avatar_path);
+                }
             }
+            $userUpdated = $this->repository->updateByModel($user, ['avatar_path'  => $imageUploaded]);
+        } catch (\Exception $e) {
+            return '';
         }
-        $userUpdated = $this->repository
-            ->updateByModel($user, ['avatar_path'  => $imageUploaded]);
 
         return $userUpdated->avatar_path;
     }
@@ -175,9 +194,13 @@ class UserService extends BaseService
      */
     public function updateConfirmationCode($email)
     {
-        $user = $this->findByEmail($email);
-        $user->confirmation_code = rand(100000,999999);
-        $user->save();
+        try {
+            $user = $this->findByEmail($email);
+            $user->confirmation_code = rand(100000,999999);
+            $user->save();
+        } catch (\Exception $e) {
+            return false;
+        }
 
         return $user;
     }
@@ -191,15 +214,19 @@ class UserService extends BaseService
      */
     public function changePassword($userId, $password, $email = null)
     {
-        if($userId) {
-            $user = $this->find($userId);
+        try {
+            if($userId) {
+                $user = $this->find($userId);
+            }
+            if($email) {
+                $user = $this->findByEmail($email);
+            }
+            $user->password = Hash::make($password);
+            $user->save();
+            
+        } catch (\Exception $e) {
+            return null;
         }
-        if($email) {
-            $user = $this->findByEmail($email);
-        }
-
-        $user->password = Hash::make($password);
-        $user->save();
 
         return $user;
     }
