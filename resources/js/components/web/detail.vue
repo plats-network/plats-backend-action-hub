@@ -314,6 +314,7 @@ export default {
                         background: 'rgba(0, 0, 0, 0.7)'
                     });
                     axios.post('/events/ticket', this.form).then(e => {
+                        window.open('/events/download-ticket/'+this.form.task_id, '_blank');
                         Notification.success({
                             title: 'Message',
                             message: 'Get ticket successfully!',
@@ -321,7 +322,6 @@ export default {
                         });
                         loading.close();
                         this.dialogFormVisible = false
-                        window.open('/events/download-ticket/'+this.form.task_id, '_blank');
                         location.reload();
                     }).catch(error => {
                         this.errors = error.response.data.message;
