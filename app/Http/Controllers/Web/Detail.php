@@ -137,7 +137,7 @@ class Detail extends Controller
         $task = Task::find($id);
         $code = session()->get('hash_code');
         $user = $this->repository->whereHashCode($code)->first();
-//        return view('mails.send_ticket',['ticket'=> $task,'user' =>$user]);
+        return view('mails.send_ticket',['ticket'=> $task,'user' =>$user]);
         return (new Ticket($task,$user))->downloadPdf();
     }
 
