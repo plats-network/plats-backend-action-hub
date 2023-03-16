@@ -49,6 +49,15 @@
                                         <input class="form-control pe-7" name="password" type="password" placeholder="Password"/>
                                         <!-- <a class="text-small position-absolute t-3 e-3" href="#">Forgot?</a> -->
                                     </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-6 offset-md-7">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <a href="{{ route('forget.password.get') }}">Forgot Password</a>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <button type="submit" class="btn btn-lg btn-primary">Login</button>
                                     <a href="{{route('web.client.showSignup')}}" class="pl-5" style="padding-left: 10px;">Sign Up</a>
                                 </x-form::open>
