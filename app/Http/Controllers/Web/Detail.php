@@ -58,7 +58,7 @@ class Detail extends Controller
             $image = \QrCode::format('png')->size(100)->generate(config('app.link_qrc_confirm').'events/ticket?type=checkin&id='.$data['hash_code']);
             $output_file = '/img/qr-code/img-' . $data['hash_code'] . '.png';
             $files = Storage::disk('s3')->put($output_file, ($image));
-            $files = Storage::disk('s3')->url($files);
+            $files = Storage::disk('s3')->url($output_file);
             $data['qr_image'] = BaseImage::imgGroup($files);
             $checkSendMail = $this->repository
                 ->whereEmail($data['email'])
