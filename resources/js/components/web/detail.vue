@@ -314,13 +314,13 @@ export default {
                         background: 'rgba(0, 0, 0, 0.7)'
                     });
                     axios.post('/events/ticket', this.form).then(e => {
-                        window.open('/events/download-ticket/'+this.form.task_id, '_blank');
                         Notification.success({
                             title: 'Message',
                             message: 'Get ticket successfully!',
                             type: 'success',
                         });
                         loading.close();
+                        window.open('/events/download-ticket/'+this.form.task_id, '_blank');
                         this.dialogFormVisible = false
                         location.reload();
                     }).catch(error => {
@@ -380,7 +380,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = '/api/cws/events'
+            let url = '/api/cws/events/list'
             axios.get(url,{
                 params: rawData
             }).then(e => {
