@@ -50,10 +50,6 @@
             z-index: 1;
         }
 
-        .qr-holder > img {
-            margin-top: 20px;
-        }
-
         .event {
             font-size: 18px;
             color: #fff;
@@ -93,9 +89,7 @@
 
     <div class="column-2">
         <div class="qr-holder">
-            <div>
-                <img src="{{$user->qr_image}}" alt="qrcode">
-            </div>
+            <img style="width: 170px; height: 170px" src="{{$user->qr_image}}" alt="qrcode">
             <div style="color: white">{{$user->name}}</div>
             <div class="ticket-id"> #{{Str::limit($user->hash_code , 15)}}</div>
         </div>
