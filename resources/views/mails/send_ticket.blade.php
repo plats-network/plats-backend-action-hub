@@ -94,7 +94,7 @@
     <div class="column-2">
         <div class="qr-holder">
             <div>
-                    <img src="{{$user->qr_image}}">
+                <img src="{{$user->qr_image}}" alt="qrcode">
             </div>
             <div style="color: white">{{$user->name}}</div>
             <div class="ticket-id"> #{{Str::limit($user->hash_code , 15)}}</div>
