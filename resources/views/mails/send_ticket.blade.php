@@ -94,7 +94,7 @@
     <div class="column-2">
         <div class="qr-holder">
             <div>
-                <img src="data:image/png;base64, {!! base64_encode(\QrCode::format('png')->size(100)->generate(config('app.link_qrc_confirm').'events/ticket?type=checkin&code='.$user->hash_code)) !!} ">
+                    <img src="{{$user->qr_image}}">
             </div>
             <div style="color: white">{{$user->name}}</div>
             <div class="ticket-id"> #{{Str::limit($user->hash_code , 15)}}</div>

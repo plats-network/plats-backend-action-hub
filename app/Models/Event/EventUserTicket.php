@@ -34,5 +34,6 @@ class EventUserTicket extends Model
         'hash_code',
         'sesion_code',
         'booth_code',
+        'qr_image',
     ];
 }
