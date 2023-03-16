@@ -3,23 +3,20 @@
 namespace App\Http\Controllers\Web;
 
 use App\Exports\Ticket;
-use App\Helpers\BaseImage;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AddTicketRequest;
-use App\Models\Event\EventUserTicket;
 use App\Models\Event\TaskEvent;
-use App\Models\Event\UserEventLike;
 use App\Models\Task;
-use App\Models\TaskGallery;
-use App\Models\TaskGroup;
 use App\Repositories\EventUserTicketRepository;
 use App\Repositories\UserEventLikeRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\{Route, Mail, Auth};
 use App\Jobs\SendTicket;
-use Illuminate\Support\Facades\Storage;
 use App\Mail\SendTicket as EmailSendTicket;
+use Illuminate\Support\Facades\Storage;
+use App\Helpers\BaseImage;
+
 use Str;
 
 class Detail extends Controller
@@ -58,7 +55,6 @@ class Detail extends Controller
             $data['type'] = $user ? 0 : 1;
             $data['user_id'] = $user ?  $user->id : null;
             $data['hash_code'] = Str::random(32);
-            $data['qr_image'] = BaseImage::imgGroup($files);
             $image = \QrCode::format('png')->size(100)->generate(config('app.link_qrc_confirm').'events/ticket?type=checkin&id='.$data['hash_code']);
             $output_file = '/img/qr-code/img-' . $data['hash_code'] . '.png';
             $files = Storage::disk('s3')->put($output_file, ($image));
