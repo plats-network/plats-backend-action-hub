@@ -144,9 +144,9 @@ class Detail extends Controller
     public function confirmTicket(Request $request)
     {
         $data = Arr::except($request->all(), '__token');
-        $checkHashCode = $this->repository->whereHashCode($data['code'])->first();
+        $checkHashCode = $this->repository->whereHashCode($data['id'])->first();
         if ($checkHashCode){
-            $this->repository->whereHashCode($data['code'])->update(['is_checkin' => true
+            $this->repository->whereHashCode($data['id'])->update(['is_checkin' => true
             ]);
         }
         return view('web.confirm_ticket');
