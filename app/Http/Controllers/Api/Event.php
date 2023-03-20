@@ -6,15 +6,8 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Http\Requests\Api\QrCode\EventRequest;
 use App\Http\Resources\QrCodeResource;
-
 // Model
 use App\Models\Task;
-use App\Models\Event\{
-    UserJoinEvent,
-    TaskEventDetail,
-    TaskEvent,
-    EventUserTicket
-};
 use App\Http\Resources\{
     TaskResource
 };
@@ -23,10 +16,6 @@ use Carbon\Carbon;
 class Event extends ApiController
 {
     public function __construct(
-        private UserJoinEvent $userJoinEvent,
-        private TaskEventDetail $taskEventDetail,
-        private TaskEvent $taskEvent,
-        private EventUserTicket $eventUserTicket,
         private Task $task
     ) {}
 
@@ -56,7 +45,5 @@ class Event extends ApiController
         ];
 
         return $this->respondWithIndex($datas, $pages);
-
-        return null;
     }
 }
