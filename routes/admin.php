@@ -5,10 +5,15 @@ use App\Http\Controllers\Admin\{
     Dashboard, Reward,Event
 };
 use App\Http\Controllers\Auth\Admin\Register;
+use App\Http\Controllers\Auth\Admin\ForgotPassword;
 
 Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_ADMIN_ROUTER);
 Route::get('register', [Register::class, 'create'])->name('auth.create');
 Route::post('register', [Register::class, 'store'])->name('auth.store');
+Route::get('forget-password', [ForgotPassword::class, 'showForgetPasswordForm'])->name('admin.forget.password.get');
+Route::post('forget-password', [ForgotPassword::class, 'submitForgetPasswordForm'])->name('admin.forget.password.post');
+Route::get('reset-password/{token}', [ForgotPassword::class, 'showResetPasswordForm'])->name('admin.reset.password.get');
+Route::post('reset-password', [ForgotPassword::class, 'submitResetPasswordForm'])->name('admin.reset.password.post');
 Route::get('/verify/{code}', [Register::class, 'verify'])->name(VERIFY_EMAIL);
 // Task management
 Route::prefix('tasks')->controller(\App\Http\Controllers\Admin\TaskBeta::class)->group(function () {

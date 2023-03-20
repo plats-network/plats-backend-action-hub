@@ -55,7 +55,7 @@ class Detail extends Controller
             $data['type'] = $user ? 0 : 1;
             $data['user_id'] = $user ?  $user->id : null;
             $data['hash_code'] = Str::random(32);
-            $image = \QrCode::format('png')->size(100)->generate(config('app.link_qrc_confirm').'events/ticket?type=checkin&id='.$data['hash_code']);
+            $image = \QrCode::format('png')->size(100)->generate(config('app.link_qrc_confirm').'events/confirm-ticket?type=checkin&id='.$data['hash_code']);
             $output_file = '/img/qr-code/img-' . $data['hash_code'] . '.png';
             $files = Storage::disk('s3')->put($output_file, ($image));
             $files = Storage::disk('s3')->url($output_file);
@@ -144,9 +144,9 @@ class Detail extends Controller
     public function confirmTicket(Request $request)
     {
         $data = Arr::except($request->all(), '__token');
-        $checkHashCode = $this->repository->whereHashCode($data['code'])->first();
+        $checkHashCode = $this->repository->whereHashCode($data['id'])->first();
         if ($checkHashCode){
-            $this->repository->whereHashCode($data['code'])->update(['is_checkin' => true
+            $this->repository->whereHashCode($data['id'])->update(['is_checkin' => true
             ]);
         }
         return view('web.confirm_ticket');
