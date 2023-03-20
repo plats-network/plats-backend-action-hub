@@ -4,6 +4,8 @@ namespace App\Models\Event;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Event\TaskEvent;
+use App\Models\Task;
 use App\Models\Traits\Uuid;
 
 class UserJoinEvent extends Model
@@ -40,4 +42,14 @@ class UserJoinEvent extends Model
     protected $hidden = [
         'id',
     ];
+
+    public function task_event()
+    {
+        return $this->belongsTo(TaskEvent::class);
+    }
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
 }

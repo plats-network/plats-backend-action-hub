@@ -4,6 +4,7 @@ namespace App\Models\Event;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Task;
 use App\Models\Traits\Uuid;
 
 class EventUserTicket extends Model
@@ -36,4 +37,9 @@ class EventUserTicket extends Model
         'booth_code',
         'qr_image',
     ];
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
 }
