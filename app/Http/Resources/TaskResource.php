@@ -46,8 +46,8 @@ class TaskResource extends JsonResource
             'end_at' => DateHelper::getDateTime($this->end_at),
             'task_start' => $checkTaskStart > 0 ? true : false,
             'type' => $this->type == 1 ? 'event' : 'task',
-            'code_session' => $eventUserTicket->sesion_code,
-            'code_booth' => $eventUserTicket->booth_code,
+            'code_session' => optional($eventUserTicket)->sesion_code,
+            'code_booth' => optional($eventUserTicket)->booth_code,
             'like' => [
                 'is_like' => $likeCount > 0 ? true : false,
                 'type_like' => $likeCount > 0 ? 'like' : 'unlike'
