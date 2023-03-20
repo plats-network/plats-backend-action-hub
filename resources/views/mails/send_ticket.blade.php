@@ -1,632 +1,327 @@
-
-<html xmlns:v="urn:schemas-microsoft-com:vml">
-
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
-    <meta charset="UTF-16LE">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style id="aw-autoinject" type="text/css">
-        body,
-        a {
-            word-break: break-word;
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0;">
+    <meta name="format-detection" content="telephone=no"/>
+
+    <!-- Responsive Mobile-First Email Template by Konstantin Savchenko, 2015.
+    https://github.com/konsav/email-templates/  -->
+
+    <style>
+        /* Reset styles */
+        body { margin: 0; padding: 0; min-width: 100%; width: 100% !important; height: 100% !important;}
+        body, table, td, div, p, a { -webkit-font-smoothing: antialiased; text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; line-height: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse !important; border-spacing: 0; }
+        img { border: 0; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+        #outlook a { padding: 0; }
+        .ReadMsgBody { width: 100%; } .ExternalClass { width: 100%; }
+        .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; }
+
+        /* Rounded corners for advanced mail clients only */
+        @media all and (min-width: 560px) {
+            .container { border-radius: 8px; -webkit-border-radius: 8px; -moz-border-radius: 8px; -khtml-border-radius: 8px;}
         }
 
-        .feed__title a {
-            text-decoration: underline;
+        /* Set color for auto links (addresses, dates, etc.) */
+        a, a:hover {
+            color: #127DB3;
+        }
+        .footer a, .footer a:hover {
+            color: #999999;
         }
 
-        .text-element h1 {
-            color: inherit;
-            font-family: inherit;
-            font-size: 36px;
-            line-height: 1.15;
-            font-weight: 700;
-            margin: 0.5em 0;
-        }
-
-        .text-element h2 {
-            color: inherit;
-            font-family: inherit;
-            font-size: 32px;
-            line-height: 1.15;
-            font-weight: 700;
-            margin: 0.5em 0;
-        }
-
-        .text-element h3 {
-            color: inherit;
-            font-family: inherit;
-            font-size: 28px;
-            line-height: 1.15;
-            font-weight: 700;
-            margin: 0.5em 0;
-        }
-
-        .text-element h4 {
-            color: inherit;
-            font-family: inherit;
-            font-size: 24px;
-            line-height: 1.15;
-            font-weight: 700;
-            margin: 0.5em 0;
-        }
-
-        .text-element h5 {
-            color: inherit;
-            font-family: inherit;
-            font-size: 20px;
-            line-height: 1.15;
-            font-weight: 700;
-            margin: 0.5em 0;
-        }
-
-        .text-element h6 {
-            color: inherit;
-            font-family: inherit;
-            font-size: 16px;
-            line-height: 1.15;
-            font-weight: 700;
-            margin: 0.5em 0;
-        }
-
-        .text-element p,
-        .paragraph p {
-            color: inherit;
-            font-family: inherit;
-            font-size: 16px;
-            line-height: 1.5;
-            margin: 0;
-        }
-
-        .text-element div {
-            color: inherit;
-            font-family: inherit;
-            font-size: 16px;
-            line-height: 1.5;
-            margin: 0;
-        }
-
-        .text-element pre {
-            color: inherit;
-            display: block;
-            font-family: monospace;
-            font-size: 16px;
-            line-height: 1;
-            margin: 1em auto;
-            white-space: pre;
-            max-width: 500px;
-            overflow: auto;
-            overflow-wrap: break-word;
-        }
-
-        .text-element address {
-            color: inherit;
-            font-family: inherit;
-            display: block;
-            font-size: 16px;
-            font-style: italic;
-            line-height: 1.15;
-            margin: 0.5em 0;
-        }
-
-        .text-element blockquote,
-        .headline blockquote,
-        .paragraph blockquote {
-            border-left: 5px solid #ccc;
-            font-style: normal;
-            margin-left: 0;
-            margin-right: 0;
-            overflow: hidden;
-            padding-left: 15px !important;
-            padding-right: 15px !important;
-            box-sizing: border-box;
-        }
-
-        @media only screen and (max-width: 599px) {
-            img {
-                max-width: 100% !important;
-                min-height: 1px !important;
-                height: auto !important;
-            }
-
-            .text-element pre {
-                max-width: 250px;
-            }
-
-            .aw-stack .container {
-                box-sizing: border-box;
-                display: block !important;
-                float: left;
-                max-width: 100% !important;
-                margin: auto;
-                width: 100% !important;
-            }
-
-            .video .video-content {
-                width: auto !important;
-            }
-
-            .feed__item--postcard-side,
-            .feed__item--postcard-main,
-            .feed__item--block {
-                box-sizing: border-box;
-                display: block !important;
-                max-width: 100% !important;
-                margin: auto;
-                width: 100% !important;
-            }
-
-            .feed__item--block > div {
-                margin: 0 0 16px 0 !important;
-            }
-
-            .feed__image {
-                width: 100% !important;
-            }
-
-            .feed__spacer {
-                display: none !important;
-            }
-        }
     </style>
-    <style type="text/css">
-        v: * {
-            behavior: url(#default#VML);
-            display: inline-block;
-        }
 
-        body,
-        #bodyTable,
-        #bodyCell {
-            height: 100%;
-            margin: 0px;
-            padding: 0px;
-            width: 100%
-        }
+    <!-- MESSAGE SUBJECT -->
+    <title>Get this responsive email template</title>
 
-        body {
-            background-color: #fefefe;
-            color: #333333;
-            font-family: Tahoma, Arial, sans-serif;
-            font-size: 18px;
-            line-height: 1.5em;
-            font-weight: 400 !important;
-            height: 100%;
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 100%
-        }
-
-        body,
-        table,
-        td {
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%
-        }
-
-        table,
-        td {
-            color: #333333;
-            font-family: Tahoma, Arial,
-            sans-serif;
-            border-collapse: collapse;
-            border-spacing: 0;
-            border: 0;
-            font-size: 18px;
-            mso-table-lspace: 0pt;
-            mso-table-rspace: 0pt
-        }
-
-        img {
-            -ms-interpolation-mode: bicubic;
-            border: 0;
-            height: auto;
-            line-height: 100%;
-            max-width: 100%;
-            outline: none;
-            text-decoration: none;
-            color: #333333;
-            font-size: 20px;
-            font-weight: 700;
-            border-radius: 10px
-        }
-
-        .temp-header img {
-            border-radius: 0px
-        }
-
-        table {
-            border-collapse: collapse !important
-        }
-
-        strong {
-            font-weight: 700
-        }
-
-        .container {
-            padding: 0
-        }
-
-        .floated-none td {
-            padding: 0
-        }
-
-        .contained {
-            max-width: 600px;
-            width: 100%
-        }
-
-        .contained img {
-            height: auto !important;
-            max-width: 100% !important
-        }
-
-        .paragraph div,
-        .paragraph p {
-            color: #333333;
-            font-family: Tahoma, Arial, sans-serif;
-            font-size: 18px;
-            line-height: 125%;
-            font-weight: 400;
-            text-align: left
-        }
-
-        .text-element div,
-        .text-element p {
-            color: #333333;
-            font-family: Tahoma, Arial, sans-serif;
-            font-size: 18px;
-            line-height: 125%;
-            font-weight: 400;
-            text-align: left
-        }
-
-        .text-element a,
-        .paragraph a {
-            color: #000000;
-            font-weight: bold
-        }
-
-        .headline {
-            color: #333333;
-            font-family: Tahoma, Arial, sans-serif;
-            font-size: 36px;
-            line-height: 125%;
-            font-weight: 700;
-            text-align: left
-        }
-
-        .headline a {
-            color: #333333;
-            text-decoration: none;
-            font-weight: bold
-        }
-
-        .temp-footer .paragraph div,
-        .temp-footer .paragraph p {
-            color: #7c7c7c;
-            font-size: 14px;
-            line-height: 125%
-        }
-
-        .temp-footer .text-element div,
-        .temp-footer .text-element p {
-            color: #7c7c7c;
-            font-size: 14px;
-            line-height: 125%
-        }
-
-        .temp-footer .headline {
-            color: #7c7c7c;
-            font-size: 16px
-        }
-
-        .temp-footer .text-element a,
-        .temp-footer .paragraph a {
-            color: #7c7c7c
-        }
-
-        .temp-product .temp-padding {
-            padding: 10px
-        }
-
-        .temp-product .image {
-            max-width: 100%;
-            height: auto;
-            padding-bottom: 0px
-        }
-
-        .temp-product .image img {
-            border-radius: 4px
-        }
-
-        .temp-product img a {
-            text-decoration: none !important
-        }
-
-        .temp-product .temp-headline {
-            color: #333333;
-            font-size: 18px;
-            line-height: 1.15em;
-            max-width: 100%;
-            text-align: left
-        }
-
-        .temp-product .temp-paragraph {
-            font-size: 18px;
-            line-height: 1.25em;
-            font-weight: 400;
-            max-width: 100%;
-            text-align: left;
-            padding-top: 2px
-        }
-
-        .temp-product .temp-price {
-            font-size: 20px;
-            line-height: 1.15em;
-            font-weight: 500;
-            max-width: 100%;
-            text-align: left;
-            padding-top: 2px
-        }
-
-        .temp-product a {
-            color: #333333;
-            font-weight: bold;
-            text-decoration: none !important
-        }
-
-        .temp-product .temp-button-padding table {
-            width: 100%
-        }
-
-        .coupon .headline {
-            font-size: 20px;
-            text-align: center
-        }
-
-        .coupon .paragraph {
-            text-align: center
-        }
-
-        .temp-article .headline {
-            font-size: 24px;
-            margin: 0;
-            text-align: left !important
-        }
-
-        .temp-article .paragraph {
-            text-align: left !important
-        }
-
-        .temp-article td {
-            padding: 0
-        }
-
-        .temp-article .padding {
-            padding-bottom: 10px
-        }
-
-        .temp-article .read-more {
-            text-align: left
-        }
-
-        .temp-article a {
-            color: #333333
-        }
-
-        .clear {
-            clear: both
-        }
-
-        .aw-image-link {
-            border: 0;
-            text-decoration: none
-        }
-
-        ol,
-        ul {
-            color: #333333
-        }
-
-        li {
-            color: #333333
-        }
-
-        a[x-apple-data-detectors] {
-            border-bottom: none !important;
-            color: inherit !important;
-            font-size: inherit !important;
-            font-family: inherit !important;
-            font-weight: inherit !important;
-            line-height: inherit !important;
-            text-decoration: none !important
-        }
-
-        center > div {
-            box-sizing: border-box
-        }
-
-        @media screen and (max-width: 599px) {
-
-            body,
-            #bodyTable,
-            #bodyCell {
-                width: 100% !important;
-                margin: auto;
-                clear: both !important;
-                display: block
-            }
-
-            img {
-                max-width: 100% !important;
-                height: auto !important;
-                max-height: 300%
-            }
-
-            .paragraph {
-                font-size: 18px !important
-            }
-
-            .headline {
-                font-size: 28px !important
-            }
-
-            .temp-footer .paragraph {
-                font-size: 14px !important
-            }
-
-            .temp-footer .headline {
-                font-size: 16px !important
-            }
-
-            .share img {
-                width: 20px !important;
-                height: auto !important;
-                display: inline-block
-            }
-
-            .temp-button-padding td {
-                padding: 10px 20px !important
-            }
-
-            .video td {
-                display: table-cell !important;
-                text-align: center !important
-            }
-
-            .temp-article div {
-                box-sizing: border-box !important;
-                display: block !important;
-                width: 100% !important
-            }
-
-            .floated-left {
-                display: inline-table !important;
-                width: 100% !important;
-                text-align: center !important
-            }
-
-            .floated-left td {
-                padding: 10px 0px !important
-            }
-
-            .floated-right {
-                display: inline-table !important;
-                width: 100% !important;
-                text-align: center !important
-            }
-
-            .floated-right td {
-                padding: 10px 0px !important
-            }
-
-            .signature_spacer {
-                display: none !important
-            }
-
-            .signature_content {
-                text-align: center !important
-            }
-        }
-
-        @media only screen and (min-width: 10px) and (max-width: 599px) {
-            u ~ div img {
-                width: auto !important
-            }
-        }
-    </style>
 </head>
 
-<body>
+<!-- BODY -->
+<!-- Set message background color (twice) and text color (twice) -->
+<body topmargin="0" rightmargin="0" bottommargin="0" leftmargin="0" marginwidth="0" marginheight="0" width="100%" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; width: 100%; height: 100%; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; line-height: 100%;
+	background-color: #F0F0F0;
+	color: #000000;"
+      bgcolor="#F0F0F0"
+      text="#000000">
 
-<center>
-    <div align="center">
-        <table border="0" cellspacing="0" cellpadding="0" width="100%" class="aw-bgc" align="center" role="presentation"
-               style="
-    background-color: rgb(248, 248, 248);font-weight: 400; text-size-adjust: 100%; color: rgb(51, 51, 51); font-family: Tahoma, Arial, sans-serif; border-collapse: collapse; border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;">
-            <tbody>
-            <tr>
-                <td class="temp-wrapper"
-                    style="text-size-adjust: 100%; color: rgb(51, 51, 51); font-family: Tahoma, Arial, sans-serif; border-collapse: collapse; border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;">
-                    <div align="center">
-                        <!--[if (gte mso 9)]>
-                        <table border="0" cellspacing="0" cellpadding="0" width="600" align="center" bgcolor="#ffffff"
-                               role="presentation">
-                        <tr>
-                            <td class="temp-body"><![endif]-->
-                        <div class="temp-body" style="background-color:#ffffff; border-radius:10px; max-width: 600px; margin:60px 16px 200px;
-    padding: 16px;">
-                            <div class="temp-fullbleed contained" style="max-width: 600px; width: 100%;">
-                                <div class="region">
-                                    <div>
-                                        <table class="row aw-stack"
-                                               style="width: 100%; text-size-adjust: 100%; color: rgb(51, 51, 51); font-family: Tahoma, Arial, sans-serif; border-collapse: collapse; border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;"
-                                               role="presentation">
-                                            <tbody>
-                                            <tr>
-                                                <td class="container" style="padding: 0px; width: 100%; text-size-adjust: 100%; color: rgb(51, 51, 51); font-family: Tahoma, Arial, sans-serif; border-collapse: collapse;
-border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;" width="100%" valign="top">
-                                                    <div class="definition-parent"><span>
-                                    <table align="center" width="100%" class="floated-none"
-                                           style="float: none; text-align: center; text-size-adjust: 100%; color: rgb(51, 51, 51); font-family: Tahoma, Arial, sans-serif; border-collapse: collapse; border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;"
-                                           role="presentation">
-                                      <tbody>
-                                        <tr>
-                                          <td align="center"
-                                              style="padding: 0px; text-size-adjust: 100%; color: rgb(51, 51, 51); font-family: Tahoma, Arial, sans-serif; border-collapse: collapse; border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;">
-                                            <img class="model" src="{{$user->qr_image}}"
-                                                 style="display: block; width: 300px; height: 300px; border-width: 0px; border-style: none; line-height: 100%; max-width: 100%; outline-width: medium; outline-style: none; text-decoration: none; color: rgb(51, 51, 51); font-size: 20px; font-weight: 700; border-radius: 10px;"
-                                                 alt="Image" width="600" height="283">
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </span></div>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                        <table class="row aw-stack"
-                                               style="width: 100%; text-size-adjust: 100%; color: rgb(51, 51, 51); font-family: Tahoma, Arial, sans-serif; border-collapse: collapse; border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;"
-                                               role="presentation">
-                                            <tbody>
-                                            <tr>
-                                                <td class="container" style="width: 100%; text-size-adjust: 100%; color: rgb(51, 51, 51); font-family: Tahoma, Arial, sans-serif; border-collapse:
-collapse; border-spacing: 0px; border-width: 0px; border-style: none; font-size: 18px;" width="100%" valign="top">
-                                                    <div class="definition-parent">
-                                                        <div class="text-element paragraph">
-                                                            <div style="margin-bottom:10px;color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 18px; line-height: 125%; font-weight: 400; text-align: left;">
-                                                                <p style="margin-bottom:10px;color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 19px; line-height: 125%; font-weight: 400; text-align: center;">
-                                                                    Tên sự kiện : {{Str::limit($ticket->name , 80)}}
-                                                                </p>
-                                                                <p  style="margin-bottom:10px;color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 19px; line-height: 125%; font-weight: 400; text-align: center;">Thời gian diễn ra : {{date("Y-m-d H:i:s", strtotime($ticket->start_at))}} - {{date("Y-m-d H:i:s", strtotime($ticket->end_at))}}</p>
-                                                                <p  style="color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 19px; line-height: 125%; font-weight: 400; text-align: center;">Địa chỉ : {{$ticket->address}}</p>
-                                                                <p style="color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 19px; line-height: 125%; font-weight: 700; text-align: center; margin-top: 24px">
-                                                                    {{$user->name}}
-                                                                </p>
-                                                                <p style="color: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 19px; line-height: 125%; font-weight: 700; text-align: center; margin-top: 24px">
-                                                                    #{{$user->hash_code}}
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</center>
+<!-- SECTION / BACKGROUND -->
+<!-- Set message background color one again -->
+<table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; width: 100%;" class="background"><tr><td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;"
+                                                                                                                                                                                                   bgcolor="#F0F0F0">
+
+            <!-- WRAPPER -->
+            <!-- Set wrapper width (twice) -->
+            <table border="0" cellpadding="0" cellspacing="0" align="center"
+                   width="560" style="border-collapse: collapse; border-spacing: 0; padding: 0; width: inherit;
+	max-width: 560px;" class="wrapper">
+
+                <tr>
+                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+			padding-top: 20px;
+			padding-bottom: 20px;">
+
+                        <!-- PREHEADER -->
+                        <!-- Set text color to background color -->
+                        <div style="display: none; visibility: hidden; overflow: hidden; opacity: 0; font-size: 1px; line-height: 1px; height: 0; max-height: 0; max-width: 0;
+			color: #F0F0F0;" class="preheader">
+                            Available on&nbsp;GitHub and&nbsp;CodePen. Highly compatible. Designer friendly. More than 50%&nbsp;of&nbsp;total email opens occurred on&nbsp;a&nbsp;mobile device&nbsp;— a&nbsp;mobile-friendly design is&nbsp;a&nbsp;must for&nbsp;email campaigns.</div>
+
+                        <!-- LOGO -->
+                    <!-- Image text color should be opposite to background color. Set your url, image src, alt and title. Alt text should fit the image size. Real image size should be x2. URL format: http://domain.com/?utm_source={{Campaign-Source}}&utm_medium=email&utm_content=logo&utm_campaign={{Campaign-Name}} -->
+                        <a target="_blank" style="text-decoration: none;"
+                           href="https://github.com/konsav/email-templates/"><img border="0" vspace="0" hspace="0"
+                                                                                  src="https://raw.githubusercontent.com/konsav/email-templates/master/images/logo-black.png"
+                                                                                  width="100" height="30"
+                                                                                  alt="Logo" title="Logo" style="
+				color: #000000;
+				font-size: 10px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;" /></a>
+
+                    </td>
+                </tr>
+
+                <!-- End of WRAPPER -->
+            </table>
+
+            <!-- WRAPPER / CONTEINER -->
+            <!-- Set conteiner background color -->
+            <table border="0" cellpadding="0" cellspacing="0" align="center"
+                   bgcolor="#FFFFFF"
+                   width="560" style="border-collapse: collapse; border-spacing: 0; padding: 0; width: inherit;
+	max-width: 560px;" class="container">
+
+                <!-- HEADER -->
+                <!-- Set text color and font family ("sans-serif" or "Georgia, serif") -->
+                <tr>
+                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 24px; font-weight: bold; line-height: 130%;
+			padding-top: 25px;
+			color: #000000;
+			font-family: sans-serif;" class="header">
+                        Get this responsive email template
+                    </td>
+                </tr>
+
+                <!-- SUBHEADER -->
+                <!-- Set text color and font family ("sans-serif" or "Georgia, serif") -->
+                <tr>
+                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-bottom: 3px; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 18px; font-weight: 300; line-height: 150%;
+			padding-top: 5px;
+			color: #000000;
+			font-family: sans-serif;" class="subheader">
+                        Available on&nbsp;GitHub and&nbsp;CodePen
+                    </td>
+                </tr>
+
+                <!-- HERO IMAGE -->
+            <!-- Image text color should be opposite to background color. Set your url, image src, alt and title. Alt text should fit the image size. Real image size should be x2 (wrapper x2). Do not set height for flexible images (including "auto"). URL format: http://domain.com/?utm_source={{Campaign-Source}}&utm_medium=email&utm_content={{Ìmage-Name}}&utm_campaign={{Campaign-Name}} -->
+                <tr>
+                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
+			padding-top: 20px;" class="hero"><a target="_blank" style="text-decoration: none;"
+                                                href="https://github.com/konsav/email-templates/"><img border="0" vspace="0" hspace="0"
+                                                                                                       src="https://raw.githubusercontent.com/konsav/email-templates/master/images/hero-wide.png"
+                                                                                                       alt="Please enable images to view this content" title="Hero Image"
+                                                                                                       width="560" style="
+			width: 100%;
+			max-width: 560px;
+			color: #000000; font-size: 13px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;"/></a></td>
+                </tr>
+
+                <!-- PARAGRAPH -->
+                <!-- Set text color and font family ("sans-serif" or "Georgia, serif"). Duplicate all text styles in links, including line-height -->
+                <tr>
+                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 17px; font-weight: 400; line-height: 160%;
+			padding-top: 25px;
+			color: #000000;
+			font-family: sans-serif;" class="paragraph">
+                        More than 50%&nbsp;of&nbsp;total email opens occurred on&nbsp;a&nbsp;mobile device&nbsp;— a&nbsp;mobile-friendly design is&nbsp;a&nbsp;must for&nbsp;email campaigns.
+                    </td>
+                </tr>
+
+                <!-- BUTTON -->
+            <!-- Set button background color at TD, link/text color at A and TD, font family ("sans-serif" or "Georgia, serif") at TD. For verification codes add "letter-spacing: 5px;". Link format: http://domain.com/?utm_source={{Campaign-Source}}&utm_medium=email&utm_content={{Button-Name}}&utm_campaign={{Campaign-Name}} -->
+                <tr>
+                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+			padding-top: 25px;
+			padding-bottom: 5px;" class="button"><a
+                            href="https://github.com/konsav/email-templates/" target="_blank" style="text-decoration: underline;">
+                            <table border="0" cellpadding="0" cellspacing="0" align="center" style="max-width: 240px; min-width: 120px; border-collapse: collapse; border-spacing: 0; padding: 0;"><tr><td align="center" valign="middle" style="padding: 12px 24px; margin: 0; text-decoration: underline; border-collapse: collapse; border-spacing: 0; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px;"
+                                                                                                                                                                                                           bgcolor="#E9703E"><a target="_blank" style="text-decoration: underline;
+					color: #FFFFFF; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 120%;"
+                                                                                                                                                                                                                                href="https://github.com/konsav/email-templates/">
+                                            Get the template
+                                        </a>
+                                    </td></tr></table></a>
+                    </td>
+                </tr>
+
+                <!-- LINE -->
+                <!-- Set line color -->
+                <tr>
+                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+			padding-top: 25px;" class="line"><hr
+                            color="#E0E0E0" align="center" width="100%" size="1" noshade style="margin: 0; padding: 0;" />
+                    </td>
+                </tr>
+
+                <!-- LIST -->
+                <tr>
+                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%;" class="list-item"><table align="center" border="0" cellspacing="0" cellpadding="0" style="width: inherit; margin: 0; padding: 0; border-collapse: collapse; border-spacing: 0;">
+
+                            <!-- LIST ITEM -->
+                            <tr>
+
+                                <!-- LIST ITEM IMAGE -->
+                                <!-- Image text color should be opposite to background color. Set your url, image src, alt and title. Alt text should fit the image size. Real image size should be x2 -->
+                                <td align="left" valign="top" style="border-collapse: collapse; border-spacing: 0;
+					padding-top: 30px;
+					padding-right: 20px;"><img
+                                        border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;
+					color: #000000;"
+                                        src="https://raw.githubusercontent.com/konsav/email-templates/master/images/list-item.png"
+                                        alt="H" title="Highly compatible"
+                                        width="50" height="50"></td>
+
+                                <!-- LIST ITEM TEXT -->
+                                <!-- Set text color and font family ("sans-serif" or "Georgia, serif"). Duplicate all text styles in links, including line-height -->
+                                <td align="left" valign="top" style="font-size: 17px; font-weight: 400; line-height: 160%; border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
+					padding-top: 25px;
+					color: #000000;
+					font-family: sans-serif;" class="paragraph">
+                                    <b style="color: #333333;">Highly compatible</b><br/>
+                                    Tested on the most popular email clients for web, desktop and mobile. Checklist included.
+                                </td>
+
+                            </tr>
+
+                            <!-- LIST ITEM -->
+                            <tr>
+
+                                <!-- LIST ITEM IMAGE -->
+                                <!-- Image text color should be opposite to background color. Set your url, image src, alt and title. Alt text should fit the image size. Real image size should be x2 -->
+                                <td align="left" valign="top" style="border-collapse: collapse; border-spacing: 0;
+					padding-top: 30px;
+					padding-right: 20px;"><img
+                                        border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;
+					color: #000000;"
+                                        src="https://raw.githubusercontent.com/konsav/email-templates/master/images/list-item.png"
+                                        alt="D" title="Designer friendly"
+                                        width="50" height="50"></td>
+
+                                <!-- LIST ITEM TEXT -->
+                                <!-- Set text color and font family ("sans-serif" or "Georgia, serif"). Duplicate all text styles in links, including line-height -->
+                                <td align="left" valign="top" style="font-size: 17px; font-weight: 400; line-height: 160%; border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
+					padding-top: 25px;
+					color: #000000;
+					font-family: sans-serif;" class="paragraph">
+                                    <b style="color: #333333;">Designer friendly</b><br/>
+                                    Sketch app resource file and a&nbsp;bunch of&nbsp;social media icons are&nbsp;also included in&nbsp;GitHub repository.
+                                </td>
+
+                            </tr>
+
+                        </table></td>
+                </tr>
+
+                <!-- LINE -->
+                <!-- Set line color -->
+                <tr>
+                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+			padding-top: 25px;" class="line"><hr
+                            color="#E0E0E0" align="center" width="100%" size="1" noshade style="margin: 0; padding: 0;" />
+                    </td>
+                </tr>
+
+                <!-- PARAGRAPH -->
+                <!-- Set text color and font family ("sans-serif" or "Georgia, serif"). Duplicate all text styles in links, including line-height -->
+                <tr>
+                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 17px; font-weight: 400; line-height: 160%;
+			padding-top: 20px;
+			padding-bottom: 25px;
+			color: #000000;
+			font-family: sans-serif;" class="paragraph">
+                        Have a&nbsp;question? <a href="mailto:support@ourteam.com" target="_blank" style="color: #127DB3; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 160%;">support@ourteam.com</a>
+                    </td>
+                </tr>
+
+                <!-- End of WRAPPER -->
+            </table>
+
+            <!-- WRAPPER -->
+            <!-- Set wrapper width (twice) -->
+            <table border="0" cellpadding="0" cellspacing="0" align="center"
+                   width="560" style="border-collapse: collapse; border-spacing: 0; padding: 0; width: inherit;
+	max-width: 560px;" class="wrapper">
+
+                <!-- SOCIAL NETWORKS -->
+                <!-- Image text color should be opposite to background color. Set your url, image src, alt and title. Alt text should fit the image size. Real image size should be x2 -->
+                <tr>
+                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+			padding-top: 25px;" class="social-icons"><table
+                            width="256" border="0" cellpadding="0" cellspacing="0" align="center" style="border-collapse: collapse; border-spacing: 0; padding: 0;">
+                            <tr>
+
+                                <!-- ICON 1 -->
+                                <td align="center" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;"><a target="_blank"
+                                                                                                                                                                                            href="https://raw.githubusercontent.com/konsav/email-templates/"
+                                                                                                                                                                                            style="text-decoration: none;"><img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block;
+					color: #000000;"
+                                                                                                                                                                                                                                alt="F" title="Facebook"
+                                                                                                                                                                                                                                width="44" height="44"
+                                                                                                                                                                                                                                src="https://raw.githubusercontent.com/konsav/email-templates/master/images/social-icons/facebook.png"></a></td>
+
+                                <!-- ICON 2 -->
+                                <td align="center" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;"><a target="_blank"
+                                                                                                                                                                                            href="https://raw.githubusercontent.com/konsav/email-templates/"
+                                                                                                                                                                                            style="text-decoration: none;"><img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block;
+					color: #000000;"
+                                                                                                                                                                                                                                alt="T" title="Twitter"
+                                                                                                                                                                                                                                width="44" height="44"
+                                                                                                                                                                                                                                src="https://raw.githubusercontent.com/konsav/email-templates/master/images/social-icons/twitter.png"></a></td>
+
+                                <!-- ICON 3 -->
+                                <td align="center" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;"><a target="_blank"
+                                                                                                                                                                                            href="https://raw.githubusercontent.com/konsav/email-templates/"
+                                                                                                                                                                                            style="text-decoration: none;"><img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block;
+					color: #000000;"
+                                                                                                                                                                                                                                alt="G" title="Google Plus"
+                                                                                                                                                                                                                                width="44" height="44"
+                                                                                                                                                                                                                                src="https://raw.githubusercontent.com/konsav/email-templates/master/images/social-icons/googleplus.png"></a></td>
+
+                                <!-- ICON 4 -->
+                                <td align="center" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;"><a target="_blank"
+                                                                                                                                                                                            href="https://raw.githubusercontent.com/konsav/email-templates/"
+                                                                                                                                                                                            style="text-decoration: none;"><img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block;
+					color: #000000;"
+                                                                                                                                                                                                                                alt="I" title="Instagram"
+                                                                                                                                                                                                                                width="44" height="44"
+                                                                                                                                                                                                                                src="https://raw.githubusercontent.com/konsav/email-templates/master/images/social-icons/instagram.png"></a></td>
+
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- FOOTER -->
+                <!-- Set text color and font family ("sans-serif" or "Georgia, serif"). Duplicate all text styles in links, including line-height -->
+                <tr>
+                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 13px; font-weight: 400; line-height: 150%;
+			padding-top: 20px;
+			padding-bottom: 20px;
+			color: #999999;
+			font-family: sans-serif;" class="footer">
+
+                        This email template was sent to&nbsp;you becouse we&nbsp;want to&nbsp;make the&nbsp;world a&nbsp;better place. You&nbsp;could change your <a href="https://github.com/konsav/email-templates/" target="_blank" style="text-decoration: underline; color: #999999; font-family: sans-serif; font-size: 13px; font-weight: 400; line-height: 150%;">subscription settings</a> anytime.
+                        <img width="1" height="1" border="0" vspace="0" hspace="0" style="margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;"
+                             src="https://raw.githubusercontent.com/konsav/email-templates/master/images/tracker.png" />
+
+                    </td>
+                </tr>
+
+                <!-- End of WRAPPER -->
+            </table>
+
+            <!-- End of SECTION / BACKGROUND -->
+        </td></tr></table>
+
 </body>
-
 </html>
