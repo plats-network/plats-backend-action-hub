@@ -4,6 +4,7 @@ namespace App\Models\Event;
 
 use App\Helpers\BaseImage;
 use App\Models\Quiz\Quiz;
+use App\Models\Event\UserJoinEvent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -59,6 +60,12 @@ class TaskEvent extends Model
             ->morphToMany(self::getTagClassName(), 'taggable', 'taggables', null, 'tag_id')
             ->orderBy('order_column');
     }
+
+    public function user_join_events()
+    {
+        return $this->hasMany(UserJoinEvent::class);
+    }
+
 
     public function task(): BelongsTo
     {
