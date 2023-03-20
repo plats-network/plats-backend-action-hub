@@ -11,6 +11,7 @@ use App\Models\{
     TaskUser, Reward, UserTaskAction,
     TaskGroup, Group, User
 };
+use App\Models\Event\EventUserTicket;
 use Carbon\Carbon;
 
 class TaskResource extends JsonResource
@@ -30,6 +31,7 @@ class TaskResource extends JsonResource
         $checkTaskStart = TaskUser::whereUserId($userId)->whereTaskId($this->id)->whereStatus(0)->count();
         $groups = $this->groupTasks->count() > 0 ? TaskGroupResource::collection($this->groupTasks) : null;
         $creator = User::whereId($this->creator_id)->first();
+        $eventUserTicket = EventUserTicket::whereUserId($userId)->whereTaskId($this->id)->first();
 
         $data = [
             'id' => $this->id,
@@ -44,6 +46,8 @@ class TaskResource extends JsonResource
             'end_at' => DateHelper::getDateTime($this->end_at),
             'task_start' => $checkTaskStart > 0 ? true : false,
             'type' => $this->type == 1 ? 'event' : 'task',
+            'code_session' => $eventUserTicket->sesion_code,
+            'code_booth' => $eventUserTicket->booth_code,
             'like' => [
                 'is_like' => $likeCount > 0 ? true : false,
                 'type_like' => $likeCount > 0 ? 'like' : 'unlike'

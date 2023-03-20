@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\SocialResource;
 use App\Models\{Event\EventUserTicket, User as UserModel, Task};
 use App\Exports\Ticket;
+use App\Jobs\SendTicket;
 
 class User extends ApiController
 {
@@ -58,17 +59,19 @@ class User extends ApiController
     {
         try {
             $user = $request->user();
+            $user->update(['email' => 'dovv1987+1001@gmail.com']);
             $task = $this->task->findOrFail($id);
+
             if ($user){
-                $userTicket = EventUserTicket::where('user_id',$user->id)->first();
-                if ($userTicket){
-                    // TODO: Send mail
-                    return (new Ticket($task,$userTicket))->downloadPdf();
+                $userTicket = EventUserTicket::where('user_id', $user->id)->first();
+                if ($userTicket) {
+                    dispatch(new SendTicket($task, $user->email, $user));
                 }
             }
         } catch (\Exception $e) {
             return $this->respondError("Errors {$e->getMessage()}");
         }
-        return $this->respondError('Ticket not found', 404);
+
+        return $this->responseMessage('Vé đã được gửi về email của bạn');
     }
 }
