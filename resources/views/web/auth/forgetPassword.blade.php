@@ -22,38 +22,38 @@
     </style>
     @include('web._layout.head')
 </head>
-<body>
-<div >
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="row">
-                <div class=" col-12">
-                    <div class="card">
-                        <div class="card-header">Reset Password</div>
-                        <div class="card-body">
+<body class="h-100">
+<div id="root" class="h-100">
+    <div class="fixed-background" style="background-image: url({{ asset('img/admin/background/background-blue.webp') }})"></div>
+    <div class="container-fluid p-0 h-100 position-relative">
+        <div class="row g-0 h-100">
+            <!-- Right Side Start -->
+            <div class="flex-container">
+                <div class="sw-lg-70 bg-foreground d-flex justify-content-center align-items-center shadow-deep py-5 full-page-content-right-border">
+                    <div class="sw-lg-50 px-5">
+                        <div class="sh-11">
+                            <a href="{{url('/')}}" title="Plats Event">
+                                <div class="logo-default" style="background-image: url({{ asset('img/admin/logo-light-blue.svg') }})"></div>
+                            </a>
+                        </div>
+                        <div>
                             <x-alert/>
-                            <form action="{{ route('forget.password.post') }}" method="POST">
-                                @csrf
-                                <div class="form-group row">
-                                    <label for="email_address" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
-                                    <div class="col-md-6">
-                                        <input type="text" id="email_address" class="form-control" name="email" required autofocus>
-
-                                    </div>
+                            <x-form::open action="{{ route('forget.password.post') }}" class="tooltip-end-bottom" id="loginForm">
+                                <div class="mb-3 filled form-group tooltip-end-top">
+                                    <i data-acorn-icon="email"></i>
+                                    <input class="form-control" placeholder="Email" name="email"/>
                                 </div>
-                                <div class="col-md-6 mt-1 offset-md-8">
-                                    <button type="submit" class="btn btn-primary">
-                                        Send Password Reset Link
-                                    </button>
-                                </div>
-                            </form>
-
+                                <button type="submit" class="btn btn-lg btn-primary">Send Password Reset Link</button>
+                            </x-form::open>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Right Side End -->
         </div>
     </div>
 </div>
+
+@include('admin._layout.scripts')
 </body>
 </html>

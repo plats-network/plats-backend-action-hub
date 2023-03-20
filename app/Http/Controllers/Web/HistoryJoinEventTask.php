@@ -45,7 +45,7 @@ class HistoryJoinEventTask extends Controller
             'task_id' => $getIdTask->task_id,
             'task_event_id' => $getIdEventDetail->task_event_id,
         ];
-        $check = UserJoinEvent::where('task_event_detail_id',$getIdEventDetail->id)->first();
+        $check = UserJoinEvent::where('user_id',$user->id)->where('task_event_detail_id',$getIdEventDetail->id)->first();
         if (!$check){
             UserJoinEvent::create($dataInsert);
         }
@@ -54,7 +54,6 @@ class HistoryJoinEventTask extends Controller
         $eventTaskJoins= $this->getEventTaskJoin($eventDetailsJoin);
         $eventTasks= $this->getEventTask($eventTaskJoins);
         $rawData = $this->mergeArray($eventTasks,$eventTaskJoins);
-        session()->forget('code');
         return $this->respondSuccess($rawData);
     }
 

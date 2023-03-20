@@ -52,7 +52,7 @@ class EventUserTicketService extends BaseService
             });
 
             // Remove condition after apply query builder
-            $this->cleanFilterBuilder('phone');
+            $this->cleanFilterBuilder('email');
         }
         return $this->endFilter();
     }

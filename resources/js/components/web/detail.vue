@@ -319,10 +319,9 @@ export default {
                             message: 'Get ticket successfully!',
                             type: 'success',
                         });
-                        loading.close();
                         window.open('/events/download-ticket/'+this.form.task_id, '_blank');
+                        loading.close();
                         this.dialogFormVisible = false
-                        location.reload();
                     }).catch(error => {
                         this.errors = error.response.data.message;
                         Notification.error({

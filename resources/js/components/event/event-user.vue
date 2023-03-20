@@ -16,7 +16,7 @@
                 </el-descriptions-item>
                 <el-descriptions-item label="Email" label-class-name="my-label" content-class-name="my-content">
                     <el-col :span="23">
-                        <el-input placeholder="typing ..." v-model="formSearch.Email" @change="list_data()"></el-input>
+                        <el-input placeholder="typing ..." v-model="formSearch.email" @change="list_data()"></el-input>
                     </el-col>
                 </el-descriptions-item>
             </el-descriptions>
@@ -38,11 +38,33 @@
                 </el-table-column>
                 <el-table-column
                     prop="phone"
-                    label="Phone"
+                    label="Phone" width="180"
                 >
                 </el-table-column>
                 <el-table-column  width="180"
+                                      label="">
+                        <template slot-scope="scope">
+                            <el-tag type="success" v-for="(item, index) in scope.row.join">
+                                <div v-if="item.type == 0">
+                                    <div v-if="item.check == true"> Session (Xong) {{item.stt}} </div>
+                                    <div v-if="item.check == false"> Session (Chưa xong) </div>
+                                </div>
+                                <div v-if="item.type == 1">
+                                    <div v-if="item.check == true"> Booth (Xong) {{item.stt}}</div>
+                                    <div v-if="item.check == false"> Booth (Chưa xong)</div>
+                                </div>
+                            </el-tag>
+                        </template>
+                </el-table-column>
+                <el-table-column  width="180"
                                   label="Status">
+                    <template slot-scope="scope">
+                        <el-tag type="success" v-if="scope.row.is_checkin == true">Check In</el-tag>
+                        <el-tag type="danger" v-if="scope.row.is_checkin == false">Join</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column  width="180"
+                                  label="Type">
                     <template slot-scope="scope">
                         <el-tag type="success" v-if="scope.row.type == 0">User</el-tag>
                         <el-tag type="danger" v-if="scope.row.type == 1">Guest</el-tag>
@@ -153,8 +175,8 @@ export default {
                 params: rawData
             }).then(e => {
                 this.tableData = e.data.data;
-                this.totalNumber = e.data.meta.total;
-                self.totalItem = e.data.meta.total;
+                this.totalNumber = e.data.total;
+                self.totalItem = e.data.total;
                 loading.close();
 
             }).catch((_) => {

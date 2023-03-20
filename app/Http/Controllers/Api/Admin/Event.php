@@ -29,10 +29,11 @@ class Event extends ApiController
     {
         try {
             $limit = $request->get('limit') ?? PAGE_SIZE;
-            if (empty(Auth::user())) {
+            $user = Auth::user();
+            if ($user->role == 3) {
                 $event = $this->taskService->search(['limit' => $limit,'type' => 1]);
             } else {
-                $event = $this->taskService->search(['limit' => $limit,'type' => 1]);
+                $event = $this->taskService->search(['limit' => $limit,'type' => 1,'creator_id' => $user->id]);
             }
             return response()->json($event);
         } catch (\Exception $e) {
