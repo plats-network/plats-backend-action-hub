@@ -58,7 +58,7 @@ class Event extends  Controller
                     $item['type'] = $taskEvent->type;
                     if ($item->count >= $taskEvent->max_job){
                         $item['check'] = true;
-                        $item['stt'] += $count + $key + 1;
+                        $item['stt'] += $count + 1;
                     }else{
                         $item['check'] = false;
                     }
