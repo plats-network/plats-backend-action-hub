@@ -44,7 +44,7 @@ class QrCode extends ApiController
 
                 $eventUserTicket = $this->eventUserTicket
                     ->whereUserId($userId)
-                    ->whereTaskId($userJoinEvent->task_id)
+                    ->whereTaskId($taskEvent->task_id)
                     ->first();
 
                 if (!$eventDetail) {
@@ -96,6 +96,6 @@ class QrCode extends ApiController
             return $this->respondError("QR không đúng, vui lòng kiểm tra lại!", 500);
         }
 
-        return $this->respondWithData(array_merge($data, $dataStatusess), 'Hoàn thành.');
+        return $this->respondWithData(array_merge($data, $dataStatusess), 'Done');
     }
 }
