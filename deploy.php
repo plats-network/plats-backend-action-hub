@@ -89,7 +89,7 @@ task('npm:run', function () {
     if ($envStage == 'production') {
         run('cd {{prod_path}}/current && npm install && npm run prod && php artisan storage:link');
     } if ($envStage == 'main') {
-        run('cd {{prod_path}}/current && npm install && npm run prod && php artisan storage:link');
+        run('cd {{main_path}}/current && npm install && npm run prod && php artisan storage:link');
     } elseif ($envStage == 'staging') {
         run('cd {{stg_path}}/current && npm install && npm run prod && php artisan storage:link');
     } else {
