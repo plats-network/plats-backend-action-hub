@@ -40,10 +40,16 @@ class Register extends Controller
 
             if($user) {
                 if(!is_null($user->email_verified_at)) {
-                    return $this->respondError('Email not active!', 400, ACCOUNT_ACTIVED);
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Email is exists!'
+                    ], 400);
                 } else {
                     if (!$this->isExpired($user)) {
-                        return $this->respondError('Please check confirmation code', 400, TIME_INVALID);
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Please check confirmation code!'
+                        ], 400);
                     }
                 }
             }
@@ -69,17 +75,26 @@ class Register extends Controller
     public function confirmEmail(RegisterConfirmRequest $request) {
         try {
             $user = $this->userService->confirmEmail($request);
-
             if (!$user) {
-                return $this->respondError('User not found.', 400, CONFIRM_CODE_INVALID);
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found!'
+                ], 400);
             }
 
             dispatch(new SendWelcomeEmail($user));
         } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error system!'
+            ], 500);
             return $this->respondError('Error system!', 500);
         }
 
-        return $this->respondSuccess('Confirmation dome.');
+        return response()->json([
+            'status' => true,
+            'message' => 'Confirmation done!'
+        ], 200);
     }
 
     /**
@@ -133,6 +148,8 @@ class Register extends Controller
      */
     public function validateEmailUnique($request)
     {
-        return $request->validate(['email' => ['required', 'max:' . INPUT_MAX_LENGTH, 'email', 'exists:users,email']]);
+        return $request->validate([
+            'email' => ['required', 'max:' . INPUT_MAX_LENGTH, 'email', 'exists:users,email']
+        ]);
     }
 }
