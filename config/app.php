@@ -16,7 +16,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-    'link_share' => env('LINK_SHARE', 'http://localhost'),
+    'link_share' => env('LINK_SHARE', 'https://dev-action.plats.network'),
     'link_qrc' => env('LINK_QRC', 'https://dev-action.plats.network'),
     'link_qrc_confirm' => env('LINK_QRC_CONFIRM', 'https://dev-action.plats.network'),
 
