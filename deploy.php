@@ -18,7 +18,7 @@ set('repository', 'git@github.com:plats-network/plats-backend-action-hub.git');
 set('prod_path', '/var/www/apps/{{prod}}');
 set('stg_path', '/home/deploy/apps/{{stg}}');
 set('dev_path', '/var/www/plats/{{dev}}');
-set('main_path', '/var/www/plats/{{main}}');
+set('main_path', '/var/www/apps/{{main}}');
 
 set('keep_releases', 5);
 set('allow_anonymous_stats', false);
