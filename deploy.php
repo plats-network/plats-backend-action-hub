@@ -12,11 +12,13 @@ set('ip_stg', '194.233.72.10');
 set('prod', 'prod_action');
 set('stg', 'plats_action');
 set('dev', 'action');
+set('main', 'prod');
 
 set('repository', 'git@github.com:plats-network/plats-backend-action-hub.git');
 set('prod_path', '/var/www/apps/{{prod}}');
 set('stg_path', '/home/deploy/apps/{{stg}}');
 set('dev_path', '/var/www/plats/{{dev}}');
+set('main_path', '/var/www/plats/{{main}}');
 
 set('keep_releases', 5);
 set('allow_anonymous_stats', false);
@@ -50,6 +52,14 @@ host('prod')
     ->set('branch', 'release')
     ->set('deploy_path', '{{prod_path}}');
 
+host('mail')
+    ->set('hostname', '{{ip_prod}}')
+    ->set('stage', 'main')
+    ->set('remote_user', 'deploy')
+    ->set('identityFile', '~/.ssh/prod_plats')
+    ->set('branch', 'prod')
+    ->set('deploy_path', '{{main_path}}');
+
 host('stg')
     ->set('hostname', '{{ip_stg}}')
     ->set('stage', 'staging')
@@ -77,6 +87,8 @@ task('npm:run', function () {
     writeln("Run npm: " . $envStage);
 
     if ($envStage == 'production') {
+        run('cd {{prod_path}}/current && npm install && npm run prod && php artisan storage:link');
+    } if ($envStage == 'main') {
         run('cd {{prod_path}}/current && npm install && npm run prod && php artisan storage:link');
     } elseif ($envStage == 'staging') {
         run('cd {{stg_path}}/current && npm install && npm run prod && php artisan storage:link');
