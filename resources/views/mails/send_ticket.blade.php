@@ -4,9 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0;">
     <meta name="format-detection" content="telephone=no"/>
 
-    <!-- Responsive Mobile-First Email Template by Konstantin Savchenko, 2015.
-    https://github.com/konsav/email-templates/  -->
-
     <style>
         /* Reset styles */
         body { margin: 0; padding: 0; min-width: 100%; width: 100% !important; height: 100% !important;}
@@ -69,8 +66,8 @@
 
                         <!-- LOGO -->
                         <a target="_blank" style="text-decoration: none;"
-                           href="https://github.com/konsav/email-templates/"><img border="0" vspace="0" hspace="0"
-                                                                                  src="https://raw.githubusercontent.com/konsav/email-templates/master/images/logo-black.png"
+                           href="{{ asset('img/admin/logo-light-blue.svg') }}"><img border="0" vspace="0" hspace="0"
+                                                                                  src="{{ asset('img/admin/logo-light-blue.svg') }}"
                                                                                   width="100" height="30"
                                                                                   alt="Logo" title="Logo" style="
 				color: #000000;
@@ -96,7 +93,7 @@
 			padding-top: 25px;
 			color: #000000;
 			font-family: sans-serif;" class="header">
-                        Get this responsive email template
+                        Tên sự kiện : {{\Str::limit($ticket->name , 80)}}
                     </td>
                 </tr>
 
@@ -107,19 +104,18 @@
 			padding-top: 5px;
 			color: #000000;
 			font-family: sans-serif;" class="subheader">
-                        Available on&nbsp;GitHub and&nbsp;CodePen
+                        Thời gian diễn ra : {{date("Y-m-d H:i:s", strtotime($ticket->start_at))}} - {{date("Y-m-d H:i:s", strtotime($ticket->end_at))}}
                     </td>
                 </tr>
 
                 <tr>
                     <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
 			padding-top: 20px;" class="hero"><a target="_blank" style="text-decoration: none;"
-                                                href="https://github.com/konsav/email-templates/"><img border="0" vspace="0" hspace="0"
-                                                                                                       src="https://raw.githubusercontent.com/konsav/email-templates/master/images/hero-wide.png"
+                                                href="{{$user->qr_image}}"><img border="0" vspace="0" hspace="0"
+                                                                                                       src="{{$user->qr_image}}"
                                                                                                        alt="Please enable images to view this content" title="Hero Image"
-                                                                                                       width="560" style="
-			width: 100%;
-			max-width: 560px;
+                                                                                                       width="200" style="
+			max-width: 200px;
 			color: #000000; font-size: 13px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;"/></a></td>
                 </tr>
 
@@ -128,83 +124,8 @@
 			padding-top: 25px;
 			color: #000000;
 			font-family: sans-serif;" class="paragraph">
-                        More than 50%&nbsp;of&nbsp;total email opens occurred on&nbsp;a&nbsp;mobile device&nbsp;— a&nbsp;mobile-friendly design is&nbsp;a&nbsp;must for&nbsp;email campaigns.
+                        Địa chỉ : {{$ticket->address}}
                     </td>
-                </tr>
-
-                <tr>
-                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
-			padding-top: 25px;
-			padding-bottom: 5px;" class="button"><a
-                            href="https://github.com/konsav/email-templates/" target="_blank" style="text-decoration: underline;">
-                            <table border="0" cellpadding="0" cellspacing="0" align="center" style="max-width: 240px; min-width: 120px; border-collapse: collapse; border-spacing: 0; padding: 0;"><tr><td align="center" valign="middle" style="padding: 12px 24px; margin: 0; text-decoration: underline; border-collapse: collapse; border-spacing: 0; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px;"
-                                                                                                                                                                                                           bgcolor="#E9703E"><a target="_blank" style="text-decoration: underline;
-					color: #FFFFFF; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 120%;"
-                                                                                                                                                                                                                                href="https://github.com/konsav/email-templates/">
-                                            Get the template
-                                        </a>
-                                    </td></tr></table></a>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
-			padding-top: 25px;" class="line"><hr
-                            color="#E0E0E0" align="center" width="100%" size="1" noshade style="margin: 0; padding: 0;" />
-                    </td>
-                </tr>
-
-                <tr>
-                    <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%;" class="list-item"><table align="center" border="0" cellspacing="0" cellpadding="0" style="width: inherit; margin: 0; padding: 0; border-collapse: collapse; border-spacing: 0;">
-
-                            <tr>
-
-                                <td align="left" valign="top" style="border-collapse: collapse; border-spacing: 0;
-					padding-top: 30px;
-					padding-right: 20px;"><img
-                                        border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;
-					color: #000000;"
-                                        src="https://raw.githubusercontent.com/konsav/email-templates/master/images/list-item.png"
-                                        alt="H" title="Highly compatible"
-                                        width="50" height="50"></td>
-
-                                <td align="left" valign="top" style="font-size: 17px; font-weight: 400; line-height: 160%; border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
-					padding-top: 25px;
-					color: #000000;
-					font-family: sans-serif;" class="paragraph">
-                                    <b style="color: #333333;">Highly compatible</b><br/>
-                                    Tested on the most popular email clients for web, desktop and mobile. Checklist included.
-                                </td>
-
-                            </tr>
-
-                            <!-- LIST ITEM -->
-                            <tr>
-
-                                <!-- LIST ITEM IMAGE -->
-                                <!-- Image text color should be opposite to background color. Set your url, image src, alt and title. Alt text should fit the image size. Real image size should be x2 -->
-                                <td align="left" valign="top" style="border-collapse: collapse; border-spacing: 0;
-					padding-top: 30px;
-					padding-right: 20px;"><img
-                                        border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;
-					color: #000000;"
-                                        src="https://raw.githubusercontent.com/konsav/email-templates/master/images/list-item.png"
-                                        alt="D" title="Designer friendly"
-                                        width="50" height="50"></td>
-
-                                <!-- LIST ITEM TEXT -->
-                                <!-- Set text color and font family ("sans-serif" or "Georgia, serif"). Duplicate all text styles in links, including line-height -->
-                                <td align="left" valign="top" style="font-size: 17px; font-weight: 400; line-height: 160%; border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0;
-					padding-top: 25px;
-					color: #000000;
-					font-family: sans-serif;" class="paragraph">
-                                    <b style="color: #333333;">Designer friendly</b><br/>
-                                    Sketch app resource file and a&nbsp;bunch of&nbsp;social media icons are&nbsp;also included in&nbsp;GitHub repository.
-                                </td>
-
-                            </tr>
-
-                        </table></td>
                 </tr>
 
                 <!-- LINE -->
@@ -224,7 +145,7 @@
 			padding-bottom: 25px;
 			color: #000000;
 			font-family: sans-serif;" class="paragraph">
-                        Have a&nbsp;question? <a href="mailto:support@ourteam.com" target="_blank" style="color: #127DB3; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 160%;">support@ourteam.com</a>
+                        Have a&nbsp;question? <a href="mailto:info@plats.network" target="_blank" style="color: #127DB3; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 160%;">info@plats.network</a>
                     </td>
                 </tr>
 
@@ -294,10 +215,6 @@
 			padding-bottom: 20px;
 			color: #999999;
 			font-family: sans-serif;" class="footer">
-
-                        This email template was sent to&nbsp;you becouse we&nbsp;want to&nbsp;make the&nbsp;world a&nbsp;better place. You&nbsp;could change your <a href="https://github.com/konsav/email-templates/" target="_blank" style="text-decoration: underline; color: #999999; font-family: sans-serif; font-size: 13px; font-weight: 400; line-height: 150%;">subscription settings</a> anytime.
-                        <img width="1" height="1" border="0" vspace="0" hspace="0" style="margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;"
-                             src="https://raw.githubusercontent.com/konsav/email-templates/master/images/tracker.png" />
 
                     </td>
                 </tr>

@@ -46,12 +46,10 @@
                         <template slot-scope="scope">
                             <el-tag type="success" v-for="(item, index) in scope.row.join">
                                 <div v-if="item.type == 0">
-                                    <div v-if="item.check == true"> Session (Xong) {{item.stt}} </div>
-                                    <div v-if="item.check == false"> Session (Chưa xong) </div>
+                                    <div v-if="item.check == true"> Session : {{item.stt}} </div>
                                 </div>
                                 <div v-if="item.type == 1">
-                                    <div v-if="item.check == true"> Booth (Xong) {{item.stt}}</div>
-                                    <div v-if="item.check == false"> Booth (Chưa xong)</div>
+                                    <div v-if="item.check == true"> Booth : {{item.stt}}</div>
                                 </div>
                             </el-tag>
                         </template>
