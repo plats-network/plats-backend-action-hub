@@ -52,7 +52,7 @@ host('prod')
     ->set('branch', 'release')
     ->set('deploy_path', '{{prod_path}}');
 
-host('mail')
+host('main')
     ->set('hostname', '{{ip_prod}}')
     ->set('stage', 'main')
     ->set('remote_user', 'deploy')
