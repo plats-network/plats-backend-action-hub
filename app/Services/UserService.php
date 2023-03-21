@@ -36,7 +36,6 @@ class UserService extends BaseService
         return $user;
     }
 
-
     public function search($conditions = [])
     {
         $this->makeBuilder($conditions);
@@ -219,7 +218,8 @@ class UserService extends BaseService
             if($email) {
                 $user = $this->findByEmail($email);
             }
-            $user->password = Hash::make($password);
+
+            $user->password = $password;
             $user->save();
             
         } catch (\Exception $e) {

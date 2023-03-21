@@ -59,11 +59,11 @@ class User extends ApiController
     {
         try {
             $user = $request->user();
-            $user->update(['email' => 'dovv1987+1001@gmail.com']);
             $task = $this->task->findOrFail($id);
 
-            if ($user){
+            if ($user) {
                 $userTicket = EventUserTicket::where('user_id', $user->id)->first();
+
                 if ($userTicket) {
                     dispatch(new SendTicket($task, $user->email, $user));
                 }
