@@ -67,10 +67,10 @@ class QrCode extends ApiController
                 ];
 
                 $dataStatusess = [
-                    'flag_session' => $eventUserTicket->sesion_code ? true : false,
-                    'num_session' => $eventUserTicket->sesion_code ?? '',
-                    'flag_booth' => $eventUserTicket->booth_code ? true : false,
-                    'num_booth' => $eventUserTicket->booth_code ?? ''
+                    'flag_session' => optional($eventUserTicket)->sesion_code ? true : false,
+                    'num_session' => optional($eventUserTicket)->sesion_code ?? '',
+                    'flag_booth' => optional($eventUserTicket)->booth_code ? true : false,
+                    'num_booth' => optional($eventUserTicket)->booth_code ?? ''
                 ];
             } elseif ($type == 'checkin') {
                 $ticket = $this->eventUserTicket->whereHashCode($code)->first();
