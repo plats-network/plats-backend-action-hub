@@ -132,6 +132,16 @@ class EventService extends BaseService
                     }
                 }
             }
+            $social = Arr::get($data, 'task_event_socials');
+            if ($social){
+                if (empty($social['id'])){
+                    $dataBaseTask->taskEventSocials()->create($social);
+                }else{
+                    $socialUn = Arr::get($data, 'task_event_socials');
+                    unset($socialUn['id']);
+                    $dataBaseTask->taskEventSocials()->update($socialUn,$social['id']);
+                }
+            }
             TaskGenerateLinks::where('task_id',$id)->delete();
             $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
             DB::commit();
@@ -190,6 +200,10 @@ class EventService extends BaseService
                         $idTaskEventBooths->detail()->create($item);
                     }
                 }
+            }
+            $social = Arr::get($data, 'task_event_socials');
+            if ($social){
+                $dataBaseTask->taskEventSocials()->create($social);
             }
             $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
             DB::commit();
