@@ -8,6 +8,7 @@ use App\Http\Resources\SocialResource;
 use App\Models\{Event\EventUserTicket, User as UserModel, Task};
 use App\Exports\Ticket;
 use App\Jobs\SendTicket;
+use Str;
 
 class User extends ApiController
 {
@@ -61,8 +62,27 @@ class User extends ApiController
             $user = $request->user();
             $task = $this->task->findOrFail($id);
 
+            $checkTicket = EventUserTicket::whereUserId($user->id)
+                ->whereTaskId($task->id)
+                ->first();
+
+            if (!$checkTicket) {
+                EventUserTicket::create([
+                    'user_id' => $user->id,
+                    'name' => $user->name,
+                    'phone' => $user->name,
+                    'email' => $user->email,
+                    'task_id' => $task->id,
+                    'type' => 0,
+                    'is_checkin' => true,
+                    'hash_code' => Str::random(15)
+                ]);
+            }
+
             if ($user) {
-                $userTicket = EventUserTicket::where('user_id', $user->id)->first();
+                $userTicket = EventUserTicket::whereUserId($user->id)
+                    ->whereTaskId($task->id)
+                    ->first();
 
                 if ($userTicket) {
                     dispatch(new SendTicket($task, $user->email, $user));
