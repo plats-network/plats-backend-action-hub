@@ -70,7 +70,6 @@ class User extends ApiController
                 EventUserTicket::create([
                     'user_id' => $user->id,
                     'name' => $user->name,
-                    'phone' => $user->name,
                     'email' => $user->email,
                     'task_id' => $task->id,
                     'type' => 0,
