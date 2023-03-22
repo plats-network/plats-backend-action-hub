@@ -89,6 +89,8 @@ Route::prefix('tasks')->controller(Task::class)->group(function ($router) {
    $router->post('like-pin', 'taskAction')->name('task.action');
    $router->post('start-cancel', 'startTask')->name('task.startTask');
    $router->get('my-tasks', 'myTasks')->name('task.myTasks');
+   $router->post('start-job', 'startJob')->name('task.startJob');
+   
    $router->prefix('{id}/locations')->controller(TaskLocation::class)->group(function ($router) {
        $router->post('/', 'create');
    });
