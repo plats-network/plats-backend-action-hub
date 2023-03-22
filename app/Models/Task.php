@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\BaseImage;
+use App\Models\Event\EventSocial;
 use App\Models\Event\EventUserTicket;
 use App\Models\Event\TaskEvent;
 use App\Models\Event\UserEventLike;
@@ -99,6 +100,11 @@ class Task extends Model
     public function quizs()
     {
         return $this->hasMany(Quiz::class);
+    }
+
+    public function taskEventSocials()
+    {
+        return $this->hasOne(EventSocial::class);
     }
 
     public function taskGenerateLinks()

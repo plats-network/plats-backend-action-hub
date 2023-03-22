@@ -30,7 +30,7 @@ class Event extends ApiController
         try {
             $limit = $request->get('limit') ?? PAGE_SIZE;
             $user = Auth::user();
-            if ($user->role == 3) {
+            if ($user->role == ADMIN_ROLE) {
                 $event = $this->taskService->search(['limit' => $limit,'type' => 1]);
             } else {
                 $event = $this->taskService->search(['limit' => $limit,'type' => 1,'creator_id' => $user->id]);
