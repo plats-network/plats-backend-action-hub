@@ -16,7 +16,7 @@ class Event extends  Controller
         private EventUserTicketService $eventUserTicketService
     )
     {
-//        $this->middleware('client_admin');
+        $this->middleware('client_admin');
     }
 
     public function index(Request $request)

@@ -42,4 +42,7 @@ Route::prefix('users')->controller(\App\Http\Controllers\Admin\User::class)->gro
     Route::get('/', 'index')->name(USER_LIST_ADMIN_ROUTER);
     Route::get('/list', 'apiListUser');
 });
+Route::prefix('export')->controller(\App\Http\Controllers\Admin\Export::class)->group(function () {
+    Route::post('/user-join-event', 'userJoinEvent');
+});
 

@@ -130,4 +130,19 @@ class Event extends ApiController
 
         return $this->responseMessage($mess);
     }
+
+    public function changeStatusDetail(Request $request)
+    {
+//       if ($request->input('status') == 1){
+//           $status = true;
+//       }else{
+//           $status = false;
+//       }
+        try {
+            $mess = empty($request->input('id')) ? 'done!' : 'done!';
+           TaskEventDetail::where('id',$request->input('id'))->update(['status' => $request->input('status')]);
+        } catch (\Exception $e) {
+            return $this->respondError($e->getMessage());
+        }
+    }
 }

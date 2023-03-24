@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Exports\Ticket;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AddTicketRequest;
+use App\Models\Event\EventShare;
 use App\Models\Event\TaskEvent;
 use App\Models\Task;
 use App\Repositories\EventUserTicketRepository;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Helpers\BaseImage;
 
 use Str;
+use function Symfony\Component\Translation\t;
 
 class Detail extends Controller
 {
@@ -40,14 +42,17 @@ class Detail extends Controller
             }
         }
         $getIdTask = Task::where('slug',Route::current()->slug)->first();
-        return view('web.detail',['id' => $getIdTask->id,'key'=>$keyLocal]);
+        if ($getIdTask){
+            return view('web.detail',['id' => $getIdTask->id,'key'=>$keyLocal]);
+        }
+        return $this->respondSuccess('false');
     }
 
     public function addTicket(AddTicketRequest $request)
     {
         try {
             $user = Auth::user();
-            $data = Arr::except($request->all(), '__token');
+            $data = Arr::except($request->all(), 'share',);
             if ($data['phone'] == null){
                 $data['phone'] = 0;
             }
@@ -64,11 +69,20 @@ class Detail extends Controller
                 ->whereEmail($data['email'])
                 ->whereTaskId($data['task_id'])
                 ->first();
-            session()->put('hash_code', $data['hash_code']);
             if ($checkSendMail) {
                 dispatch(new SendTicket($task, $data['email'],$checkSendMail));
             } else {
+                session()->put('hash_code', $data['hash_code']);
                 $this->repository->create($data);
+                if ($request->input('share')){
+                    $share = [
+                        'task_id' => $data['task_id'],
+                        'email' => $data['email'],
+                        'name' => $data['name'],
+                        'type' => $this->getTypeShare($request->input('share')),
+                    ];
+                    EventShare::create($share);
+                }
                 $user = $this->repository->whereHashCode($data['hash_code'])->first();
                 dispatch(new SendTicket($task, $data['email'],$user));
             }
@@ -156,5 +170,26 @@ class Detail extends Controller
         }
         return view('web.confirm_ticket');
 
+    }
+
+    public function getTypeShare($type)
+    {
+        switch ($type) {
+            case "facebook":
+                $data = 0;
+                break;
+            case "twitter":
+                $data = 1;
+                break;
+            case "telegram":
+                $data = 2;
+                break;
+            case "discord":
+                $data = 3;
+                break;
+            default:
+                $data = 4;
+        }
+        return $data;
     }
 }
