@@ -411,6 +411,19 @@
                                     <button @click="downloadQrCode(scope.row.id)">Download</button>
                                 </template>
                             </el-table-column>
+                            <el-table-column label="Status" width="180">
+                                <template slot-scope="scope">
+                                    <el-switch
+                                        v-model="scope.row.status"
+                                        :active-value="true"
+                                        @change="changeStatusDetail(scope.row.status,scope.row.id)"
+                                        :inactive-value="false"
+                                        active-text="public"
+                                        inactive-text="draft"
+                                    >
+                                    </el-switch>
+                                </template>
+                            </el-table-column>
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="Booths" name="second">
@@ -434,6 +447,19 @@
                                         <qrcode-vue :id="scope.row.id" :value="link_qrc+'/events/code?type=event&id='+scope.row.code" :size="size" level="H"></qrcode-vue>
                                     </div>
                                     <button @click="downloadQrCode(scope.row.id)">Download</button>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="Status" width="180">
+                                <template slot-scope="scope">
+                                    <el-switch
+                                        v-model="scope.row.status"
+                                        :active-value="true"
+                                        @change="changeStatusDetail(scope.row.status,scope.row.id)"
+                                        :inactive-value="false"
+                                        active-text="public"
+                                        inactive-text="draft"
+                                    >
+                                    </el-switch>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -662,6 +688,7 @@ export default {
                     id:'',
                     name:'',
                     description:'',
+                    status:true,
                 }
             ],
             dataBooths:[
@@ -669,6 +696,7 @@ export default {
                     id:'',
                     name:'',
                     description:'',
+                    status:'',
                 }
             ],
             form : {
@@ -723,6 +751,37 @@ export default {
         }
     },
     methods: {
+        changeStatusDetail(status,id){
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+            let rawData =
+                {
+                    'status': status,
+                    'id': id,
+                }
+            axios.post('/api/cws/events/change-status-detail', rawData).then(e => {
+                Notification.success({
+                    title: ' Thành công',
+                    message: ' Thành công',
+                    type: 'success',
+                });
+                this.list_data()
+                loading.close();
+            }).catch(error => {
+                this.errors = error.response.data.message; // this should be errors.
+                Notification.error({
+                    title: 'Error',
+                    message: this.errors,
+                    type: 'error',
+                });
+
+                loading.close();
+            });
+        },
         handleJoinEvent(scope, row){
             window.location.href = "/cws/events/"+row.id;
         },
