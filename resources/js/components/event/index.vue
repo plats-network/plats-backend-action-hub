@@ -418,8 +418,8 @@
                                         :active-value="true"
                                         @change="changeStatusDetail(scope.row.status,scope.row.id)"
                                         :inactive-value="false"
-                                        active-text="public"
-                                        inactive-text="draft"
+                                        active-text="UnLock"
+                                        inactive-text="Lock"
                                     >
                                     </el-switch>
                                 </template>
