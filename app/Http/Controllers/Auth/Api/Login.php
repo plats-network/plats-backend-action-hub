@@ -46,15 +46,30 @@ class Login extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $data = $this->respondWithToken($this->guard()->attempt($this->credentials($request)));
+        $request = $this->credentials($request);
+        $user = $this->guard()->attempt($request);
+        $data = $this->respondWithToken($user);
 
         if(!$data->resource || !$data->email_verified_at) {
-            return $this->respondError('These credentials do not match our records.', 400, CREDENTIALS_NOT_MATCH);
+            return response()->json([
+                'success' => false,
+                'data' => null,
+                'message' => 'These credentials do not match our records.'
+            ], 400);
         }
         if(!$data->email_verified_at) {
-            return $this->respondError('Your account has not been verified, please check your email.', 400, EMAIL_UNVERIFIED);
+            return response()->json([
+                'success' => false,
+                'data' => null,
+                'message' => 'Your account has not been verified, please check your email.'
+            ], EMAIL_UNVERIFIED);
         }
-        return $this->respondWithResource($data, 'Logged in successfully.');
+
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+            'message' => 'Logged in successfully.'
+        ], 200);
     }
 
     /**

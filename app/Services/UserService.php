@@ -36,7 +36,6 @@ class UserService extends BaseService
         return $user;
     }
 
-
     public function search($conditions = [])
     {
         $this->makeBuilder($conditions);
@@ -86,12 +85,10 @@ class UserService extends BaseService
     public function create(Request $request)
     {
         try {
-            $data = $request->toArray();
-            $data['password'] = Hash::make($request->input('password'));
+            $data = $request->all();
             $data['role'] = USER_ROLE;
-            $data['confirmation_code'] = rand(100000,999999);
+            $data['confirmation_code'] = rand(100000, 999999);
             $user = $this->repository->create($data);
-            
         } catch (\Exception $e) {
             return false;
         }
@@ -113,7 +110,7 @@ class UserService extends BaseService
 
             if($user) {
                 $user->update([
-                    'email_verified_at' => Carbon::now(),
+                    'email_verified_at' => now(),
                     'confirmation_code' => null
                 ]);
             }
@@ -221,7 +218,8 @@ class UserService extends BaseService
             if($email) {
                 $user = $this->findByEmail($email);
             }
-            $user->password = Hash::make($password);
+
+            $user->password = $password;
             $user->save();
             
         } catch (\Exception $e) {
@@ -284,8 +282,8 @@ class UserService extends BaseService
      */
     public function createOrUpdate($request)
     {
-        // Looking for user not verify
         $user = $this->findUserUnverify($request->input('email'));
+
         if(!$user) {
             return $this->create($request);
         }

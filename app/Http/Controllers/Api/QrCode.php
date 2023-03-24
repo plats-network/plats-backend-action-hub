@@ -13,6 +13,7 @@ use App\Models\Event\{
     TaskEvent,
     EventUserTicket
 };
+use DB;
 
 class QrCode extends ApiController
 {
@@ -26,6 +27,8 @@ class QrCode extends ApiController
     public function qrEvent(EventRequest $request)
     {
         $data = [];
+        $dataStatusess = [];
+
         try {
             $userId = $request->user()->id;
             $code = $request->input('code');
@@ -39,6 +42,11 @@ class QrCode extends ApiController
                     ->whereTaskEventDetailId(optional($eventDetail)->id)
                     ->first();
 
+                $eventUserTicket = $this->eventUserTicket
+                    ->whereUserId($userId)
+                    ->whereTaskId($taskEvent->task_id)
+                    ->first();
+
                 if (!$eventDetail) {
                     return $this->respondError('Job no found!', 404);
                 }
@@ -48,13 +56,21 @@ class QrCode extends ApiController
                         'user_id' => $userId,
                         'task_event_detail_id' => $eventDetail->id,
                         'task_id' => $taskEvent->task_id,
-                        'task_event_id' => $eventDetail->task_event_id
+                        'task_event_id' => $taskEvent->id
                     ];
+
                     $this->userJoinEvent->create($data);
                 }
 
                 $data = [
                     'task_id' => $taskEvent->task_id
+                ];
+
+                $dataStatusess = [
+                    'flag_session' => optional($eventUserTicket)->sesion_code ? true : false,
+                    'num_session' => optional($eventUserTicket)->sesion_code ?? '',
+                    'flag_booth' => optional($eventUserTicket)->booth_code ? true : false,
+                    'num_booth' => optional($eventUserTicket)->booth_code ?? ''
                 ];
             } elseif ($type == 'checkin') {
                 $ticket = $this->eventUserTicket->whereHashCode($code)->first();
@@ -77,9 +93,9 @@ class QrCode extends ApiController
                 }
             }
         } catch (\Exception $e) {
-            return $this->respondError('Errors', 500);
+            return $this->respondError("QR không đúng, vui lòng kiểm tra lại!", 500);
         }
 
-        return $this->respondWithData($data, 'Done');
+        return $this->respondWithData(array_merge($data, $dataStatusess), 'Done');
     }
 }
