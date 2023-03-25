@@ -32,21 +32,20 @@ class RouteServiceProvider extends ServiceProvider
             $env = env('APP_ENV');
             $host = request()->getHttpHost();
 
-            if ($env == 'cws' || $host == explode('//', env('APP_URL'))) {
-                Route::middleware([])
-                    ->group(base_path('routes/admin.php'));
-
+            if ($env == 'cws' || $host == 'cws.plats.network') {
+                Route::middleware([])->group(base_path('routes/admin.php'));
             }
-            if ($env == 'event' || $host == explode('//', env('APP_URL'))) {
-                Route::middleware([])
-                    ->group(base_path('routes/web.php'));
+
+            if ($env == 'event' || $host == 'event.plats.network') {
+                Route::middleware([])->group(base_path('routes/web.php'));
             }
 
             Route::middleware(['web'])
                 ->prefix('auth')
                 ->group(base_path('routes/auth.php'));
 
-            Route::prefix('api')->middleware(['api', 'auth:api', 'debug.api'])
+            Route::prefix('api')
+                ->middleware(['api', 'auth:api', 'debug.api'])
                 ->group(base_path('routes/api.php'));
         });
     }
