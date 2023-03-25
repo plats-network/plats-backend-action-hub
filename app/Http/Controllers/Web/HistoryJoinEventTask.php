@@ -35,9 +35,18 @@ class HistoryJoinEventTask extends Controller
         $user = Auth::user();
         $code = session()->get('code');
         $getIdEventDetail = TaskEventDetail::where('code',$code)->first();
-        $getIdTask = TaskEvent::where('id',$getIdEventDetail->task_event_id)->first();
         if (!$getIdEventDetail){
             return true;
+        }
+        $getIdTask = TaskEvent::where('id',$getIdEventDetail->task_event_id)->first();
+
+        if ($getIdEventDetail->status == false){
+            $eventDetailsJoin = UserJoinEvent::where('user_id',$user->id)->where('task_event_id',$getIdEventDetail->task_event_id)->where('task_id',$getIdTask->task_id)->get();
+            $eventTaskJoins= $this->getEventTaskJoin($eventDetailsJoin);
+            $eventTasks= $this->getEventTask($eventTaskJoins);
+            $rawData = $this->mergeArray($eventTasks,$eventTaskJoins);
+            $rawData['active'] = 1;
+            return $this->respondSuccess($rawData);
         }
         $dataInsert = [
             'user_id' => $user->id,
@@ -49,7 +58,6 @@ class HistoryJoinEventTask extends Controller
         if (!$check){
             UserJoinEvent::create($dataInsert);
         }
-        $getIdEvent = TaskEvent::where('id',$getIdEventDetail->task_event_id)->first();
         $eventDetailsJoin = UserJoinEvent::where('user_id',$user->id)->where('task_event_id',$getIdEventDetail->task_event_id)->where('task_id',$getIdTask->task_id)->get();
         $eventTaskJoins= $this->getEventTaskJoin($eventDetailsJoin);
         $eventTasks= $this->getEventTask($eventTaskJoins);
@@ -95,6 +103,7 @@ class HistoryJoinEventTask extends Controller
             }
             $a[] = [
                 'taskEventName' => $taskEventId->name,
+                'banner' => $taskName->banner_url,
                 'type' => $taskEventId->type == 0 ? 'Session' : 'Booth' ,
                 'taskName' => $taskName->name,
                 'taskId' => $taskName->id,

@@ -1,15 +1,11 @@
 <template>
     <div >
-        <el-row>
-            <el-col :sm="12" :lg="6">
-                <el-result icon="success" title="Thành công" subTitle="Lịch sử hoàn thành event">
-                </el-result>
-            </el-col>
-        </el-row>
+
         <el-row :gutter="10">
             <el-col :span="24" :md="8" v-for="item in tableData">
                 <el-card shadow="hover" class="box-card mb-2" >
                     <div slot="header" class="clearfix">
+                        <el-image :src="item.banner"></el-image>
                         <span>{{item.taskName}}</span>
                     </div>
                     <div v-for="detail in item.eventDetail" class="text item mb-1">
@@ -88,8 +84,21 @@ export default {
         list_data() {
             let url = '/events/history/list'
             axios.get(url).then(e => {
+                if(e.data.message.active == 1){
+                    Notification.error({
+                        title: 'error',
+                        message: 'Task has been locked !',
+                        type: 'error',
+                    });
+                }else {
+                    Notification.success({
+                        title: 'Message',
+                        message: 'Successfully!',
+                        type: 'success',
+                    });
+                }
+                delete e.data.message['active'];
                 this.tableData = e.data.message;
-                console.log(this.tableData)
             }).catch((_) => {
                 loading.close();
             })

@@ -44,6 +44,18 @@
                     label="Name"
                    >
                 </el-table-column>
+                <el-table-column
+                    label="Thời gian" width="180"
+                >
+                    <template slot-scope="scope">
+                        <el-tag type="info" v-if="new Date(scope.row.end_at) < new Date()" effect="dark">
+                            Hết Hạn
+                        </el-tag>
+                        <el-tag type="danger" v-else effect="dark">
+                            Còn Hạn
+                        </el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column  width="180"
                     label="Status">
                     <template slot-scope="scope">
@@ -106,7 +118,7 @@
                 background
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :page-size="10"
+                :page-size="20"
                 :current-page.sync="currentPage"
                 layout="prev, pager, next"
                 :total="this.totalNumber"
@@ -163,8 +175,8 @@
                             </div>
                             <div class="d-flex mt-4">
                                 <el-button  @click="addSessions()">Sessions</el-button>
-                                <el-button type="primary" @click="addBooths()">Booths</el-button>
-                                <el-button type="primary">Mini Game</el-button>
+                                <el-button  @click="addBooths()">Booths</el-button>
+                                <el-button @click="addSocial()">Social</el-button>
                                 <el-button @click="dialogQuiz = true">Quiz</el-button>
                             </div>
                         </el-col>
@@ -195,7 +207,7 @@
                     </el-row>
                     <el-form-item class="mt-5">
                         <el-button type="primary" @click="submitForm('form')">Edit</el-button>
-                        <el-button>Cancel</el-button>
+                        <el-button @click="drawerEdit = false">Cancel</el-button>
                     </el-form-item>
                 </el-form>
             </el-drawer>
@@ -248,7 +260,7 @@
                             <div class="d-flex mt-4">
                                 <el-button @click="addSessions()">Sessions</el-button>
                                 <el-button @click="addBooths()">Booths</el-button>
-                                <el-button>Mini Game</el-button>
+                                <el-button @click="addSocial()">Social</el-button>
                                 <el-button @click="dialogQuiz = true">Quiz</el-button>
                             </div>
                         </el-col>
@@ -279,7 +291,7 @@
                     </el-row>
                     <el-form-item class="mt-5">
                         <el-button type="primary" @click="submitForm('form')">Save</el-button>
-                        <el-button>Cancel</el-button>
+                        <el-button @click="drawerCreate = false">Cancel</el-button>
                     </el-form-item>
                 </el-form>
             </el-drawer>
@@ -322,7 +334,7 @@
                             </el-row>
                         </div>
                         <div style="float: right;">
-                            <el-button size="mini" type="success" @click="dialogVisible = false" class="mt-3 mb-2">Done</el-button>
+                            <el-button size="mini" type="success" @click="dialogSessions = false" class="mt-3 mb-2">Done</el-button>
                             <el-button size="mini" type="primary" class="mt-3 mb-2" @click="addDetailSessions"><i class="el-icon-plus"></i>Add Detail</el-button>
                         </div>
                     </el-col>
@@ -365,7 +377,10 @@
                                 </el-col>
                             </el-row>
                         </div>
-                        <el-button size="mini" type="primary" style="float: right" class="mt-3 mb-2" @click="addDetailBooths"><i class="el-icon-plus"></i>Add Detail</el-button>
+                        <div style="float: right;">
+                            <el-button size="mini" type="success" @click="dialogBooths = false" class="mt-3 mb-2">Done</el-button>
+                            <el-button size="mini" type="primary" style="float: right" class="mt-3 mb-2" @click="addDetailBooths"><i class="el-icon-plus"></i>Add Detail</el-button>
+                        </div>
                     </el-col>
                 </el-row>
             </el-drawer>
@@ -396,6 +411,19 @@
                                     <button @click="downloadQrCode(scope.row.id)">Download</button>
                                 </template>
                             </el-table-column>
+                            <el-table-column label="Status" width="180">
+                                <template slot-scope="scope">
+                                    <el-switch
+                                        v-model="scope.row.status"
+                                        :active-value="true"
+                                        @change="changeStatusDetail(scope.row.status,scope.row.id)"
+                                        :inactive-value="false"
+                                        active-text="UnLock"
+                                        inactive-text="Lock"
+                                    >
+                                    </el-switch>
+                                </template>
+                            </el-table-column>
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="Booths" name="second">
@@ -421,10 +449,47 @@
                                     <button @click="downloadQrCode(scope.row.id)">Download</button>
                                 </template>
                             </el-table-column>
+                            <el-table-column label="Status" width="180">
+                                <template slot-scope="scope">
+                                    <el-switch
+                                        v-model="scope.row.status"
+                                        :active-value="true"
+                                        @change="changeStatusDetail(scope.row.status,scope.row.id)"
+                                        :inactive-value="false"
+                                        active-text="UnLock"
+                                        inactive-text="Lock"
+                                    >
+                                    </el-switch>
+                                </template>
+                            </el-table-column>
                         </el-table>
                     </el-tab-pane>
                 </el-tabs>
             </el-dialog>
+<!--            social-->
+            <el-drawer title="Social" size="50%" :visible.sync="dialogSocial" style="height: auto">
+                <el-row :gutter="20" class="p-5">
+                   <el-col >
+                       <el-checkbox  v-model="form.task_event_socials.is_comment">Comment</el-checkbox>
+                       <el-checkbox v-model="form.task_event_socials.is_like">Like</el-checkbox>
+                       <el-checkbox v-model="form.task_event_socials.is_retweet">Retweet</el-checkbox>
+                       <el-checkbox v-model="form.task_event_socials.is_tweet">Tweet</el-checkbox>
+                   </el-col>
+                    <el-col >
+                        <div v-if="form.task_event_socials.is_comment == true || form.task_event_socials.is_like == true || form.task_event_socials.is_retweet == true">
+                            <span> URL</span>
+                            <el-input class="mb-2 mt-2" maxlength="255" show-word-limit  placeholder="https://twitter.com/elonmusk/status/1638381090368012289" v-model="form.task_event_socials.url"></el-input>
+                        </div>
+                        <div v-if="form.task_event_socials.is_tweet == true">
+                            <span> Text</span>
+                            <el-input class="mb-2 mt-2" maxlength="255" show-word-limit  placeholder="Text ..." v-model="form.task_event_socials.text"></el-input>
+                        </div>
+                    </el-col>
+                    <div style="float: right;">
+                        <el-button size="mini" type="primary" style="float: right" class="mt-3 mb-2" @click="dialogSocial = false"><i class="el-icon-plus"></i>Add Social</el-button>
+                    </div>
+                </el-row>
+            </el-drawer>
             <!--            quiz-->
             <el-drawer title="Quiz" size="50%" :visible.sync="dialogQuiz">
                 <div class="p-3">
@@ -593,6 +658,7 @@ export default {
             dialogSessions: false,
             dialogQuiz: false,
             dialogBooths: false,
+            dialogSocial: false,
             dialogQrCode: false,
             dialogJoinEvent: false,
             dialogLinks : false,
@@ -622,6 +688,7 @@ export default {
                     id:'',
                     name:'',
                     description:'',
+                    status:true,
                 }
             ],
             dataBooths:[
@@ -629,6 +696,7 @@ export default {
                     id:'',
                     name:'',
                     description:'',
+                    status:'',
                 }
             ],
             form : {
@@ -670,10 +738,50 @@ export default {
                             }
                         ]
                 },
+                task_event_socials:{
+                    url:'',
+                    text:'',
+                    is_comment:false,
+                    is_like:false,
+                    is_retweet:false,
+                    is_tweet:false,
+                    type:0,
+                }
             },
         }
     },
     methods: {
+        changeStatusDetail(status,id){
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+            let rawData =
+                {
+                    'status': status,
+                    'id': id,
+                }
+            axios.post('/api/cws/events/change-status-detail', rawData).then(e => {
+                Notification.success({
+                    title: ' Thành công',
+                    message: ' Thành công',
+                    type: 'success',
+                });
+                this.list_data()
+                loading.close();
+            }).catch(error => {
+                this.errors = error.response.data.message; // this should be errors.
+                Notification.error({
+                    title: 'Error',
+                    message: this.errors,
+                    type: 'error',
+                });
+
+                loading.close();
+            });
+        },
         handleJoinEvent(scope, row){
             window.location.href = "/cws/events/"+row.id;
         },
@@ -723,7 +831,7 @@ export default {
         },
         submitQuiz(){
             this.form.quiz = this.quiz
-            console.log(this.form)
+            this.dialogQuiz = false
         },
         removeQuiz(item){
             let index = this.quiz.indexOf(item);
@@ -798,6 +906,9 @@ export default {
         },
         addBooths(){
             this.dialogBooths = true
+        },
+        addSocial(){
+            this.dialogSocial = true
         },
         handleRemove(file, fileList) {
             this.form.task_galleries = fileList
@@ -884,6 +995,15 @@ export default {
                             description: ''
                         }
                     ]
+                },
+                task_event_socials: {
+                    url:'',
+                    text:'',
+                    is_comment:false,
+                    is_like:false,
+                    is_retweet:false,
+                    is_tweet:false,
+                    type:0,
                 }
             }
 
@@ -994,6 +1114,12 @@ export default {
                         spinner: 'el-icon-loading',
                         background: 'rgba(0, 0, 0, 0.7)'
                     });
+                    if (this.form.task_event_socials.is_tweet == false){
+                        this.form.task_event_socials.text = null
+                    }
+                    if (this.form.task_event_socials.is_like == false && this.form.task_event_socials.is_comment == false && this.form.task_event_socials.is_retweet == false ){
+                        this.form.task_event_socials.url = null
+                    }
                     axios.post('/api/cws/events', this.form).then(e => {
                         Notification.success({
                             title: ' Thành công',
@@ -1033,6 +1159,17 @@ export default {
             axios.get(url).then(e => {
                 this.form = e.data.data.message;
                 this.quiz = e.data.data.message.quiz
+                if (e.data.data.message.task_event_socials == null){
+                    this.form.task_event_socials = {
+                            url:'',
+                            text:'',
+                            is_comment:false,
+                            is_like:false,
+                            is_retweet:false,
+                            is_tweet:false,
+                            type:0,
+                    }
+                }
                 loading.close();
 
             }).catch((_) => {

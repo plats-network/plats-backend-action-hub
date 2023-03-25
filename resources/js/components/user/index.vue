@@ -20,7 +20,7 @@
                             <el-select class="full-option" @change="list_data()" v-model="formSearch.status"
                                        placeholder="Select">
                                 <el-option
-                                    v-for="item in [{value: null, label: 'All'},{value: 1, label: 'User'}, {value: 2, label: 'Admin'}, {value: 3, label: 'Super Admin'}]"
+                                    v-for="item in [{value: null, label: 'All'},{value: 1, label: 'User'}, {value: 2, label: 'Admin'}, {value: 3, label: ' Client'}]"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value">
@@ -86,7 +86,7 @@
                     <template slot-scope="scope">
                         <el-tag type="success" v-if="scope.row.role == 1">User</el-tag>
                         <el-tag type="success" v-if="scope.row.role == 2">Admin</el-tag>
-                        <el-tag type="success" v-if="scope.row.role == 3">Super Admin</el-tag>
+                        <el-tag type="success" v-if="scope.row.role == 3">Client</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -102,7 +102,7 @@
                 background
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :page-size="10"
+                :page-size="20"
                 :current-page.sync="currentPage"
                 layout="prev, pager, next"
                 :total="this.totalNumber"

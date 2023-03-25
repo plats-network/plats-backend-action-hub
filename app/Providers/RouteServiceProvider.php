@@ -32,14 +32,12 @@ class RouteServiceProvider extends ServiceProvider
             $env = env('APP_ENV');
             $host = request()->getHttpHost();
 
-            if ($env == 'cws' || $host == 'cws.plats.network') {
+            if ($env == 'cws' || $host == explode('//', env('APP_URL'))) {
                 Route::middleware([])
-                    ->namespace($this->namespace)
                     ->group(base_path('routes/admin.php'));
 
             }
-
-            if ($env == 'local' || $host == 'event.plats.network') {
+            if ($env == 'event' || $host == explode('//', env('APP_URL'))) {
                 Route::middleware([])
                     ->group(base_path('routes/web.php'));
             }

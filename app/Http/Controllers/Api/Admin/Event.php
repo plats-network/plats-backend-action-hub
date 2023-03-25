@@ -30,7 +30,7 @@ class Event extends ApiController
         try {
             $limit = $request->get('limit') ?? PAGE_SIZE;
             $user = Auth::user();
-            if ($user->role == 3) {
+            if ($user->role == ADMIN_ROLE) {
                 $event = $this->taskService->search(['limit' => $limit,'type' => 1]);
             } else {
                 $event = $this->taskService->search(['limit' => $limit,'type' => 1,'creator_id' => $user->id]);
@@ -129,5 +129,20 @@ class Event extends ApiController
         }
 
         return $this->responseMessage($mess);
+    }
+
+    public function changeStatusDetail(Request $request)
+    {
+//       if ($request->input('status') == 1){
+//           $status = true;
+//       }else{
+//           $status = false;
+//       }
+        try {
+            $mess = empty($request->input('id')) ? 'done!' : 'done!';
+           TaskEventDetail::where('id',$request->input('id'))->update(['status' => $request->input('status')]);
+        } catch (\Exception $e) {
+            return $this->respondError($e->getMessage());
+        }
     }
 }

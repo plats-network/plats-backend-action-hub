@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\BaseImage;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Http\Resources\SocialResource;
 use App\Models\{Event\EventUserTicket, User as UserModel, Task};
 use App\Exports\Ticket;
 use App\Jobs\SendTicket;
+use Illuminate\Support\Facades\Storage;
 use Str;
 
 class User extends ApiController
@@ -65,7 +67,12 @@ class User extends ApiController
             $checkTicket = EventUserTicket::whereUserId($user->id)
                 ->whereTaskId($task->id)
                 ->first();
-
+            $hashCode = Str::random(15);
+            $image = \QrCode::format('png')->size(100)->generate(config('app.link_qrc_confirm').'/events/confirm-ticket?type=checkin&id='.$hashCode);
+            $output_file = '/img/qr-code/img-' . $hashCode . '.png';
+            $files = Storage::disk('s3')->put($output_file, ($image));
+            $files = Storage::disk('s3')->url($output_file);
+            $imageQrc = BaseImage::imgGroup($files);
             if (!$checkTicket) {
                 EventUserTicket::create([
                     'user_id' => $user->id,
@@ -74,7 +81,8 @@ class User extends ApiController
                     'task_id' => $task->id,
                     'type' => 0,
                     'is_checkin' => true,
-                    'hash_code' => Str::random(15)
+                    'hash_code' => $hashCode,
+                    'qr_image' => $imageQrc,
                 ]);
             }
 
@@ -90,7 +98,6 @@ class User extends ApiController
         } catch (\Exception $e) {
             return $this->respondError("Errors {$e->getMessage()}");
         }
-
-        return $this->responseMessage('Vé đã được gửi về email của bạn');
+        return $this->respondError('Ticket not found', 404);
     }
 }
