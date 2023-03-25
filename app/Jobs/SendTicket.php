@@ -24,7 +24,7 @@ class SendTicket implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($ticket, $email,$user)
+    public function __construct($ticket, $email, $user)
     {
         $this->ticket = $ticket;
         $this->email = $email;
@@ -38,6 +38,6 @@ class SendTicket implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->email)->send(new EmailSendTicket($this->ticket,$this->user));
+        Mail::to($this->email)->send(new EmailSendTicket($this->ticket, $this->user));
     }
 }

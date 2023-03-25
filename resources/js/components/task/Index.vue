@@ -192,7 +192,7 @@ export default {
     },
     methods: {
         copyCode(scope, row){
-            console.log(row.url)
+            // console.log(row.url)
             // row.url.select();
             // document.execCommand("copy");
         },
@@ -239,14 +239,14 @@ export default {
             })
         },
         handleEdit(scope, row) {
-            window.location.href = '/cws/tasks/edit/'+ row.id;
+            window.location.href = '/tasks/edit/'+ row.id;
         },
         handleLink(scope, row) {
            this.dataLink = row.links;
            this.dialogLinks = true
         },
         handleCreate() {
-            window.location.href = '/cws/tasks/create';
+            window.location.href = '/tasks/create';
         },
         handleCurrentChange(val) {
             this.list_data(val);

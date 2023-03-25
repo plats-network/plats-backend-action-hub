@@ -29,12 +29,20 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::middleware([])
-                ->group(base_path('routes/web.php'));
+            $env = env('APP_ENV');
+            $host = request()->getHttpHost();
 
-            Route::middleware([])
-                ->prefix('cws')
-                ->group(base_path('routes/admin.php'));
+            if ($env == 'cws' || $host == 'cws.plats.network') {
+                Route::middleware([])
+                    ->namespace($this->namespace)
+                    ->group(base_path('routes/admin.php'));
+
+            }
+
+            if ($env == 'local' || $host == 'event.plats.network') {
+                Route::middleware([])
+                    ->group(base_path('routes/web.php'));
+            }
 
             Route::middleware(['web'])
                 ->prefix('auth')

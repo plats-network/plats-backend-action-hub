@@ -19,8 +19,6 @@ class ClientAdmin
     {
         if (Auth::user() && in_array(Auth::user()->role, [ADMIN_ROLE, CLIENT_ROLE])) {
             return $next($request);
-        } elseif (Auth::user() && !in_array(Auth::user()->role, [ADMIN_ROLE, CLIENT_ROLE])) {
-            return redirect('cws')->withErrors('message', 'You have not admin access');
         } else {
             return redirect('auth/cws')->withErrors('message', 'You have not admin access');
         }

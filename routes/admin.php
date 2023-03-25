@@ -2,12 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
-    Dashboard, Reward,Event
+    Dashboard, Reward, Event
 };
 use App\Http\Controllers\Auth\Admin\Register;
 use App\Http\Controllers\Auth\Admin\ForgotPassword;
 
 Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_ADMIN_ROUTER);
+
+Route::prefix('cws')->controller(Register::class)->group(function($router) {
+    Route::get('register', [Register::class, 'create'])->name('auth.create');
+    Route::post('register', [Register::class, 'store'])->name('auth.store');
+});
+
 Route::get('register', [Register::class, 'create'])->name('auth.create');
 Route::post('register', [Register::class, 'store'])->name('auth.store');
 Route::get('forget-password', [ForgotPassword::class, 'showForgetPasswordForm'])->name('admin.forget.password.get');
@@ -16,6 +22,7 @@ Route::get('reset-password/{token}', [ForgotPassword::class, 'showResetPasswordF
 Route::post('reset-password', [ForgotPassword::class, 'submitResetPasswordForm'])->name('admin.reset.password.post');
 Route::get('/verify/{code}', [Register::class, 'verify'])->name(VERIFY_EMAIL);
 // Task management
+
 Route::prefix('tasks')->controller(\App\Http\Controllers\Admin\TaskBeta::class)->group(function () {
     Route::get('/', 'index')->name(TASK_LIST_ADMIN_ROUTER);
     Route::get('edit/{id}', 'edit')->whereUuid('id');
@@ -23,7 +30,6 @@ Route::prefix('tasks')->controller(\App\Http\Controllers\Admin\TaskBeta::class)-
     Route::post('/save-avatar-api', 'uploadAvatar');
     Route::post('/save-sliders-api', 'uploadSliders');
 });
-
 
 Route::prefix('rewards')->controller(Reward::class)->group(function () {
     Route::get('/', 'index')->name(REWARD_LIST_ADMIN_ROUTER);
@@ -42,4 +48,3 @@ Route::prefix('users')->controller(\App\Http\Controllers\Admin\User::class)->gro
     Route::get('/', 'index')->name(USER_LIST_ADMIN_ROUTER);
     Route::get('/list', 'apiListUser');
 });
-
