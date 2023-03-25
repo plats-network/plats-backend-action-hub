@@ -406,7 +406,7 @@
                             >
                                 <template slot-scope="scope">
                                     <div ref="qrcode">
-                                    <qrcode-vue :id="scope.row.id" :value="link_qrc+'/events/code?type=event&id='+scope.row.code" :size="size" level="H"></qrcode-vue>
+                                    <qrcode-vue :id="scope.row.id" :value="'https://event.plats.network/events/code?type=event&id='+scope.row.code" :size="size" level="H"></qrcode-vue>
                                     </div>
                                     <button @click="downloadQrCode(scope.row.id)">Download</button>
                                 </template>
@@ -444,7 +444,7 @@
                             >
                                 <template slot-scope="scope">
                                     <div ref="qrcode">
-                                        <qrcode-vue :id="scope.row.id" :value="link_qrc+'/events/code?type=event&id='+scope.row.code" :size="size" level="H"></qrcode-vue>
+                                        <qrcode-vue :id="scope.row.id" :value="'https://event.plats.network/events/code?type=event&id='+scope.row.code" :size="size" level="H"></qrcode-vue>
                                     </div>
                                     <button @click="downloadQrCode(scope.row.id)">Download</button>
                                 </template>
@@ -533,7 +533,7 @@
                         </div>
                     </el-form>
                     <span slot="footer" class="dialog-footer">
-                            <el-button type="primary" @click="submitQuiz()">Add Quiz</el-button>
+                        <el-button type="primary" @click="submitQuiz()">Add Quiz</el-button>
                     </span>
                 </div>
             </el-drawer>
@@ -595,7 +595,7 @@ import {
 
 export default {
     name: "index",
-    props: ['csrf','link_qrc'],
+    props: ['csrf', 'link_qrc'],
     components: {
         'el-tiptap': ElementTiptap,
         QrcodeVue,

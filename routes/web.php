@@ -2,30 +2,30 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+
 use App\Http\Controllers\Web\{
-    Dashboard, Detail, Likes,HistoryJoinEventTask
+    Dashboard,
+    Detail,
+    Likes,
+    HistoryJoinEventTask
 };
-use App\Http\Controllers\Web\Auth\{Login, SignUp,ForgotPassword};
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-Route::prefix('client')->group(function () {
-    Route::get('/login', [Login::class, 'showFormLogin'])->name(LOGIN_WEB_ROUTE);
-    Route::post('/login', [Login::class, 'login']);
-    Route::get('forget-password', [ForgotPassword::class, 'showForgetPasswordForm'])->name('forget.password.get');
-    Route::post('forget-password', [ForgotPassword::class, 'submitForgetPasswordForm'])->name('forget.password.post');
-    Route::get('reset-password/{token}', [ForgotPassword::class, 'showResetPasswordForm'])->name('reset.password.get');
-    Route::post('reset-password', [ForgotPassword::class, 'submitResetPasswordForm'])->name('reset.password.post');
-    Route::get('/sign-up', [SignUp::class, 'showSignup'])->name('web.client.showSignup');
-    Route::post('/sign-up', [SignUp::class, 'store'])->name('web.client.signUp');
-    Route::get('/logout', [Login::class, 'logout'])->name(LOGOUT_WEB_ROUTE);
+
+use App\Http\Controllers\Web\Auth\{
+    Login,
+    SignUp,
+    ForgotPassword
+};
+
+Route::prefix('client')->group(function ($router) {
+    $router->get('/login', [Login::class, 'showFormLogin'])->name(LOGIN_WEB_ROUTE);
+    $router->post('/login', [Login::class, 'login']);
+    $router->get('forget-password', [ForgotPassword::class, 'showForgetPasswordForm'])->name('forget.password.get');
+    $router->post('forget-password', [ForgotPassword::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+    $router->get('reset-password/{token}', [ForgotPassword::class, 'showResetPasswordForm'])->name('reset.password.get');
+    $router->post('reset-password', [ForgotPassword::class, 'submitResetPasswordForm'])->name('reset.password.post');
+    $router->get('/sign-up', [SignUp::class, 'showSignup'])->name('web.client.showSignup');
+    $router->post('/sign-up', [SignUp::class, 'store'])->name('web.client.signUp');
+    $router->get('/logout', [Login::class, 'logout'])->name(LOGOUT_WEB_ROUTE);
 });
 
 Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_WEB_ROUTER);

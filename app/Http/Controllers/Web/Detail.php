@@ -52,7 +52,7 @@ class Detail extends Controller
     {
         try {
             $user = Auth::user();
-            $data = Arr::except($request->all(), 'share',);
+            $data = Arr::except($request->all(), 'share');
             if ($data['phone'] == null){
                 $data['phone'] = 0;
             }
@@ -69,6 +69,7 @@ class Detail extends Controller
                 ->whereEmail($data['email'])
                 ->whereTaskId($data['task_id'])
                 ->first();
+
             if ($checkSendMail) {
                 dispatch(new SendTicket($task, $data['email'],$checkSendMail));
             } else {

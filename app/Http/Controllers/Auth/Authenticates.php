@@ -25,10 +25,14 @@ trait Authenticates
     public function login(Request $request)
     {
         $this->validateLogin($request);
+
         $check = User::where('email',$request->input('email'))->first();
-        if ($check){
-            if ($check->confirmation_code != null){
-                return redirect('cws/register')->with(['success' => 'Tài khoản chưa xác nhận']);
+        if ($check) {
+            if (
+                empty($check->email_verified_at)
+                && $check->role == USER_ROLE
+            ) {
+                return redirect('/client/login')->withErrors('Account not active!');
             }
         }
         // If the class is using the ThrottlesLogins trait, we can automatically throttle

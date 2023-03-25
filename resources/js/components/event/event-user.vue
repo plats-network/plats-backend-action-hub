@@ -161,7 +161,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            axios.post('/cws/export/user-join-event', rawData,{responseType: 'arraybuffer'}).then(response => {
+            axios.post('/export/user-join-event', rawData,{responseType: 'arraybuffer'}).then(response => {
                 var fileURL = window.URL.createObjectURL(new Blob([response.data]));
                 var fileLink = document.createElement('a');
                 fileLink.href = fileURL;
