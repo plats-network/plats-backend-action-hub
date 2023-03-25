@@ -16,7 +16,7 @@ class Event extends  Controller
         private EventUserTicketService $eventUserTicketService
     )
     {
-//        $this->middleware('client_admin');
+        $this->middleware('client_admin');
     }
 
     public function index(Request $request)
@@ -48,17 +48,17 @@ class Event extends  Controller
             }
         }
         $rawDataNew = $this->eventUserTicketService->search(['limit' => $limit,'task_id' => $id]);
-        foreach ($rawDataNew as $key => &$item){
+        foreach ($rawDataNew as &$item){
             if ($item->user_id != null){
                 $item['join'] = UserJoinEvent::where('user_id',$item->user_id)->where('task_id',$item->task_id)->select('task_event_id', DB::raw('count(*) as count'))
                     ->groupBy('task_event_id')
                     ->get();
-                foreach ($item['join'] as  &$item){
+                foreach ($item['join'] as $key =>  &$item){
                     $taskEvent = TaskEvent::where('id',$item->task_event_id)->first();
                     $item['type'] = $taskEvent->type;
                     if ($item->count >= $taskEvent->max_job){
                         $item['check'] = true;
-                        $item['stt'] += $count + 1;
+                        $item['stt'] += $count + $key + 1;
                     }else{
                         $item['check'] = false;
                     }

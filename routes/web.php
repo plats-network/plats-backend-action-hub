@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Web\{
     Dashboard, Detail, Likes,HistoryJoinEventTask
 };
@@ -26,6 +27,7 @@ Route::prefix('client')->group(function () {
     Route::post('/sign-up', [SignUp::class, 'store'])->name('web.client.signUp');
     Route::get('/logout', [Login::class, 'logout'])->name(LOGOUT_WEB_ROUTE);
 });
+
 Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_WEB_ROUTER);
 Route::get('/events/code', [HistoryJoinEventTask::class, 'index']);
 Route::get('/events/history/list', [HistoryJoinEventTask::class, 'apiList']);
@@ -38,6 +40,3 @@ Route::get('/events/user/ticket', [Detail::class, 'userTicket']);
 Route::get('/events/confirm-ticket/', [Detail::class, 'confirmTicket'])->middleware('client_admin');
 Route::post('/events/ticket', [Detail::class, 'addTicket'])->name('web.event.addTicket');
 Route::get('/events/{slug}', [Detail::class, 'index']);
-
-
-

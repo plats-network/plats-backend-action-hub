@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
-    Dashboard, Reward,Event
+    Dashboard, Reward, Event, TaskBeta,
+    Group, User, Export
 };
 use App\Http\Controllers\Auth\Admin\Register;
 use App\Http\Controllers\Auth\Admin\ForgotPassword;
@@ -16,30 +17,28 @@ Route::get('reset-password/{token}', [ForgotPassword::class, 'showResetPasswordF
 Route::post('reset-password', [ForgotPassword::class, 'submitResetPasswordForm'])->name('admin.reset.password.post');
 Route::get('/verify/{code}', [Register::class, 'verify'])->name(VERIFY_EMAIL);
 // Task management
-Route::prefix('tasks')->controller(\App\Http\Controllers\Admin\TaskBeta::class)->group(function () {
+Route::prefix('tasks')->controller(TaskBeta::class)->group(function () {
     Route::get('/', 'index')->name(TASK_LIST_ADMIN_ROUTER);
     Route::get('edit/{id}', 'edit')->whereUuid('id');
     Route::get('create', 'create');
     Route::post('/save-avatar-api', 'uploadAvatar');
     Route::post('/save-sliders-api', 'uploadSliders');
 });
-
-
 Route::prefix('rewards')->controller(Reward::class)->group(function () {
     Route::get('/', 'index')->name(REWARD_LIST_ADMIN_ROUTER);
 });
-
 Route::prefix('events')->controller(Event::class)->group(function () {
     Route::get('/', 'index')->name(EVENT_LIST_ADMIN_ROUTER);
     Route::get('/api/{task_id}', 'apiUserEvent');
     Route::get('/{task_id}', 'userEvent')->name(EVENT_USER_ADMIN_ROUTER);
 });
-
-Route::prefix('groups')->controller(\App\Http\Controllers\Admin\Group::class)->group(function () {
+Route::prefix('groups')->controller(Group::class)->group(function () {
     Route::get('/', 'index')->name(GROUP_LIST_ADMIN_ROUTER);
 });
-Route::prefix('users')->controller(\App\Http\Controllers\Admin\User::class)->group(function () {
+Route::prefix('users')->controller(User::class)->group(function () {
     Route::get('/', 'index')->name(USER_LIST_ADMIN_ROUTER);
     Route::get('/list', 'apiListUser');
 });
-
+Route::prefix('export')->controller(Export::class)->group(function () {
+    Route::post('/user-join-event', 'userJoinEvent');
+});

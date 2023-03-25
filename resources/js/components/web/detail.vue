@@ -258,6 +258,7 @@ export default {
                 email: '',
                 phone: '',
                 task_id: '',
+                share: this.key_local,
 
             },
             props: {
@@ -394,10 +395,9 @@ export default {
     mounted() {
         this.props.idTask = this.detail_id
         this.props.key_local = this.key_local
+        console.log(this.key_local)
         this.getDetail();
-        this.getOtherEvents();
-        localStorage.setItem(this.props.key_local, this.props.key_local)
-        // this.locateGeoLocation();
+        this.getOtherEvents();// this.locateGeoLocation();
     },
     filters: {
         moment: function (date) {

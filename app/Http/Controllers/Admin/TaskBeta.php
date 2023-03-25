@@ -20,9 +20,7 @@ class TaskBeta extends Controller
     {
 
         return view(
-            'admin.task_beta.index', [
-
-            ]
+            'admin.task_beta.index'
         );
     }
     public function edit($id)
@@ -35,11 +33,8 @@ class TaskBeta extends Controller
     }
     public function create(Request $request)
     {
-
         return view(
-            'admin.task_beta.create', [
-
-            ]
+            'admin.task_beta.create'
         );
     }
     public function uploadAvatar(Request $request)

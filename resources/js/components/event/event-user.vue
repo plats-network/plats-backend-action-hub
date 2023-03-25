@@ -2,7 +2,10 @@
     <el-row>
         <el-row class="mb-1">
             <h4>User Join Event</h4>
-            <a href="/cws/events" ><el-button size="mini" class="mb-1" type="primary" icon="el-icon-back"></el-button></a>
+            <div class="d-flex justify-content-between mb-2">
+                <el-button type="primary" size="mini" @click="exportData()">Excel <i class="el-icon-download el-icon-right"></i></el-button>
+                <a href="/cws/events" ><el-button size="mini" class="mb-1" type="primary" icon="el-icon-back"></el-button></a>
+            </div>
             <el-descriptions title="" :column="3" border>
                 <el-descriptions-item label="Name"  label-class-name="my-label" content-class-name="my-content">
                     <el-col :span="23">
@@ -22,7 +25,7 @@
             </el-descriptions>
         </el-row>
         <el-row>
-            <el-table
+            <el-table border
                 :data="tableData"
                 style="width: 100%">
                 <el-table-column type="index" width="50"></el-table-column>
@@ -147,6 +150,29 @@ export default {
         }
     },
     methods: {
+        exportData() {
+            var rawData =
+                {
+                    'task_id': this.task_id,
+                }
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+            axios.post('/cws/export/user-join-event', rawData,{responseType: 'arraybuffer'}).then(response => {
+                var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+                var fileLink = document.createElement('a');
+                fileLink.href = fileURL;
+                fileLink.setAttribute('download', 'user-join-event.xlsx');
+                document.body.appendChild(fileLink);
+                fileLink.click();
+                loading.close();
+            }).catch((_) => {
+                loading.close();
+            })
+        },
         list_data(val = 1, type = true) {
             var self = this;
             let rawData =

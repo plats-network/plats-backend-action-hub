@@ -22,7 +22,7 @@ class SendTicket extends Mailable
      *
      * @return void
      */
-    public function __construct($ticket,$user)
+    public function __construct($ticket, $user)
     {
         $this->ticket = $ticket;
         $this->user = $user;
