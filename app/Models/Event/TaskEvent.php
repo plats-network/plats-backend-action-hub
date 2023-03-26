@@ -38,6 +38,7 @@ class TaskEvent extends Model
         'type', // 0: Sesion, 1: Booth, 3: Hub
         'max_job',
         'status',
+        'code'
     ];
 
     /**

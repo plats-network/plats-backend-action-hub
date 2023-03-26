@@ -36,6 +36,10 @@ class EventUserTicket extends Model
         'sesion_code',
         'booth_code',
         'qr_image',
+        'is_session',
+        'is_booth',
+        'color_session',
+        'color_boot'
     ];
 
     public function task()

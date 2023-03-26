@@ -164,6 +164,7 @@ class EventService extends BaseService
             $data['status'] = true;
             $data['slug'] = $request->input('name');
             $data['max_job'] = 0;
+            // $data['code'] = Str::random(35);
             $dataBaseTask = $this->taskRepository->create($data);
             if ($data['task_galleries']){
                 foreach ($data['task_galleries'] as $uploadedFile){
@@ -181,7 +182,7 @@ class EventService extends BaseService
                     }
                 }
             }
-            $sessions = Arr::get($data, 'sessions');
+            $sessions = array_merge(Arr::get($data, 'sessions'), ['code' => Str::random(35)]);
             if ($sessions){
                 $idTaskEventSessions = $dataBaseTask->taskEvents()->create($sessions);
                 if ($sessions['detail']){
@@ -191,7 +192,7 @@ class EventService extends BaseService
                     }
                 }
             }
-            $booths = Arr::get($data, 'booths');
+            $booths = array_merge(Arr::get($data, 'booths'), ['code' => Str::random(35)]);
             if ($booths){
                 $idTaskEventBooths = $dataBaseTask->taskEvents()->create($booths);
                 if ($booths['detail']){
