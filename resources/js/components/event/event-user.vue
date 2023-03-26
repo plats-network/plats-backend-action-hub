@@ -194,7 +194,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = '/cws/events/api/'+this.task_id
+            let url = '/events/api/'+this.task_id
             axios.get(url, {
                 params: rawData
             }).then(e => {
