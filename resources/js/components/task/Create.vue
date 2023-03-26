@@ -50,7 +50,7 @@
                         <el-upload
                             class="avatar-uploader"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cws/tasks/save-avatar-api"
+                            action="/tasks/save-avatar-api"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="form.banner_url" :src="form.banner_url" class="avatar">
@@ -60,7 +60,7 @@
                     <el-form-item label="Slider">
                         <el-upload
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cws/tasks/save-sliders-api"
+                            action="/tasks/save-sliders-api"
                             list-type="picture-card"
                             :on-success="handleSuccess"
                             :file-list="form.task_galleries"

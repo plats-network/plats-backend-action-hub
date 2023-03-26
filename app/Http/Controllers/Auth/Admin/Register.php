@@ -69,8 +69,8 @@ class Register extends Controller
             ];
             User::where('id',$user->id)->update($data);
             return redirect('auth/cws')->with(['success' => 'Tài khoản xác nhận thành công']);
-        }else {
-            return redirect('cws/register')->withErrors(['message' => 'Error: Liên hệ admim']);
+        } else {
+            return redirect('register')->withErrors(['message' => 'Error: Liên hệ admim']);
         }
     }
 }

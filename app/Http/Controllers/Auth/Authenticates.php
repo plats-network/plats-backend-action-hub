@@ -149,15 +149,15 @@ trait Authenticates
      */
     public function redirectPath()
     {
-        if (!in_array(optional(Auth::user())->role, [2, 3])
+        if (!in_array(optional(Auth::user())->role, [ADMIN_ROLE, CLIENT_ROLE])
             && str_contains(URL::current(), 'auth/cws')) {
-            Redirect::to('/cws');
+            Redirect::to('/');
         }
 
         if (method_exists($this, 'redirectTo')) {
             if (str_contains(URL::current(),'auth/cws')
                 && !is_null(Auth::user())
-                && in_array(optional(Auth::user())->role, [2,3])) {
+                && in_array(optional(Auth::user())->role, [ADMIN_ROLE, CLIENT_ROLE])) {
                 return $this->redirectTo();
             }
         }
@@ -195,9 +195,9 @@ trait Authenticates
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        if (str_contains(URL::current(),'auth/cws')){
-            return $this->loggedOut($request) ?: redirect('auth/cws');
-        }
+        // if (str_contains(URL::current(),'auth/cws')){
+        //     return $this->loggedOut($request) ?: redirect('auth/cws');
+        // }
 
         return $this->loggedOut($request) ?: redirect('/');
     }

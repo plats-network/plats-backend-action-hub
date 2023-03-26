@@ -142,7 +142,9 @@ class Detail extends Controller
         $input= Arr::except($request->all(), '__token');
         $data = $this->userEventLikeRepository->where('user_id',Auth::user()->id)
             ->join('tasks', 'tasks.id', '=', 'user_event_likes.task_id')
-            ->orderBy('user_event_likes.created_at', 'desc')->paginate(20);
+            ->orderBy('user_event_likes.created_at', 'desc')
+            ->paginate(20);
+
         return response()->json($data);
 
     }
@@ -160,13 +162,21 @@ class Detail extends Controller
     {
         $data = Arr::except($request->all(), '__token');
         $checkHashCode = $this->repository->whereHashCode($data['id'])->first();
+
         if ($checkHashCode){
             $user = Auth::user();
-            $checkUserCreateTask = Task::where('creator_id',$user->id)->where('id',$checkHashCode->task_id)->first();
+            $checkUserCreateTask = Task::where('creator_id',$user->id)
+                ->where('id',$checkHashCode->task_id)
+                ->first();
+
             if ($checkUserCreateTask){
-                $this->repository->whereHashCode($data['id'])->update(['is_checkin' => true
+                $this->repository->whereHashCode($data['id'])->update([
+                    'is_checkin' => true
                 ]);
-                return view('web.confirm_ticket',['active' => 1]);
+
+                return view('web.confirm_ticket',[
+                    'active' => 1
+                ]);
             }
         }
         return view('web.confirm_ticket');

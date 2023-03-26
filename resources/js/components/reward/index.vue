@@ -110,7 +110,7 @@
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cws/tasks/save-avatar-api"
+                            action="/tasks/save-avatar-api"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="formData.image" :src="formData.image" class="avatar">
@@ -147,7 +147,7 @@
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/cws/tasks/save-avatar-api"
+                            action="/tasks/save-avatar-api"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="formData.image" :src="formData.image" class="avatar">
