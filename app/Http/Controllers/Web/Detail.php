@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\{Route, Mail, Auth};
 use App\Jobs\SendTicket;
-use App\Mail\SendTicket as EmailSendTicket;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\BaseImage;
 
@@ -67,10 +66,11 @@ class Detail extends Controller
             $data['type'] = $user ? 0 : 1;
             $data['user_id'] = $user ?  $user->id : null;
             $data['hash_code'] = Str::random(32);
-            $url = config('app.link_cws').'/events/confirm-ticket?type=checkin&id=' . $data['hash_code'];
+            $urlQR = env('LINK_CWS') . '/events/confirm-ticket?type=checkin&id=' . $data['hash_code'];
             $image = \QrCode::format('png')
                 ->size(100)
-                ->generate($url);
+                ->generate($urlQR);
+
             $output_file = '/img/qr-code/img-' . $data['hash_code'] . '.png';
             $files = Storage::disk('s3')->put($output_file, ($image));
             $files = Storage::disk('s3')->url($output_file);
@@ -82,7 +82,7 @@ class Detail extends Controller
                 ->first();
 
             if ($checkSendMail) {
-                dispatch(new SendTicket($task, $data['email'],$checkSendMail));
+                dispatch(new SendTicket($task, $data['email'], $checkSendMail));
             } else {
                 session()->put('hash_code', $data['hash_code']);
                 $this->repository->create($data);
@@ -97,7 +97,7 @@ class Detail extends Controller
                 }
 
                 $user = $this->repository->whereHashCode($data['hash_code'])->first();
-                dispatch(new SendTicket($task, $data['email'],$user));
+                dispatch(new SendTicket($task, $data['email'], $user));
             }
 
             return $this->respondSuccess('Success');

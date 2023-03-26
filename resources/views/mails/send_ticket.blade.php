@@ -80,7 +80,7 @@
                                 padding-top: 25px;
                                 color: #000000;
                                 font-family: sans-serif;" class="header">
-                                Tên sự kiện : {{\Str::limit($ticket->name , 80)}}
+                                {{\Str::limit($ticket->name , 80)}}
                             </td>
                         </tr>
                         <!-- SUBHEADER -->
@@ -90,7 +90,7 @@
                                 padding-top: 5px;
                                 color: #000000;
                                 font-family: sans-serif;" class="subheader">
-                                Thời gian diễn ra : {{date("Y-m-d H:i:s", strtotime($ticket->start_at))}} - {{date("Y-m-d H:i:s", strtotime($ticket->end_at))}}
+                                Time : {{date("Y-m-d H:i:s", strtotime($ticket->start_at))}} - {{date("Y-m-d H:i:s", strtotime($ticket->end_at))}}
                             </td>
                         </tr>
                         <tr>

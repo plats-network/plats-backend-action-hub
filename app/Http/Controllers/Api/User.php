@@ -68,9 +68,10 @@ class User extends ApiController
                 ->whereTaskId($task->id)
                 ->first();
             $hashCode = Str::random(15);
+            $urlQR = env('LINK_CWS').'/events/confirm-ticket?type=checkin&id=' . $hashCode;
             $image = \QrCode::format('png')
                 ->size(100)
-                ->generate(config('app.link_cws').'/events/confirm-ticket?type=checkin&id=' . $hashCode);
+                ->generate($urlQR);
 
             $output_file = '/img/qr-code/img-' . $hashCode . '.png';
             $files = Storage::disk('s3')->put($output_file, ($image));
