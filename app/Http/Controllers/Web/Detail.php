@@ -35,13 +35,20 @@ class Detail extends Controller
     public function index(Request $request)
     {
         $keyLocal = '';
-        if ($request->input('facebook') || $request->input('twitter') || $request->input('telegram') || $request->input('discord') || $request->input('form'))
-        {
+        if (
+            $request->input('facebook')
+            || $request->input('twitter')
+            || $request->input('telegram')
+            || $request->input('discord')
+            || $request->input('form')
+        ) {
             foreach ($request->all() as $key => $part) {
                 $keyLocal= $key;
             }
         }
-        $getIdTask = Task::where('slug',Route::current()->slug)->first();
+
+        $getIdTask = Task::where('slug', Route::current()->slug)->first();
+
         if ($getIdTask){
             return view('web.detail',['id' => $getIdTask->id,'key'=>$keyLocal]);
         }
@@ -60,11 +67,15 @@ class Detail extends Controller
             $data['type'] = $user ? 0 : 1;
             $data['user_id'] = $user ?  $user->id : null;
             $data['hash_code'] = Str::random(32);
-            $image = \QrCode::format('png')->size(100)->generate(config('app.link_qrc_confirm').'/events/confirm-ticket?type=checkin&id='.$data['hash_code']);
+            $url = config('app.link_cws').'/events/confirm-ticket?type=checkin&id=' . $data['hash_code'];
+            $image = \QrCode::format('png')
+                ->size(100)
+                ->generate($url);
             $output_file = '/img/qr-code/img-' . $data['hash_code'] . '.png';
             $files = Storage::disk('s3')->put($output_file, ($image));
             $files = Storage::disk('s3')->url($output_file);
             $data['qr_image'] = BaseImage::imgGroup($files);
+
             $checkSendMail = $this->repository
                 ->whereEmail($data['email'])
                 ->whereTaskId($data['task_id'])
@@ -84,6 +95,7 @@ class Detail extends Controller
                     ];
                     EventShare::create($share);
                 }
+
                 $user = $this->repository->whereHashCode($data['hash_code'])->first();
                 dispatch(new SendTicket($task, $data['email'],$user));
             }

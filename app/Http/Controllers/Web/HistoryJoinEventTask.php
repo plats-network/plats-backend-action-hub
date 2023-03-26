@@ -13,20 +13,18 @@ use Illuminate\Support\Facades\Session;
 
 class HistoryJoinEventTask extends Controller
 {
-
-    public function __construct()
-    {
-        // $this->middleware('client_web');
-    }
+    public function __construct() {}
 
     public function index(Request $request)
     {
         $code = $request->input('id');
         $user = Auth::user();
         $session = session()->put('code', $code);
+
         if ($user){
             return view('web.history');
         }
+
         return redirect('/client/login');
     }
 
@@ -83,15 +81,17 @@ class HistoryJoinEventTask extends Controller
         foreach($data as $k => $v) {
             $eventTaskJoins[$v['task_event_id']][]=$v->task_event_detail_id;
         }
+
         return $eventTaskJoins;
     }
 
     public function getEventTask($data)
     {
         $eventTasks= [];
-        foreach($data as $key => $value){
+        foreach($data as $key => $value) {
             $eventTasks[$key]= TaskEventDetail::where('task_event_id',$key)->pluck('id')->toArray();
         }
+
         return $eventTasks;
     }
 
@@ -103,16 +103,18 @@ class HistoryJoinEventTask extends Controller
             $taskEventId = TaskEvent::where('id',$key)->first();
             $taskName = Task::where('id',$taskEventId->task_id)->first();
             $grouped = [];
-            foreach(array_count_values($item) as $value => $count)
-            {
+
+            foreach(array_count_values($item) as $value => $count) {
                 $eventDetailName = TaskEventDetail::where('id',$value)->first();
-                if ($eventDetailName){
+
+                if ($eventDetailName) {
                     $grouped[] = [
                         'name' => $eventDetailName->name,
                         'active' => count(array_intersect($item, array($value)))
                     ];
                 }
             }
+
             $a[] = [
                 'taskEventName' => $taskEventId->name,
                 'banner' => $taskName->banner_url,

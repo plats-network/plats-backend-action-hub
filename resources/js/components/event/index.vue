@@ -185,7 +185,7 @@
                                 <el-upload
                                     class="avatar-uploader text-center"
                                     :headers="{ 'X-CSRF-TOKEN': csrf }"
-                                    action="/tasks/save-avatar-api"
+                                    action="tasks/save-avatar-api"
                                     :on-success="handleAvatarSuccess"
                                     :before-upload="beforeAvatarUpload">
                                     <img v-if="form.banner_url" :src="form.banner_url" class="avatar">
@@ -269,7 +269,7 @@
                                 <el-upload
                                     class="avatar-uploader"
                                     :headers="{ 'X-CSRF-TOKEN': csrf }"
-                                    action="/tasks/save-avatar-api"
+                                    action="tasks/save-avatar-api"
                                     :on-success="handleAvatarSuccess"
                                     :before-upload="beforeAvatarUpload">
                                     <img v-if="form.banner_url" :src="form.banner_url" class="avatar">
@@ -310,7 +310,7 @@
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/tasks/save-avatar-api"
+                            action="tasks/save-avatar-api"
                             :on-success="handleAvatarSuccess1"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="form.sessions.banner_url" :src="form.sessions.banner_url" class="avatar">
@@ -355,7 +355,7 @@
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="/tasks/save-avatar-api"
+                            action="tasks/save-avatar-api"
                             :on-success="handleAvatarSuccess2"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="form.booths.banner_url" :src="form.booths.banner_url" class="avatar">
@@ -595,7 +595,7 @@ import {
 
 export default {
     name: "index",
-    props: ['csrf', 'link_qrc'],
+    props: ['csrf', 'link_cws'],
     components: {
         'el-tiptap': ElementTiptap,
         QrcodeVue,
@@ -782,9 +782,12 @@ export default {
                 loading.close();
             });
         },
-        handleJoinEvent(scope, row){
+
+        handleJoinEvent(scope, row) {
+            console.log(window.location.href);
             window.location.href = "/events/"+row.id;
         },
+
         handleLink(scope, row) {
             this.dataLink = row.task_generate_links;
             this.dialogLinks = true

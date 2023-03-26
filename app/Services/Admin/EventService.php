@@ -207,12 +207,15 @@ class EventService extends BaseService
                 $dataBaseTask->taskEventSocials()->create($social);
             }
             $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
+
             DB::commit();
         } catch (RuntimeException $exception) {
             DB::rollBack();
+
             throw $exception;
         } catch (Exception $exception) {
             DB::rollBack();
+
             throw new RuntimeException($exception->getMessage(), 500062, $exception->getMessage(), $exception);
         }
     }
@@ -236,7 +239,7 @@ class EventService extends BaseService
             $dataLinkGenerate[] = [
                 'name' => 'Link share '.$item,
                 'type' => $key,
-                'url' => config('app.link_share').'/events/'.$slug.'?'.$item.'=' . Str::random(32),
+                'url' => config('app.link_event').'/events/' . $slug . '?' . $item . '=' . Str::random(32),
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ];

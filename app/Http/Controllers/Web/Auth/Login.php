@@ -29,7 +29,6 @@ class Login extends Controller
      */
     public function redirectToWeb()
     {
-        dd(22);
         return route(DASHBOARD_WEB_ROUTER);
     }
 

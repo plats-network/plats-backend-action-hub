@@ -68,11 +68,15 @@ class User extends ApiController
                 ->whereTaskId($task->id)
                 ->first();
             $hashCode = Str::random(15);
-            $image = \QrCode::format('png')->size(100)->generate(config('app.link_qrc_confirm').'/events/confirm-ticket?type=checkin&id='.$hashCode);
+            $image = \QrCode::format('png')
+                ->size(100)
+                ->generate(config('app.link_cws').'/events/confirm-ticket?type=checkin&id=' . $hashCode);
+
             $output_file = '/img/qr-code/img-' . $hashCode . '.png';
             $files = Storage::disk('s3')->put($output_file, ($image));
             $files = Storage::disk('s3')->url($output_file);
             $imageQrc = BaseImage::imgGroup($files);
+
             if (!$checkTicket) {
                 EventUserTicket::create([
                     'user_id' => $user->id,
