@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
+     * 
      * The path to the "home" route for your application.
      *
      * This is used by Laravel authentication to redirect users after login.
@@ -30,14 +31,13 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             $env = env('APP_ENV');
-            $service = env('SERVICE_URL');
             $host = request()->getHttpHost();
 
-            if ($env == 'cws' || $host == $service) {
+            if ($env == 'cws' || $host == 'cws.plats.network') {
                 Route::middleware([])->group(base_path('routes/admin.php'));
             }
 
-            if ($env == 'event' || $host == $service) {
+            if ($env == 'event' || $host == 'event.plats.network') {
                 Route::middleware([])->group(base_path('routes/web.php'));
             }
 
