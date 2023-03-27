@@ -75,7 +75,7 @@ class TaskEvent extends Model
 
     public function detail()
     {
-        return $this->hasMany(TaskEventDetail::class);
+        return $this->hasMany(TaskEventDetail::class)->orderBy('id', 'ASC');
     }
 
 

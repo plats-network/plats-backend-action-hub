@@ -41,20 +41,23 @@ class HistoryJoinEventTask extends Controller
     {
 
         try {
-            $email = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? $request->input('email') : $request->input('email').'@gmail.com';
-            $phone = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? $request->input('email') : 0;
+            if (filter_var($request->input('email'), FILTER_VALIDATE_EMAIL)) {
+                $account = $request->input('email');
+            } else {
+                $account = $request->input('email') . '@gmail.com';
+            }
             if (session()->get('code') != null){
                $code = session()->get('code');
                 $getTaskEventId = TaskEventDetail::where('code',$code)->first();
                 $getTaskId = TaskEvent::where('id',$getTaskEventId->task_event_id)->first();
             }
-            $checkUser = User::where('email',$email)->first();
+            $checkUser = User::where('email',$account)->first();
             if ($checkUser){
                 return redirect('/client/login');
             }
             $data = [
                 'name' => $request->input('name'),
-                'email' => $email,
+                'email' => $account,
                 'password' => '123456a@',
                 'confirmation_code' => null,
                 'role' => GUEST_ROLE,
@@ -65,8 +68,8 @@ class HistoryJoinEventTask extends Controller
                 'user_id' => $user->id,
                 'task_id' => $getTaskId->task_id,
                 'name' => $request->input('name'),
-                'email' => $email,
-                'phone' => $phone,
+                'email' => $account,
+                'phone' => 0,
                 'is_checkin' => true,
                 'type' => 1,
             ]);
@@ -92,7 +95,6 @@ class HistoryJoinEventTask extends Controller
             return true;
         }
         $getIdTask = TaskEvent::where('id',$getIdEventDetail->task_event_id)->first();
-
         if ($getIdEventDetail->status == false){
             $eventDetailsJoin = UserJoinEvent::where('user_id',$user->id)
                 ->where('task_event_id',$getIdEventDetail->task_event_id)
@@ -112,6 +114,8 @@ class HistoryJoinEventTask extends Controller
             'task_id' => $getIdTask->task_id,
             'task_event_id' => $getIdEventDetail->task_event_id,
         ];
+        $totalTask = EventUserTicket::where('user_id',$user->id)->where('task_id',$getIdTask->task_id)->first();
+
         $check = UserJoinEvent::where('user_id',$user->id)
             ->where('task_event_detail_id',$getIdEventDetail->id)
             ->first();
@@ -125,7 +129,7 @@ class HistoryJoinEventTask extends Controller
             ->get();
         $eventTaskJoins= $this->getEventTaskJoin($eventDetailsJoin);
         $eventTasks= $this->getEventTask($eventTaskJoins);
-        $rawData = $this->mergeArray($eventTasks,$eventTaskJoins);
+        $rawData = $this->mergeArray($eventTasks,$eventTaskJoins,$user,count($eventDetailsJoin),$totalTask);
 
         return $this->respondSuccess($rawData);
     }
@@ -144,14 +148,14 @@ class HistoryJoinEventTask extends Controller
     {
         $eventTasks= [];
         foreach($data as $key => $value) {
-            $eventTasks[$key]= TaskEventDetail::where('task_event_id',$key)->pluck('id')->toArray();
+            $eventTasks[$key]= TaskEventDetail::where('task_event_id',$key)->orderBy('id', 'ASC')->pluck('id')->toArray();
         }
-
         return $eventTasks;
     }
 
-    public function mergeArray($eventTaskJoins,$eventTasks)
+    public function mergeArray($eventTaskJoins,$eventTasks,$user,$countDetail,$totalTask)
     {
+        $arr = array_values($eventTaskJoins);
         $c = array_merge_recursive($eventTaskJoins,$eventTasks);
         $a=[];
         foreach ($c as $key => $item){
@@ -169,9 +173,18 @@ class HistoryJoinEventTask extends Controller
                     ];
                 }
             }
-
+            if ($totalTask == null){
+                $session = '...';
+                $booth = '...';
+            }else{
+                $session = $totalTask->sesion_code;
+                $booth = $totalTask->booth_code;
+            }
             $a[] = [
                 'taskEventName' => $taskEventId->name,
+                'nameUser' => $user->name,
+                'total' =>  $taskEventId->type == 0 ? $session :  $booth,
+                'count' => $countDetail.'/'.count($arr[0]),
                 'banner' => $taskName->banner_url,
                 'type' => $taskEventId->type == 0 ? 'Session' : 'Booth' ,
                 'taskName' => $taskName->name,

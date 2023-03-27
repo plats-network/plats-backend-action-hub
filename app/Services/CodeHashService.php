@@ -32,7 +32,6 @@ class CodeHashService
             ->whereTaskId($taskId)
             ->whereUserId($userId)
             ->first();
-
         if ($booth) {
             $max = $booth->max_job;
             $countMaxBooth = $this->userJoinEvent
