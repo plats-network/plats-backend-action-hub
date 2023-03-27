@@ -6,6 +6,8 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Http\Requests\Api\QrCode\EventRequest;
 use App\Http\Resources\QrCodeResource;
+use App\Services\CodeHashService;
+
 // Model
 use App\Models\Event\{
     UserJoinEvent,
@@ -21,7 +23,8 @@ class QrCode extends ApiController
         private UserJoinEvent $userJoinEvent,
         private TaskEventDetail $taskEventDetail,
         private TaskEvent $taskEvent,
-        private EventUserTicket $eventUserTicket
+        private EventUserTicket $eventUserTicket,
+        private CodeHashService $codeHashService
     ) {}
 
     public function qrEvent(EventRequest $request)
@@ -65,6 +68,9 @@ class QrCode extends ApiController
                 $data = [
                     'task_id' => $taskEvent->task_id
                 ];
+
+                // Make Code & Color
+                $this->codeHashService->makeCode($taskEvent->task_id, $userId);
 
                 $dataStatusess = [
                     'flag_session' => optional($eventUserTicket)->sesion_code ? true : false,
