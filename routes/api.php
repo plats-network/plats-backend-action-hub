@@ -71,14 +71,6 @@ Route::middleware('auth:api')->group(function ($router) {
     });
 });
 
-Route::prefix('cws')->group(function($router) {
-    Route::get('events/list', [CwsEvent::class, 'webList']);
-    Route::post('events/change-status', [CwsEvent::class, 'changeStatus']);
-    Route::post('events/change-status-detail', [CwsEvent::class, 'changeStatusDetail']);
-    $router->resource('groups', CwsGroup::class)->only(['index', 'store', 'show', 'destroy']);
-    $router->resource('events', CwsEvent::class)->only(['index', 'store', 'show', 'destroy']);
-});
-
 Route::prefix('tasks')->controller(Task::class)->group(function ($router) {
    $router->get('/', 'index');
    $router->get('/doing', 'getTaskDoing');
@@ -91,7 +83,7 @@ Route::prefix('tasks')->controller(Task::class)->group(function ($router) {
    $router->post('start-cancel', 'startTask')->name('task.startTask');
    $router->get('my-tasks', 'myTasks')->name('task.myTasks');
    $router->post('start-job', 'startJob')->name('task.startJob');
-   
+
    $router->prefix('{id}/locations')->controller(TaskLocation::class)->group(function ($router) {
        $router->post('/', 'create');
    });
@@ -101,19 +93,6 @@ Route::get('event-imprgress', [Event::class, 'index'])->name('event.improgress')
 Route::get('top-events', [Task::class, 'getEventTaskHots'])->name('task.event.top-events');
 Route::prefix('qr')->controller(QrCode::class)->group(function($router) {
     $router->post('qr-event', 'qrEvent')->name('qr.qrEvent');
-});
-
-Route::prefix('rewards')->controller(Reward::class)->group(function ($router) {
-    $router->get('/', 'index');
-    $router->get('/edit/{id}', 'edit')->whereUuid('id');
-    $router->post('/store', 'store');
-    $router->get('/delete/{id}', 'destroy')->whereUuid('id');
-});
-Route::prefix('tasks-cws')->controller(Tasks::class)->group(function ($router) {
-    $router->get('/', 'index');
-    $router->get('/edit/{id}', 'edit')->whereUuid('id');
-    $router->post('/store', 'store');
-    $router->get('/delete/{id}', 'destroy')->whereUuid('id');
 });
 
 Route::resource('task_notices', TaskNotice::class)->only(['index']);

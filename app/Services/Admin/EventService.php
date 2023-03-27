@@ -142,8 +142,8 @@ class EventService extends BaseService
                     $dataBaseTask->taskEventSocials()->update($socialUn,$social['id']);
                 }
             }
-//            TaskGenerateLinks::where('task_id',$id)->delete();
-//            $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
+            TaskGenerateLinks::where('task_id',$id)->delete();
+            $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
             DB::commit();
         } catch (RuntimeException $exception) {
             DB::rollBack();

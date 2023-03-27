@@ -185,7 +185,7 @@
                                 <el-upload
                                     class="avatar-uploader text-center"
                                     :headers="{ 'X-CSRF-TOKEN': csrf }"
-                                    action="tasks/save-avatar-api"
+                                    :action="link_cws+'/tasks/save-avatar-api'"
                                     :on-success="handleAvatarSuccess"
                                     :before-upload="beforeAvatarUpload">
                                     <img v-if="form.banner_url" :src="form.banner_url" class="avatar">
@@ -195,7 +195,7 @@
                             <el-form-item label="Slider">
                                 <el-upload
                                     :headers="{ 'X-CSRF-TOKEN': csrf }"
-                                    action="/tasks/save-sliders-api"
+                                    :action="link_cws+'/tasks/save-sliders-api'"
                                     list-type="picture-card"
                                     :on-success="handleSuccess"
                                     :file-list="form.task_galleries"
@@ -269,7 +269,7 @@
                                 <el-upload
                                     class="avatar-uploader"
                                     :headers="{ 'X-CSRF-TOKEN': csrf }"
-                                    action="tasks/save-avatar-api"
+                                    :action="link_cws+'/tasks/save-avatar-api'"
                                     :on-success="handleAvatarSuccess"
                                     :before-upload="beforeAvatarUpload">
                                     <img v-if="form.banner_url" :src="form.banner_url" class="avatar">
@@ -279,7 +279,7 @@
                             <el-form-item label="Slider">
                                 <el-upload
                                     :headers="{ 'X-CSRF-TOKEN': csrf }"
-                                    action="/tasks/save-sliders-api"
+                                    :action="link_cws+'/tasks/save-sliders-api'"
                                     list-type="picture-card"
                                     :on-success="handleSuccess"
                                     :file-list="form.task_galleries"
@@ -310,7 +310,7 @@
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="tasks/save-avatar-api"
+                            :action="link_cws+'/tasks/save-avatar-api'"
                             :on-success="handleAvatarSuccess1"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="form.sessions.banner_url" :src="form.sessions.banner_url" class="avatar">
@@ -355,7 +355,7 @@
                         <el-upload
                             class="avatar-uploader text-center"
                             :headers="{ 'X-CSRF-TOKEN': csrf }"
-                            action="tasks/save-avatar-api"
+                            :action="link_cws+'/tasks/save-avatar-api'"
                             :on-success="handleAvatarSuccess2"
                             :before-upload="beforeAvatarUpload">
                             <img v-if="form.booths.banner_url" :src="form.booths.banner_url" class="avatar">
@@ -406,7 +406,7 @@
                             >
                                 <template slot-scope="scope">
                                     <div ref="qrcode">
-                                    <qrcode-vue :id="scope.row.id" :value="'https://event.plats.network/events/code?type=event&id='+scope.row.code" :size="size" level="H"></qrcode-vue>
+                                    <qrcode-vue :id="scope.row.id" :value="link_event+'/events/code?type=event&id='+scope.row.code" :size="size" level="H"></qrcode-vue>
                                     </div>
                                     <button @click="downloadQrCode(scope.row.id)">Download</button>
                                 </template>
@@ -444,7 +444,7 @@
                             >
                                 <template slot-scope="scope">
                                     <div ref="qrcode">
-                                        <qrcode-vue :id="scope.row.id" :value="'https://event.plats.network/events/code?type=event&id='+scope.row.code" :size="size" level="H"></qrcode-vue>
+                                        <qrcode-vue :id="scope.row.id" :value="link_event+'/events/code?type=event&id='+scope.row.code" :size="size" level="H"></qrcode-vue>
                                     </div>
                                     <button @click="downloadQrCode(scope.row.id)">Download</button>
                                 </template>
@@ -595,7 +595,7 @@ import {
 
 export default {
     name: "index",
-    props: ['csrf', 'link_cws'],
+    props: ['csrf', 'link_cws','link_event'],
     components: {
         'el-tiptap': ElementTiptap,
         QrcodeVue,
@@ -763,7 +763,7 @@ export default {
                     'status': status,
                     'id': id,
                 }
-            axios.post('/api/cws/events/change-status-detail', rawData).then(e => {
+            axios.post(this.link_cws+'/api/events/change-status-detail', rawData).then(e => {
                 Notification.success({
                     title: ' Thành công',
                     message: ' Thành công',
@@ -785,7 +785,7 @@ export default {
 
         handleJoinEvent(scope, row) {
             console.log(window.location.href);
-            window.location.href = "/events/"+row.id;
+            window.location.href = this.link_cws+"/events/"+row.id;
         },
 
         handleLink(scope, row) {
@@ -870,7 +870,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = '/api/tasks-cws/edit/'+ row.id;
+            let url = this.link_cws+'/api/tasks-cws/edit/'+ row.id;
             axios.get(url).then(e => {
                 this.dataBooths = e.data.data.message.booths.detail;
                 this.dataSessions = e.data.data.message.sessions.detail;
@@ -1064,7 +1064,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = '/api/cws/events'
+            let url =this.link_cws+'/api/events'
             axios.get(url, {
                 params: rawData
             }).then(e => {
@@ -1089,7 +1089,7 @@ export default {
                     'status': status,
                     'id': id,
                 }
-            axios.post('/api/cws/events/change-status', rawData).then(e => {
+            axios.post(this.link_cws+'/api/events/change-status', rawData).then(e => {
                 Notification.success({
                     title: ' Thành công',
                     message: ' Thành công',
@@ -1123,7 +1123,7 @@ export default {
                     if (this.form.task_event_socials.is_like == false && this.form.task_event_socials.is_comment == false && this.form.task_event_socials.is_retweet == false ){
                         this.form.task_event_socials.url = null
                     }
-                    axios.post('/api/cws/events', this.form).then(e => {
+                    axios.post(this.link_cws+'/api/events', this.form).then(e => {
                         Notification.success({
                             title: ' Thành công',
                             message: ' Thành công',
@@ -1158,7 +1158,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = '/api/tasks-cws/edit/'+ row.id;
+            let url = this.link_cws+'/api/tasks-cws/edit/'+ row.id;
             axios.get(url).then(e => {
                 this.form = e.data.data.message;
                 this.quiz = e.data.data.message.quiz
@@ -1185,7 +1185,7 @@ export default {
                 cancelButtonText: 'Hủy',
                 type: 'warning'
             }).then(() => {
-                axios.delete('/api/cws/events/'+row.id, ).then(e => {
+                axios.delete(this.link_cws+'/api/events/'+row.id, ).then(e => {
                     this.list_data()
                     Notification.success({
                         title: ' Thành công',

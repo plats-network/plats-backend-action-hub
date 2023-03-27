@@ -171,6 +171,7 @@ import {
 
 export default {
     name: "Index",
+    props: ['link_cws'],
     components: {
         'el-tiptap': ElementTiptap,
     },
@@ -202,7 +203,7 @@ export default {
                 cancelButtonText: 'Hủy',
                 type: 'warning'
             }).then(() => {
-                axios.get('/api/tasks-cws/delete/'+row.id, ).then(e => {
+                axios.get(this.link_cws+'/api/tasks-cws/delete/'+row.id, ).then(e => {
                     this.list_data()
                 }).catch((_) => {
                 })

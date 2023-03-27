@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Admin\Api;
 
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Admin\TaskRequest;

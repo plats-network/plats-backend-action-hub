@@ -300,7 +300,7 @@ export default {
                 cancelButtonText: 'Hủy',
                 type: 'warning'
             }).then(() => {
-                axios.delete('/api/cws/groups/'+row.id, ).then(e => {
+                axios.delete('/api/groups/'+row.id, ).then(e => {
                     this.list_data()
                     Notification.success({
                         title: ' Thành công',
@@ -321,7 +321,7 @@ export default {
                         spinner: 'el-icon-loading',
                         background: 'rgba(0, 0, 0, 0.7)'
                     });
-                    axios.post('/api/cws/groups', this.formData).then(e => {
+                    axios.post('/api/groups', this.formData).then(e => {
                         Notification.success({
                             title: ' Thành công',
                             message: ' Thành công',
@@ -368,7 +368,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = '/api/cws/groups'
+            let url = '/api/groups'
             axios.get(url, {
                 params: rawData
             }).then(e => {

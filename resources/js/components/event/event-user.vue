@@ -4,7 +4,7 @@
             <h4>User Join Event</h4>
             <div class="d-flex justify-content-between mb-2">
                 <el-button type="primary" size="mini" @click="exportData()">Excel <i class="el-icon-download el-icon-right"></i></el-button>
-                <a href="/cws/events" ><el-button size="mini" class="mb-1" type="primary" icon="el-icon-back"></el-button></a>
+                <a href="/events" ><el-button size="mini" class="mb-1" type="primary" icon="el-icon-back"></el-button></a>
             </div>
             <el-descriptions title="" :column="3" border>
                 <el-descriptions-item label="Name"  label-class-name="my-label" content-class-name="my-content">
@@ -133,7 +133,7 @@ import {
 } from 'element-tiptap';
 export default {
     name: "event-user",
-    props: ['task_id'],
+    props: ['task_id','link_cws'],
     components: {
         'el-tiptap': ElementTiptap,
     },
@@ -161,7 +161,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            axios.post('/export/user-join-event', rawData,{responseType: 'arraybuffer'}).then(response => {
+            axios.post(this.link_cws+'/export/user-join-event', rawData,{responseType: 'arraybuffer'}).then(response => {
                 var fileURL = window.URL.createObjectURL(new Blob([response.data]));
                 var fileLink = document.createElement('a');
                 fileLink.href = fileURL;
@@ -194,7 +194,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = '/events/api/'+this.task_id
+            let url = this.link_cws+'/events/api/'+this.task_id
             axios.get(url, {
                 params: rawData
             }).then(e => {
