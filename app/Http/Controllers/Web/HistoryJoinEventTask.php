@@ -3,34 +3,89 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Mail\VerifyCodeEmail;
+use App\Models\Event\EventUserTicket;
 use App\Models\Event\TaskEvent;
 use App\Models\Event\TaskEventDetail;
 use App\Models\Event\UserJoinEvent;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use App\Services\CodeHashService;
 
 class HistoryJoinEventTask extends Controller
 {
-    public function __construct() {}
+    public function __construct(private CodeHashService $codeHashService) {}
 
     public function index(Request $request)
     {
         $code = $request->input('id');
-        $user = Auth::user();
-        $session = session()->put('code', $code);
 
+        $user = Auth::user();
+
+        session()->put('code', $code);
         if ($user){
+            $taskEventId = TaskEventDetail::where('code',$code)->first();
+            $taskId = TaskEvent::where('id', $taskEventId->task_event_id)->first();
+            $this->codeHashService->makeCode($taskId->task_id, $user->id);
             return view('web.history');
         }
+        return view('web.form_add_user');
+    }
 
-        return redirect('/client/login');
+    public function createUser(Request $request)
+    {
+
+        try {
+            $email = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? $request->input('email') : $request->input('email').'@gmail.com';
+            $phone = filter_var($request->input('email'), FILTER_VALIDATE_EMAIL) ? $request->input('email') : 0;
+            if (session()->get('code') != null){
+               $code = session()->get('code');
+                $getTaskEventId = TaskEventDetail::where('code',$code)->first();
+                $getTaskId = TaskEvent::where('id',$getTaskEventId->task_event_id)->first();
+            }
+            $checkUser = User::where('email',$email)->first();
+            if ($checkUser){
+                return redirect('/client/login');
+            }
+            $data = [
+                'name' => $request->input('name'),
+                'email' => $email,
+                'password' => '123456a@',
+                'confirmation_code' => null,
+                'role' => GUEST_ROLE,
+                'email_verified_at' => now()
+            ];
+            $user = User::create($data);
+            EventUserTicket::create([
+                'user_id' => $user->id,
+                'task_id' => $getTaskId->task_id,
+                'name' => $request->input('name'),
+                'email' => $email,
+                'phone' => $phone,
+                'is_checkin' => true,
+                'type' => 1,
+            ]);
+            Auth::login($user);
+        } catch (Exception $exception) {
+            return redirect('cws/register')->withErrors(['message' => 'Error: Liên hệ admim']);
+        }
+        return view('web.history');
     }
 
     public function apiList()
     {
         $user = Auth::user();
+        if (!$user){
+            if (session()->get('userC') != null){
+                $user = session()->get('userC');
+            }
+        }
+
         $code = session()->get('code');
         $getIdEventDetail = TaskEventDetail::where('code', $code)->first();
         if (!$getIdEventDetail){

@@ -13,6 +13,7 @@ if (!defined('DEFINE_ADMIN_ROUTER')) {
     //Auth web
 
     define('LOGIN_WEB_ROUTE', 'web.login.route');
+    define('CREATE_USER_WEB_ROUTE', 'web.create.user.route');
     define('LOGOUT_WEB_ROUTE', 'web.logout.route');
     define('DASHBOARD_WEB_ROUTER', 'web.dashboard.route');
     define('LIKE_WEB_ROUTER', 'web.like.route');

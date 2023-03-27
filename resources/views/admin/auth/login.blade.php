@@ -13,7 +13,6 @@
     <!-- Background Start -->
     <div class="fixed-background" style="background-image: url({{ asset('img/admin/background/background-blue.webp') }})"></div>
     <!-- Background End -->
-
     <div class="container-fluid p-0 h-100 position-relative">
         <div class="row g-0 h-100">
             <!-- Left Side Start -->
@@ -40,7 +39,6 @@
                 </div>
             </div>
             <!-- Left Side End -->
-
             <!-- Right Side Start -->
             <div class="col-12 col-lg-auto h-100 pb-4 px-4 pt-0 p-lg-0">
                 <div class="sw-lg-70 min-h-100 bg-foreground d-flex justify-content-center align-items-center shadow-deep py-5 full-page-content-right-border" style="height: 100vh;">
