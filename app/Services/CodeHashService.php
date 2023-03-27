@@ -42,7 +42,7 @@ class CodeHashService
 
             if (
                 $eventUserTicket
-                && is_null($eventUserTicket->booth_code)
+                && empty($eventUserTicket->booth_code)
                 && $max == $countMaxBooth
             ) {
                 $maxCode = (int) $this->eventUserTicket->max('booth_code');
@@ -63,7 +63,7 @@ class CodeHashService
 
             if (
                 $eventUserTicket
-                &&is_null($eventUserTicket->sesion_code)
+                && empty($eventUserTicket->sesion_code)
                 && $max == $countMax
             ) {
                 $maxCode = (int) $this->eventUserTicket->max('sesion_code');
