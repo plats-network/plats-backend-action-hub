@@ -29,6 +29,7 @@ Route::prefix('client')->group(function ($router) {
 });
 
 Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_WEB_ROUTER);
+Route::post('/create-user', [HistoryJoinEventTask::class, 'createUser'])->name(CREATE_USER_WEB_ROUTE);
 Route::get('/events/code', [HistoryJoinEventTask::class, 'index']);
 Route::get('/events/history/list', [HistoryJoinEventTask::class, 'apiList']);
 Route::get('/events/likes', [Likes::class, 'index'])->name(LIKE_WEB_ROUTER);;
