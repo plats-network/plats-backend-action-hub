@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Admin\Api;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\Admin\TaskRequest;
 use App\Http\Resources\Admin\EventResource;
+use App\Models\Event\EventUserTicket;
 use App\Models\Event\TaskEvent;
 use App\Models\Event\TaskEventDetail;
 use App\Models\Event\TaskEventReward;
 use App\Models\Event\UserEventLike;
+use App\Models\Task;
 use App\Services\Admin\EventService;
 use App\Services\Admin\TaskService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 class Event extends ApiController
@@ -133,16 +136,36 @@ class Event extends ApiController
 
     public function changeStatusDetail(Request $request)
     {
-//       if ($request->input('status') == 1){
-//           $status = true;
-//       }else{
-//           $status = false;
-//       }
         try {
             $mess = empty($request->input('id')) ? 'done!' : 'done!';
            TaskEventDetail::where('id',$request->input('id'))->update(['status' => $request->input('status')]);
         } catch (\Exception $e) {
             return $this->respondError($e->getMessage());
         }
+    }
+
+    public function confirmTicket(Request $request)
+    {
+        $data = Arr::except($request->all(), '__token');
+        $checkHashCode = EventUserTicket::where('hash_code',$data['id'])->first();
+
+        if ($checkHashCode){
+            $user = Auth::user();
+            $checkUserCreateTask = Task::where('creator_id',$user->id)
+                ->where('id',$checkHashCode->task_id)
+                ->first();
+
+            if ($checkUserCreateTask){
+                EventUserTicket::where('hash_code',$data['id'])->update([
+                    'is_checkin' => true
+                ]);
+
+                return view('web.confirm_ticket',[
+                    'active' => 1
+                ]);
+            }
+        }
+        return view('web.confirm_ticket');
+
     }
 }
