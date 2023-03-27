@@ -170,31 +170,6 @@ class Detail extends Controller
         return (new Ticket($task,$user))->downloadPdf();
     }
 
-    public function confirmTicket(Request $request)
-    {
-        $data = Arr::except($request->all(), '__token');
-        $checkHashCode = $this->repository->whereHashCode($data['id'])->first();
-
-        if ($checkHashCode){
-            $user = Auth::user();
-            $checkUserCreateTask = Task::where('creator_id',$user->id)
-                ->where('id',$checkHashCode->task_id)
-                ->first();
-
-            if ($checkUserCreateTask){
-                $this->repository->whereHashCode($data['id'])->update([
-                    'is_checkin' => true
-                ]);
-
-                return view('web.confirm_ticket',[
-                    'active' => 1
-                ]);
-            }
-        }
-        return view('web.confirm_ticket');
-
-    }
-
     public function getTypeShare($type)
     {
         switch ($type) {
