@@ -84,7 +84,7 @@ import {
 import moment from "moment";
 export default {
     name: "home",
-    props: ['active'],
+    props: ['active','link_cws'],
     components: {
         'el-tiptap': ElementTiptap,
     },
@@ -153,7 +153,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = '/api/cws/events/list'
+            let url = this.link_cws+'/api/events/list'
             axios.get(url, {
                 params: rawData
             }).then(e => {

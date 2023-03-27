@@ -66,7 +66,7 @@ class Detail extends Controller
             $data['type'] = $user ? 0 : 1;
             $data['user_id'] = $user ?  $user->id : null;
             $data['hash_code'] = Str::random(32);
-            $urlQR = env('LINK_CWS').'/api/events123/confirm-ticket?type=checkin&id=' . $data['hash_code'];
+            $urlQR = env('LINK_CWS').'/api/events/confirm-ticket?type=checkin&id=' . $data['hash_code'];
             $image = \QrCode::format('png')
                 ->size(100)
                 ->generate($urlQR);
