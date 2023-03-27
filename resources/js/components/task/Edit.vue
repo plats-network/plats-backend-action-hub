@@ -2,7 +2,7 @@
     <div>
         <div style="display: flex;justify-content: space-between">
             <h4>Edit task</h4>
-            <h3><a href="/cws/tasks" ><el-button type="primary" icon="el-icon-back"></el-button></a>
+            <h3><a href="/tasks" ><el-button type="primary" icon="el-icon-back"></el-button></a>
             </h3>
         </div>
         <el-form ref="form" class="form-style" label-position="top" :model="form" label-width="120px">
@@ -427,7 +427,7 @@ export default {
                             type: 'success',
                         });
                         loading.close();
-                        window.location.href = '/cws/tasks';
+                        window.location.href = '/tasks';
                     }).catch(error => {
                         this.errors = error.response.data.message; // this should be errors.
                         Notification.error({
@@ -533,7 +533,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = '/api/cws/groups'
+            let url = '/api/groups'
             axios.get(url, {
                 params: rawData
             }).then(e => {
