@@ -6,7 +6,13 @@
                 <el-card shadow="hover" class="box-card mb-2" >
                     <div slot="header" class="clearfix">
                         <el-image :src="item.banner"></el-image>
-                        <span>{{item.taskName}}</span>
+                        <span> {{item.taskName}}</span>
+                        <br>
+                        <span><strong>Name:</strong> {{item.nameUser}}</span>
+                        <br>
+                        <span><strong>{{item.type}}:</strong> {{item.count}}</span>
+                        <br>
+                        <span><strong> Bonus code:</strong> {{item.total}}</span>
                     </div>
                     <div v-for="detail in item.eventDetail" class="text item mb-1">
                         <el-alert v-if="detail.active == 2"

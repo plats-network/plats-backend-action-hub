@@ -44,18 +44,12 @@
                     label="Phone" width="180"
                 >
                 </el-table-column>
-                <el-table-column  width="180"
-                                      label="">
-                        <template slot-scope="scope">
-                            <el-tag type="success" v-for="(item, index) in scope.row.join">
-                                <div v-if="item.type == 0">
-                                    <div v-if="item.check == true"> Session : {{item.stt}} </div>
-                                </div>
-                                <div v-if="item.type == 1">
-                                    <div v-if="item.check == true"> Booth : {{item.stt}}</div>
-                                </div>
-                            </el-tag>
-                        </template>
+                <el-table-column  width="180"  prop="sesion_code"
+                                  label="Session Code">
+                </el-table-column>
+                <el-table-column  width="180" prop="booth_code"
+                                      label="Booth Code">
+
                 </el-table-column>
                 <el-table-column  width="180"
                                   label="Status">
