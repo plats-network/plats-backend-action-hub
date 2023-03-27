@@ -5,6 +5,7 @@ namespace App\Services;
 class GuildService
 {
     /**
+     * 
      * @return array[]
      */
     public function mockGuilds()
