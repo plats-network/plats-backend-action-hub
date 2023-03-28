@@ -607,6 +607,7 @@ export default {
                     return time.getTime() < Date.now();
                 },
             },
+            qrScale: 15,
             dataLink: [],
             ruleQuiz:{
                 name: [{
@@ -653,7 +654,7 @@ export default {
                 ],
             formLabelWidth: '120px',
             activeName: 'first',
-            size: 120,
+            size: 300,
             image: '',
             dialogSessions: false,
             dialogQuiz: false,
