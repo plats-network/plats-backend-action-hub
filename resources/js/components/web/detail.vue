@@ -126,30 +126,30 @@
                             </el-tab-pane>
                         </el-tabs>
                     </div> -->
-                    <div class="mb-5">
-                        <div class="">
-                            <div class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;"><a href="/events">Other events</a>
-                            </div>
-                            <el-row>
-                                <el-col :md="6" :sm="12" :xs="12" :lg="6" :xl="6" class="p-1" v-for="(event, index) in otherEvent">
-                                    <el-card shadow="hover" :body-style="{ padding: '3px' }">
-                                        <img
-                                            :src="event.banner_url"
-                                            class="image w-100" style="height: 150px">
-                                        <div style="padding: 10px 5px;">
-                                            <span style="font-weight: 800;font-size: 16px"><a  v-bind:href="'/events/'+ event.slug" style="color:black;">{{event.name}}</a></span>
-                                            <div class="">
-                                                <el-button type="text" class="button"><i class="el-icon-time"></i> <span
-                                                    style="font-size: 12px">{{event.end_at | moment}}</span>
-                                                </el-button>
-                                                <span class="d-block">{{event.description | truncate(100)}}</span>
-                                            </div>
-                                        </div>
-                                    </el-card>
-                                </el-col>
-                            </el-row>
-                        </div>
-                    </div>
+<!--                    <div class="mb-5">-->
+<!--                        <div class="">-->
+<!--                            <div class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;"><a href="/events">Other events</a>-->
+<!--                            </div>-->
+<!--                            <el-row>-->
+<!--                                <el-col :md="6" :sm="12" :xs="12" :lg="6" :xl="6" class="p-1" v-for="(event, index) in otherEvent">-->
+<!--                                    <el-card shadow="hover" :body-style="{ padding: '3px' }">-->
+<!--                                        <img-->
+<!--                                            :src="event.banner_url"-->
+<!--                                            class="image w-100" style="height: 150px">-->
+<!--                                        <div style="padding: 10px 5px;">-->
+<!--                                            <span style="font-weight: 800;font-size: 16px"><a  v-bind:href="'/events/'+ event.slug" style="color:black;">{{event.name}}</a></span>-->
+<!--                                            <div class="">-->
+<!--                                                <el-button type="text" class="button"><i class="el-icon-time"></i> <span-->
+<!--                                                    style="font-size: 12px">{{event.end_at | moment}}</span>-->
+<!--                                                </el-button>-->
+<!--                                                <span class="d-block">{{event.description | truncate(100)}}</span>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </el-card>-->
+<!--                                </el-col>-->
+<!--                            </el-row>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </el-col>
                 <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
                     <el-card class="box-card fixed" shadow="hover" style="border-radius: 20px">
@@ -369,35 +369,35 @@ export default {
                 loading.close();
             })
         },
-        getOtherEvents() {
-            let rawData =
-                {
-                    'limit': 4,
-                }
-            const loading = this.$loading({
-                lock: true,
-                text: 'Loading',
-                spinner: 'el-icon-loading',
-                background: 'rgba(0, 0, 0, 0.7)'
-            });
-            let url = '/api/cws/events/list'
-            axios.get(url,{
-                params: rawData
-            }).then(e => {
-                this.otherEvent = e.data.data;
-                loading.close();
-
-            }).catch((_) => {
-                loading.close();
-            })
-        }
+        // getOtherEvents() {
+        //     let rawData =
+        //         {
+        //             'limit': 4,
+        //         }
+        //     const loading = this.$loading({
+        //         lock: true,
+        //         text: 'Loading',
+        //         spinner: 'el-icon-loading',
+        //         background: 'rgba(0, 0, 0, 0.7)'
+        //     });
+        //     let url = '/api/cws/events/list'
+        //     axios.get(url,{
+        //         params: rawData
+        //     }).then(e => {
+        //         this.otherEvent = e.data.data;
+        //         loading.close();
+        //
+        //     }).catch((_) => {
+        //         loading.close();
+        //     })
+        // }
     },
     mounted() {
         this.props.idTask = this.detail_id
         this.props.key_local = this.key_local
         console.log(this.key_local)
         this.getDetail();
-        this.getOtherEvents();// this.locateGeoLocation();
+        // this.getOtherEvents();// this.locateGeoLocation();
     },
     filters: {
         moment: function (date) {
