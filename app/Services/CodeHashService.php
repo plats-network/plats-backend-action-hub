@@ -27,11 +27,11 @@ class CodeHashService
         $countMaxBooth = $this->userJoinEvent->whereTaskEventId($booth->id)->whereUserId($userId)->count();
 
         if ($booth) {
-            $max = $booth->max_job;
+            $maxBooth = $booth->max_job;
             if (
                 $eventUserTicket
                 && empty($eventUserTicket->booth_code)
-                && $max >= $countMaxBooth
+                && $countMaxBooth >= $maxBooth
             ) {
                 $maxCode = (int) $this->eventUserTicket->max('booth_code');
                 $eventUserTicket->update([
@@ -42,12 +42,12 @@ class CodeHashService
         }
 
         if ($session) {
-            $max = $session->max_job;
+            $maxSession = $session->max_job;
 
             if (
                 $eventUserTicket
                 && empty($eventUserTicket->sesion_code)
-                && $max >= $countMaxSession
+                && $countMaxSession >= $maxSession
             ) {
                 $maxCode = (int) $this->eventUserTicket->max('sesion_code');
                 $eventUserTicket->update([
