@@ -42,7 +42,7 @@ class Dashboard extends Controller
         $eventDetails = UserJoinEvent::where('user_id',$user->id)->get();
         $eventTaskJoins= $this->getEventTaskJoin($eventDetails);
         $eventTasks= $this->getEventTask($eventTaskJoins);
-        $rawData = $this->mergeArray($eventTasks,$eventTaskJoins,$user);
+        $rawData = $this->mergeArray($eventTasks,$eventTaskJoins);
         return $this->respondSuccess($rawData);
     }
 
@@ -66,6 +66,8 @@ class Dashboard extends Controller
 
     public function mergeArray($eventTaskJoins,$eventTasks)
     {
+        $arr = array_values($eventTasks);
+        $code = TaskEventDetail::where('id',$arr[0][0])->first();
         $c = array_merge_recursive($eventTaskJoins,$eventTasks);
         $a=[];
         foreach ($c as $key => $item){
@@ -75,6 +77,7 @@ class Dashboard extends Controller
                 'taskEventName' => $taskEventId->name,
                 'type' => $taskEventId->type == 0 ? 'Session' : 'Booth' ,
                 'taskName' => $taskName->name,
+                'code' => $code ? $code->code : '',
                 'banner' => $taskName->banner_url,
                 'taskId' => $taskName->id,
                 'created_at' => $taskName->created_at,
