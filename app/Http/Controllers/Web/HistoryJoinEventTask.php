@@ -29,11 +29,8 @@ class HistoryJoinEventTask extends Controller
 
         session()->put('code', $code);
         if ($user) {
-            $taskEventId = TaskEventDetail::where('code',$code)->first();
-            $taskId = TaskEvent::where('id', $taskEventId->task_event_id)->first();
+            $this->apiList();
 
-            // Make code + color
-            // $this->codeHashService->makeCode($taskId->task_id, $user->id);
             return view('web.history');
         }
         return view('web.form_add_user');
