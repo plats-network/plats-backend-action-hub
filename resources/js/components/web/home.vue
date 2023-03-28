@@ -8,6 +8,20 @@
             </el-carousel-item>
         </el-carousel>
         <div class="container">
+            <div v-if="isHidden == 1" class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;">Current Event
+                <el-row :gutter="10">
+                    <el-col :span="24" :md="8">
+                        <el-card shadow="hover" class="box-card mb-2" >
+<!--                            <a  v-bind:href="'/events/code?type=event&id='+dataHistory.idDetailEventTask" style="color:black;">-->
+                            <div slot="header" class="clearfix">
+                                <img :src="dataHistory.banner" class="image w-100 height-card-image">
+                            </div>
+                           <span> {{dataHistory.taskName}}</span>
+<!--                            </a>-->
+                        </el-card>
+                    </el-col>
+                </el-row>
+            </div>
             <div class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;">Events
             </div>
             <el-row>
@@ -95,6 +109,7 @@ export default {
             totalNumber:0,
             totalItem:0,
             tableData:[],
+            dataHistory:{},
             isHidden:'',
             selected_options: [],
         }
@@ -135,6 +150,25 @@ export default {
                 this.selected_options.push(option);
             }
         },
+
+        history(){
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+            let url = this.link_cws+'/events/history/user'
+            axios.get(url).then(e => {
+                this.dataHistory = e.data.message;
+                console.log(this.dataHistory)
+                loading.close();
+
+            }).catch((_) => {
+                loading.close();
+            })
+        },
+
         list_data(val = 1, type = true) {
             var self = this;
             let rawData =
@@ -153,7 +187,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = this.link_cws+'/api/events/list'
+            let url = this.link_cws+'/events/list'
             axios.get(url, {
                 params: rawData
             }).then(e => {
@@ -175,6 +209,7 @@ export default {
     },
     mounted: function () {
         this.list_data()
+        this.history()
         this.isHidden = this.active
     },
     filters: {

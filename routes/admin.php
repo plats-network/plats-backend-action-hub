@@ -44,7 +44,6 @@ Route::prefix('export')->controller(Export::class)->group(function () {
 });
 Route::prefix('api')->group(function($router) {
     Route::get('events/confirm-ticket/', [\App\Http\Controllers\Admin\Api\Event::class, 'confirmTicket'])->middleware('client_admin');
-    Route::get('events/list', [\App\Http\Controllers\Admin\Api\Event::class, 'webList']);
     Route::post('events/change-status', [\App\Http\Controllers\Admin\Api\Event::class, 'changeStatus']);
     Route::post('events/change-status-detail', [\App\Http\Controllers\Admin\Api\Event::class, 'changeStatusDetail']);
     $router->resource('groups', \App\Http\Controllers\Admin\Api\Group::class)->only(['index', 'store', 'show', 'destroy']);
