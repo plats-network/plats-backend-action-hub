@@ -23,19 +23,19 @@ class CodeHashService
         $session = $this->taskEvent->whereTaskId($taskId)->whereType(0)->first();
         $booth = $this->taskEvent->whereTaskId($taskId)->whereType(1)->first();
         $eventUserTicket = $this->eventUserTicket->whereTaskId($taskId)->whereUserId($userId)->first();
-        $countMaxSession = $this->userJoinEvent->whereTaskEventId($session->id)->whereUserId($userId)->count();
-        $countMaxBooth = $this->userJoinEvent->whereTaskEventId($booth->id)->whereUserId($userId)->count();
 
         if ($booth) {
             $maxBooth = $booth->max_job;
+            $countMaxBooth = $this->userJoinEvent->whereTaskEventId($booth->id)->whereUserId($userId)->count();
+
             if (
                 $eventUserTicket
                 && empty($eventUserTicket->booth_code)
                 && $countMaxBooth >= $maxBooth
             ) {
-                $maxCode = (int) $this->eventUserTicket->max('booth_code');
+                $maxB = $this->eventUserTicket->max('booth_code');
                 $eventUserTicket->update([
-                    'booth_code' => $maxCode + 1,
+                    'booth_code' => $maxB + 1,
                     'color_boot' => '#' . substr(md5(rand()), 0, 6)
                 ]);
             }
@@ -43,15 +43,16 @@ class CodeHashService
 
         if ($session) {
             $maxSession = $session->max_job;
+            $countMaxSession = $this->userJoinEvent->whereTaskEventId($session->id)->whereUserId($userId)->count();
 
             if (
                 $eventUserTicket
                 && empty($eventUserTicket->sesion_code)
                 && $countMaxSession >= $maxSession
             ) {
-                $maxCode = (int) $this->eventUserTicket->max('sesion_code');
+                $maxSS = $this->eventUserTicket->max('sesion_code');
                 $eventUserTicket->update([
-                    'sesion_code' => $maxCode + 1,
+                    'sesion_code' => $maxSS + 1,
                     'color_session' => '#' . substr(md5(rand()), 0, 6)
                 ]);
             }
