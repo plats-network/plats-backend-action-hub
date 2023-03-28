@@ -75,7 +75,6 @@ class Dashboard extends Controller
                 'taskEventName' => $taskEventId->name,
                 'type' => $taskEventId->type == 0 ? 'Session' : 'Booth' ,
                 'taskName' => $taskName->name,
-//                'idDetailEventTask' => $taskName->name,
                 'banner' => $taskName->banner_url,
                 'taskId' => $taskName->id,
                 'created_at' => $taskName->created_at,
