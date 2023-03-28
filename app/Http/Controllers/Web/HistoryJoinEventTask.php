@@ -28,12 +28,12 @@ class HistoryJoinEventTask extends Controller
         $user = Auth::user();
 
         session()->put('code', $code);
-        if ($user){
+        if ($user) {
             $taskEventId = TaskEventDetail::where('code',$code)->first();
             $taskId = TaskEvent::where('id', $taskEventId->task_event_id)->first();
 
             // Make code + color
-            $this->codeHashService->makeCode($taskId->task_id, $user->id);
+            // $this->codeHashService->makeCode($taskId->task_id, $user->id);
             return view('web.history');
         }
         return view('web.form_add_user');
@@ -48,14 +48,13 @@ class HistoryJoinEventTask extends Controller
                 $account = $request->input('email') . '@gmail.com';
             }
             if (session()->get('code') != null){
-               $code = session()->get('code');
+                $code = session()->get('code');
                 $getTaskEventId = TaskEventDetail::where('code',$code)->first();
                 $getTaskId = TaskEvent::where('id',$getTaskEventId->task_event_id)->first();
             }
             $checkUser = User::where('email',$account)->first();
             if ($checkUser){
                 Auth::login($checkUser);
-                // return redirect('/client/login');
             }
             $data = [
                 'name' => $request->input('name'),
@@ -132,6 +131,8 @@ class HistoryJoinEventTask extends Controller
         $eventTaskJoins= $this->getEventTaskJoin($eventDetailsJoin);
         $eventTasks= $this->getEventTask($eventTaskJoins);
         $rawData = $this->mergeArray($eventTasks,$eventTaskJoins,$user,count($eventDetailsJoin),$totalTask);
+
+        $this->codeHashService->makeCode($getIdTask->task_id, $user->id);
 
         return $this->respondSuccess($rawData);
     }
