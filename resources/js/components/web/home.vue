@@ -8,8 +8,8 @@
             </el-carousel-item>
         </el-carousel>
         <div class="container">
-            <div v-if="isHidden == 1" class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;">Current Event
-                <el-row :gutter="10">
+            <div v-if="isHidden == 1 " class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;">Current Event
+                <el-row :gutter="10" v-if="dataHistory != 1">
                     <el-col :span="24" :md="8">
                         <el-card shadow="hover" class="box-card mb-2" >
                             <a  v-bind:href="'/events/code?type=event&id='+dataHistory.code" style="color:black;">
@@ -161,7 +161,7 @@ export default {
             let url = this.link_cws+'/events/history/user'
             axios.get(url).then(e => {
                 this.dataHistory = e.data.message;
-                console.log(this.dataHistory)
+                console.log(e.data.message)
                 loading.close();
 
             }).catch((_) => {

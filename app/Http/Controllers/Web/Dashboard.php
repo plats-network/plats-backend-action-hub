@@ -67,7 +67,9 @@ class Dashboard extends Controller
     public function mergeArray($eventTaskJoins,$eventTasks)
     {
         $arr = array_values($eventTasks);
-        $code = TaskEventDetail::where('id',$arr[0][0])->first();
+        if (count($arr) > 0){
+            $code = TaskEventDetail::where('id',$arr[0][0])->first();
+        }
         $c = array_merge_recursive($eventTaskJoins,$eventTasks);
         $a=[];
         foreach ($c as $key => $item){
@@ -86,7 +88,11 @@ class Dashboard extends Controller
         usort($a, function ($a, $b) {
             return strtotime($a['created_at']) < strtotime($b['created_at']);
         });
-        $maxTime = $a[0];
+        if (count($a) > 0){
+            $maxTime = $a[0];
+        }else{
+            $maxTime = 1;
+        }
         return $maxTime;
     }
 }
