@@ -31,6 +31,8 @@ class HistoryJoinEventTask extends Controller
         if ($user){
             $taskEventId = TaskEventDetail::where('code',$code)->first();
             $taskId = TaskEvent::where('id', $taskEventId->task_event_id)->first();
+
+            // Make code + color
             $this->codeHashService->makeCode($taskId->task_id, $user->id);
             return view('web.history');
         }
@@ -39,7 +41,6 @@ class HistoryJoinEventTask extends Controller
 
     public function createUser(Request $request)
     {
-
         try {
             if (filter_var($request->input('email'), FILTER_VALIDATE_EMAIL)) {
                 $account = $request->input('email');
@@ -53,7 +54,8 @@ class HistoryJoinEventTask extends Controller
             }
             $checkUser = User::where('email',$account)->first();
             if ($checkUser){
-                return redirect('/client/login');
+                Auth::login($checkUser);
+                // return redirect('/client/login');
             }
             $data = [
                 'name' => $request->input('name'),

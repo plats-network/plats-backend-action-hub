@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\{Route, Mail, Auth};
 use App\Jobs\SendTicket;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\BaseImage;
-
 use Str;
-use function Symfony\Component\Translation\t;
 
 class Detail extends Controller
 {
