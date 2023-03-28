@@ -8,20 +8,20 @@
             </el-carousel-item>
         </el-carousel>
         <div class="container">
-<!--            <div v-if="isHidden == 1 " class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;">Current Event-->
-<!--                <el-row :gutter="10" v-if="dataHistory != 1">-->
-<!--                    <el-col :span="24" :md="8">-->
-<!--                        <el-card shadow="hover" class="box-card mb-2" >-->
-<!--                            <a  v-bind:href="'/events/code?type=event&id='+dataHistory.code" style="color:black;">-->
-<!--                            <div slot="header" class="clearfix">-->
-<!--                                <img :src="dataHistory.banner" class="image w-100 height-card-image">-->
-<!--                            </div>-->
-<!--                           <span> {{dataHistory.taskName}}</span>-->
-<!--                            </a>-->
-<!--                        </el-card>-->
-<!--                    </el-col>-->
-<!--                </el-row>-->
-<!--            </div>-->
+            <div v-if="isHidden == 1 " class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;">Current Event
+                <el-row :gutter="10" v-if="dataHistory != 1">
+                    <el-col :span="24" :md="8">
+                        <el-card shadow="hover" class="box-card mb-2" >
+                            <a  v-bind:href="'/events/code?type=event&id='+dataHistory.code" style="color:black;">
+                            <div slot="header" class="clearfix">
+                                <img :src="dataHistory.banner" class="image w-100 height-card-image">
+                            </div>
+                           <span> {{dataHistory.taskName}}</span>
+                            </a>
+                        </el-card>
+                    </el-col>
+                </el-row>
+            </div>
             <div class="mt-3" style="font-weight: 800;font-size: 20px;color: #545454;">Events
             </div>
             <el-row>
@@ -151,23 +151,23 @@ export default {
             }
         },
 
-        // history(){
-        //     const loading = this.$loading({
-        //         lock: true,
-        //         text: 'Loading',
-        //         spinner: 'el-icon-loading',
-        //         background: 'rgba(0, 0, 0, 0.7)'
-        //     });
-        //     let url = '/events/history/user'
-        //     axios.get(url).then(e => {
-        //         this.dataHistory = e.data.message;
-        //         console.log(e.data.message)
-        //         loading.close();
-        //
-        //     }).catch((_) => {
-        //         loading.close();
-        //     })
-        // },
+        history(){
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+            let url = '/events/history/user'
+            axios.get(url).then(e => {
+                this.dataHistory = e.data.message;
+                console.log(e.data.message)
+                loading.close();
+
+            }).catch((_) => {
+                loading.close();
+            })
+        },
 
         list_data(val = 1, type = true) {
             var self = this;
@@ -209,7 +209,7 @@ export default {
     },
     mounted: function () {
         this.list_data()
-        // this.history()
+        this.history()
         this.isHidden = this.active
     },
     filters: {
