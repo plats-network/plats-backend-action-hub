@@ -44,29 +44,6 @@ class Event extends ApiController
         }
     }
 
-    public function webList(Request $request)
-    {
-        try {
-            $limit = $request->get('limit') ?? PAGE_SIZE;
-            if (empty(Auth::user())) {
-                $event = $this->taskService->search(['limit' => $limit,'type' => 1,'status' => 1]);
-            } else {
-                $event = $this->taskService->search(['limit' => $limit,'type' => 1,'status' => 1]);
-                foreach ($event as &$item){
-                    $data = UserEventLike::where('task_id',$item->id)->where('user_id',Auth::user()->id)->first();
-                    if ($data){
-                        $item['like_active'] = 1;
-                    }else{
-                        $item['like_active'] = 0;
-                    }
-                }
-            }
-            return response()->json($event);
-        } catch (\Exception $e) {
-            return $this->respondError($e->getMessage());
-        }
-    }
-
     /**
      * Store a newly created resource in storage.
      *
