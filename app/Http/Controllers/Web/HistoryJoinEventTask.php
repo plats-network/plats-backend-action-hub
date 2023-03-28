@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\CreateUserForm;
 use App\Mail\VerifyCodeEmail;
 use App\Models\Event\EventUserTicket;
 use App\Models\Event\TaskEvent;
@@ -28,50 +29,52 @@ class HistoryJoinEventTask extends Controller
         $user = Auth::user();
 
         session()->put('code', $code);
-        if ($user) {
-            $this->apiList();
-
+        if ($user){
+            $taskEventId = TaskEventDetail::where('code',$code)->first();
+            $taskId = TaskEvent::where('id', $taskEventId->task_event_id)->first();
+            $this->codeHashService->makeCode($taskId->task_id, $user->id);
             return view('web.history');
         }
         return view('web.form_add_user');
     }
 
-    public function createUser(Request $request)
+    public function createUser(CreateUserForm $request)
     {
+
         try {
             if (filter_var($request->input('email'), FILTER_VALIDATE_EMAIL)) {
                 $account = $request->input('email');
             } else {
                 $account = $request->input('email') . '@gmail.com';
             }
-            if (session()->get('code') != null){
-                $code = session()->get('code');
-                $getTaskEventId = TaskEventDetail::where('code',$code)->first();
-                $getTaskId = TaskEvent::where('id',$getTaskEventId->task_event_id)->first();
-            }
             $checkUser = User::where('email',$account)->first();
             if ($checkUser){
                 Auth::login($checkUser);
             }
-            $data = [
-                'name' => $request->input('name'),
-                'email' => $account,
-                'password' => '123456a@',
-                'confirmation_code' => null,
-                'role' => GUEST_ROLE,
-                'email_verified_at' => now()
-            ];
-            $user = User::create($data);
-            EventUserTicket::create([
-                'user_id' => $user->id,
-                'task_id' => $getTaskId->task_id,
-                'name' => $request->input('name'),
-                'email' => $account,
-                'phone' => 0,
-                'is_checkin' => true,
-                'type' => 1,
-            ]);
-            Auth::login($user);
+            if (session()->get('code') != null){
+               $code = session()->get('code');
+                $getTaskEventId = TaskEventDetail::where('code',$code)->first();
+                $getTaskId = TaskEvent::where('id',$getTaskEventId->task_event_id)->first();
+                $data = [
+                    'name' => $request->input('name'),
+                    'email' => $account,
+                    'password' => '123456a@',
+                    'confirmation_code' => null,
+                    'role' => GUEST_ROLE,
+                    'email_verified_at' => now()
+                ];
+                $user = User::create($data);
+                EventUserTicket::create([
+                    'user_id' => $user->id,
+                    'task_id' => $getTaskId->task_id,
+                    'name' => $request->input('name'),
+                    'email' => $account,
+                    'phone' => 0,
+                    'is_checkin' => true,
+                    'type' => 1,
+                ]);
+                Auth::login($user);
+            }
         } catch (Exception $exception) {
             return redirect('cws/register')->withErrors(['message' => 'Error: Liên hệ admim']);
         }
@@ -81,38 +84,18 @@ class HistoryJoinEventTask extends Controller
     public function apiList()
     {
         $user = Auth::user();
-        if (!$user){
-            if (session()->get('userC') != null){
-                $user = session()->get('userC');
-            }
-        }
-
         $code = session()->get('code');
         $getIdEventDetail = TaskEventDetail::where('code', $code)->first();
         if (!$getIdEventDetail){
             return true;
         }
         $getIdTask = TaskEvent::where('id',$getIdEventDetail->task_event_id)->first();
-        if ($getIdEventDetail->status == false){
-            $eventDetailsJoin = UserJoinEvent::where('user_id',$user->id)
-                ->where('task_event_id',$getIdEventDetail->task_event_id)
-                ->where('task_id',$getIdTask->task_id)
-                ->get();
-            $eventTaskJoins= $this->getEventTaskJoin($eventDetailsJoin);
-            $eventTasks= $this->getEventTask($eventTaskJoins);
-            $rawData = $this->mergeArray($eventTasks, $eventTaskJoins);
-            $rawData['active'] = 1;
-
-            return $this->respondSuccess($rawData);
-        }
-
         $dataInsert = [
             'user_id' => $user->id,
             'task_event_detail_id' => $getIdEventDetail->id,
             'task_id' => $getIdTask->task_id,
             'task_event_id' => $getIdEventDetail->task_event_id,
         ];
-        $totalTask = EventUserTicket::where('user_id',$user->id)->where('task_id',$getIdTask->task_id)->first();
 
         $check = UserJoinEvent::where('user_id',$user->id)
             ->where('task_event_detail_id',$getIdEventDetail->id)
@@ -120,16 +103,23 @@ class HistoryJoinEventTask extends Controller
         if (!$check){
             UserJoinEvent::create($dataInsert);
         }
-
+        $this->codeHashService->makeCode($getIdTask->task_id, $user->id);
+        $totalTask = EventUserTicket::where('user_id',$user->id)->where('task_id',$getIdTask->task_id)->first();
         $eventDetailsJoin = UserJoinEvent::where('user_id',$user->id)
             ->where('task_event_id',$getIdEventDetail->task_event_id)
             ->where('task_id',$getIdTask->task_id)
             ->get();
         $eventTaskJoins= $this->getEventTaskJoin($eventDetailsJoin);
         $eventTasks= $this->getEventTask($eventTaskJoins);
-        $rawData = $this->mergeArray($eventTasks,$eventTaskJoins,$user,count($eventDetailsJoin),$totalTask);
+        if ($getIdEventDetail->status == false){
+            $eventTaskJoins= $this->getEventTaskJoin($eventDetailsJoin);
+            $eventTasks= $this->getEventTask($eventTaskJoins);
+            $rawData = $this->mergeArray($eventTasks, $eventTaskJoins,$user,count($eventDetailsJoin),$totalTask);
+            $rawData['active'] = 1;
 
-        $this->codeHashService->makeCode($getIdTask->task_id, $user->id);
+            return $this->respondSuccess($rawData);
+        }
+        $rawData = $this->mergeArray($eventTasks,$eventTaskJoins,$user,count($eventDetailsJoin),$totalTask);
 
         return $this->respondSuccess($rawData);
     }
