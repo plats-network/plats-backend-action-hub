@@ -30,9 +30,11 @@ class HistoryJoinEventTask extends Controller
 
         session()->put('code', $code);
         if ($user){
-            $taskEventId = TaskEventDetail::where('code',$code)->first();
-            $taskId = TaskEvent::where('id', $taskEventId->task_event_id)->first();
-            $this->codeHashService->makeCode($taskId->task_id, $user->id);
+//            $taskEventId = TaskEventDetail::where('code',$code)->first();
+//            $taskId = TaskEvent::where('id', $taskEventId->task_event_id)->first();
+//            $this->codeHashService->makeCode($taskId->task_id, $user->id);
+            $this->apiList();
+
             return view('web.history');
         }
         return view('web.form_add_user');
@@ -50,6 +52,7 @@ class HistoryJoinEventTask extends Controller
             $checkUser = User::where('email',$account)->first();
             if ($checkUser){
                 Auth::login($checkUser);
+                return view('web.history');
             }
             if (session()->get('code') != null){
                $code = session()->get('code');
