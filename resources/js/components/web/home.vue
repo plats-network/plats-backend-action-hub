@@ -158,7 +158,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = this.link_cws+'/events/history/user'
+            let url = '/events/history/user'
             axios.get(url).then(e => {
                 this.dataHistory = e.data.message;
                 console.log(e.data.message)
@@ -187,7 +187,7 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
-            let url = this.link_cws+'/events/list'
+            let url = '/events/list'
             axios.get(url, {
                 params: rawData
             }).then(e => {
