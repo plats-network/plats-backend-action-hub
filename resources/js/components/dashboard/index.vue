@@ -1,50 +1,100 @@
 <template>
-  <el-row>
-    <el-col
-      v-for="(o, index) in 4"
-      :key="o"
-      :span="5"
-      :offset="index > 0 ? 1 : 0"
-    >
-      <el-card :body-style="{ padding: '0px' }">
-        <div style="padding: 14px">
-          <span>Yummy hamburger</span>
-          <div class="bottom">
-            <time class="time">{{ currentDate }}</time>
-            <el-button text class="button">Operating</el-button>
-          </div>
-        </div>
-      </el-card>
-    </el-col>
-  </el-row>
+    <el-row>
+        <el-row class="mb-1">
+            <el-col :span="6" v-for="(o, index) in data" class="p-1">
+                <el-card :body-style="{ padding: '0px' }">
+                    <a  v-bind:href="''+o.link" style="color:black;">
+                    <div style="padding: 14px;">
+                        <div slot="header" class="clearfix">
+                            <img :src="o.image" class="image w-100 height-card-image">
+                        </div>
+                        <h3 class="mt-2">{{o.name}}</h3>
+                    </div>
+                    </a>
+                </el-card>
+            </el-col>
+        </el-row>
+
+    </el-row>
 </template>
 
-<script lang="ts" setup>
+<script>
 import { ref } from 'vue'
-const currentDate = ref(new Date())
+import 'element-tiptap/lib/index.css';
+import {Notification} from 'element-ui';
+import {ElementTiptap} from 'element-tiptap';
+import QrcodeVue from 'qrcode.vue'
+import {
+    Doc,
+    Text,
+    Paragraph,
+    Heading,
+    Bold,
+    Underline,
+    Italic,
+    Strike,
+    ListItem,
+    BulletList,
+    OrderedList,
+    Image,
+    TodoList,
+    TodoItem,
+    Iframe,
+    Table,
+    TableHeader,
+    TableRow,
+    TableCell,
+    TextAlign,
+    LineHeight,
+    Indent,
+    HorizontalRule,
+    HardBreak,
+    TrailingNode,
+    History,
+    TextColor,
+    TextHighlight,
+    FormatClear,
+    FontType,
+    FontSize,
+    Preview,
+    CodeView,
+    Print,
+    Fullscreen,
+    SelectAll,
+} from 'element-tiptap';
+export default {
+    name: "index",
+    props: [],
+    components: {
+        'el-tiptap': ElementTiptap,
+    },
+    data() {
+        return {
+            currentDate: new Date(),
+            data:[
+                {
+                    name : 'Task',
+                    link : '/tasks',
+                    image : 'https://www.studytienganh.vn/upload/2021/06/105234.jpg'
+                },
+                {
+                    name : 'Event',
+                    link : '/events',
+                    image : 'https://blog.freelancerviet.vn/wp-content/uploads/2019/03/ZEeC1_events_medium.jpg'
+                },
+
+            ]
+        }
+    },
+    methods: {
+
+    },
+    mounted: function () {
+
+    }
+}
 </script>
 
-<style>
-.time {
-  font-size: 12px;
-  color: #999;
-}
+<style scoped>
 
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.button {
-  padding: 0;
-  min-height: auto;
-}
-
-.image {
-  width: 100%;
-  display: block;
-}
 </style>

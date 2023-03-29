@@ -22,6 +22,7 @@ Vue.filter('truncate', filter);
 Vue.use(ElementUI, { locale })
 Vue.use(ElementTiptapPlugin, { /* plugin options */ });
 Vue.component('task', require('./components/task/Index.vue').default);
+Vue.component('dashboard', require('./components/dashboard/index.vue').default);
 Vue.component('task-edit', require('./components/task/Edit.vue').default);
 Vue.component('task-create', require('./components/task/Create.vue').default);
 Vue.component('reward', require('./components/reward/index.vue').default);
