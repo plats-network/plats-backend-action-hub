@@ -59,40 +59,62 @@ class EventService extends BaseService
 
             $sessions = Arr::get($data, 'sessions');
             if ($sessions){
-                $sessionsUn = Arr::get($data, 'sessions');
-                unset($sessionsUn['detail']);
-                unset($sessionsUn['id']);
-                TaskEvent::where('id',$sessions['id'])->update($sessionsUn);
-                if ($sessions['detail']){
-                    foreach ($sessions['detail'] as $key => $item){
-                        if (empty($item['id'])){
+                if (empty($sessions['id'])){
+                    $sessions['code'] = Str::random(35);
+                    $idTaskEventSessions = $dataBaseTask->taskEvents()->create($sessions);
+                    if ($sessions['detail']){
+                        foreach ($sessions['detail'] as $key => $item){
                             $item['code'] = $this->generateBarcodeNumber().$key;
-                            $item['task_event_id'] = $sessions['id'];
-                            TaskEventDetail::create($item);
-                        }else{
-                            $itemUn = $item;
-                            unset($itemUn['id']);
-                            TaskEventDetail::where('id',$item['id'])->update($itemUn);
+                            $idTaskEventSessions->detail()->create($item);
+                        }
+                    }
+                }else{
+                    $sessionsUn = Arr::get($data, 'sessions');
+                    unset($sessionsUn['detail']);
+                    unset($sessionsUn['id']);
+                    TaskEvent::where('id',$sessions['id'])->update($sessionsUn);
+                    if ($sessions['detail']){
+                        foreach ($sessions['detail'] as $key => $item){
+                            if (empty($item['id'])){
+                                $item['code'] = $this->generateBarcodeNumber().$key;
+                                $item['task_event_id'] = $sessions['id'];
+                                TaskEventDetail::create($item);
+                            }else{
+                                $itemUn = $item;
+                                unset($itemUn['id']);
+                                TaskEventDetail::where('id',$item['id'])->update($itemUn);
+                            }
                         }
                     }
                 }
             }
             $booths = Arr::get($data, 'booths');
             if ($booths){
-                $boothsUn = Arr::get($data, 'booths');
-                unset($boothsUn['detail']);
-                unset($boothsUn['id']);
-                TaskEvent::where('id',$booths['id'])->update($boothsUn);
-                if ($booths['detail']){
-                    foreach ($booths['detail'] as $key => $item){
-                        if (empty($item['id'])){
+                if (empty($booths['id'])){
+                    $booths['code'] = Str::random(35);
+                    $idTaskEventBooths = $dataBaseTask->taskEvents()->create($booths);
+                    if ($booths['detail']){
+                        foreach ($booths['detail'] as $key => $item){
                             $item['code'] = $this->generateBarcodeNumber().$key;
-                            $item['task_event_id'] = $booths['id'];
-                            TaskEventDetail::create($item);
-                        }else{
-                            $itemUn = $item;
-                            unset($itemUn['id']);
-                            TaskEventDetail::where('id',$item['id'])->update($itemUn);
+                            $idTaskEventBooths->detail()->create($item);
+                        }
+                    }
+                }else{
+                    $boothsUn = Arr::get($data, 'booths');
+                    unset($boothsUn['detail']);
+                    unset($boothsUn['id']);
+                    TaskEvent::where('id',$booths['id'])->update($boothsUn);
+                    if ($booths['detail']){
+                        foreach ($booths['detail'] as $key => $item){
+                            if (empty($item['id'])){
+                                $item['code'] = $this->generateBarcodeNumber().$key;
+                                $item['task_event_id'] = $booths['id'];
+                                TaskEventDetail::create($item);
+                            }else{
+                                $itemUn = $item;
+                                unset($itemUn['id']);
+                                TaskEventDetail::where('id',$item['id'])->update($itemUn);
+                            }
                         }
                     }
                 }
