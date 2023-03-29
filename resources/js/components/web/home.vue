@@ -12,12 +12,12 @@
                 <el-row :gutter="10" v-if="dataHistory != 1">
                     <el-col :span="24" :md="8">
                         <el-card shadow="hover" class="box-card mb-2" >
-<!--                            <a  v-bind:href="'/events/code?type=event&id='+dataHistory.code" style="color:black;">-->
+                            <a  v-bind:href="'/events/code?type=event&id='+dataHistory.code" style="color:black;">
                             <div slot="header" class="clearfix">
                                 <img :src="dataHistory.banner" class="image w-100 height-card-image">
                             </div>
                            <span> {{dataHistory.taskName}}</span>
-<!--                            </a>-->
+                            </a>
                         </el-card>
                     </el-col>
                 </el-row>
