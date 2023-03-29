@@ -44,14 +44,14 @@
                     label="Phone" width="180"
                 >
                 </el-table-column>
-                <el-table-column  width="130"  prop="compare_session"
-                                  label="Session Done">
+                <el-table-column  width="110"  prop="compare_session"
+                                  label="Done/Total (Session)">
                 </el-table-column>
                 <el-table-column  width="130"  prop="sesion_code"
                                   label="Session Code">
                 </el-table-column>
-                <el-table-column  width="130" prop="compare_booth"
-                                  label="Booth Done">
+                <el-table-column  width="110" prop="compare_booth"
+                                  label="Done/Total (Booth)">
 
                 </el-table-column>
                 <el-table-column  width="130" prop="booth_code"
