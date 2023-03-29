@@ -56,39 +56,44 @@ class EventService extends BaseService
                     $dataBaseTask->taskGalleries()->create( ['url_image' => empty($uploadedFile['url']) ? $uploadedFile :  $uploadedFile['url']]);
                 }
             }
+
             $sessions = Arr::get($data, 'sessions');
-            $sessionsUn = Arr::get($data, 'sessions');
-            unset($sessionsUn['detail']);
-            unset($sessionsUn['id']);
-            TaskEvent::where('id',$sessions['id'])->update($sessionsUn);
-            if ($sessions['detail']){
-                foreach ($sessions['detail'] as $key => $item){
-                    if (empty($item['id'])){
-                        $item['code'] = $this->generateBarcodeNumber().$key;
-                        $item['task_event_id'] = $sessions['id'];
-                        TaskEventDetail::create($item);
-                    }else{
-                        $itemUn = $item;
-                        unset($itemUn['id']);
-                        TaskEventDetail::where('id',$item['id'])->update($itemUn);
+            if ($sessions){
+                $sessionsUn = Arr::get($data, 'sessions');
+                unset($sessionsUn['detail']);
+                unset($sessionsUn['id']);
+                TaskEvent::where('id',$sessions['id'])->update($sessionsUn);
+                if ($sessions['detail']){
+                    foreach ($sessions['detail'] as $key => $item){
+                        if (empty($item['id'])){
+                            $item['code'] = $this->generateBarcodeNumber().$key;
+                            $item['task_event_id'] = $sessions['id'];
+                            TaskEventDetail::create($item);
+                        }else{
+                            $itemUn = $item;
+                            unset($itemUn['id']);
+                            TaskEventDetail::where('id',$item['id'])->update($itemUn);
+                        }
                     }
                 }
             }
             $booths = Arr::get($data, 'booths');
-            $boothsUn = Arr::get($data, 'booths');
-            unset($boothsUn['detail']);
-            unset($boothsUn['id']);
-            TaskEvent::where('id',$booths['id'])->update($boothsUn);
-            if ($booths['detail']){
-                foreach ($booths['detail'] as $key => $item){
-                    if (empty($item['id'])){
-                        $item['code'] = $this->generateBarcodeNumber().$key;
-                        $item['task_event_id'] = $booths['id'];
-                        TaskEventDetail::create($item);
-                    }else{
-                        $itemUn = $item;
-                        unset($itemUn['id']);
-                        TaskEventDetail::where('id',$item['id'])->update($itemUn);
+            if ($booths){
+                $boothsUn = Arr::get($data, 'booths');
+                unset($boothsUn['detail']);
+                unset($boothsUn['id']);
+                TaskEvent::where('id',$booths['id'])->update($boothsUn);
+                if ($booths['detail']){
+                    foreach ($booths['detail'] as $key => $item){
+                        if (empty($item['id'])){
+                            $item['code'] = $this->generateBarcodeNumber().$key;
+                            $item['task_event_id'] = $booths['id'];
+                            TaskEventDetail::create($item);
+                        }else{
+                            $itemUn = $item;
+                            unset($itemUn['id']);
+                            TaskEventDetail::where('id',$item['id'])->update($itemUn);
+                        }
                     }
                 }
             }
