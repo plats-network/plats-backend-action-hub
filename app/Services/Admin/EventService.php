@@ -182,8 +182,9 @@ class EventService extends BaseService
                     }
                 }
             }
-            $sessions = array_merge(Arr::get($data, 'sessions'), ['code' => Str::random(35)]);
+            $sessions = Arr::get($data, 'sessions');
             if ($sessions){
+                $sessions['code'] = Str::random(35);
                 $idTaskEventSessions = $dataBaseTask->taskEvents()->create($sessions);
                 if ($sessions['detail']){
                     foreach ($sessions['detail'] as $key => $item){
@@ -192,8 +193,9 @@ class EventService extends BaseService
                     }
                 }
             }
-            $booths = array_merge(Arr::get($data, 'booths'), ['code' => Str::random(35)]);
+            $booths = Arr::get($data, 'booths');
             if ($booths){
+                $booths['code'] = Str::random(35);
                 $idTaskEventBooths = $dataBaseTask->taskEvents()->create($booths);
                 if ($booths['detail']){
                     foreach ($booths['detail'] as $key => $item){
