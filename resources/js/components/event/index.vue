@@ -301,10 +301,10 @@
                 <el-row :gutter="20" class="p-5">
                     <el-col :span="18">
                         <div class="d-flex mb-2">
-                            <el-input v-model="form.sessions.name" placeholder="Name"></el-input>
-                            <el-input v-model="form.sessions.max_job" style="width: 40%; margin-left: 20px;" placeholder="Number success"></el-input>
+                            <el-input v-model="sessions.name" placeholder="Name"></el-input>
+                            <el-input v-model="sessions.max_job" style="width: 40%; margin-left: 20px;" placeholder="Number success"></el-input>
                         </div>
-                        <ckeditor v-model="form.sessions.description" ></ckeditor>
+                        <ckeditor v-model="sessions.description" ></ckeditor>
                     </el-col>
                     <el-col :span="6">
                         <el-upload
@@ -313,14 +313,14 @@
                             :action="link_cws+'/tasks/save-avatar-api'"
                             :on-success="handleAvatarSuccess1"
                             :before-upload="beforeAvatarUpload">
-                            <img v-if="form.sessions.banner_url" :src="form.sessions.banner_url" class="avatar">
+                            <img v-if="sessions.banner_url" :src="sessions.banner_url" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                     </el-col>
 
                     <!-- Add session -->
                     <el-col :span="24">
-                        <div v-for="(details, index) in  form.sessions.detail" class="mb-3 mt-3">
+                        <div v-for="(details, index) in  sessions.detail" class="mb-3 mt-3">
                             <el-row :gutter="20" >
                                 <el-col :span="4"><div style="margin: 10px 0 0 0px">Session {{index+1}}</div></el-col>
                                 <el-col :span="18" class="mb-2 d-flex">
@@ -334,7 +334,7 @@
                             </el-row>
                         </div>
                         <div style="float: right;">
-                            <el-button size="mini" type="success" @click="dialogSessions = false" class="mt-3 mb-2">Done</el-button>
+                            <el-button size="mini" type="success" @click="submitSession()" class="mt-3 mb-2">Done</el-button>
                             <el-button size="mini" type="primary" class="mt-3 mb-2" @click="addDetailSessions"><i class="el-icon-plus"></i>Add Detail</el-button>
                         </div>
                     </el-col>
@@ -346,10 +346,10 @@
                 <el-row :gutter="20" class="p-5">
                     <el-col :span="18">
                         <div class="d-flex mb-2">
-                            <el-input v-model="form.booths.name" placeholder="Name"></el-input>
-                            <el-input v-model="form.booths.max_job" style="width: 40%; margin-left: 20px;" placeholder="Sl Hoàn thành"></el-input>
+                            <el-input v-model="booths.name" placeholder="Name"></el-input>
+                            <el-input v-model="booths.max_job" style="width: 40%; margin-left: 20px;" placeholder="Sl Hoàn thành"></el-input>
                         </div>
-                        <ckeditor v-model="form.booths.description" ></ckeditor>
+                        <ckeditor v-model="booths.description" ></ckeditor>
                     </el-col>
                     <el-col :span="6">
                         <el-upload
@@ -358,12 +358,12 @@
                             :action="link_cws+'/tasks/save-avatar-api'"
                             :on-success="handleAvatarSuccess2"
                             :before-upload="beforeAvatarUpload">
-                            <img v-if="form.booths.banner_url" :src="form.booths.banner_url" class="avatar">
+                            <img v-if="booths.banner_url" :src="booths.banner_url" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
                     </el-col>
                     <el-col :span="24">
-                        <div v-for="(details, index) in  form.booths.detail" class="mb-3 mt-3">
+                        <div v-for="(details, index) in  booths.detail" class="mb-3 mt-3">
                             <el-row :gutter="20" >
                                 <el-col :span="4"><div style="margin: 10px 0 0 0px">Booth {{index+1}}</div></el-col>
                                 <el-col :span="18" class="mb-2 d-flex" >
@@ -378,7 +378,7 @@
                             </el-row>
                         </div>
                         <div style="float: right;">
-                            <el-button size="mini" type="success" @click="dialogBooths = false" class="mt-3 mb-2">Done</el-button>
+                            <el-button size="mini" type="success" @click="submitBooth()" class="mt-3 mb-2">Done</el-button>
                             <el-button size="mini" type="primary" style="float: right" class="mt-3 mb-2" @click="addDetailBooths"><i class="el-icon-plus"></i>Add Detail</el-button>
                         </div>
                     </el-col>
@@ -684,22 +684,34 @@ export default {
                     trigger: ['blur', 'change']
                 }]
             },
-            dataSessions:[
-                {
-                    id:'',
-                    name:'',
-                    description:'',
-                    status:true,
-                }
-            ],
-            dataBooths:[
-                {
-                    id:'',
-                    name:'',
-                    description:'',
-                    status:'',
-                }
-            ],
+            dataSessions:[],
+            dataBooths:[],
+            sessions: {
+                name:'',
+                max_job:'',
+                banner_url:'',
+                description:'',
+                type:0,
+                detail:[
+                    {
+                        name: '',
+                        description: ''
+                    }
+                ]
+            },
+            booths: {
+                name:'',
+                max_job:'',
+                banner_url:'',
+                description:'',
+                type:1,
+                detail:[
+                    {
+                        name: '',
+                        description: ''
+                    }
+                ]
+            },
             form : {
                 id : '',
                 banner_url : '',
@@ -713,32 +725,6 @@ export default {
                 type : 1,
                 order : '',
                 task_galleries: [],
-                sessions: {
-                    name:'',
-                    max_job:'',
-                    banner_url:'',
-                    description:'',
-                    type:'',
-                    detail:[
-                        {
-                            name: '',
-                            description: ''
-                        }
-                    ]
-                },
-                booths: {
-                        name:'',
-                        max_job:'',
-                        banner_url:'',
-                        description:'',
-                        type:'',
-                        detail:[
-                            {
-                                name: '',
-                                description: ''
-                            }
-                        ]
-                },
                 task_event_socials:{
                     url:'',
                     text:'',
@@ -837,6 +823,14 @@ export default {
             this.form.quiz = this.quiz
             this.dialogQuiz = false
         },
+        submitSession(){
+            this.form.sessions = this.sessions
+            this.dialogSessions = false
+        },
+        submitBooth(){
+            this.form.booths = this.booths
+            this.dialogBooths = false
+        },
         removeQuiz(item){
             let index = this.quiz.indexOf(item);
             if (index !== -1) {
@@ -873,8 +867,17 @@ export default {
             });
             let url = this.link_cws+'/api/tasks-cws/edit/'+ row.id;
             axios.get(url).then(e => {
-                this.dataBooths = e.data.data.message.booths.detail;
-                this.dataSessions = e.data.data.message.sessions.detail;
+                if (e.data.data.message.booths !== null){
+                    this.dataBooths = e.data.data.message.booths.detail;
+                }else {
+                    this.dataBooths = []
+                }
+                if (e.data.data.message.sessions !== null){
+                    this.dataSessions = e.data.data.message.sessions.detail;
+                } else {
+                    this.dataSessions = []
+                }
+
                 loading.close();
 
             }).catch((_) => {
@@ -882,25 +885,25 @@ export default {
             })
         },
         removeSessions(item){
-            let index = this.form.sessions.detail.indexOf(item);
+            let index = this.sessions.detail.indexOf(item);
             if (index !== -1) {
-                this.form.sessions.detail.splice(index, 1);
+                this.sessions.detail.splice(index, 1);
             }
         },
         removeBooths(item){
-            let index = this.form.booths.detail.indexOf(item);
+            let index = this.booths.detail.indexOf(item);
             if (index !== -1) {
-                this.form.booths.detail.splice(index, 1);
+                this.booths.detail.splice(index, 1);
             }
         },
         addDetailSessions(){
-            this.form.sessions.detail.push({
+            this.sessions.detail.push({
                 name: '',
                 description: '',
             });
         },
         addDetailBooths(){
-            this.form.booths.detail.push({
+            this.booths.detail.push({
                 name: '',
                 description: '',
             });
@@ -937,12 +940,12 @@ export default {
             this.form.banner_url = res;
         },
         handleAvatarSuccess1(res, file) {
-            this.form.sessions.banner_url = URL.createObjectURL(file.raw);
-            this.form.sessions.banner_url = res;
+            this.sessions.banner_url = URL.createObjectURL(file.raw);
+            this.sessions.banner_url = res;
         },
         handleAvatarSuccess2(res, file) {
-            this.form.booths.banner_url = URL.createObjectURL(file.raw);
-            this.form.booths.banner_url = res;
+            this.booths.banner_url = URL.createObjectURL(file.raw);
+            this.booths.banner_url = res;
         },
         beforeAvatarUpload(file) {
             const isJPEG = file.type === 'image/jpeg';
@@ -974,32 +977,6 @@ export default {
                 order : '',
                 type : 1,
                 task_galleries: [],
-                sessions: {
-                    name:'',
-                    max_job:'',
-                    banner_url:'',
-                    description:'',
-                    type:0,
-                    detail:[
-                        {
-                            name: '',
-                            description: ''
-                        }
-                    ]
-                },
-                booths: {
-                    name:'',
-                    max_job:'',
-                    banner_url:'',
-                    description:'',
-                    type:1,
-                    detail:[
-                        {
-                            name: '',
-                            description: ''
-                        }
-                    ]
-                },
                 task_event_socials: {
                     url:'',
                     text:'',
@@ -1010,7 +987,32 @@ export default {
                     type:0,
                 }
             }
-
+            this.sessions = {
+                name:'',
+                    max_job:'',
+                    banner_url:'',
+                    description:'',
+                    type:0,
+                    detail:[
+                    {
+                        name: '',
+                        description: ''
+                    }
+                ]
+            },
+            this.booths = {
+                name:'',
+                    max_job:'',
+                    banner_url:'',
+                    description:'',
+                    type:1,
+                    detail:[
+                    {
+                        name: '',
+                        description: ''
+                    }
+                ]
+            },
             this.quiz =[
                 {
                     name: '',
@@ -1163,6 +1165,40 @@ export default {
             axios.get(url).then(e => {
                 this.form = e.data.data.message;
                 this.quiz = e.data.data.message.quiz
+                if (e.data.data.message.sessions != null){
+                    this.sessions = e.data.data.message.sessions
+                }else {
+                    this.sessions = {
+                        name:'',
+                        max_job:'',
+                        banner_url:'',
+                        description:'',
+                        type:0,
+                        detail:[
+                            {
+                                name: '',
+                                description: ''
+                            }
+                        ]
+                    }
+                }
+                if (e.data.data.message.booths != null){
+                    this.booths = e.data.data.message.booths
+                }else {
+                    this.booths = {
+                        name:'',
+                        max_job:'',
+                        banner_url:'',
+                        description:'',
+                        type:1,
+                        detail:[
+                            {
+                                name: '',
+                                description: ''
+                            }
+                        ]
+                    }
+                }
                 if (e.data.data.message.task_event_socials == null){
                     this.form.task_event_socials = {
                             url:'',

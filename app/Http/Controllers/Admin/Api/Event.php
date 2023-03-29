@@ -88,7 +88,7 @@ class Event extends ApiController
     public function destroy($id, Request $request)
     {
         try {
-            $event = $this->eventModel->findOrFail($id);
+            $event = Task::where('id',$id)->findOrFail($id);
             $event->delete();
             TaskEventDetail::where('task_event_id',$id)->delete();
             TaskEventReward::where('task_id',$event->task_id)->delete();
