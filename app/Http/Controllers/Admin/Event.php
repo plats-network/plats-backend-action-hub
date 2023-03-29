@@ -14,7 +14,10 @@ use Illuminate\Support\Str;
 class Event extends  Controller
 {
     public function __construct(
-        private EventUserTicketService $eventUserTicketService
+        private EventUserTicketService $eventUserTicketService,
+        private TaskEvent $taskEvent,
+        private UserJoinEvent $userJoinEvent,
+        private EventUserTicket $eventUserTicket
     )
     {
         $this->middleware('client_admin');
@@ -39,7 +42,8 @@ class Event extends  Controller
         $limit = $request->get('limit') ?? PAGE_SIZE;
         $rawData = $this->eventUserTicketService->search(['limit' => $limit,'task_id' => $id]);
         //update user_id
-        $count = 0;
+        $session = $this->taskEvent->whereTaskId($id)->whereType(0)->first();
+        $booth = $this->taskEvent->whereTaskId($id)->whereType(1)->first();
         foreach ($rawData as &$item){
             if ($item->user_id == null){
                 $checkUser = \App\Models\User::where('email',$item->email)->first();
@@ -47,8 +51,33 @@ class Event extends  Controller
                     EventUserTicket::where('email',$item->email)->where('task_id',$item->task_id)->update(['user_id' => $checkUser->id,'type' => 0]);
                 }
             }
+
         }
         $rawDataNew = $this->eventUserTicketService->search(['limit' => $limit,'task_id' => $id]);
+        foreach ($rawDataNew as &$item){
+           {
+               if ($item->user_id != null){
+                   $eventUserTicket = $this->eventUserTicket->whereTaskId($id)->whereUserId($item->user_id)->first();
+                   if ($booth){
+                       $maxBooth = $booth->max_job;
+                       $countMaxBooth = $this->userJoinEvent->whereTaskEventId($booth->id)->whereUserId($item->user_id)->count();
+                       if ($eventUserTicket){
+                           $compareBooth = $countMaxBooth .'/'.$maxBooth;
+                           $item['compare_booth'] = $compareBooth;
+                       }
+                   }
+                   if ($session){
+                       $maxSession = $session->max_job;
+                       $countMaxSession = $this->userJoinEvent->whereTaskEventId($session->id)->whereUserId($item->user_id)->count();
+                       if ($eventUserTicket){
+                           $compareSession = $countMaxSession .'/'.$maxSession;
+                           $item['compare_session'] = $compareSession;
+                       }
+                   }
+               }
+            }
+
+        }
         return response()->json($rawDataNew);
     }
 }
