@@ -100,7 +100,7 @@
                 :page-size="10"
                 :current-page.sync="currentPage"
                 layout="prev, pager, next"
-                :total="this.totalNumber"
+                :total="totalNumber"
                 class="float-right mt-3 text-center"
             >
             </el-pagination>

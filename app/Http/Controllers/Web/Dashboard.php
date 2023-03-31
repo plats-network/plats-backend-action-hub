@@ -38,7 +38,7 @@ class Dashboard extends Controller
     public function webList(Request $request)
     {
         try {
-            $limit = $request->get('limit') ?? PAGE_SIZE;
+            $limit = $request->get('limit') ?? 8;
             if (empty(Auth::user())) {
                 $event = $this->taskService->search(['limit' => $limit,'type' => 1,'status' => 1]);
             } else {
