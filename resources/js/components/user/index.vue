@@ -102,10 +102,10 @@
                 background
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :page-size="20"
+                :page-size="10"
                 :current-page.sync="currentPage"
                 layout="prev, pager, next"
-                :total="this.totalNumber"
+                :total="totalNumber"
                 class="float-right mt-3 text-center"
             >
             </el-pagination>
@@ -179,7 +179,7 @@ export default {
                 console.log(e.data.data)
                 this.formData = e.data.data;
                 this.totalNumber = e.data.total;
-                self.totalItem = e.data.to;
+                self.totalItem = e.data.total;
                 loading.close();
 
             }).catch((_) => {

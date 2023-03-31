@@ -118,10 +118,10 @@
                 background
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :page-size="20"
+                :page-size="10"
                 :current-page.sync="currentPage"
                 layout="prev, pager, next"
-                :total="this.totalNumber"
+                :total="totalNumber"
                 class="float-right mt-3 text-center"
             >
             </el-pagination>
@@ -1072,8 +1072,7 @@ export default {
                 params: rawData
             }).then(e => {
                 this.tableData = e.data.data;
-                this.totalNumber = e.data.meta.total;
-                self.totalItem = e.data.meta.total;
+                self.totalNumber = e.data.total;
                 loading.close();
 
             }).catch((_) => {
