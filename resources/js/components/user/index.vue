@@ -176,7 +176,7 @@ export default {
             axios.get(url, {
                 params: rawData
             }).then(e => {
-                console.log(e.data.data)
+                console.log(e.data)
                 this.formData = e.data.data;
                 this.totalNumber = e.data.total;
                 self.totalItem = e.data.total;

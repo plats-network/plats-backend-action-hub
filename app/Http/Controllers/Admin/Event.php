@@ -39,6 +39,27 @@ class Event extends  Controller
         );
     }
 
+    public function edit($id)
+    {
+        return view(
+            'admin.event.edit',['task_id'=>$id]
+        );
+    }
+
+    public function create()
+    {
+        return view(
+            'admin.event.create'
+        );
+    }
+
+    public function preview($id)
+    {
+        return view(
+            'admin.event.preview',['task_id'=>$id]
+        );
+    }
+
     public function apiUserEvent(Request $request ,$id)
     {
         $limit = $request->get('limit') ?? PAGE_SIZE;

@@ -29,6 +29,9 @@ Vue.component('reward', require('./components/reward/index.vue').default);
 Vue.component('group', require('./components/group/index.vue').default);
 Vue.component('user', require('./components/user/index.vue').default);
 Vue.component('event', require('./components/event/index.vue').default);
+Vue.component('event-edit', require('./components/event/edit.vue').default);
+Vue.component('event-create', require('./components/event/create.vue').default);
+Vue.component('event-preview', require('./components/event/preview.vue').default);
 Vue.component('event-user', require('./components/event/event-user.vue').default);
 
 // Vue.component('dashboard', require('./components/dashboard/index.vue').default);

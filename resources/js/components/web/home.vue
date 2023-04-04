@@ -182,7 +182,6 @@ export default {
             let url = '/events/history/user'
             axios.get(url).then(e => {
                 this.dataHistory = e.data.message;
-                console.log(e.data.message)
                 loading.close();
 
             }).catch((_) => {
@@ -246,7 +245,7 @@ export default {
             axios.get(url, {
                 params: rawData
             }).then(e => {
-                if (e.data.data.length) {
+                if (e.data.data.length > 0) {
                     e.data.data.forEach((element) => {
                         if (element.like_active === 1) {
                             this.selected_options.push(element.id);

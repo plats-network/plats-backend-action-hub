@@ -29,6 +29,9 @@ Route::prefix('rewards')->controller(Reward::class)->group(function () {
 });
 Route::prefix('events')->controller(Event::class)->group(function () {
     Route::get('/', 'index')->name(EVENT_LIST_ADMIN_ROUTER);
+    Route::get('/preview/{task_id}', 'preview');
+    Route::get('/edit/{task_id}', 'edit');
+    Route::get('/create', 'create');
     Route::get('/api/{task_id}', 'apiUserEvent');
     Route::get('/{task_id}', 'userEvent')->name(EVENT_USER_ADMIN_ROUTER);
 });
