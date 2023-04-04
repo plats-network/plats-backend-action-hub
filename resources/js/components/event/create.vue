@@ -591,11 +591,11 @@ export default {
                         spinner: 'el-icon-loading',
                         background: 'rgba(0, 0, 0, 0.7)'
                     });
-                    if (this.form.task_event_socials.is_tweet == false){
-                        this.form.task_event_socials.text = null
+                    if (this.task_event_socials.is_tweet == false){
+                        this.task_event_socials.text = null
                     }
-                    if (this.form.task_event_socials.is_like == false && this.form.task_event_socials.is_comment == false && this.form.task_event_socials.is_retweet == false ){
-                        this.form.task_event_socials.url = null
+                    if (this.task_event_socials.is_like == false && this.task_event_socials.is_comment == false && this.task_event_socials.is_retweet == false ){
+                        this.task_event_socials.url = null
                     }
                     axios.post(this.link_cws+'/api/events', this.form).then(e => {
                         Notification.success({
