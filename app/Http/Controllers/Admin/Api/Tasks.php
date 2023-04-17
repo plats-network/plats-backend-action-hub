@@ -66,7 +66,7 @@ class Tasks extends ApiController
 
     public function edit($id)
     {
-        $task = Task::with( 'taskSocials', 'taskLocations','taskEventSocials')->find($id);
+        $task = Task::with( 'taskSocials', 'taskLocations','taskEventSocials','taskGenerateLinks')->find($id);
         $taskGroup = TaskGroup::where('task_id',$id)->pluck('group_id');
         $taskGallery = TaskGallery::where('task_id',$id)->pluck('url_image');
         $booths = TaskEvent::where('task_id',$id)->with('detail')->where('type',1)->first();

@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="mb-2">
-            <el-button type="primary" @click="handleEditEvent">Edit</el-button>
-            <a href="/events" ><el-button type="primary" icon="el-icon-back"></el-button></a>
+            <a href="/events"  ><el-button type="primary" icon="el-icon-back"></el-button></a>
+            <el-button type="primary" style="float: right" @click="handleEditEvent">Edit</el-button>
         </div>
         <el-row :gutter="20">
             <el-col :span="10"  >
@@ -73,6 +73,11 @@
                                     <span><strong>Title :</strong>   {{ form.sessions.name }}</span>
                                     <br>
                                     <span><strong>Max Job :</strong> {{ form.sessions.max_job }}</span>
+                                    <br>
+                                    <span>
+                                        <strong>Link Mini Game :</strong>
+                                        <el-link :href="link_mini_game+'/session/'+form.sessions.code" target="_blank">Link</el-link>
+                                    </span>
                                 </div>
                                 <div v-for="(detail, index) in form.sessions.detail" class="mb-1">
                                     <el-popover
@@ -99,6 +104,10 @@
                                     <span><strong>Title :</strong> {{ form.booths.name }}</span>
                                     <br>
                                     <span><strong>Max Job :</strong> {{ form.booths.max_job }}</span>
+                                    <br>
+                                    <span><strong>Link Mini Game :</strong>
+                                        <el-link :href="link_mini_game+'/booth/'+form.booths.code" target="_blank">Link</el-link>
+                                    </span>
                                 </div>
                                 <div v-for="(detail, index) in form.booths.detail" class="text item mb-1">
                                     <el-popover
@@ -123,12 +132,6 @@
                             <el-card shadow="hover" v-for="detail in form.quiz" class="box-card mb-2">
                                 <div slot="header" class="clearfix">
                                     <span> Name : {{ detail.name }}</span>
-                                    <br>
-                                    <span>Order : {{ detail.order }}</span>
-                                    <br>
-                                    <span>Time : {{ detail.time_quiz }}</span>
-                                    <br>
-                                    <span>Status : {{ detail.status }}</span>
                                 </div>
                                 <div v-for="detail in detail.detail" class="text item mb-1">
                                     <el-alert
@@ -163,21 +166,38 @@
                                             <el-checkbox v-model="form.task_event_socials.is_tweet">Tweet
                                             </el-checkbox>
                                         </el-col>
-                                        <el-col>
-                                            <div>
-                                                <span> URL</span>
-                                                <el-input class="mb-2 mt-2" maxlength="255" show-word-limit
-                                                          placeholder="https://twitter.com/elonmusk/status/1638381090368012289"
-                                                          v-model="form.task_event_socials.url"></el-input>
-                                            </div>
-                                            <div>
-                                                <span> Text</span>
-                                                <el-input class="mb-2 mt-2" maxlength="255" show-word-limit
-                                                          placeholder="Text ..."
-                                                          v-model="form.task_event_socials.text"></el-input>
-                                            </div>
-                                        </el-col>
                                     </el-row>
+                                </div>
+                                <div>
+                                    <div>
+                                        <span> URL</span>
+                                        <el-input class="mb-2 mt-2" maxlength="255" show-word-limit
+                                                  placeholder="https://twitter.com/elonmusk/status/1638381090368012289"
+                                                  v-model="form.task_event_socials.url"></el-input>
+                                    </div>
+                                    <div>
+                                        <span> Text</span>
+                                        <el-input class="mb-2 mt-2" maxlength="255" show-word-limit
+                                                  placeholder="Text ..."
+                                                  v-model="form.task_event_socials.text"></el-input>
+                                    </div>
+                                </div>
+                            </el-card>
+                        </div>
+                        <div v-if="form.task_generate_links.length > 0 " class="col-md-6">
+                            <el-card shadow="hover" class="box-card mb-2">
+                                <div slot="header" class="clearfix">
+                                    <span>Link Share</span>
+                                </div>
+                                <div>
+                                    <div v-for="(detail, index) in form.task_generate_links" class="mb-1">
+                                        <el-alert slot="reference"
+                                                  :closable="false"
+                                                  :title="detail.url"
+                                                  type="info"
+                                        >
+                                        </el-alert>
+                                    </div>
                                 </div>
                             </el-card>
                         </div>
@@ -235,7 +255,7 @@ import {
 import moment from "moment";
 export default {
     name: "preview",
-    props: ['task_id','link_cws','link_event'],
+    props: ['task_id','link_cws','link_event','link_mini_game'],
     components: {
         'el-tiptap': ElementTiptap,
         QrcodeVue,
@@ -256,6 +276,7 @@ export default {
                 type : 1,
                 order : '',
                 task_galleries: [],
+                task_generate_links:[],
             },
             sessions: {
                 name:'',
@@ -263,6 +284,7 @@ export default {
                 banner_url:'',
                 description:'',
                 type:0,
+                code:'',
                 detail:[
                     {
                         name: '',
@@ -276,6 +298,7 @@ export default {
                 banner_url:'',
                 description:'',
                 type:1,
+                code:'',
                 detail:[
                     {
                         name: '',
