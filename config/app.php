@@ -15,6 +15,7 @@ return [
     |
     */
 
+
     'name' => env('APP_NAME', 'Laravel'),
     'link_event' => env('LINK_EVENT', 'https://event.plats.network'),
     'link_cws' => env('LINK_CWS', 'https://cws.plats.network'),
@@ -32,6 +33,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+
 
     /*
     |--------------------------------------------------------------------------

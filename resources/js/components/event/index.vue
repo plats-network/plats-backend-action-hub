@@ -13,10 +13,20 @@
                         <el-input placeholder="typing ..." v-model="formSearch.name" @change="list_data()"></el-input>
                     </el-col>
                 </el-descriptions-item>
-                <el-descriptions-item label="Description" label-class-name="my-label" content-class-name="my-content">
-                    <el-col :span="23">
-                        <el-input placeholder="typing ..." v-model="formSearch.desc_vn" @change="list_data()"></el-input>
-                    </el-col>
+                <el-descriptions-item label="Status" label-class-name="my-label" content-class-name="my-content">
+                    <el-row :gutter="2">
+                        <el-col :span="23">
+                            <el-select class="full-option" @change="list_data()" v-model="formSearch.status"
+                                       placeholder="Select">
+                                <el-option
+                                    v-for="item in [{value: null, label: 'All'},{value: '1', label: 'public'}, {value: '0', label: 'draft'}]"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                    </el-row>
                 </el-descriptions-item>
             </el-descriptions>
         </el-row>
@@ -291,6 +301,7 @@ export default {
             page: 1,
             formSearch: {
                 name: '',
+                status: '',
             },
             tableData: [],
             rules: {
