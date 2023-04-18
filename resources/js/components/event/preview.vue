@@ -191,12 +191,7 @@
                                 </div>
                                 <div>
                                     <div v-for="(detail, index) in form.task_generate_links" class="mb-1">
-                                        <el-alert slot="reference"
-                                                  :closable="false"
-                                                  :title="detail.url"
-                                                  type="info"
-                                        >
-                                        </el-alert>
+                                        <el-link :href="detail.url" style="background: #f4f4f5; padding: 5px" target="_blank">{{detail.url}}</el-link>
                                     </div>
                                 </div>
                             </el-card>
