@@ -173,13 +173,13 @@
                                         <span> URL</span>
                                         <el-input class="mb-2 mt-2" maxlength="255" show-word-limit
                                                   placeholder="https://twitter.com/elonmusk/status/1638381090368012289"
-                                                  v-model="form.task_event_socials.url"></el-input>
+                                                  v-model="form.task_event_socials.url" :disabled="true"></el-input>
                                     </div>
                                     <div>
                                         <span> Text</span>
                                         <el-input class="mb-2 mt-2" maxlength="255" show-word-limit
                                                   placeholder="Text ..."
-                                                  v-model="form.task_event_socials.text"></el-input>
+                                                  v-model="form.task_event_socials.text" :disabled="true"></el-input>
                                     </div>
                                 </div>
                             </el-card>
@@ -194,22 +194,19 @@
                                         <div>
                                             <div>
                                                 <span> Bot Token</span>
-                                                <el-input class="mb-2 mt-2"   placeholder=" Bot Token" v-model="task_event_discords.bot_token"></el-input>
+                                                <el-input class="mb-2 mt-2" :disabled="true"  placeholder=" Bot Token" v-model="task_event_discords.bot_token"></el-input>
                                             </div>
                                             <div>
                                                 <span> Channel Id</span>
-                                                <el-input class="mb-2 mt-2"   placeholder="Channel Id" v-model="task_event_discords.channel_id"></el-input>
+                                                <el-input class="mb-2 mt-2" :disabled="true"  placeholder="Channel Id" v-model="task_event_discords.channel_id"></el-input>
                                             </div>
                                             <div>
                                                 <span> Channel Url</span>
-                                                <el-input class="mb-2 mt-2"   placeholder="Channel Url" v-model="task_event_discords.channel_url"></el-input>
+                                                <el-input class="mb-2 mt-2" :disabled="true"  placeholder="Channel Url" v-model="task_event_discords.channel_url"></el-input>
                                             </div>
                                         </div>
                                     </el-card>
                                 </el-col>
-                                <div style="float: right;">
-                                    <el-button size="mini" type="success" @click="submitSocial()" class="mt-3 mb-2">Done</el-button>
-                                </div>
                             </el-row>
                         </div>
                         <div v-if="form.task_generate_links.length > 0 " class="col-md-6">
