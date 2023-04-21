@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\BaseImage;
+use App\Models\Event\EventDiscords;
 use App\Models\Event\EventSocial;
 use App\Models\Event\EventUserTicket;
 use App\Models\Event\TaskEvent;
@@ -105,6 +106,11 @@ class Task extends Model
     public function taskEventSocials()
     {
         return $this->hasOne(EventSocial::class);
+    }
+
+    public function taskEventDiscords()
+    {
+        return $this->hasOne(EventDiscords::class);
     }
 
     public function taskGenerateLinks()

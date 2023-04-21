@@ -169,6 +169,17 @@ class EventService extends BaseService
                     $dataBaseTask->taskEventSocials()->update($socialUn,$social['id']);
                 }
             }
+            $discords = Arr::get($data, 'task_event_discords');
+            if ($discords){
+                if (empty($discords['id'])){
+                    $dataBaseTask->taskEventDiscords()->create($discords);
+
+                }else{
+                    $discordsUn = Arr::get($data, 'task_event_discords');
+                    unset($discordsUn['id']);
+                    $dataBaseTask->taskEventDiscords()->update($discordsUn,$discords['id']);
+                }
+            }
             TaskGenerateLinks::where('task_id',$id)->delete();
             $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
             DB::commit();
@@ -234,6 +245,11 @@ class EventService extends BaseService
             $social = Arr::get($data, 'task_event_socials');
             if ($social){
                 $dataBaseTask->taskEventSocials()->create($social);
+            }
+            $discords = Arr::get($data, 'task_event_discords');
+            if ($discords){
+                $dataBaseTask->taskEventDiscords()->create($discords);
+
             }
             $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
 
