@@ -252,16 +252,16 @@
                         <div slot="header" class="clearfix">
                             <span>Discord</span>
                         </div>
-                        <div>
-                            <div>
+                        <div class="row">
+                            <div >
                                 <span> Bot Token</span>
                                 <el-input class="mb-2 mt-2"   placeholder=" Bot Token" v-model="task_event_discords.bot_token"></el-input>
                             </div>
-                            <div>
+                            <div class="col-md-6">
                                 <span> Channel Id</span>
                                 <el-input class="mb-2 mt-2"   placeholder="Channel Id" v-model="task_event_discords.channel_id"></el-input>
                             </div>
-                            <div>
+                            <div class="col-md-6">
                                 <span> Channel Url</span>
                                 <el-input class="mb-2 mt-2"   placeholder="Channel Url" v-model="task_event_discords.channel_url"></el-input>
                             </div>
