@@ -715,6 +715,17 @@ export default {
                         ]
                     }
                 }
+                if (e.data.data.message.task_event_socials == null){
+                    this.form.task_event_socials = {
+                        url:'',
+                        text:'',
+                        is_comment:false,
+                        is_like:false,
+                        is_retweet:false,
+                        is_tweet:false,
+                        type:0,
+                    }
+                }
                 if (e.data.data.message.task_event_discords != null){
                     this.task_event_discords = e.data.data.message.task_event_discords
                 }else {
