@@ -225,24 +225,52 @@
         <el-drawer title="Social" size="50%" :visible.sync="dialogSocial" style="height: auto">
             <el-row :gutter="20" class="p-5">
                 <el-col >
-                    <el-checkbox  v-model="task_event_socials.is_comment">Comment</el-checkbox>
-                    <el-checkbox v-model="task_event_socials.is_like">Like</el-checkbox>
-                    <el-checkbox v-model="task_event_socials.is_retweet">Retweet</el-checkbox>
-                    <el-checkbox v-model="task_event_socials.is_tweet">Tweet</el-checkbox>
+                    <el-card shadow="hover" class="box-card mb-2">
+                        <div slot="header" class="clearfix">
+                            <span>Social</span>
+                        </div>
+                        <div>
+                            <el-col >
+                                <el-checkbox  v-model="task_event_socials.is_comment">Comment</el-checkbox>
+                                <el-checkbox v-model="task_event_socials.is_like">Like</el-checkbox>
+                                <el-checkbox v-model="task_event_socials.is_retweet">Retweet</el-checkbox>
+                                <el-checkbox v-model="task_event_socials.is_tweet">Tweet</el-checkbox>
+                            </el-col>
+                            <br>
+                            <div v-if="task_event_socials.is_comment == true || task_event_socials.is_like == true || task_event_socials.is_retweet == true">
+                                <span> URL</span>
+                                <el-input class="mb-2 mt-2" maxlength="255" show-word-limit  placeholder="https://twitter.com/elonmusk/status/1638381090368012289" v-model="task_event_socials.url"></el-input>
+                            </div>
+                            <div v-if="task_event_socials.is_tweet == true">
+                                <span> Text</span>
+                                <el-input class="mb-2 mt-2" maxlength="255" show-word-limit  placeholder="Text ..." v-model="task_event_socials.text"></el-input>
+                            </div>
+                        </div>
+                    </el-card>
                 </el-col>
                 <el-col >
-                    <div v-if="task_event_socials.is_comment == true || task_event_socials.is_like == true || task_event_socials.is_retweet == true">
-                        <span> URL</span>
-                        <el-input class="mb-2 mt-2" maxlength="255" show-word-limit  placeholder="https://twitter.com/elonmusk/status/1638381090368012289" v-model="task_event_socials.url"></el-input>
-                    </div>
-                    <div v-if="task_event_socials.is_tweet == true">
-                        <span> Text</span>
-                        <el-input class="mb-2 mt-2" maxlength="255" show-word-limit  placeholder="Text ..." v-model="task_event_socials.text"></el-input>
-                    </div>
+                    <el-card shadow="hover" class="box-card mb-2">
+                        <div slot="header" class="clearfix">
+                            <span>Discord</span>
+                        </div>
+                        <div>
+                            <div>
+                                <span> Bot Token</span>
+                                <el-input class="mb-2 mt-2"   placeholder=" Bot Token" v-model="task_event_discords.bot_token"></el-input>
+                            </div>
+                            <div>
+                                <span> Channel Id</span>
+                                <el-input class="mb-2 mt-2"   placeholder="Channel Id" v-model="task_event_discords.channel_id"></el-input>
+                            </div>
+                            <div>
+                                <span> Channel Url</span>
+                                <el-input class="mb-2 mt-2"   placeholder="Channel Url" v-model="task_event_discords.channel_url"></el-input>
+                            </div>
+                        </div>
+                    </el-card>
                 </el-col>
                 <div style="float: right;">
                     <el-button size="mini" type="success" @click="submitSocial()" class="mt-3 mb-2">Done</el-button>
-                    <el-button size="mini" type="primary" style="float: right" class="mt-3 mb-2" @click="dialogSocial = false"><i class="el-icon-plus"></i>Add Social</el-button>
                 </div>
             </el-row>
         </el-drawer>
@@ -388,6 +416,11 @@ export default {
                 is_tweet:false,
                 type:0,
             },
+            task_event_discords:{
+                bot_token:'',
+                channel_id:'',
+                channel_url:'',
+            },
             sessions: {
                 name:'',
                 max_job:'',
@@ -501,6 +534,7 @@ export default {
         },
         submitSocial(){
             this.form.task_event_socials = this.task_event_socials
+            this.form.task_event_discords = this.task_event_discords
             this.dialogSocial = false
         },
         removeQuiz(item){
@@ -681,15 +715,13 @@ export default {
                         ]
                     }
                 }
-                if (e.data.data.message.task_event_socials == null){
-                    this.form.task_event_socials = {
-                        url:'',
-                        text:'',
-                        is_comment:false,
-                        is_like:false,
-                        is_retweet:false,
-                        is_tweet:false,
-                        type:0,
+                if (e.data.data.message.task_event_discords != null){
+                    this.task_event_discords = e.data.data.message.task_event_discords
+                }else {
+                    this.task_event_discords = {
+                        bot_token:'',
+                        channel_id:'',
+                        channel_url:'',
                     }
                 }
                 loading.close();
