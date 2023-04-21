@@ -66,7 +66,7 @@
             <el-col  :span="14" >
                 <div class="p-2" style="border: 1px solid #EBEEF5">
                     <div class="row">
-                        <div v-if="form.sessions !== null" class="col-md-6">
+                        <div v-if="sessions !== null" class="col-md-6">
                             <span>Sessions</span>
                             <el-card shadow="hover" class="box-card mb-2">
                                 <div slot="header" class="clearfix">
@@ -97,7 +97,7 @@
                                 </div>
                             </el-card>
                         </div>
-                        <div v-if="form.booths !== null" class="col-md-6">
+                        <div v-if="booths !== null" class="col-md-6">
                             <span>Booths</span>
                             <el-card shadow="hover" class="box-card mb-2">
                                 <div slot="header" class="clearfix">
@@ -127,7 +127,7 @@
                                 </div>
                             </el-card>
                         </div>
-                        <div v-if="form.quiz.length > 0" class="col-md-6">
+                        <div v-if="quiz.length > 0" class="col-md-6">
                             <span>Quiz</span>
                             <el-card shadow="hover" v-for="detail in form.quiz" class="box-card mb-2">
                                 <div slot="header" class="clearfix">
@@ -151,7 +151,7 @@
                                 </div>
                             </el-card>
                         </div>
-                        <div v-if="form.task_event_socials !== null" class="col-md-6">
+                        <div v-if="task_event_socials !== null" class="col-md-6">
                             <span>Social</span>
                             <el-card shadow="hover" class="box-card mb-2">
                                 <div slot="header" class="clearfix">
@@ -183,6 +183,34 @@
                                     </div>
                                 </div>
                             </el-card>
+                        </div>
+                        <div v-if="task_event_discords !== null" class="col-md-6">
+                            <el-row>
+                                <el-col >
+                                    <el-card shadow="hover" class="box-card mb-2">
+                                        <div slot="header" class="clearfix">
+                                            <span>Discord</span>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <span> Bot Token</span>
+                                                <el-input class="mb-2 mt-2"   placeholder=" Bot Token" v-model="task_event_discords.bot_token"></el-input>
+                                            </div>
+                                            <div>
+                                                <span> Channel Id</span>
+                                                <el-input class="mb-2 mt-2"   placeholder="Channel Id" v-model="task_event_discords.channel_id"></el-input>
+                                            </div>
+                                            <div>
+                                                <span> Channel Url</span>
+                                                <el-input class="mb-2 mt-2"   placeholder="Channel Url" v-model="task_event_discords.channel_url"></el-input>
+                                            </div>
+                                        </div>
+                                    </el-card>
+                                </el-col>
+                                <div style="float: right;">
+                                    <el-button size="mini" type="success" @click="submitSocial()" class="mt-3 mb-2">Done</el-button>
+                                </div>
+                            </el-row>
                         </div>
                         <div v-if="form.task_generate_links.length > 0 " class="col-md-6">
                             <el-card shadow="hover" class="box-card mb-2">
@@ -340,6 +368,11 @@ export default {
                 is_tweet:false,
                 type:0,
             },
+            task_event_discords:{
+                bot_token:'',
+                channel_id:'',
+                channel_url:'',
+            },
         }
     },
     methods: {
@@ -377,6 +410,7 @@ export default {
                 this.quiz = e.data.data.message.quiz
                 this.sessions = e.data.data.message.sessions
                 this.task_event_socials = e.data.data.message.task_event_socials
+                this.task_event_discords = e.data.data.message.task_event_discords
                 this.booths = e.data.data.message.booths
                 loading.close();
 
