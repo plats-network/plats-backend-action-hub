@@ -29,10 +29,13 @@
                     <div class="col-12 ps-1 mb-2">
                         <div class="text-extra-small text-primary">ACCOUNT</div>
                     </div>
-                    <div class="col-6 ps-1 pe-1">
+                    <div class="col-md-12 ps-1 pe-1">
                         <ul class="list-unstyled">
                             <li>
                                 <a href="/events/likes">Likes</a>
+                            </li>
+                            <li>
+                                <a href="/discord">Linked account</a>
                             </li>
 {{--                            <li>--}}
 {{--                                <a href="/events/history">Histories</a>--}}

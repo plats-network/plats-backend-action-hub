@@ -27,7 +27,10 @@ Route::prefix('client')->group(function ($router) {
     $router->post('/sign-up', [SignUp::class, 'store'])->name('web.client.signUp');
     $router->get('/logout', [Login::class, 'logout'])->name(LOGOUT_WEB_ROUTE);
 });
-
+Route::get('/discord/login', [App\Http\Controllers\Web\Discord::class, 'getUserDiscord']);
+Route::get('/discord', [App\Http\Controllers\Web\Discord::class, 'index'])->name('discord');
+Route::get('/telegram', [App\Http\Controllers\Web\Discord::class, 'telegram'])->name('telegram');
+Route::get('logout-discord', [App\Http\Controllers\Web\Discord::class, 'logout']);
 Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_WEB_ROUTER);
 Route::get('/events/list', [Dashboard::class, 'webList']);
 Route::post('/create-user', [HistoryJoinEventTask::class, 'createUser'])->name(CREATE_USER_WEB_ROUTE);

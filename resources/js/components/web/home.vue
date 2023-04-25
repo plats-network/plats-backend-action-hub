@@ -133,6 +133,7 @@ export default {
             dataHistory: {},
             isHidden: '',
             selected_options: [],
+            messages: []
         }
     },
     methods: {
@@ -270,6 +271,9 @@ export default {
         this.list_data()
         this.history()
         this.isHidden = this.active
+        client.on('message', message => {
+            this.messages.push(message);
+        });
     },
     computed: {
         noMore() {
