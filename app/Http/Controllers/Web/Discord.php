@@ -65,7 +65,6 @@ class Discord extends Controller
     }
 
     public function telegram(Request $request) {
-        dd($request->all());
         $userLogin = \Illuminate\Support\Facades\Auth::user();
         $user = User::where('id',$userLogin->id)->update(['telegram' => $request->input('username')]);
         return redirect() -> route("discord");
