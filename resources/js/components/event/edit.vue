@@ -30,25 +30,44 @@
                             <el-form-item label="Description" prop="description">
                                 <ckeditor v-model="form.description" ></ckeditor>
                             </el-form-item>
-                            <div class="d-flex">
-                                <el-form-item label="Order" prop="order">
-                                    <el-input v-model="form.order" placeholder="Order" style="margin-right: 20px"></el-input>
-                                </el-form-item>
-                            </div>
-                            <div class="d-flex">
-                                <el-form-item label="Start At" style="margin-right: 20px" prop="start_at">
-                                    <el-date-picker
-                                        type="datetime" :picker-options="pickerOptions"
-                                        placeholder="Select date and time"
-                                        v-model="form.start_at"
-                                        :min-date="new Date()"></el-date-picker>
-                                </el-form-item>
-                                <el-form-item label="End At" prop="end_at">
-                                    <el-date-picker
-                                        type="datetime" :picker-options="pickerOptions"
-                                        placeholder="Select date and time"
-                                        v-model="form.end_at"></el-date-picker>
-                                </el-form-item>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="d-flex">
+                                        <el-form-item label="Order" prop="order">
+                                            <el-input v-model="form.order" placeholder="Order" style="margin-right: 20px"></el-input>
+                                        </el-form-item>
+                                    </div>
+                                    <div class="d-flex">
+                                        <el-form-item label="Start At" style="margin-right: 20px" prop="start_at">
+                                            <el-date-picker
+                                                type="datetime" :picker-options="pickerOptions"
+                                                placeholder="Select date and time"
+                                                v-model="form.start_at"
+                                                :min-date="new Date()"></el-date-picker>
+                                        </el-form-item>
+                                        <el-form-item label="End At" prop="end_at">
+                                            <el-date-picker
+                                                type="datetime" :picker-options="pickerOptions"
+                                                placeholder="Select date and time"
+                                                v-model="form.end_at"></el-date-picker>
+                                        </el-form-item>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mt-4">
+                                    <el-checkbox v-model="form.is_paid">Paid</el-checkbox>
+                                    <div class="d-flex mt-2" v-if="form.is_paid == true">
+                                        <el-input v-model="form.reward" placeholder="reward" style="margin-right: 5px"></el-input>
+                                        <el-select class="full-option" v-model="form.reward_type"
+                                                   placeholder="Select">
+                                            <el-option
+                                                v-for="(value, key, index) in typeReward"
+                                                :key="index"
+                                                :label="value"
+                                                :value="key">
+                                            </el-option>
+                                        </el-select>
+                                    </div>
+                                </div>
                             </div>
                             <div class="d-flex mt-4">
                                 <el-button @click="addSessions()">Sessions</el-button>
@@ -322,12 +341,15 @@ import {
 } from 'element-tiptap';
 export default {
     name: "edit",
-    props: ['task_id','link_cws','csrf'],
+    props: ['task_id','link_cws','csrf','type_reward'],
     components: {
         'el-tiptap': ElementTiptap,
     },
     data() {
         return {
+            typeReward:[
+
+            ],
             pickerOptions: {
                 disabledDate(time) {
                     return time.getTime() < Date.now();
@@ -405,6 +427,9 @@ export default {
                 end_at : '',
                 type : 1,
                 order : '',
+                is_paid : false,
+                reward : 0,
+                reward_type : 1,
                 task_galleries: [],
             },
             task_event_socials:{
@@ -743,6 +768,7 @@ export default {
         },
     },
     mounted: function () {
+        this.typeReward = JSON.parse(this.type_reward)
         this.listData()
     },
 }
