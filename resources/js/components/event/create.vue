@@ -140,7 +140,7 @@
                             </el-col>
                             <el-col :span="4">
                                 <div class="" style="margin-top: -7px">
-                                    <el-button size="mini" type="danger" style="margin-top: 5px" @click.prevent="removeSessions(details)"><i
+                                    <el-button v-if="sessions.detail.length > 1" size="mini" type="danger" style="margin-top: 5px" @click.prevent="removeSessions(details)"><i
                                         class="el-icon-delete"></i></el-button>
                                     <el-button size="mini" type="primary" class="mt-3 mb-2" @click="addDetailSessions"><i class="el-icon-plus"></i></el-button>
                                 </div>
