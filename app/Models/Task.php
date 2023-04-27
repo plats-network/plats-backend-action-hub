@@ -59,6 +59,9 @@ class Task extends Model
         'lat',
         'type', // 0: task, 1: event
         'creator_id',
+        'is_paid',
+        'reward',
+        'reward_type',
     ];
 
     /**

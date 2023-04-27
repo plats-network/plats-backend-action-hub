@@ -20,7 +20,10 @@ return [
     'link_event' => env('LINK_EVENT', 'https://event.plats.network'),
     'link_cws' => env('LINK_CWS', 'https://cws.plats.network'),
     'link_minigame' => env('LINK_MINIGAME', 'https://minigame.plats.network'),
-
+    'type_reward' => [
+        0 => 'web',
+        1 => 'users',
+    ],
     /*
     |--------------------------------------------------------------------------
     | Application Environment

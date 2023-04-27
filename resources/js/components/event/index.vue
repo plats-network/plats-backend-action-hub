@@ -5,7 +5,7 @@
             <el-button style="float: right;margin: 5px"
                        type="primary"
                        @click="create()">
-                <i class="el-icon-plus"></i> Event Reward
+                <i class="el-icon-plus"></i> Create Event
             </el-button>
             <el-descriptions title="" :column="3" border>
                 <el-descriptions-item label="Name" label-class-name="my-label" content-class-name="my-content">
