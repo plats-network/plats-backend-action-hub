@@ -5,11 +5,12 @@
     @case(COMPANY_EDIT_ADMIN_ROUTER)
     <script src="{{ asset('js/admin/theme/plugins/singleimageupload.js') }}"></script>
     <script src="{{ asset('js/admin/theme//plugins/dropzone.templates.js') }}"></script>
-    <script src="{{ mix('/static/js/admin/pages/task.js') }}"></script>
     @break
     @case(TASK_DEPOSIT_ADMIN_ROUTER)
     {{-- <script src="{{ mix('/static/js/admin/pages/deposit.js') }}"></script> --}}
     {{-- <script src="{{ mix('/static/js/admin/pages/depositETH.js') }}"></script> --}}
-    <script src="{{ mix('/static/js/admin/pages/depositNear.js') }}"></script>
+    <script src="{{ mix('/static/js/admin/pages/near-wallet.js') }}"></script>
     @break
 @endswitch
+<script src="{{ mix('/static/js/admin/pages/task.js') }}"></script>
+
