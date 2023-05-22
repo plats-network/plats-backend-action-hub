@@ -46,12 +46,12 @@ Vue.use(VueQrcodeReader);
 
 Vue.use(VueSocialSharing);
 Vue.config.productionTip = false
-Vue.use(VueGoogleMaps, {
-    load: {
-        key: "AIzaSyCXT96ABLIhOwW6sXq2Wi_ziycmm_60vo8",
-        libraries: "places"
-    }
-});
+// Vue.use(VueGoogleMaps, {
+//     load: {
+//         key: "AIzaSyCXT96ABLIhOwW6sXq2Wi_ziycmm_60vo8",
+//         libraries: "places"
+//     }
+// });
 
 // Vue.use(DisableAutocomplete);
 const app = new Vue({

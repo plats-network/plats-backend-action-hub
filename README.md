@@ -3,6 +3,48 @@
 - PHP >= 8.0
 - PostgreSQL: >= 12
 
+## Postgress
+Cài postgress thủ công hoặc docker
+
+```shell
+Với docker
+
+docker run --name postgres \
+  -e POSTGRES_USER=root \
+  -e POSTGRES_PASSWORD=plats#2023 \
+  -e TZ=GMT+7 \
+  -p 5432:5432 \
+  -v /srv/datas/postgres:/var/lib/postgresql/data \
+  -d postgres
+```
+
+
+# Domain
+
+https://laravel.com/docs/10.x/valet
+Tạo Subdomain tham khảo link trên
+
+Local
+```
+CWS: http://cws.plats.test
+EVENT: http://event.plats.test
+API: http://api.plats.test
+```
+
+DEV:
+```
+CWS: https://dev-cws.plats.network
+EVENT: https://dev-event.plats.network
+API: https://dev-api.plats.network
+```
+
+PROD:
+```
+CWS: https://cws.plats.network
+EVENT: https://event.plats.network
+API: https://api.plats.network
+```
+
 # Hướng dẫn deploy
 
 1. Copy 2 file ssh vào thư mục .ssh trên máy của mình

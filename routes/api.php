@@ -37,6 +37,14 @@ use App\Http\Controllers\Api\{
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+// NEW
+Route::domain(ENV('SUB_API').'.'.ENV('APP_URL'))->group(function() {
+    
+
+});
+
+
+// OLD
 // Register
 Route::post('register_admin', [RegisterAdmin::class, 'store']);
 Route::post('register', [Register::class, 'register']);

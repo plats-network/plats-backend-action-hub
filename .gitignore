@@ -4,6 +4,7 @@
 /storage/*.key
 /storage/mpdf/*
 /vendor
+/public/build
 .env
 .env.backup
 .phpunit.result.cache
