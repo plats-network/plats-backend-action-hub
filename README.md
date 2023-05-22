@@ -18,6 +18,7 @@ docker run --name postgres \
   -d postgres
 ```
 
+js: https://alpinejs.dev/
 
 # Domain
 
@@ -29,6 +30,8 @@ Local
 CWS: http://cws.plats.test
 EVENT: http://event.plats.test
 API: http://api.plats.test
+
+npm run build && npm run dev
 ```
 
 DEV:
