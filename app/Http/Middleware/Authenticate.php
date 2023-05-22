@@ -48,28 +48,4 @@ class Authenticate extends Middleware
 
         return route('login');
     }
-
-    /**
-     * Handle an unauthenticated user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  array  $guards
-     * @return void
-     *
-     * @throws \Illuminate\Auth\AuthenticationException
-     */
-    protected function unauthenticated($request, array $guards)
-    {
-        // if ($request->segment(1) == 'cp' && is_null($this->auth->user())) {
-        //     return route(LOGIN_ADMIN_ROUTE);
-        // }
-
-        if ($request->path() == 'api/task_notices') {
-            return true;
-        }
-
-        // abort(response()->json([
-        //     'success' => false,
-        //     'message' => 'Unauthenticated',], 401));
-    }
 }

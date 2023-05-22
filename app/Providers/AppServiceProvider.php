@@ -45,21 +45,6 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::componentNamespace('App\View\Components\Forms', 'form');
         Blade::anonymousComponentNamespace('admin._components', 'admin');
-
-        /**
-         * DO: Boot menus
-         */
-        /*view()->composer('*', function () {
-            if ($this->bootedComposer == true) {
-                return true;
-            }
-
-            $this->addMenuHelper();
-
-            $this->bootedComposer = true;
-
-            return true;
-        });*/
     }
 
     /**

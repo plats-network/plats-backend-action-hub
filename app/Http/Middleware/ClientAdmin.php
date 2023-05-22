@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Auth;
+use Log;
 
 class ClientAdmin
 {
@@ -20,7 +21,8 @@ class ClientAdmin
         if (Auth::user() && in_array(Auth::user()->role, [ADMIN_ROLE, CLIENT_ROLE])) {
             return $next($request);
         } else {
-            return redirect('auth/cws')->withErrors('message', 'You have not admin access');
+            notify()->error('Vui lòng đăng nhập!....');
+            return redirect()->route('cws.formLogin');
         }
     }
 }

@@ -5,10 +5,34 @@ use App\Http\Controllers\Admin\{
     Dashboard, Reward, Event, TaskBeta,
     Group, User, Export
 };
-use App\Http\Controllers\Auth\Admin\Register;
+use App\Http\Controllers\Admin\{
+    AuthController
+};
+use App\Http\Controllers\Auth\Admin\{
+    Register
+};
 use App\Http\Controllers\Auth\Admin\ForgotPassword;
 
-Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_ADMIN_ROUTER);
+// NEW
+Route::domain(ENV('SUB_CWS').'.'.ENV('APP_URL'))->group(function() {
+    Route::middleware(['guest'])->group(function($authRoute) {
+        // Login
+        $authRoute->get('login', [AuthController::class, 'formLogin'])->name('cws.formLogin');
+        $authRoute->post('loginPost', [AuthController::class, 'login'])->name('cws.login');
+
+        // Register
+        $authRoute->get('signup', [AuthController::class, 'fromSignUp'])->name('cws.fromSignUp');
+        $authRoute->post('signupPost', [AuthController::class, 'register'])->name('cws.register');
+    });
+});
+
+Route::middleware(['client_admin'])->group(function($cws) {
+    $cws->get('/', [Dashboard::class, 'index'])->name('cws.home');
+    $cws->get('logout', [AuthController::class, 'logout'])->name('cws.logout');
+});
+
+// OLD
+// Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_ADMIN_ROUTER);
 Route::get('register', [Register::class, 'create'])->name('auth.create');
 Route::post('register', [Register::class, 'store'])->name('auth.store');
 Route::get('forget-password', [ForgotPassword::class, 'showForgetPasswordForm'])->name('admin.forget.password.get');
