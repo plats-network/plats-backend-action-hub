@@ -6818,15 +6818,15 @@ pre {
 }
 
 .bg-\[url\(\'\.\.\/images\/map\.svg\'\)\] {
-  background-image: url('../images/map.svg');
+  background-image: url('imgs/map.svg');
 }
 
 .bg-\[url\(\'\.\.\/images\/menu-heade\.jpg\'\)\] {
-  background-image: url('../images/menu-heade.jpg');
+  background-image: url('imgs/menu-heade.jpg');
 }
 
 .bg-\[url\(\'\.\.\/images\/notification-bg\.png\'\)\] {
-  background-image: url('../images/notification-bg.png');
+  background-image: url('imgs/notification-bg.png');
 }
 
 .bg-gradient-to-l {
@@ -8887,7 +8887,7 @@ pre {
 
 .before\:bg-\[url\(\'\.\.\/images\/close\.svg\'\)\]::before {
   content: var(--tw-content);
-  background-image: url('../images/close.svg');
+  background-image: url('imgs/close.svg');
 }
 
 .before\:bg-center::before {
@@ -9562,7 +9562,7 @@ pre {
 
 .peer:checked ~ .peer-checked\:before\:bg-\[url\(\'\.\.\/images\/checked\.svg\'\)\]::before {
   content: var(--tw-content);
-  background-image: url('../images/checked.svg');
+  background-image: url('imgs/checked.svg');
 }
 
 .peer:focus ~ .peer-focus\:text-primary {
@@ -10806,8 +10806,8 @@ pre {
   --tw-bg-opacity: 0.08;
 }
 
-:is(.dark .dark\:bg-\[url\(\'\.\.\/images\/map-dark\.svg\'\)\]) {
-  background-image: url('../images/map-dark.svg');
+:is(.dark .dark\:bg-\[url\(\'imgs\/map-dark\.svg\'\)\]) {
+  background-image: url('imgs/map-dark.svg');
 }
 
 :is(.dark .dark\:via-white) {

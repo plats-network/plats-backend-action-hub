@@ -8,6 +8,7 @@
         <link rel="icon" type="image/x-icon" href="favicon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <script src="https://unpkg.com/@popperjs/core@2"></script>
         @notifyCss
         @vite([
             'resources/sass/admin.scss',
@@ -39,7 +40,7 @@
             </div>
         </body>
 
-        @include('cws.layouts._loading')
+        {{-- @include('cws.layouts._loading') --}}
 
         <div class="fixed bottom-6 z-50 ltr:right-6 rtl:left-6" x-data="scrollToTop">
             <template x-if="showTopButton">
@@ -67,6 +68,7 @@
 
         @yield('js')
         @livewireScripts
+
         <x-notify::notify />
         @notifyJs
     </body>

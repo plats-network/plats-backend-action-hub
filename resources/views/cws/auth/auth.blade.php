@@ -14,7 +14,7 @@
     </head>
 
     <body class="relative overflow-x-hidden font-nunito text-sm font-normal antialiased">
-        @include('cws.layouts._loading')
+        {{-- @include('cws.layouts._loading') --}}
 
         <div class="main-container min-h-screen text-black dark:text-white-dark">
             <div class="flex min-h-screen items-center justify-center bg-cover bg-center" style="background-image: url('imgs/map.svg')">

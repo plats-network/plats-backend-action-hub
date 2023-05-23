@@ -38,14 +38,10 @@ class Authenticate extends Middleware
      *
      * @return string
      */
-    protected function redirectTo($request)
-    {
-        abort_if($request->expectsJson(), 403, 'Unauthenticated');
+    // protected function redirectTo($request)
+    // {
+    //     abort_if($request->expectsJson(), 403, 'Unauthenticated');
 
-        if (Str::contains($request->fullUrl(), '/cp')) {
-            return route(LOGIN_ADMIN_ROUTE);
-        }
-
-        return route('login');
-    }
+    //     return route('cws.formLogin');
+    // }
 }

@@ -38,24 +38,18 @@ use App\Http\Controllers\Api\{
 |
 */
 // NEW
-Route::domain(ENV('SUB_API').'.'.ENV('APP_URL'))->group(function() {
-    
-
+// Route::post('register_admin', [RegisterAdmin::class, 'store']);
+// Route::post('register', [Register::class, 'register']);
+// Route::post('register/confirm-email', [Register::class, 'confirmEmail']);
+// Route::post('register/resend-confirm-email', [Register::class, 'resendOtp']);
+Route::get('/', function() {
+    abort(403);
 });
-
-
-// OLD
-// Register
-Route::post('register_admin', [RegisterAdmin::class, 'store']);
-Route::post('register', [Register::class, 'register']);
-Route::post('register/confirm-email', [Register::class, 'confirmEmail']);
-Route::post('register/resend-confirm-email', [Register::class, 'resendOtp']);
-
 // Login
-Route::post('login', [Login::class, 'login']);
-Route::post('login/social', [Login::class, 'socialLogin']);
-Route::get('login/apple', [Login::class, 'loginApple']);
-Route::post('login/{providerName}/callback', [Login::class, 'callbackProvider']);
+Route::post('login', [Login::class, 'login'])->name('api.login');
+Route::post('login/social', [Login::class, 'socialLogin'])->name('api.socialLogin');
+Route::get('login/apple', [Login::class, 'loginApple'])->name('api.loginApple');
+Route::post('login/{providerName}/callback', [Login::class, 'callbackProvider'])->name('api.callbackProvider');
 
 // Reset password
 Route::post('reset-password', [ResetPassword::class, 'sendMail']);

@@ -495,7 +495,7 @@
                             >
                         </li> --}}
                         <li class="border-t border-white-light dark:border-white-light/10">
-                            <a href="{{route('cws.logout')}}" class="!py-3 text-danger">
+                            <a href="{{route('cws.logout')}}" class="!py-3 text-danger" @click="toggle">
                                 <svg
                                     class="h-4.5 w-4.5 rotate-90 ltr:mr-2 rtl:ml-2"
                                     width="18"
