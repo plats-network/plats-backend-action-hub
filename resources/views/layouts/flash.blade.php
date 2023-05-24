@@ -1,8 +1,9 @@
 @if(isset ($errors) && count($errors) > 0)
-    <div class="items-center p-3.5 rounded text-danger bg-danger-light dark:bg-danger-dark-light" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
         @foreach($errors->all() as $error)
-            <p class="ltr:pr-2 rtl:pl-2">{{$error}}</p>
+            <p>{{$error}}</p>
         @endforeach
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
 

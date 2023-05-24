@@ -21,6 +21,10 @@ Route::middleware(['guest', 'web'])->group(function($authRoute) {
     // Register
     $authRoute->get('signup', [AuthController::class, 'fromSignUp'])->name('cws.fromSignUp');
     $authRoute->post('signupPost', [AuthController::class, 'register'])->name('cws.register');
+
+    // Forgot
+    $authRoute->get('forgot', [AuthController::class, 'formForgot'])->name('cws.formForgot');
+    $authRoute->post('forgotPost', [AuthController::class, 'forgot'])->name('cws.forgot');
 });
 
 Route::middleware(['client_admin'])->group(function($cws) {

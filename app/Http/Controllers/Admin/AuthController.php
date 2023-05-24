@@ -42,7 +42,7 @@ class AuthController extends Controller
             Auth::login($user);
             notify()->success('Đăng nhập thành công');
         } catch (\Exception $e) {
-            Log::err('Errors Cws Login: ' . $e->getMessage());
+            Log::error('Errors Cws Login: ' . $e->getMessage());
             return redirect()->route('cws.formLogin');
         }
 
@@ -67,13 +67,41 @@ class AuthController extends Controller
 
             notify()->success('Create account successful!...');
         } catch (\Exception $e) {
-            Log::err('Create account cws error: ' . $e->getMessage());
+            Log::error('Create account cws error: ' . $e->getMessage());
             notify()->error('Error system!...');
 
             return redirect()->route('cws.fromSignUp');
         }
 
         return redirect()->route('cws.formLogin');
+    }
+
+    public function formForgot(Request $request)
+    {
+        return view('cws.auth.forgot');
+    }
+
+    public function forgot(Request $request)
+    {
+        try {
+            $email = $request->input('email');
+            $user = $this->user->whereEmail($email)->first();
+
+            if (!$user) {
+                notify()->error('Email không tồn tại');
+                return redirect()->route('cws.formForgot');
+            }
+
+            // Send mail forgot
+            // TODO:
+            notify()->success('Gửi thành công');
+        } catch (\Exception $e) {
+            Log::error('CWS error forgot: ' . $e->getMessage());
+            notify()->error('Error system');
+            return redirect()->route('cws.formForgot');
+        }
+
+        return redirect()->route('');
     }
 
     public function logout(Request $request)
@@ -83,7 +111,7 @@ class AuthController extends Controller
             Auth::logout();
             notify()->success('Logout successfull!....');
         } catch (\Exception $e) {
-            Log::err('Cws logout error: ' . $e->getMessage());
+            Log::error('Cws logout error: ' . $e->getMessage());
             notify()->error('Error system!...');
             return redirect()->route('cws.formLogin');
         }
