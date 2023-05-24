@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\Admin\{
     Register
 };
 use App\Http\Controllers\Auth\Admin\ForgotPassword;
+use App\Http\Controllers\Admin\EventController;
 
 // NEW
 Route::middleware(['guest', 'web'])->group(function($authRoute) {
@@ -30,6 +31,22 @@ Route::middleware(['guest', 'web'])->group(function($authRoute) {
 Route::middleware(['client_admin'])->group(function($cws) {
     $cws->get('/', [Dashboard::class, 'index'])->name('cws.home');
     $cws->get('logout', [AuthController::class, 'logout'])->name('cws.logout');
+
+    //Get event list
+    $cws->get('event-list', [EventController::class, 'index'])->name('cws.eventList');
+    //Event Create
+    $cws->get('event-create', [EventController::class, 'create'])->name('cws.eventCreate');
+    //Event Store
+    $cws->post('event-store', [EventController::class, 'store'])->name('cws.eventStore');
+    //Event Edit
+    $cws->get('event-edit/{id}', [EventController::class, 'edit'])->name('cws.eventEdit');
+    //Event Update
+    $cws->post('event-update/{id}', [EventController::class, 'update'])->name('cws.eventUpdate');
+    //Event Preview
+    $cws->get('event-preview/{id}', [EventController::class, 'preview'])->name('cws.eventPreview');
+    //Event Delete
+    $cws->get('event-delete/{id}', [EventController::class, 'delete'])->name('cws.eventDelete');
+
 });
 
 // OLD

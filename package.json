@@ -19,6 +19,9 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@editorjs/editorjs": "^2.27.0",
+        "@editorjs/header": "^2.7.0",
+        "@editorjs/table": "^2.2.1",
         "@fortawesome/fontawesome-free": "^6.2.0",
         "@near-wallet-selector/core": "^7.0.0",
         "@near-wallet-selector/ledger": "^7.0.0",
@@ -45,9 +48,11 @@
         "element-ui": "^2.15.10",
         "es6-promise": "^4.2.8",
         "ethers": "^5.7.0",
+        "flatpickr": "^4.6.13",
         "glob": "^8.0.1",
         "jquery-repeater-form": "^1.0.2",
         "jquery-validation": "^1.19.3",
+        "metismenujs": "^1.4.0",
         "moment": "^2.29.4",
         "near-api-js": "^0.44.2",
         "overlayscrollbars": "^1.13.1",
