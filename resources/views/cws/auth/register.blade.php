@@ -1,70 +1,94 @@
 @extends('cws.auth.auth')
 
 @section('content')
-    <div class="panel m-6 w-full max-w-lg sm:w-[480px]">
-        <h2 class="mb-3 text-2xl font-bold">Sign Up</h2>
-        @include('layouts.flash')
+    <div class="card">
+        <div class="card-body p-4"> 
+            <div class="text-center mt-2">
+                <h5>Register Account</h5>
+                <p class="text-muted">Get your free plats account now.</p>
+            </div>
+            <div class="p-2 mt-4">
+                <form action="{{ route('cws.register') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label class="form-label" for="fullname">Fullname <span class="text-danger">*</span></label>
+                        <div class="position-relative input-custom-icon">
+                            <input
+                                type="text"
+                                name="name"
+                                class="form-control"
+                                id="fullname"
+                                placeholder="Nguyen Van A"
+                                required />  
+                            <span class="bx bx-user"></span>
+                        </div>     
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="email">Email <span class="text-danger">*</span></label>
+                        <div class="position-relative input-custom-icon">
+                            <input
+                                type="email"
+                                name="email"
+                                class="form-control"
+                                id="email"
+                                placeholder="test@test.com"
+                                required />  
+                            <span class="bx bx-mail-send"></span>
+                        </div>     
+                    </div>
 
-        <x-form::open action="{{ route('cws.register') }}" class="space-y-5">
-            <div>
-                <label for="name">Name</label>
-                <input
-                    id="name"
-                    name="name"
-                    value="{{old('name') ?? null}}"
-                    type="text"
-                    class="form-input"
-                    placeholder="Nguyen Van A"
-                    required />
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="password">Password <span class="text-danger">*</span></label>
+                            <div class="position-relative auth-pass-inputgroup input-custom-icon">
+                                <span class="bx bx-lock-alt"></span>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    class="form-control"
+                                    id="password"
+                                    placeholder="*********"
+                                    required />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="confirmation">Password confirm <span class="text-danger">*</span></label>
+                            <div class="position-relative auth-pass-inputgroup input-custom-icon">
+                                <span class="bx bx-lock-alt"></span>
+                                <input
+                                    type="password"
+                                    name="password_confirmation"
+                                    class="form-control"
+                                    id="confirmation"
+                                    placeholder="*********"
+                                    required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-check py-1">
+                        <input
+                            type="checkbox"
+                            name="term"
+                            class="form-check-input"
+                            id="term"
+                            required />
+                        <label class="form-check-label" for="term">
+                            I accept <a href="#" class="text-dark">Terms and Conditions</a> <span class="text-danger">*</span>
+                        </label>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Register</button>
+                    </div>
+
+                    <div class="mt-4 text-center">
+                        <p class="mb-0">Already have an account ? <a href="{{route('cws.formLogin')}}" class="fw-medium text-primary"> Login</a></p>
+                    </div>
+                </form>
             </div>
-            <div>
-                <label for="email">Email</label>
-                <input
-                    id="email"
-                    name="email"
-                    value="{{old('email') ?? null}}"
-                    type="email"
-                    class="form-input"
-                    placeholder="info@plats.network"
-                    required />
-            </div>
-            <div>
-                <label for="password">Password</label>
-                <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    placeholder="********"
-                    class="form-input w-3/5"
-                    required />
-                <span class="text-xs text-white-dark ltr:pl-2 rtl:pr-2">Min 8-20 char</span>
-            </div>
-            <div>
-                <label for="password_confirmation">Password confirmation</label>
-                <input
-                    id="password_confirmation"
-                    name="password_confirmation"
-                    type="password"
-                    placeholder="********"
-                    class="form-input w-3/5"
-                    required />
-                <span class="text-xs text-white-dark ltr:pl-2 rtl:pr-2">Min 8-20 char</span>
-            </div>
-            <div>
-                <label class="cursor-pointer">
-                    <input type="checkbox" name="term" class="form-checkbox" />
-                    <span for="custom_checkbox" class="text-white-dark">I agree the
-                        <a href="javascript:;" class="text-primary hover:underline">Terms and Conditions</a>
-                    </span>
-                </label>
-            </div>
-            <button type="submit" class="btn btn-primary w-full">SIGN UP</button>
-        </x-form>
-        <div
-            class="relative my-7 h-5 text-center before:absolute before:inset-0 before:m-auto before:h-[1px] before:w-full before:bg-[#ebedf2] dark:before:bg-[#253b5c]">
+
         </div>
-        <p class="text-center">
-            Already have an account? <a href="{{route('cws.formLogin')}}" class="font-bold text-primary hover:underline">Sign In</a>
-        </p>
     </div>
 @endsection
