@@ -11,9 +11,12 @@
         @notifyCss
         @vite([
             'resources/sass/admin.scss',
-            'resources/js/admin.js'
+           'resources/js/admin/adminapp.js',
+            'resources/js/admin.js',
+            'resources/js/admin/cws/event.js',
         ])
 
+        @yield('style')
         @livewireStyles
     </head>
 
@@ -49,5 +52,7 @@
 
         <x-notify::notify />
         @notifyJs
+        @yield('scripts')
     </body>
+
 </html>

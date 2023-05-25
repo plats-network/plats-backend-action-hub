@@ -57,4 +57,4 @@ function fixStepIndicator(n) {
 
 // flatpickr
 
-flatpickr('#datepicker-basic');
+//flatpickr('#datepicker-basic');
