@@ -10,7 +10,7 @@ export default defineConfig({
                 'resources/sass/admin.scss',
                 // JS
                 // 'resources/js/app.js',
-                'resources/js/admin/adminapp.js',
+                // 'resources/js/admin/adminapp.js',
                 'resources/js/admin.js',
                 'resources/js/admin/cws/event.js',
             ],

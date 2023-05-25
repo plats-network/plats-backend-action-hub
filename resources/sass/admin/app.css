@@ -18,6 +18,11 @@ body[data-layout-mode="dark"] h6 {
   color: #eeeff1;
 }
 
+#laravel-notify {
+  position: absolute;
+  z-index: 99999;
+}
+
 .ishorizontal-topbar,
 .isvertical-topbar {
   position: fixed;
@@ -74,6 +79,7 @@ body:not([data-sidebar-size="sm"]) .app-search {
   background-color: #ffffff;
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
+  margin-top: 10px;
 }
 
 .logo {

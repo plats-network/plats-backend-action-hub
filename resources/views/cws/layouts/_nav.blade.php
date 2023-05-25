@@ -1,20 +1,11 @@
 <div class="vertical-menu">
     <div class="navbar-brand-box">
-        <a href="index.html" class="logo logo-dark">
+        <a href="{{url('/')}}" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="{{asset('imgs/logo-dark-sm.png')}}" alt="" height="26">
+                <img src="{{asset('imgs/logo.svg')}}" alt="" height="26">
             </span>
             <span class="logo-lg">
-                <img src="{{asset('imgs/logo-dark.png')}}" alt="" height="28">
-            </span>
-        </a>
-
-        <a href="index.html" class="logo logo-light">
-            <span class="logo-lg">
-                <img src="{{asset('imgs/logo-light.png')}}" alt="" height="30">
-            </span>
-            <span class="logo-sm">
-                <img src="{{asset('imgs/logo-light-sm.png')}}" alt="" height="26">
+                <img src="{{asset('imgs/logo-light-blue.svg')}}" alt="" height="28" style="width: 135px;">
             </span>
         </a>
     </div>
@@ -73,7 +64,6 @@
                         <span class="menu-item" data-key="t-filemanager">File Manager</span>
                     </a>
                 </li>
-
                 <li>
                     <a href="apps-chat.html">
                         <i class="bx bx-chat icon nav-icon"></i>
@@ -81,7 +71,6 @@
                         <span class="badge rounded-pill bg-danger" data-key="t-hot">Hot</span>
                     </a>
                 </li>
-
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="bx bx-store icon nav-icon"></i>
