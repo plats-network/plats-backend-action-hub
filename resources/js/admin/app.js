@@ -5,81 +5,6 @@ import './libs/eva-icons/eva.min.js';
 
 (function () {
     'use strict';
-    var language = localStorage.getItem('language');
-    // Default Language
-    var default_lang = 'en';
-
-    function initLanguage() {
-        // Set new language
-        if (language != "null" && language !== default_lang)
-            setLanguage(language);
-
-        var languages = document.getElementsByClassName("language");
-        languages && languages.forEach(function (dropdown) {
-            dropdown.addEventListener('click', function (event) {
-                setLanguage(dropdown.getAttribute('data-lang'));
-            });
-        });
-    }
-
-    function setLanguage(lang) {
-        document.getElementsByClassName("header-lang-img").forEach(function (el) {
-            if (el) {
-                switch (lang) {
-                    case "eng":
-                        el.src = "assets/images/flags/us.jpg";
-                        break;
-                    case "sp":
-                        el.src = "assets/images/flags/spain.jpg";
-                        break;
-                    case "gr":
-                        el.src = "assets/images/flags/germany.jpg";
-                        break;
-                    case "it":
-                        el.src = "assets/images/flags/italy.jpg";
-                        break;
-                    case "ru":
-                        el.src = "assets/images/flags/russia.jpg";
-                        break;
-                    default:
-                        el.src = "assets/images/flags/us.jpg";
-                        break;
-                }
-                localStorage.setItem('language', lang);
-                language = localStorage.getItem('language');
-                getLanguage();
-            }
-        });
-    }
-
-    // Multi language setting
-    function getLanguage() {
-        (language == null) ? setLanguage(default_lang) : false;
-
-        var request = new XMLHttpRequest();
-
-        // Instantiating the request object
-        request.open("GET", '/assets/lang/' + language + '.json');
-
-        // Defining event listener for readystatechange event
-        request.onreadystatechange = function () {
-            // Check if the request is compete and was successful
-            if (this.readyState === 4 && this.status === 200) {
-                var data = JSON.parse(this.responseText);
-                Object.keys(data).forEach(function (key) {
-                    var elements = document.querySelectorAll("[data-key='" + key + "']");
-                    elements.forEach(function (elem) {
-                        elem.textContent = data[key];
-                    });
-                });
-            }
-        };
-
-        // Sending the request to the server
-        request.send();
-    }
-
-
     function initMetisMenu() {
         // MetisMenu js
         document.addEventListener("DOMContentLoaded", function (event) {
@@ -550,7 +475,6 @@ import './libs/eva-icons/eva.min.js';
 
     function init() {
         initPreloader();
-        // initSettings();
         initMetisMenu();
         initCounterNumber();
         initLeftMenuCollapse();
@@ -559,12 +483,9 @@ import './libs/eva-icons/eva.min.js';
         initFullScreen();
         initDropdownMenu();
         initComponents();
-        initLanguage();
         layoutSetting();
         initMenuItemScroll();
         initCheckAll();
     }
-
     init();
-
 })();

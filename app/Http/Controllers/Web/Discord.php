@@ -13,7 +13,6 @@ use pschocke\TelegramLoginWidget\Facades\TelegramLoginWidget;
 
 class Discord extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('client_web');
@@ -61,7 +60,6 @@ class Discord extends Controller
         $client = new GuzzleHttp\Client();
         $response = $client->request('GET','https://discordapp.com/api/guilds/'.$channelId.'/widget.json');
         $response = json_decode($response);
-
     }
 
     public function telegram(Request $request) {

@@ -30,6 +30,10 @@ Route::middleware(['guest', 'web'])->group(function($authRoute) {
 Route::middleware(['client_admin'])->group(function($cws) {
     $cws->get('/', [Dashboard::class, 'index'])->name('cws.home');
     $cws->get('logout', [AuthController::class, 'logout'])->name('cws.logout');
+    $cws->get('setting', [User::class, 'setting'])->name('cws.setting');
+    $cws->post('change-password', [User::class, 'changePassword'])->name('cws.changePassword');
+    $cws->post('change-email', [User::class, 'changeEmail'])->name('cws.changeEmail');
+    $cws->post('change-info', [User::class, 'changeInfo'])->name('cws.changeInfo');
 });
 
 // OLD

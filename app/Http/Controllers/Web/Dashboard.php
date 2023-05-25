@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
-use App\Models\Event\EventUserTicket;
-use App\Models\Event\TaskEvent;
-use App\Models\Event\TaskEventDetail;
-use App\Models\Event\UserEventLike;
-use App\Models\Event\UserJoinEvent;
-use App\Models\Task;
-use App\Services\Admin\EventService;
-use App\Services\Admin\TaskService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use App\Models\Event\{
+    EventUserTicket,
+    TaskEvent,
+    TaskEventDetail,
+    UserEventLike,
+    UserJoinEvent,
+};
+use App\Services\Admin\{
+    EventService,
+    TaskService
+};
 
 class Dashboard extends Controller
 {
     public function __construct(
-        private TaskEvent   $eventModel,
+        private TaskEvent $eventModel,
         private EventService $eventService,
         private TaskService $taskService
-    )
-    {
-    }
+    ) {}
 
     public function index(Request $request)
     {
