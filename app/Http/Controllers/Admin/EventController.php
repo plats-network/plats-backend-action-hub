@@ -113,8 +113,11 @@ class EventController extends Controller
         $task['quiz'] = $quiz;
         //dd($task);
 
+        $activeTab = $request->get('tab') ?? '0';
+
         $data = [
             'event' => $task,
+            'activeTab' => $activeTab,
         ];
         return view('cws.event.edit', $data);
     }

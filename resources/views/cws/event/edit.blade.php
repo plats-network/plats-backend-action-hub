@@ -75,114 +75,121 @@
                                 </div>
                                 <div>
                                     <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label for="basicpill-firstname-input" class="form-label">Name</label>
-                                                <input type="text" value="{{ $event->name }}"
-                                                       class="form-control" placeholder="Enter Event Name" id="event_name" name="event_name">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="mb-3">
+                                                        <label for="basicpill-firstname-input" class="form-label">Name</label>
+                                                        <input type="text" value="{{ $event->name }}"
+                                                               class="form-control" placeholder="Enter Event Name" id="event_name" name="event_name">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label for="basicpill-firstname-input" class="form-label">Address</label>
-                                                <input type="text" value="{{ $event->address }}"
-                                                       class="form-control" placeholder="Enter Event Address" id="event_address" name="event_address">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="mb-3">
+                                                        <label for="basicpill-firstname-input" class="form-label">Address</label>
+                                                        <input type="text" value="{{ $event->address }}"
+                                                               class="form-control" placeholder="Enter Event Address" id="event_address" name="event_address">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label for="basicpill-firstname-input" class="form-label">Lat</label>
-                                                <input type="text" class="form-control" value="{{ $event->lat }}"
-                                                       placeholder="Enter Event Name" id="event_name" name="event_name">
-                                            </div>
-                                        </div><!-- end col -->
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label for="basicpill-lastname-input" class="form-label">Long</label>
-                                                <input type="text" class="form-control" value="{{ $event->long }}"
-                                                       placeholder="Enter Last Name" id="basicpill-lastname-input">
-                                            </div>
-                                        </div><!-- end col -->
-                                    </div><!-- end row -->
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label for="basicpill-firstname-input" class="form-label">Lat</label>
+                                                        <input type="text" class="form-control" value="{{ $event->lat }}"
+                                                               placeholder="Enter Event Name" id="event_name" name="event_name">
+                                                    </div>
+                                                </div><!-- end col -->
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label for="basicpill-lastname-input" class="form-label">Long</label>
+                                                        <input type="text" class="form-control" value="{{ $event->long }}"
+                                                               placeholder="Enter Last Name" id="basicpill-lastname-input">
+                                                    </div>
+                                                </div><!-- end col -->
+                                            </div><!-- end row -->
 
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label for="event_description" class="form-label">Description</label>
-                                                <event_description id="event_description" name="event_description"></event_description>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label for="basicpill-address-input"
-                                                       class="form-label">Order</label>
-                                                <input type="text" class="form-control" placeholder="" id="order" name="order">
-                                            </div>
-                                        </div><!-- end col -->
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label for="basicpill-address-input"
-                                                       class="form-label">&nbsp;</label>
-                                                <div class="form-check mt-1">
-                                                    <input class="form-check-input" type="checkbox" value="" name="paid" id="flexCheckPaid" checked>
-                                                    <label class="form-check-label" for="flexCheckPaid">
-                                                        Paid
-                                                    </label>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="mb-3">
+                                                        <label for="event_description" class="form-label">Description</label>
+                                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                        </div><!-- end col -->
-                                    </div><!-- end row -->
-                                    <div class="row" id="row_paid">
-                                        <div class="col-lg-6">
-                                        </div><!-- end col -->
-                                        <div class="col-lg-3">
-                                            <div class="mb-3">
-                                                <div class="mb-3">
-                                                    <input type="text" class="form-control" placeholder="" id="order" name="order">
-                                                </div>
-                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label for="basicpill-address-input"
+                                                               class="form-label">Order</label>
+                                                        <input type="text" class="form-control" placeholder="" id="order" name="order">
+                                                    </div>
+                                                </div><!-- end col -->
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label for="basicpill-address-input"
+                                                               class="form-label">&nbsp;</label>
+                                                        <div class="form-check mt-1">
+                                                            <input class="form-check-input" type="checkbox" value="" name="paid" id="flexCheckPaid" checked>
+                                                            <label class="form-check-label" for="flexCheckPaid">
+                                                                Paid
+                                                            </label>
+                                                        </div>
+                                                    </div>
 
-                                        </div><!-- end col -->
-                                        <div class="col-lg-3">
-                                            <div class="mb-3">
-                                                <div class="mb-3">
-                                                    <select class="form-select" aria-label="Default select example">
-                                                        <option value="1">Web</option>
-                                                        <option value="2">User</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                                </div><!-- end col -->
+                                            </div><!-- end row -->
+                                            <div class="row" id="row_paid">
+                                                <div class="col-lg-6">
+                                                </div><!-- end col -->
+                                                <div class="col-lg-3">
+                                                    <div class="mb-3">
+                                                        <div class="mb-3">
+                                                            <input type="text" class="form-control" placeholder="" id="order" name="order">
+                                                        </div>
+                                                    </div>
 
-                                        </div><!-- end col -->
-                                    </div><!-- end row -->
+                                                </div><!-- end col -->
+                                                <div class="col-lg-3">
+                                                    <div class="mb-3">
+                                                        <div class="mb-3">
+                                                            <select class="form-select" aria-label="Default select example">
+                                                                <option value="1">Web</option>
+                                                                <option value="2">User</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </div><!-- end col -->
+                                            </div><!-- end row -->
 
 
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label for="basicpill-phoneno-input"
-                                                       class="form-label">Start At</label>
-                                                <input type="text" class="form-control" value="{{ $event->starter_at }}"
-                                                       placeholder="" id="start_at" name="start_at">
-                                            </div>
-                                        </div><!-- end col -->
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label for="basicpill-email-input"
-                                                       class="form-label">End At</label>
-                                                <input type="email" class="form-control" value="{{ $event->starter_at }}"
-                                                       placeholder="" id="end_at" name="end_at">
-                                            </div>
-                                        </div><!-- end col -->
-                                    </div><!-- end row -->
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label for="basicpill-phoneno-input"
+                                                               class="form-label">Start At</label>
+                                                        <input type="text" class="form-control" value="{{ $event->starter_at }}"
+                                                               placeholder="" id="start_at" name="start_at">
+                                                    </div>
+                                                </div><!-- end col -->
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label for="basicpill-email-input"
+                                                               class="form-label">End At</label>
+                                                        <input type="email" class="form-control" value="{{ $event->starter_at }}"
+                                                               placeholder="" id="end_at" name="end_at">
+                                                    </div>
+                                                </div><!-- end col -->
+                                            </div><!-- end row -->
+                                        </div>
+
+                                    </div>
+
 
                                 </div>
 
@@ -197,56 +204,56 @@
                                     </div>
                                     <div>
                                         <div class="row">
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-9">
                                                 <div class="mb-3">
-                                                    <label for="basicpill-pancard-input" class="form-label">PAN
-                                                        Card</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Pan Card" id="basicpill-pancard-input">
+                                                    <label for="basicpill-pancard-input" class="form-label">Session Name</label>
+                                                    <input type="text" class="form-control" placeholder="Session Name" id="basicpill-pancard-input">
                                                 </div>
                                             </div><!-- end col -->
 
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-2">
                                                 <div class="mb-3">
                                                     <label for="basicpill-vatno-input"
-                                                           class="form-label">VAT/TIN No.</label>
-                                                    <input type="text" class="form-control" placeholder="Enter VAT/TIN No." id="basicpill-vatno-input">
+                                                           class="form-label">&nbsp;</label>
+                                                    <input type="text" class="form-control" placeholder="" id="basicpill-vatno-input">
                                                 </div>
                                             </div><!-- end col -->
                                         </div><!-- end row -->
                                         <div class="row">
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-12">
                                                 <div class="mb-3">
-                                                    <label for="basicpill-cstno-input" class="form-label">CST
-                                                        No.</label>
-                                                    <input type="text" class="form-control" placeholder="Enter CST No." id="basicpill-cstno-input">
+                                                    <label for="basicpill-cstno-input" class="form-label">Mô tả session</label>
+                                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                                 </div>
                                             </div><!-- end col -->
 
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-servicetax-input"
-                                                           class="form-label">Service Tax No.</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Service Tax No." id="basicpill-servicetax-input">
-                                                </div>
-                                            </div><!-- end col -->
                                         </div><!-- end row -->
                                         <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-companyuin-input"
-                                                           class="form-label">Company UIN</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Company UIN" id="basicpill-companyuin-input">
+                                            <div class="mb-3 row">
+                                                <label for="inputPassword" class="col-sm-2 col-form-label">Session 1</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control" id="inputPassword">
                                                 </div>
-                                            </div><!-- end col -->
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control" id="inputPassword">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    {{--Button delete--}}
+                                                    <div class="col-auto">
+                                                        <button type="submit" class="btn btn-danger mb-3">Xoá</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-3">
 
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-declaration-input"
-                                                           class="form-label">Declaration</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Declaration" id="basicpill-declaration-input">
+                                                <div class="d-flex flex-row-reverse">
+                                                    <div class="p-2">
+                                                        <button type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2" data-bs-toggle="modal" data-bs-target=".add-new-order"><i class="mdi mdi-plus me-1"></i> Thêm Item</button>
+                                                    </div>
                                                 </div>
-                                            </div><!-- end col -->
-                                        </div><!-- end row-->
+                                                <hr>
+                                            </div>
+                                        </div>
                                     </div><!-- end form -->
                                 </div>
                             </div>
@@ -260,52 +267,56 @@
                                     </div>
                                     <div>
                                         <div class="row">
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-9">
                                                 <div class="mb-3">
-                                                    <label for="basicpill-namecard-input"
-                                                           class="form-label">Name On Card</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Name On Card" id="basicpill-namecard-input">
-                                                </div>
-                                            </div><!-- end col -->
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Credit Card Type</label>
-                                                    <select class="form-select">
-                                                        <option selected>Select Card Type</option>
-                                                        <option value="AE">American Express</option>
-                                                        <option value="VI">Visa</option>
-                                                        <option value="MC">MasterCard</option>
-                                                        <option value="DI">Discover</option>
-                                                    </select>
-                                                </div>
-                                            </div><!-- end col -->
-                                        </div><!-- end row -->
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-cardno-input"
-                                                           class="form-label">Credit Card Number</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Credit Card Number" id="basicpill-cardno-input">
+                                                    <label for="basicpill-pancard-input" class="form-label">Scan Booth</label>
+                                                    <input type="text" class="form-control" placeholder="Session Name" id="basicpill-pancard-input">
                                                 </div>
                                             </div><!-- end col -->
 
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-2">
                                                 <div class="mb-3">
-                                                    <label for="basicpill-card-verification-input"
-                                                           class="form-label">Card Verification Number</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Card Verification Number" id="basicpill-card-verification-input">
+                                                    <label for="basicpill-vatno-input"
+                                                           class="form-label">&nbsp;</label>
+                                                    <input type="text" class="form-control" placeholder="" id="basicpill-vatno-input">
                                                 </div>
                                             </div><!-- end col -->
                                         </div><!-- end row -->
                                         <div class="row">
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-12">
                                                 <div class="mb-3">
-                                                    <label for="basicpill-expiration-input"
-                                                           class="form-label">Expiration Date</label>
-                                                    <input type="text" class="form-control" id="datepicker-basic" placeholder="Enter Expiration Date" id="basicpill-expiration-input">
+                                                    <label for="basicpill-cstno-input" class="form-label">Mô tả Booth</label>
+                                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                </div>
+                                            </div><!-- end col -->
+
+                                        </div><!-- end row -->
+                                        <div class="row">
+                                            <div class="mb-3 row">
+                                                <label for="inputPassword" class="col-sm-2 col-form-label">Booth 1</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control" id="inputPassword">
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control" id="inputPassword">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    {{--Button delete--}}
+                                                    <div class="col-auto">
+                                                        <button type="submit" class="btn btn-danger mb-3">Xoá</button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div><!-- end row -->
+                                            <div class="row mt-3">
+
+                                                <div class="d-flex flex-row-reverse">
+                                                    <div class="p-2">
+                                                        <button type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2" data-bs-toggle="modal" data-bs-target=".add-new-order"><i class="mdi mdi-plus me-1"></i> Thêm Item</button>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                        </div>
                                     </div><!-- end form -->
 
                                 </div>
@@ -318,55 +329,90 @@
                                     </div>
                                     <div>
                                         <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-namecard-input"
-                                                           class="form-label">Name On Card</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Name On Card" id="basicpill-namecard-input">
-                                                </div>
-                                            </div><!-- end col -->
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Credit Card Type</label>
-                                                    <select class="form-select">
-                                                        <option selected>Select Card Type</option>
-                                                        <option value="AE">American Express</option>
-                                                        <option value="VI">Visa</option>
-                                                        <option value="MC">MasterCard</option>
-                                                        <option value="DI">Discover</option>
-                                                    </select>
-                                                </div>
-                                            </div><!-- end col -->
-                                        </div><!-- end row -->
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-cardno-input"
-                                                           class="form-label">Credit Card Number</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Credit Card Number" id="basicpill-cardno-input">
-                                                </div>
-                                            </div><!-- end col -->
+                                            <div class="col-lg-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        Social
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                                                                    <label class="form-check-label" for="inlineCheckbox1">Comment</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                                                                    <label class="form-check-label" for="inlineCheckbox2">like</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+                                                                    <label class="form-check-label" for="inlineCheckbox3">Retweet</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option4">
+                                                                    <label class="form-check-label" for="inlineCheckbox4">Tweet</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-card-verification-input"
-                                                           class="form-label">Card Verification Number</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Card Verification Number" id="basicpill-card-verification-input">
+                                                        <div class="mt-3">
+                                                            <div class="mb-3">
+                                                                <label for="basicpill-cardno-input"
+                                                                       class="form-label">Url</label>
+                                                                <input type="text" class="form-control" placeholder="Url" id="basicpill-cardno-input">
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label for="basicpill-cardno-input"
+                                                                       class="form-label">Text</label>
+                                                                <input type="text" class="form-control" placeholder="Text" id="basicpill-cardno-input">
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
-                                            </div><!-- end col -->
-                                        </div><!-- end row -->
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-expiration-input"
-                                                           class="form-label">Expiration Date</label>
-                                                    <input type="text" class="form-control" id="datepicker-basic" placeholder="Enter Expiration Date" id="basicpill-expiration-input">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        Discord
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="mb-3">
+                                                            <label for="basicpill-cardno-input"
+                                                                   class="form-label">Bot Token</label>
+                                                            <input type="text" class="form-control" placeholder="Bot Token" id="basicpill-cardno-input">
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <div class="mb-3">
+                                                                    <label for="basicpill-cardno-input"
+                                                                           class="form-label">Channel Id</label>
+                                                                    <input type="text" class="form-control" placeholder="Channel Id" id="basicpill-cardno-input">
+                                                                </div>
+                                                            </div><!-- end col -->
+                                                            <div class="col-lg-6">
+                                                                <div class="mb-3">
+                                                                    <label for="basicpill-cardno-input"
+                                                                           class="form-label">Channel Url</label>
+                                                                    <input type="text" class="form-control" placeholder="Channel Url" id="basicpill-cardno-input">
+                                                                </div>
+                                                            </div><!-- end col -->
+                                                        </div>
+                                                    </div>
                                                 </div>
+
+                                            </div>
+
                                             </div>
                                         </div><!-- end row -->
                                     </div><!-- end form -->
 
-                                </div>
                             </div>
                             <div class="wizard-tab">
                                 <div>
@@ -376,52 +422,54 @@
                                     </div>
                                     <div>
                                         <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-namecard-input"
-                                                           class="form-label">Name On Card</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Name On Card" id="basicpill-namecard-input">
-                                                </div>
-                                            </div><!-- end col -->
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Credit Card Type</label>
-                                                    <select class="form-select">
-                                                        <option selected>Select Card Type</option>
-                                                        <option value="AE">American Express</option>
-                                                        <option value="VI">Visa</option>
-                                                        <option value="MC">MasterCard</option>
-                                                        <option value="DI">Discover</option>
-                                                    </select>
-                                                </div>
-                                            </div><!-- end col -->
-                                        </div><!-- end row -->
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-cardno-input"
-                                                           class="form-label">Credit Card Number</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Credit Card Number" id="basicpill-cardno-input">
-                                                </div>
-                                            </div><!-- end col -->
-
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-card-verification-input"
-                                                           class="form-label">Card Verification Number</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Card Verification Number" id="basicpill-card-verification-input">
-                                                </div>
-                                            </div><!-- end col -->
-                                        </div><!-- end row -->
-                                        <div class="row">
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-7">
                                                 <div class="mb-3">
                                                     <label for="basicpill-expiration-input"
-                                                           class="form-label">Expiration Date</label>
-                                                    <input type="text" class="form-control" id="datepicker-basic" placeholder="Enter Expiration Date" id="basicpill-expiration-input">
+                                                           class="form-label">Question 1</label>
+                                                    <input type="text" class="form-control" id="datepicker-basic" placeholder="Question 1" id="basicpill-expiration-input">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="mb-3">
+                                                    <label for="basicpill-expiration-input"
+                                                           class="form-label">Time</label>
+                                                    <input type="text" class="form-control" id="datepicker-basic" placeholder="Time" id="basicpill-expiration-input">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <div class="mb-3">
+                                                    <label for="basicpill-expiration-input"
+                                                           class="form-label">Order</label>
+                                                    <input type="text" class="form-control" id="datepicker-basic" placeholder="Order" id="basicpill-expiration-input">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <label for="basicpill-expiration-input"
+                                                       class="form-label">&nbsp;</label>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                                                    <label class="form-check-label" for="flexSwitchCheckChecked">Status</label>
                                                 </div>
                                             </div>
                                         </div><!-- end row -->
+                                        <br>
+                                        <div class="row">
+                                            <div class="mb-3 row offset-md-1">
+                                                <label for="inputPassword" class="col-sm-2 col-form-label">Answer 1</label>
+                                                <div class="col-sm-7">
+                                                    <input type="text" class="form-control" id="inputPassword">
+                                                </div>
+                                                <div class="col-sm-2">
+
+                                                    <div class="form-check mt-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                        <label class="form-check-label" for="flexCheckDefault">
+                                                            Option
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div><!-- end form -->
 
                                 </div>
@@ -454,7 +502,7 @@
     <script>
 
 
-        var currentTab = 0; // Current tab is set to be the first tab (0)
+        var currentTab = {{$activeTab}}; // Current tab is set to be the first tab (0)
         showTab(currentTab); // Display the current tab
 
         function showTab(n) {
