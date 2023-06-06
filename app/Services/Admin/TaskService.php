@@ -83,14 +83,16 @@ class TaskService extends BaseService
         try {
             $baseTask['creator_id'] = Auth::user()->id;
             $baseTask['status'] = true;
+            /** @var Task $dataBaseTask */
             $dataBaseTask = $this->repository->update($baseTask, $id);
+
             TaskGallery::where('task_id',$id)->delete();
-            if ($baseTask['task_galleries']){
+            if (isset($baseTask['task_galleries'])){
                 foreach ($baseTask['task_galleries'] as $uploadedFile){
                     $dataBaseTask->taskGalleries()->create( ['url_image' => empty($uploadedFile['url']) ? $uploadedFile :  $uploadedFile['url']]);
                 }
             }
-            if ($baseTask['group_tasks']){
+            if (isset($baseTask['group_tasks'])){
                 TaskGroup::where('task_id',$id)->delete();
                 foreach ($baseTask['group_tasks'] as $item){
                     DB::table('task_groups')->insert([
@@ -118,6 +120,12 @@ class TaskService extends BaseService
             if ($socials){
                 $dataBaseTask->taskSocials()->delete();
                 $dataBaseTask->taskSocials()->createMany($socials);
+            }
+            //Task session has one
+            $taskSessions = Arr::get($data, 'sessions');
+            if ($taskSessions){
+
+
             }
             DB::commit();
         } catch (RuntimeException $exception) {
@@ -213,5 +221,13 @@ class TaskService extends BaseService
         }
 
         return $dataLinkGenerate;
+    }
+
+    function initData()
+    {
+
+        /*
+         *
+         * */
     }
 }

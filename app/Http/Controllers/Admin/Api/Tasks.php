@@ -61,6 +61,7 @@ class Tasks extends ApiController
 //            }
         }
         $reward = $this->taskService->store($request);
+
         return $this->responseMessage('success');
     }
 

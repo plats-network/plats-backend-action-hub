@@ -10,6 +10,16 @@
 @extends('cws.layouts.app')
 @section('style')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.32.0/css/jquery.fileupload.css">
+    <link rel="stylesheet" href="{{asset('plugins/filekit/assets/css/upload-kit.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.1.1/dist/select2-bootstrap-5-theme.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    {{--Editor--}}
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -21,7 +31,20 @@
                         <h4 class="card-title mb-0">Forms Steps</h4>
                     </div><!-- end card header -->
                     <div class="card-body">
-                        <form action="#">
+                        <form method="POST" id="post_form" action="{{$is_update ? route('cws.eventUpdate', ['id' => $event->id]) : route('cws.eventStore')}}">
+                            @csrf
+
+                            <input type="hidden" name="id" value="{{ $event->id }}">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="list-unstyled">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
                             <ul class="wizard-nav mb-5">
                                 <li class="wizard-list-item">
                                     <div class="list-item">
@@ -81,7 +104,7 @@
                                                     <div class="mb-3">
                                                         <label for="basicpill-firstname-input" class="form-label">Name</label>
                                                         <input type="text" value="{{ $event->name }}"
-                                                               class="form-control" placeholder="Enter Event Name" id="event_name" name="event_name">
+                                                               class="form-control" placeholder="Event Name" id="name" name="name">
                                                     </div>
                                                 </div>
                                             </div>
@@ -90,7 +113,7 @@
                                                     <div class="mb-3">
                                                         <label for="basicpill-firstname-input" class="form-label">Address</label>
                                                         <input type="text" value="{{ $event->address }}"
-                                                               class="form-control" placeholder="Enter Event Address" id="event_address" name="event_address">
+                                                               class="form-control" placeholder="Enter Event Address" id="address" name="address">
                                                     </div>
                                                 </div>
                                             </div>
@@ -99,14 +122,14 @@
                                                     <div class="mb-3">
                                                         <label for="basicpill-firstname-input" class="form-label">Lat</label>
                                                         <input type="text" class="form-control" value="{{ $event->lat }}"
-                                                               placeholder="Enter Event Name" id="event_name" name="event_name">
+                                                               placeholder="Enter Event Name" id="lat" name="lat">
                                                     </div>
                                                 </div><!-- end col -->
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
-                                                        <label for="basicpill-lastname-input" class="form-label">Long</label>
-                                                        <input type="text" class="form-control" value="{{ $event->long }}"
-                                                               placeholder="Enter Last Name" id="basicpill-lastname-input">
+                                                        <label for="basicpill-lastname-input" class="form-label">Lng</label>
+                                                        <input type="text" class="form-control" value="{{ $event->lng }}"
+                                                               placeholder="Enter Last Name" name="lng" id="lng">
                                                     </div>
                                                 </div><!-- end col -->
                                             </div><!-- end row -->
@@ -116,7 +139,9 @@
                                                 <div class="col-lg-12">
                                                     <div class="mb-3">
                                                         <label for="event_description" class="form-label">Description</label>
-                                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+
+                                                        <div id="editor"></div>
+                                                        <input type="hidden" id="description" name="description" value="{{ $event->description }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -126,7 +151,7 @@
                                                     <div class="mb-3">
                                                         <label for="basicpill-address-input"
                                                                class="form-label">Order</label>
-                                                        <input type="text" class="form-control" placeholder="" id="order" name="order">
+                                                        <input type="text" class="form-control" placeholder="" value="{{ $event->order }}" id="order" name="order">
                                                     </div>
                                                 </div><!-- end col -->
                                                 <div class="col-lg-6">
@@ -134,7 +159,7 @@
                                                         <label for="basicpill-address-input"
                                                                class="form-label">&nbsp;</label>
                                                         <div class="form-check mt-1">
-                                                            <input class="form-check-input" type="checkbox" value="" name="paid" id="flexCheckPaid" checked>
+                                                            <input class="form-check-input" type="checkbox" value="1" name="is_paid" id="is_paid" @if($event->is_paid)  checked @endif>
                                                             <label class="form-check-label" for="flexCheckPaid">
                                                                 Paid
                                                             </label>
@@ -149,7 +174,7 @@
                                                 <div class="col-lg-3">
                                                     <div class="mb-3">
                                                         <div class="mb-3">
-                                                            <input type="text" class="form-control" placeholder="" id="order" name="order">
+                                                            <input type="text" class="form-control" placeholder="reward" id="reward" name="reward" value="{{$event->reward}}">
                                                         </div>
                                                     </div>
 
@@ -157,9 +182,9 @@
                                                 <div class="col-lg-3">
                                                     <div class="mb-3">
                                                         <div class="mb-3">
-                                                            <select class="form-select" aria-label="Default select example">
-                                                                <option value="1">Web</option>
-                                                                <option value="2">User</option>
+                                                            <select class="form-select" name="reward_type" id="reward_type" aria-label="Default select example">
+                                                                <option value="0" {{ ( $event->reward_type == 0) ? 'selected' : '' }} >Web</option>
+                                                                <option value="1" {{ ( $event->reward_type == 1) ? 'selected' : '' }}>User</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -173,7 +198,7 @@
                                                     <div class="mb-3">
                                                         <label for="basicpill-phoneno-input"
                                                                class="form-label">Start At</label>
-                                                        <input type="text" class="form-control" value="{{ $event->starter_at }}"
+                                                        <input type="text" class="form-control" value="{{ $event->start_at }}"
                                                                placeholder="" id="start_at" name="start_at">
                                                     </div>
                                                 </div><!-- end col -->
@@ -181,7 +206,7 @@
                                                     <div class="mb-3">
                                                         <label for="basicpill-email-input"
                                                                class="form-label">End At</label>
-                                                        <input type="email" class="form-control" value="{{ $event->starter_at }}"
+                                                        <input type="email" class="form-control" value="{{ $event->end_at }}"
                                                                placeholder="" id="end_at" name="end_at">
                                                     </div>
                                                 </div><!-- end col -->
@@ -203,11 +228,16 @@
                                         <p class="card-title-desc">Fill all information below</p>
                                     </div>
                                     <div>
+                                        {{--Id--}}
+                                        <input type="hidden" name="sessions[id]" id="sessions[id]" value="{{$sessions->id}}">
+                                        {{--Event Id--}}
+                                        <input type="hidden" name="sessions[task_id]" id="sessions[task_id]" value="{{$event->id}}">
+                                        {{--Session Id--}}
                                         <div class="row">
                                             <div class="col-lg-9">
                                                 <div class="mb-3">
                                                     <label for="basicpill-pancard-input" class="form-label">Session Name</label>
-                                                    <input type="text" class="form-control" placeholder="Session Name" id="basicpill-pancard-input">
+                                                    <input type="text" class="form-control" value="{{$sessions->name}}" placeholder="Session Name" id="sessions[name]" name="sessions[name]">
                                                 </div>
                                             </div><!-- end col -->
 
@@ -215,7 +245,7 @@
                                                 <div class="mb-3">
                                                     <label for="basicpill-vatno-input"
                                                            class="form-label">&nbsp;</label>
-                                                    <input type="text" class="form-control" placeholder="" id="basicpill-vatno-input">
+                                                    <input type="text" class="form-control" placeholder="" value="{{$sessions->max_job}}" id="sessions[max_job]" name="sessions[max_job]">
                                                 </div>
                                             </div><!-- end col -->
                                         </div><!-- end row -->
@@ -223,7 +253,9 @@
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
                                                     <label for="basicpill-cstno-input" class="form-label">Mô tả session</label>
-                                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                    <div id="editor2"></div>
+                                                    <input type="hidden" class="form-control" id="sessions-description" name="sessions[description]" value="{{$sessions->description}}"  />
+
                                                 </div>
                                             </div><!-- end col -->
 
@@ -267,10 +299,15 @@
                                     </div>
                                     <div>
                                         <div class="row">
+                                            {{--Id--}}
+                                            <input type="hidden" name="booths[id]" id="booths[id]" value="{{$booths->id}}">
+                                            {{--Event Id--}}
+                                            <input type="hidden" name="booths[task_id]" id="booths[task_id]" value="{{$event->id}}">
+                                            {{--Session Id--}}
                                             <div class="col-lg-9">
                                                 <div class="mb-3">
-                                                    <label for="basicpill-pancard-input" class="form-label">Scan Booth</label>
-                                                    <input type="text" class="form-control" placeholder="Session Name" id="basicpill-pancard-input">
+                                                    <label for="booths[name]" class="form-label">Scan Booth</label>
+                                                    <input type="text" class="form-control" value="{{$booths->name}}" placeholder="Booth Name" id="booths[name]" name="booths[name]" />
                                                 </div>
                                             </div><!-- end col -->
 
@@ -278,15 +315,17 @@
                                                 <div class="mb-3">
                                                     <label for="basicpill-vatno-input"
                                                            class="form-label">&nbsp;</label>
-                                                    <input type="text" class="form-control" placeholder="" id="basicpill-vatno-input">
+                                                    <input type="text" class="form-control" value="{{$booths->max_job}}" placeholder="max_job" id="booths[max_job]" name="booths[max_job]" >
                                                 </div>
                                             </div><!-- end col -->
                                         </div><!-- end row -->
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="mb-3">
-                                                    <label for="basicpill-cstno-input" class="form-label">Mô tả Booth</label>
-                                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                    <label for="booths[description]" class="form-label">Mô tả Booth</label>
+                                                    <div id="editor3"></div>
+                                                    <input type="hidden" class="form-control" id="booths-description" name="booths[description]" value="{{$booths->description}}"  />
+
                                                 </div>
                                             </div><!-- end col -->
 
@@ -480,6 +519,12 @@
                                 <button type="button" class="btn btn-primary w-sm" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
                                 <button type="button" class="btn btn-primary w-sm ms-auto" id="nextBtn" onclick="nextPrev(1)">Next</button>
                             </div>
+
+                            {{--Submit button--}}
+                            <div class="d-flex flex-wrap gap-3 mt-3">
+                                <button type="submit" class="btn btn-lg btn-primary" >Submit</button>
+                                <button type="button" class="btn btn-secondary btn-lg" >Cancel</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -490,17 +535,169 @@
 
 
     </div>
+    {{--Modal Loading--}}
+    <div class="modal fade" id="modalLoading" tabindex="-1" role="dialog" aria-labelledby="modal-default"
+         aria-hidden="true">
+        <div class="modal-dialog modal-primary modal-dialog-centered" role="document">
+            <div class="modal-content bg-gradient-secondary">
+                <div class="modal-body">
+                    <div class="d-flex align-items-center">
+                        <strong class="text-white">Uploading...</strong>
 
+                        <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    {{--End Modal Loading--}}
 @endsection
 
 
 @section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-load-image/5.14.0/load-image.all.min.js"
+            referrerpolicy="origin"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.32.0/js/vendor/jquery.ui.widget.js"
+            referrerpolicy="origin"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.32.0/js/jquery.iframe-transport.js"
+            referrerpolicy="origin"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.32.0/js/jquery.fileupload.js"
+            referrerpolicy="origin"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.32.0/js/jquery.fileupload-process.js"
+            referrerpolicy="origin"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.32.0/js/jquery.fileupload-image.js"
+            referrerpolicy="origin"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.32.0/js/jquery.fileupload-validate.js"
+            referrerpolicy="origin"></script>
+
+
+    <script src="{{asset('plugins/filekit/assets/js/upload-kit.js')}}" referrerpolicy="origin"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="{{asset('assets/yii2-assets/yii.js')}}"></script>
+    <script src="{{asset('assets/yii2-assets/yii.activeForm.js')}}"></script>
+    <script src="{{asset('assets/yii2-assets/yii.validation.js')}}"></script>
+
+
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.js"></script>
+    <script src="https://uicdn.toast.com/editor/latest/i18n/ja-jp.js"></script>
 
     <script>
+        var _token = $('meta[name="csrf-token"]').attr('content');
+        var spinText = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ';
+        var fileAvatarInit = null;
+        var flag_check = 1;
+
+        var modalLoading = $('#modalLoading');
+
+        const { Editor } = toastui;
+
+
+        Editor.setLanguage('en-US', {
+            Write: 'Viết',
+            Preview: 'Xem trước',
+            Headings: 'Tiêu đề',
+            Paragraph: 'Trang',
+            Bold: 'In đậm',
+            Italic: 'Nghiêng',
+            Strike: 'Gạch xuyên ngang',
+            Code: 'Inline code',
+            Line: 'Dòng',
+            Blockquote: 'Blockquote',
+            'Unordered list': 'Danh sách không thứ tự',
+            'Ordered list': 'Danh sách có thứ tự',
+            Task: 'Công việc',
+            Indent: 'Indent',
+            Outdent: 'Outdent',
+            'Insert link': 'Chèn link',
+            'Insert CodeBlock': 'Chèn codeBlock',
+            'Insert table': 'Chèn bảng',
+            'Insert image': 'Chèn ảnh',
+            Heading: 'Tiêu đề',
+            'Image URL': 'Image URL',
+            'Select image file': 'Hãy chọn file hình ảnh',
+            'Choose a file': 'Chọn file',
+            'No file': 'Chưa chọn file',
+            Description: 'Miêu tả',
+            OK: 'OK',
+            More: 'Thêm',
+            Cancel: 'Huỷ',
+            File: 'File',
+            URL: 'URL',
+            'Link text': '',
+            'Add row to up': 'Thêm dòng lên trên',
+            'Add row to down': 'Thêm dòng xuống dưới',
+            'Add column to left': 'Thêm cột trái',
+            'Add column to right': 'Thêm cột phải',
+            'Remove row': 'Xoá hàng',
+            'Remove column': 'Xoá cột',
+            'Align column to left': 'Căn cột trái',
+            'Align column to center': 'Căn cột giữa',
+            'Align column to right': 'Căn cột phải',
+            'Remove table': 'Xoá bảng',
+            'Would you like to paste as table?': 'Bạn có muốn chèn nội dung như bảng?',
+            'Text color': 'Màu chữ',
+            'Auto scroll enabled': 'Tự động cuộn',
+            'Auto scroll disabled': 'Không tự động cuộn',
+            'Choose language': 'Chọn ngôn ngữ',
+        });
+
+        var initial_form_state, last_form_state;
+        var contentEditor = document.getElementById('description').value;
+        var contentEditor2 = document.getElementById('sessions-description').value;
+        var contentEditor3 = document.getElementById('booths-description').value;
+
+        const editor = new toastui.Editor({
+            el: document.querySelector('#editor'),
+            previewStyle: 'vertical',
+            language: 'en-US',
+            initialEditType: 'wysiwyg', //markdown, wysiwyg
+            height: '350px',
+            initialValue: contentEditor
+        });
+
+        const editor2 = new toastui.Editor({
+            el: document.querySelector('#editor2'),
+            previewStyle: 'vertical',
+            language: 'en-US',
+            initialEditType: 'wysiwyg', //markdown, wysiwyg
+            height: '350px',
+            initialValue: contentEditor2
+        });
+
+        const editor3 = new toastui.Editor({
+            el: document.querySelector('#editor3'),
+            previewStyle: 'vertical',
+            language: 'en-US',
+            initialEditType: 'wysiwyg', //markdown, wysiwyg
+            height: '350px',
+            initialValue: contentEditor3
+        });
 
     </script>
     <script>
+        jQuery(document).ready(function ($) {
+            // display a modal (small modal)
+            var modalDelete = $('#modalDelete');
+            var uploadUrl = '{{config('admin.upload_url')}}';
+            var flag_check = 1;
+            $(document).on("submit", "#post_form", function (event) {
+                //Get Editor content
+                var content = editor.getHtml();//editor.getHTML();
+                var content2 = editor2.getHtml();//editor.getHTML();
+                var content3 = editor3.getHtml();//editor.getHTML();
+                //console.log(content);
 
+                $('[name=description]').attr('value', editor.getHtml());
+                $('[id=sessions-description]').attr('value', editor2.getHtml());
+
+                $('[id=booths-description]').attr('value', editor3.getHtml());
+
+                $(window).off('beforeunload');
+            });
+        });
 
         var currentTab = {{$activeTab}}; // Current tab is set to be the first tab (0)
         showTab(currentTab); // Display the current tab

@@ -38,6 +38,8 @@
         "@polkadot/util": "^9.4.1",
         "@popperjs/core": "^2.11.7",
         "@tailwindcss/line-clamp": "^0.4.4",
+        "blueimp-file-upload": "^10.32.0",
+        "blueimp-load-image": "^5.16.0",
         "bn.js": "^5.2.1",
         "bootstrap": "^5.2.3",
         "ckeditor4-vue": "^2.2.2",

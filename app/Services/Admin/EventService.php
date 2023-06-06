@@ -51,7 +51,7 @@ class EventService extends BaseService
             $data['slug'] = $request->input('name');
             $dataBaseTask = $this->taskRepository->update($data,$id);
             TaskGallery::where('task_id',$id)->delete();
-            if ($data['task_galleries']){
+            if (isset($data['task_galleries'])){
                 foreach ($data['task_galleries'] as $uploadedFile){
                     $dataBaseTask->taskGalleries()->create( ['url_image' => empty($uploadedFile['url']) ? $uploadedFile :  $uploadedFile['url']]);
                 }
@@ -62,7 +62,7 @@ class EventService extends BaseService
                 if (empty($sessions['id'])){
                     $sessions['code'] = Str::random(35);
                     $idTaskEventSessions = $dataBaseTask->taskEvents()->create($sessions);
-                    if ($sessions['detail']){
+                    if (isset($sessions['detail'])){
                         foreach ($sessions['detail'] as $key => $item){
                             $item['code'] = $this->generateBarcodeNumber().$key;
                             $idTaskEventSessions->detail()->create($item);
@@ -73,7 +73,7 @@ class EventService extends BaseService
                     unset($sessionsUn['detail']);
                     unset($sessionsUn['id']);
                     TaskEvent::where('id',$sessions['id'])->update($sessionsUn);
-                    if ($sessions['detail']){
+                    if (isset($sessions['detail'])){
                         foreach ($sessions['detail'] as $key => $item){
                             if (empty($item['id'])){
                                 $item['code'] = $this->generateBarcodeNumber().$key;
@@ -93,7 +93,7 @@ class EventService extends BaseService
                 if (empty($booths['id'])){
                     $booths['code'] = Str::random(35);
                     $idTaskEventBooths = $dataBaseTask->taskEvents()->create($booths);
-                    if ($booths['detail']){
+                    if (isset($booths['detail'])){
                         foreach ($booths['detail'] as $key => $item){
                             $item['code'] = $this->generateBarcodeNumber().$key;
                             $idTaskEventBooths->detail()->create($item);
@@ -104,7 +104,7 @@ class EventService extends BaseService
                     unset($boothsUn['detail']);
                     unset($boothsUn['id']);
                     TaskEvent::where('id',$booths['id'])->update($boothsUn);
-                    if ($booths['detail']){
+                    if (isset($booths['detail'])){
                         foreach ($booths['detail'] as $key => $item){
                             if (empty($item['id'])){
                                 $item['code'] = $this->generateBarcodeNumber().$key;
@@ -204,7 +204,7 @@ class EventService extends BaseService
             $data['max_job'] = 0;
             // $data['code'] = Str::random(35);
             $dataBaseTask = $this->taskRepository->create($data);
-            if ($data['task_galleries']){
+            if (isset($data['task_galleries'])){
                 foreach ($data['task_galleries'] as $uploadedFile){
                     $dataBaseTask->taskGalleries()->create( ['url_image' => empty($uploadedFile['url']) ? $uploadedFile :  $uploadedFile['url']]);
                 }
