@@ -50,7 +50,7 @@
                     <div class="col-6 pe-1 ps-1">
                         <ul class="list-unstyled">
                             <li>
-                                <a href="{{ route(LOGOUT_WEB_ROUTE) }}">
+                                <a href="{{ route('web.logout') }}">
                                     <i data-acorn-icon="logout" class="me-2" data-acorn-size="17"></i>
                                     <span class="align-middle">Logout</span>
                                 </a>

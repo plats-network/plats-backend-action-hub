@@ -35,7 +35,7 @@ class TaskEvent extends Model
         'name',
         'description',
         'banner_url',
-        'type', // 0: Sesion, 1: Booth, 3: Hub
+        'type', // 0: Sesion, 1: Booth
         'max_job',
         'status',
         'code'

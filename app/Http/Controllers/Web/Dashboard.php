@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\{Task};
 use App\Models\Event\{
     EventUserTicket,
     TaskEvent,
@@ -21,6 +22,9 @@ class Dashboard extends Controller
 {
     public function __construct(
         private TaskEvent $eventModel,
+        private Task $task,
+        private UserJoinEvent $taskDone,
+        private TaskEventDetail $eventDetail,
         private EventService $eventService,
         private TaskService $taskService
     ) {}
@@ -33,6 +37,52 @@ class Dashboard extends Controller
             $active = 1;
         }
         return view('web.home',['active' => $active]);
+    }
+
+
+    public function jobEvent(Request $request, $id)
+    {
+        try {
+            $sessionDatas = [];
+            $boothDatas = [];
+
+            $task = $this->task->whereCode($id)->first();
+            if (!$task) {
+                $this->redirectPath();
+            }
+            $eventSession = $this->eventModel->whereType(TASK_SESSION)->first();
+            $eventBooth = $this->eventModel->whereType(TASK_BOOTH)->first();
+
+            $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)->get();
+            $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)->get();
+
+            foreach($sessions as $session) {
+                $sessionDatas[] = [
+                    'id' => $session->id,
+                    'user_id' => $request->user()->id,
+                    'name' => $session->name,
+                    'flag' => $this->checkDoneJob($session->id),
+                ];
+            }
+
+            foreach($booths as $booth) {
+                $boothDatas[] = [
+                    'id' => $booth->id,
+                    'user_id' => $request->user()->id,
+                    'name' => $booth->name,
+                    'flag' => $this->checkDoneJob($booth->id),
+                ];
+            }
+        } catch (\Exception $e) {
+            $this->redirectPath();
+        }
+
+        // dd($sessionDatas, $boothDatas);
+
+        return view('web.events.job', [
+            'sessions' => $sessionDatas,
+            'booths' => $boothDatas,
+        ]);
     }
 
 
@@ -120,5 +170,21 @@ class Dashboard extends Controller
             $maxTime = 1;
         }
         return $maxTime;
+    }
+
+    private function redirectPath()
+    {
+        notify()->error('Sự kiện không tồn tại.');
+        return redirect()->route('web.home');
+    }
+
+    private function checkDoneJob($eventDetailId)
+    {
+        $userId = Auth::user()->id;
+
+        return $this->taskDone
+            ->whereUserId($userId)
+            ->whereTaskEventDetailId($eventDetailId)
+            ->exists();
     }
 }

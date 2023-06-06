@@ -34,7 +34,7 @@
                     <div class="sw-lg-50 px-5">
                         <div>
                             <x-alert/>
-                            <x-form::open action="{{ route(CREATE_USER_WEB_ROUTE) }}" class="tooltip-end-bottom" >
+                            <x-form::open action="{{ route('web.createUser') }}" class="tooltip-end-bottom" >
                                 <div class="mb-3 filled form-group tooltip-end-top">
                                     <i data-acorn-icon="user"></i>
                                     <input class="form-control" placeholder="Name" name="name" value="{{ old('name') }}"/>

@@ -29,6 +29,7 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'new_email',
         'birth',
         'gender',
@@ -40,7 +41,10 @@ class User extends Authenticatable implements JWTSubject
         'discord',
         'telegram',
         'email_verified_at',
-        'confirmation_code'
+        'confirmation_code',
+        'comfirm_hash',
+        'comfirm_at',
+        'status',
     ];
 
     /**

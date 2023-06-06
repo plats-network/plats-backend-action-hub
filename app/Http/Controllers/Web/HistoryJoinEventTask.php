@@ -2,42 +2,50 @@
 
 namespace App\Http\Controllers\Web;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\{Auth, Mail, Redirect, Session};
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CreateUserForm;
 use App\Mail\VerifyCodeEmail;
-use App\Models\Event\EventUserTicket;
-use App\Models\Event\TaskEvent;
-use App\Models\Event\TaskEventDetail;
-use App\Models\Event\UserJoinEvent;
-use App\Models\Task;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
+use App\Models\Event\{EventUserTicket, TaskEvent, TaskEventDetail, UserJoinEvent};
+use App\Models\{Task, User};
 use App\Services\CodeHashService;
 
 class HistoryJoinEventTask extends Controller
 {
-    public function __construct(private CodeHashService $codeHashService) {}
+    public function __construct(
+        private CodeHashService $codeHashService,
+        private TaskEventDetail $eventDetail,
+    ) {
+        // Code
+    }
 
     public function index(Request $request)
     {
-        $code = $request->input('id');
+        try {
+            $user = Auth::user();
+            $code = $request->input('id');
+            $event = $this->eventDetail->whereCode($code)->first();
 
-        $user = Auth::user();
+            if (!$event) {
+                notify()->error('Không tồn tại');;
+                return redirect()->route('web.home');
+            }
 
-        session()->put('code', $code);
-        if ($user){
-//            $taskEventId = TaskEventDetail::where('code',$code)->first();
-//            $taskId = TaskEvent::where('id', $taskEventId->task_event_id)->first();
-//            $this->codeHashService->makeCode($taskId->task_id, $user->id);
-            $this->apiList();
+            if(!$user) {
+                session()->put('code', $code);
+                notify()->error('Vui lòng login để hoàn thành.');
 
-            return view('web.history');
+                return redirect()->route('web.formLoginGuest');
+            } else {
+                return redirect()->route('web.jobEvent', [
+                    'id' => 'ewqf2143e'
+                ]);
+            }
+        } catch (\Exception $e) {
+            notify()->error('Có lỗi xảy ra');
+            return redirect()->route('web.home');
         }
-        return view('web.form_add_user');
     }
 
     public function createUser(CreateUserForm $request)
@@ -54,8 +62,8 @@ class HistoryJoinEventTask extends Controller
                 Auth::login($checkUser);
                 return view('web.history');
             }
-            if (session()->get('code') != null){
-               $code = session()->get('code');
+            if (session()->get('code') != null) {
+                $code = session()->get('code');
                 $getTaskEventId = TaskEventDetail::where('code',$code)->first();
                 $getTaskId = TaskEvent::where('id',$getTaskEventId->task_event_id)->first();
                 $data = [

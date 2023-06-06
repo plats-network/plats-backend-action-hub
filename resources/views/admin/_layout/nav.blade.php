@@ -2,7 +2,7 @@
     <div class="nav-content d-flex pt-3">
         <!-- Logo Start -->
         <div class="logo position-relative">
-            <a href="{{ route(DASHBOARD_ADMIN_ROUTER) }}">
+            <a href="{{ route('cws.home') }}">
                 <img src="{{ asset('img/admin/logo-light-blue.svg') }}" alt="logo" />
             </a>
         </div>

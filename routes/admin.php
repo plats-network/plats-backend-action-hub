@@ -3,10 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     Dashboard, Reward, Event, TaskBeta,
-    Group, User, Export
-};
-use App\Http\Controllers\Admin\{
-    AuthController
+    Group, User, Export, AuthController,
+    ConfirmController
 };
 use App\Http\Controllers\Auth\Admin\{
     Register
@@ -23,6 +21,10 @@ Route::middleware(['guest', 'web'])->group(function($authRoute) {
     $authRoute->get('signup', [AuthController::class, 'fromSignUp'])->name('cws.fromSignUp');
     $authRoute->post('signupPost', [AuthController::class, 'register'])->name('cws.register');
 
+    // Comfirm register
+    $authRoute->get('confirm-regis/{token}', [ConfirmController::class, 'confirmRegis'])->name('cws.confirmRegis');
+    $authRoute->get('resend-regis/{token}', [ConfirmController::class, 'resendConfirm'])->name('cws.resendConfirm');
+
     // Forgot
     $authRoute->get('forgot', [AuthController::class, 'formForgot'])->name('cws.formForgot');
     $authRoute->post('forgotPost', [AuthController::class, 'forgot'])->name('cws.forgot');
@@ -35,6 +37,9 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->post('change-password', [User::class, 'changePassword'])->name('cws.changePassword');
     $cws->post('change-email', [User::class, 'changeEmail'])->name('cws.changeEmail');
     $cws->post('change-info', [User::class, 'changeInfo'])->name('cws.changeInfo');
+
+    // User
+    $cws->get('users', [User::class, 'index'])->name('cws.users');
 
     //Get event list
     $cws->get('event-list', [EventController::class, 'index'])->name('cws.eventList');
@@ -56,37 +61,37 @@ Route::middleware(['client_admin'])->group(function($cws) {
 // Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_ADMIN_ROUTER);
 // Route::get('register', [Register::class, 'create'])->name('auth.create');
 // Route::post('register', [Register::class, 'store'])->name('auth.store');
-Route::get('forget-password', [ForgotPassword::class, 'showForgetPasswordForm'])->name('admin.forget.password.get');
-Route::post('forget-password', [ForgotPassword::class, 'submitForgetPasswordForm'])->name('admin.forget.password.post');
-Route::get('reset-password/{token}', [ForgotPassword::class, 'showResetPasswordForm'])->name('admin.reset.password.get');
-Route::post('reset-password', [ForgotPassword::class, 'submitResetPasswordForm'])->name('admin.reset.password.post');
-Route::get('/verify/{code}', [Register::class, 'verify'])->name(VERIFY_EMAIL);
+// Route::get('forget-password', [ForgotPassword::class, 'showForgetPasswordForm'])->name('admin.forget.password.get');
+// Route::post('forget-password', [ForgotPassword::class, 'submitForgetPasswordForm'])->name('admin.forget.password.post');
+// Route::get('reset-password/{token}', [ForgotPassword::class, 'showResetPasswordForm'])->name('admin.reset.password.get');
+// Route::post('reset-password', [ForgotPassword::class, 'submitResetPasswordForm'])->name('admin.reset.password.post');
+// Route::get('/verify/{code}', [Register::class, 'verify'])->name('cws.verify');
 // Task management
 Route::prefix('tasks')->controller(TaskBeta::class)->group(function () {
-    Route::get('/', 'index')->name(TASK_LIST_ADMIN_ROUTER);
+    Route::get('/', 'index')->name('cws.tasks');
     Route::get('edit/{id}', 'edit')->whereUuid('id');
     Route::get('create', 'create');
     Route::post('/save-avatar-api', 'uploadAvatar');
     Route::post('/save-sliders-api', 'uploadSliders');
 });
 Route::prefix('rewards')->controller(Reward::class)->group(function () {
-    Route::get('/', 'index')->name(REWARD_LIST_ADMIN_ROUTER);
+    Route::get('/', 'index')->name('cws.rewards');
 });
 Route::prefix('events')->controller(Event::class)->group(function () {
-    Route::get('/', 'index')->name(EVENT_LIST_ADMIN_ROUTER);
+    Route::get('/', 'index')->name('cws.events');
     Route::get('/preview/{task_id}', 'preview');
     Route::get('/edit/{task_id}', 'edit');
     Route::get('/create', 'create');
     Route::get('/api/{task_id}', 'apiUserEvent');
-    Route::get('/{task_id}', 'userEvent')->name(EVENT_USER_ADMIN_ROUTER);
+    Route::get('/{task_id}', 'userEvent')->name('cws.userEvent');
 });
 Route::prefix('groups')->controller(Group::class)->group(function () {
-    Route::get('/', 'index')->name(GROUP_LIST_ADMIN_ROUTER);
+    Route::get('/', 'index')->name('cws.groups');
 });
-Route::prefix('users')->controller(User::class)->group(function () {
-    Route::get('/', 'index')->name(USER_LIST_ADMIN_ROUTER);
-    Route::get('/list', 'apiListUser');
-});
+// Route::prefix('users')->controller(User::class)->group(function () {
+//     Route::get('/', 'index')->name('cws.users');
+//     Route::get('/list', 'apiListUser');
+// });
 Route::prefix('export')->controller(Export::class)->group(function () {
     Route::post('/user-join-event', 'userJoinEvent');
 });
