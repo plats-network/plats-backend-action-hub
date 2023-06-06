@@ -135,6 +135,11 @@ class Task extends Model
         return $this->hasMany(TaskEvent::class)->with('detail');;
     }
 
+    //Session
+    public function taskSessions()
+    {
+        return $this->hasOne(TaskEvent::class);
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

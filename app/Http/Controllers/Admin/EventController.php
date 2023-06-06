@@ -52,6 +52,10 @@ class EventController extends Controller
      */
     public function create()
     {
+        $data = [
+            'event' => new Event(),
+            'is_update' => 0,
+        ];
         return view('companies.create');
     }
 
@@ -71,7 +75,7 @@ class EventController extends Controller
 
         Event::create($request->post());
 
-        return redirect()->route('companies.index')->with('success','Event has been created successfully.');
+        return redirect()->route('cws.eventList')->with('success','Event has been created successfully.');
     }
 
     /**
@@ -91,11 +95,31 @@ class EventController extends Controller
      */
     public function edit(Request $request, $id)
     {
+        /** @var Task $task */
         $task = Task::with( 'taskSocials', 'taskLocations','taskEventSocials','taskGenerateLinks','taskEventDiscords')->find($id);
         $taskGroup = TaskGroup::where('task_id',$id)->pluck('group_id');
         $taskGallery = TaskGallery::where('task_id',$id)->pluck('url_image');
+
         $booths = TaskEvent::where('task_id',$id)->with('detail')->where('type',1)->first();
+
         $sessions = TaskEvent::where('task_id',$id)->with('detail')->where('type',0)->first();
+
+        //Check if $sessions is null then create new
+        if($sessions == null){
+            $sessions = new TaskEvent();
+            $sessions->task_id = $id;
+            $sessions->type = 0;
+            $sessions->save();
+        }
+        //Check if $booths is null then create new
+        if($booths == null){
+            $booths = new TaskEvent();
+            $booths->task_id = $id;
+            $booths->type = 1;
+
+            $booths->save();
+        }
+
         $quiz = Quiz::where('task_id',$id)->with('detail')->get();
         foreach ($quiz as  $value){
             foreach ($value['detail'] as $key => $value){
@@ -113,8 +137,19 @@ class EventController extends Controller
         $task['quiz'] = $quiz;
         //dd($task);
 
+        //dd($sessions);
+        //dd($sessions);
+        $activeTab = $request->get('tab') ?? '0';
+
         $data = [
             'event' => $task,
+            'sessions' => $sessions,
+            'booths' => $booths,
+            'quiz' => $quiz,
+            'group_tasks' => $taskGroup,
+            'task_galleries' => $image,
+            'activeTab' => $activeTab,
+            'is_update' => 1,
         ];
         return view('cws.event.edit', $data);
     }
@@ -128,15 +163,20 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $company)
     {
+
+        $inputAll = $request->all();
+        //dd($inputAll);
+
         $request->validate([
             'name' => 'required',
-            'email' => 'required',
-            'address' => 'required',
+            //'email' => 'required',
+            //'address' => 'required',
         ]);
 
-        $company->fill($request->post())->save();
+        //$company->fill($request->post())->save();
+        $this->eventService->store($request);
 
-        return redirect()->route('companies.index')->with('success','Event Has Been updated successfully');
+        return redirect()->route('cws.eventList')->with('success','Event Has Been updated successfully');
     }
 
     /**
@@ -148,6 +188,6 @@ class EventController extends Controller
     public function destroy(Event $company)
     {
         $company->delete();
-        return redirect()->route('companies.index')->with('success','Event has been deleted successfully');
+        return redirect()->route('cws.eventList')->with('success','Event has been deleted successfully');
     }
 }
