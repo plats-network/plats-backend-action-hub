@@ -9,15 +9,16 @@ use App\Http\Requests\Auth\{
     LoginRequest,
     RegisAdmin
 };
-use Illuminate\Support\Facades\Auth;
-use Log;
-use Session;
+use Illuminate\Support\Facades\{Auth, Log, Session};
+use Illuminate\Support\Arr;
 use Carbon\Carbon;
+use App\Services\UserService;
 
 class AuthController extends Controller
 {
     public function __construct(
         private User $user,
+        private UserService $userService,
     ) {
         // code
     }
@@ -39,7 +40,7 @@ class AuthController extends Controller
             $user = Auth::getProvider()
                 ->retrieveByCredentials($credentials);
 
-            Auth::login($user);
+            Auth::login($user, true);
             notify()->success('Đăng nhập thành công');
         } catch (\Exception $e) {
             Log::error('Errors Cws Login: ' . $e->getMessage());
@@ -57,14 +58,8 @@ class AuthController extends Controller
     public function register(RegisAdmin $request)
     {
         try {
-            $this->user->create([
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'password' => $request->input('password'),
-                'email_verified_at' => Carbon::now(),
-                'role' => CLIENT_ROLE
-            ]);
-
+            $datas = $request->except(['term']);
+            $this->userService->storeAccount($datas, CLIENT_ROLE);
             notify()->success('Create account successful!...');
         } catch (\Exception $e) {
             Log::error('Create account cws error: ' . $e->getMessage());

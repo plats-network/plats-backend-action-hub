@@ -31,14 +31,20 @@ class User extends Controller
 
     public function index(Request $request)
     {
-        return view('admin.user.index', []);
+        $users = $this->userService->search([
+            'limit' => $request->get('limit') ?? PAGE_SIZE
+        ]);
+
+        return view('cws.users.index', [
+            'users' => $users
+        ]);
     }
 
-    public function apiListUser(Request $request)
-    {
-        $users = $this->userService->search(['limit' => $request->get('limit') ?? PAGE_SIZE]);
-        return  response()->json($users);
-    }
+    // public function apiListUser(Request $request)
+    // {
+    //     $users = $this->userService->search(['limit' => $request->get('limit') ?? PAGE_SIZE]);
+    //     return  response()->json($users);
+    // }
 
     // Get setting client user
     // Method: GET

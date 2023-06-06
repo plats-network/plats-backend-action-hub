@@ -4,31 +4,31 @@
         @if (optional(auth()->user())->role == ADMIN_ROLE)
                 <ul>
                     <li>
-                        <a href="{{ route(DASHBOARD_ADMIN_ROUTER) }}" class="active">
+                        <a href="{{ route('cws.home') }}" class="active">
                             <i data-acorn-icon="navigate-diagonal" class="icon" data-acorn-size="18"></i>
                             <span class="label">{{ trans('nav.dashboard') }}</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route(TASK_LIST_ADMIN_ROUTER) }}">
+                        <a href="{{ route('cws.tasks') }}">
                             <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
                             <span class="label">Tasks</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route(EVENT_LIST_ADMIN_ROUTER) }}">
+                        <a href="{{ route('cws.events') }}">
                             <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
                             <span class="label">Events</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route(REWARD_LIST_ADMIN_ROUTER) }}">
+                        <a href="{{ route('cws.rewards') }}">
                             <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
                             <span class="label">Rewards</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route(GROUP_LIST_ADMIN_ROUTER) }}">
+                        <a href="{{ route('cws.groups') }}">
                             <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
                             <span class="label">Groups</span>
                         </a>
@@ -43,13 +43,13 @@
         @else
             <ul>
                 <li>
-                    <a href="{{ route(DASHBOARD_ADMIN_ROUTER) }}" class="active">
+                    <a href="{{ route('cws.home') }}" class="active">
                         <i data-acorn-icon="navigate-diagonal" class="icon" data-acorn-size="18"></i>
                         <span class="label">{{ trans('nav.dashboard') }}</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route(EVENT_LIST_ADMIN_ROUTER) }}">
+                    <a href="{{ route('cws.events') }}">
                         <i data-acorn-icon="form-check" class="icon d-none" data-acorn-size="18"></i>
                         <span class="label">Events</span>
                     </a>

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{DB, Hash, Storage};
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Log;
 
 class UserService extends BaseService
 {
@@ -38,6 +39,8 @@ class UserService extends BaseService
 
     public function search($conditions = [])
     {
+        $user = auth()->user();
+
         $this->makeBuilder($conditions);
 
         if ($this->filter->has('name')) {
@@ -71,6 +74,12 @@ class UserService extends BaseService
             });
             // Remove condition after apply query builder
             $this->cleanFilterBuilder('date_to');
+        }
+
+        if ($user && $user->role == CLIENT_ROLE) {
+            $this->builder->where(function($q) {
+                // $q->whereRole($user->id);
+            });
         }
 
         return $this->endFilter();
@@ -324,5 +333,22 @@ class UserService extends BaseService
         }
 
         return $user;
+    }
+
+    public function storeAccount($datas, $role = USER_ROLE)
+    {
+        try {
+            $datas = array_merge($datas, [
+                'role' => $role,
+                'confirm_hash' => Str::random(50),
+                'confirm_at' => Carbon::now()->addHours(48),
+                'status' => USER_CONFIRM,
+            ]);
+            User::create($datas);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
     }
 }

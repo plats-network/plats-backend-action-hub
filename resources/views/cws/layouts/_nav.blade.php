@@ -9,16 +9,14 @@
             </span>
         </a>
     </div>
-
     <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn">
         <i class="bx bx-menu align-middle"></i>
     </button>
-
     <div data-simplebar class="sidebar-menu-scroll">
         <div id="sidebar-menu">
-            <ul class="metismenu list-unstyled" id="side-menu">
-                <li class="menu-title" data-key="t-menu">Dashboard</li>
-                <li>
+            <ul class="metismenu list-unstyled mt-3" id="side-menu">
+                {{-- <li class="menu-title" data-key="t-menu">Dashboard</li> --}}
+                {{-- <li>
                     <a href="javascript: void(0);">
                         <i class="bx bx-home-alt icon nav-icon"></i>
                         <span class="menu-item" data-key="t-dashboard">Dashboard</span>
@@ -28,11 +26,10 @@
                         <li><a href="index.html" data-key="t-ecommerce">Ecommerce</a></li>
                         <li><a href="dashboard-sales.html" data-key="t-sales">Sales</a></li>
                     </ul>
-                </li>
+                </li> --}}
+                {{-- <li class="menu-title" data-key="t-applications">Applications</li> --}}
 
-                <li class="menu-title" data-key="t-applications">Applications</li>
-
-                <li>
+                {{-- <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="bx bx-envelope icon nav-icon"></i>
                         <span class="menu-item" data-key="t-email">Email</span>
@@ -41,24 +38,24 @@
                         <li><a href="email-inbox.html" data-key="t-inbox">Inbox</a></li>
                         <li><a href="email-read.html" data-key="t-read-email">Read Email</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
                 <li>
-                    <a href="apps-calendar.html">
+                    <a href="{{route('cws.users')}}">
                         <i class="bx bx-calendar-event icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-calendar">Calendar</span>
+                        <span class="menu-item" data-key="t-calendar">Users</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="apps-todo.html">
+                    <a href="{{route('cws.eventList')}}">
                         <i class="bx bx-check-square icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-todo">Todo</span>
-                        <span class="badge rounded-pill bg-success" data-key="t-new">New</span>
+                        <span class="menu-item" data-key="t-todo">Events</span>
+                        {{-- <span class="badge rounded-pill bg-success" data-key="t-new">New</span> --}}
                     </a>
                 </li>
 
-                <li>
+                {{-- <li>
                     <a href="apps-file-manager.html">
                         <i class="bx bx-file-find icon nav-icon"></i>
                         <span class="menu-item" data-key="t-filemanager">File Manager</span>
@@ -70,8 +67,8 @@
                         <span class="menu-item" data-key="t-chat">Chat</span>
                         <span class="badge rounded-pill bg-danger" data-key="t-hot">Hot</span>
                     </a>
-                </li>
-                <li>
+                </li> --}}
+{{--                 <li>
                     <a href="javascript: void(0);" class="has-arrow">
                         <i class="bx bx-store icon nav-icon"></i>
                         <span class="menu-item" data-key="t-ecommerce">Ecommerce</span>
@@ -86,7 +83,7 @@
                         <li><a href="ecommerce-shops.html" data-key="t-shops">Shops</a></li>
                         <li><a href="ecommerce-add-product.html" data-key="t-add-product">Add Product</a></li>
                     </ul>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>

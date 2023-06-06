@@ -113,7 +113,17 @@
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label for="event_description" class="form-label">Description</label>
-                                                <event_description id="event_description" name="event_description"></event_description>
+                                                <div id="editorjs"></div>
+                                                <script type="text/javascript">
+                                                    const editor = new EditorJS({
+                                                      holder: 'editorjs',
+                                                      tools: { 
+                                                        header: Header, 
+                                                        list: List,
+                                                      }, 
+                                                    });
+                                                </script>
+                                                {{-- <input type="text" name="description" id="editorjs"> --}}
                                             </div>
                                         </div>
                                     </div>

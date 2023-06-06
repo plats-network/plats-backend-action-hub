@@ -55,13 +55,12 @@ class Task extends Model
         'status',
         'slug',
         'address',
-        'lng',
-        'lat',
         'type', // 0: task, 1: event
         'creator_id',
         'is_paid',
         'reward',
         'reward_type',
+        'code',
     ];
 
     /**

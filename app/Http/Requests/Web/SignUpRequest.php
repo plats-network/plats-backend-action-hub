@@ -4,6 +4,8 @@ namespace App\Http\Requests\Web;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
+use App\Rules\EmailRule;
 
 class SignUpRequest extends FormRequest
 {
@@ -25,18 +27,29 @@ class SignUpRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'min: 6', 'max: 50'],
-            'email' => ['required', 'email', 'unique:users'],
+            'email' => [
+                'required',
+                'max:100',
+                'email',
+                new EmailRule($this->email),
+                // Rule::unique('users')->ignore($this->id),
+            ],
             'password' => [
                 'required',
-                'string',
+                'confirmed',
                 Password::min(8)
+                    ->letters()
                     ->mixedCase()
                     ->numbers()
                     ->symbols()
                     ->uncompromised(),
-                'confirmed'
-            ]  
+            ],
+            'name' => [
+                'required',
+                'max: 50',
+                'min: 4',
+            ],
+            'term' => ['required'],
         ];
     }
 }

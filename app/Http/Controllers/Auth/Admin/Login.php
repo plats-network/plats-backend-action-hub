@@ -29,7 +29,7 @@ class Login extends Controller
      */
     public function redirectTo()
     {
-        return route(DASHBOARD_ADMIN_ROUTER);
+        return route('cws.home');
     }
 
     /**

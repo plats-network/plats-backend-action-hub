@@ -26,6 +26,6 @@ class QuizAnswer extends Model
         'id',
         'quiz_id',
         'name',
-        'status',
+        'status', // true or false
     ];
 }

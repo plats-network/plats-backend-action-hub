@@ -11,8 +11,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Log;
+
 class ForgotPassword extends Controller
 {
+    public function __construct(
+        private User $user,
+    ) {
+        // code
+    }
+
     public function showForgetPasswordForm()
     {
         return view('web.auth.forgetPassword');
@@ -20,6 +28,29 @@ class ForgotPassword extends Controller
 
     public function submitForgetPasswordForm(Request $request)
     {
+        try {
+            $user = $this->user
+                ->whereEmail($request->email)
+                ->first();
+
+            if (!$user) {
+                notify()->error('Email không tồn tại');
+                return redirect()->route('web.formForgot');
+            }
+
+            notify()->success('Chúng tôi đã gửi link reset mật khẩu đến email của bạn');
+            // Send Mail
+
+        } catch (\Exception $e) {
+            Log::error('User reset password error: ' . $e->getMessage());
+            notify()->error('Error reset password');
+
+            return redirect()->route('web.formForgot');
+        }
+
+        return redirect()->route('web.formLogin');
+
+
         $request->validate([
             'email' => 'required|email|exists:users',
         ]);

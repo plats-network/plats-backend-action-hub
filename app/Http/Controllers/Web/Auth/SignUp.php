@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Web\SignUpRequest;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
+use Log;
 
 class SignUp extends Controller
 {
@@ -30,18 +31,22 @@ class SignUp extends Controller
      */
     public function store(SignUpRequest $request)
     {
+        // dd(1212);
         try {
-            User::create([
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'password' => $request->input('password'),
-                'role' => USER_ROLE,
-                'email_verified_at' => now()
-            ]);
+            // User::create([
+            //     'name' => $request->input('name'),
+            //     'email' => $request->input('email'),
+            //     'password' => $request->input('password'),
+            //     'role' => USER_ROLE,
+            //     'email_verified_at' => now()
+            // ]);
+            notify()->success("Đăng ký tài khoản thành. Check email confirm.");
         } catch (Exception $exception) {
-            return redirect('/')->withErrors(['message' => 'Error: Liên hệ admim']);
+            Log::error('User signup error: ' . $e->getMessage());
+            notify()->error('Có lỗi sảy ra');
+            return redirect()->route('web.formSignup');
         }
 
-        return redirect('client/login')->with(['message' => 'Login success']);
+        return redirect()->route('web.formLogin');
     }
 }

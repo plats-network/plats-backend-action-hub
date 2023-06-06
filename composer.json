@@ -61,9 +61,8 @@
     },
     "autoload": {
         "files": [
-            "app/Helpers/Constants/constants.php",
-            "app/Helpers/Constants/api_routes.php",
-            "app/Helpers/Constants/admin_routes.php"
+            "app/const.php",
+            "app/helper.php"
         ],
         "psr-4": {
             "App\\": "app/",
