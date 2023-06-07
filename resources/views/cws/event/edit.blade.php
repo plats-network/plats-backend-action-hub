@@ -272,6 +272,9 @@
                                                         {{--Id--}}
                                                         <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][id]" id="sessions[detail][{{$sessionDetail->id}}][id]" value="{{$sessionDetail->id}}">
                                                         {{--Session Id--}}
+                                                        {{--Is delete--}}
+                                                        <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][is_delete]" id="sessionsFlagDelete{{$sessionDetail->id}}" value="0">
+
                                                         <label for="inputPassword" class="col-sm-2 col-form-label">Session 1</label>
                                                         <div class="col-sm-4">
                                                             {{--name--}}
@@ -350,25 +353,29 @@
                                             <div class="listRowBooth" id="listRowBooth">
                                                 @if($booths->detail)
 
-                                                    @foreach($booths->detail as $sessionDetail)
+                                                    @foreach($booths->detail as $boothDetail)
 
-                                                        <div class="mb-3 row itemBoothDetail" id="itemBooth{{$sessionDetail->id}}">
+                                                        <div class="mb-3 row itemBoothDetail" id="itemBooth{{$boothDetail->id}}">
                                                             {{--Id--}}
-                                                            <input type="hidden" name="booths[detail][{{$sessionDetail->id}}][id]" id="booths[detail][{{$sessionDetail->id}}][id]" value="{{$sessionDetail->id}}">
+                                                            <input type="hidden" name="booths[detail][{{$boothDetail->id}}][id]" id="booths[detail][{{$boothDetail->id}}][id]" value="{{$boothDetail->id}}">
                                                             {{--Session Id--}}
+                                                            {{--Is delete--}}
+                                                            <input type="hidden" name="booths[detail][{{$boothDetail->id}}][is_delete]" id="boothFlagDelete{{$boothDetail->id}}" value="0">
+
+
                                                             <label for="inputPassword" class="col-sm-2 col-form-label">Booth 1</label>
                                                             <div class="col-sm-4">
                                                                 {{--name--}}
-                                                                <input type="text" class="form-control" id="booths[detail][{{$sessionDetail->id}}][name]" name="booths[detail][{{$sessionDetail->id}}][name]" value="{{$sessionDetail->name}}">
+                                                                <input type="text" class="form-control" id="booths[detail][{{$boothDetail->id}}][name]" name="booths[detail][{{$boothDetail->id}}][name]" value="{{$boothDetail->name}}">
                                                             </div>
                                                             <div class="col-sm-4">
                                                                 {{--description--}}
-                                                                <input type="text" class="form-control" id="booths[detail][{{$sessionDetail->id}}][description]" name="booths[detail][{{$sessionDetail->id}}][description]" value="{{$sessionDetail->description}}">
+                                                                <input type="text" class="form-control" id="booths[detail][{{$boothDetail->id}}][description]" name="booths[detail][{{$boothDetail->id}}][description]" value="{{$boothDetail->description}}">
                                                             </div>
                                                             <div class="col-sm-2">
                                                                 {{--Button delete--}}
                                                                 <div class="col-auto">
-                                                                    <button type="button" data-id="{{$sessionDetail->id}}" onclick="deleteImageReform({{$sessionDetail->id}})"  class="btn btn-danger mb-3 btnDeleteImageBooth">Xoá</button>
+                                                                    <button type="button" data-id="{{$boothDetail->id}}" onclick="deleteImageReform({{$boothDetail->id}})"  class="btn btn-danger mb-3 btnDeleteImageBooth">Xoá</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -506,6 +513,8 @@
                                                     <input type="hidden" name="quiz[{{$itemQuiz->id}}][id]" value="{{$itemQuiz->id}}">
                                                     {{--Event Id--}}
                                                     <input type="hidden" name="quiz[{{$itemQuiz->id}}][task_id]" value="{{$event->id}}">
+                                                    {{--Is delete--}}
+                                                    <input type="hidden" name="quiz[{{$itemQuiz->id}}][is_delete]" id="quizFlagDelete{{$event->id}}" value="0">
 
                                                     <div class="row">
                                                         <div class="col-lg-7">
@@ -842,7 +851,9 @@
                     cancelButtonText: '{{__('Cancel')}}',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#itemImage' + id).remove();
+                        $('#itemImage' + id).hide();
+                        //sessionsFlagDelete ID set value 1
+                        $('#sessionsFlagDelete' + id).val(1);
                     }
                 });
 
@@ -901,7 +912,8 @@
                     cancelButtonText: '{{__('Cancel')}}',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#itemBooth' + id).remove();
+                        $('#itemBooth' + id).hide();
+                        $('#boothFlagDelete' + id).val(1);
                     }
                 });
 
@@ -961,7 +973,8 @@
                     cancelButtonText: '{{__('Cancel')}}',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#itemQuiz' + id).remove();
+                        $('#itemQuiz' + id).hide();
+                        $('#quizFlagDelete' + id).val(1);
                     }
                 });
 

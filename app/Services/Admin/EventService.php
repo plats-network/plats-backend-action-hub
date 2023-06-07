@@ -64,6 +64,10 @@ class EventService extends BaseService
                     $idTaskEventSessions = $dataBaseTask->taskEvents()->create($sessions);
                     if (isset($sessions['detail'])){
                         foreach ($sessions['detail'] as $key => $item){
+                            //Check flag is_delete
+                            if (isset($item['is_delete']) && $item['is_delete'] == 1){
+                                continue;
+                            }
                             $item['code'] = $this->generateBarcodeNumber().$key;
                             $idTaskEventSessions->detail()->create($item);
                         }
@@ -82,6 +86,11 @@ class EventService extends BaseService
                             if (empty($item['name'])){
                                 continue;
                             }
+                            //Check is_delete
+                            if (isset($item['is_delete']) && $item['is_delete'] == 1){
+                                TaskEventDetail::where('id',$item['id'])->delete();
+                                continue;
+                            }
                             if (empty($item['id'])){
 
                                 $item['code'] = $this->generateBarcodeNumber().$key;
@@ -92,6 +101,7 @@ class EventService extends BaseService
                             }else{
                                 $itemUn = $item;
                                 unset($itemUn['id']);
+                                unset($itemUn['is_delete']);
 
                                 TaskEventDetail::where('id',$item['id'])->update($itemUn);
                             }
@@ -106,6 +116,10 @@ class EventService extends BaseService
                     $idTaskEventBooths = $dataBaseTask->taskEvents()->create($booths);
                     if (isset($booths['detail'])){
                         foreach ($booths['detail'] as $key => $item){
+                            //Check flag is_delete
+                            if (isset($item['is_delete']) && $item['is_delete'] == 1){
+                                continue;
+                            }
                             $item['code'] = $this->generateBarcodeNumber().$key;
                             $idTaskEventBooths->detail()->create($item);
                         }
@@ -121,6 +135,11 @@ class EventService extends BaseService
                             if (empty($item['name'])){
                                 continue;
                             }
+                            //Check is_delete
+                            if (isset($item['is_delete']) && $item['is_delete'] == 1){
+                                TaskEventDetail::where('id',$item['id'])->delete();
+                                continue;
+                            }
                             if (empty($item['id'])){
                                 $item['code'] = $this->generateBarcodeNumber().$key;
                                 $item['task_event_id'] = $booths['id'];
@@ -128,6 +147,7 @@ class EventService extends BaseService
                             }else{
                                 $itemUn = $item;
                                 unset($itemUn['id']);
+                                unset($itemUn['is_delete']);
                                 TaskEventDetail::where('id',$item['id'])->update($itemUn);
                             }
                         }
@@ -159,6 +179,12 @@ class EventService extends BaseService
                         }elseif ($item['status'] == 'on'){
                             $item['status'] = 1;
                         }
+                        //Check flag is_delete
+                        if (isset($item['is_delete']) && $item['is_delete'] == 1){
+                            continue;
+                        }
+                        //Unset is_delete
+                        unset($item['is_delete']);
 
                         $idQ = Quiz::create($item);
                         if ($item['detail']){
@@ -170,11 +196,18 @@ class EventService extends BaseService
                                 }else{
                                     $itemAUn = $itemDetail;
                                     unset($itemAUn['id']);
+                                    unset($itemAUn['is_delete']);
                                     QuizAnswer::where('id',$itemDetail['id'])->update($itemAUn);
                                 }
                             }
                         }
                     }else{
+                        //Check is_delete
+                        if (isset($item['is_delete']) && $item['is_delete'] == 1){
+                            Quiz::where('id',$item['id'])->delete();
+                            QuizAnswer::where('quiz_id',$item['id'])->delete();
+                            continue;
+                        }
                         unset($quizUn['id']);
                         if (empty($quizUn['time_quiz'])){
                             $quizUn['time_quiz'] = 10;
@@ -191,7 +224,7 @@ class EventService extends BaseService
                         }
 
                         Quiz::where('id',$item['id'])->update($quizUn);
-                        if ($item['detail']){
+                        if (isset($item['detail'])){
                             foreach ($item['detail'] as $itemDetail){
                                 unset($itemDetail['key']);
                                 if (empty($itemDetail['id'])){
