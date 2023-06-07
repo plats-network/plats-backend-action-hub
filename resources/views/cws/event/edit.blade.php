@@ -2,6 +2,7 @@
 
 /**
  * @var App\Models\Task\ $event
+ * @var \App\Models\Quiz\Quiz $itemQuiz
  * @var \App\Models\Event\TaskEvent $sessions
  * @var \App\Models\Event\TaskEventDetail $sessionDetail
  * @var array $categories
@@ -498,54 +499,105 @@
                                         <p class="card-title-desc">Fill all information below</p>
                                     </div>
                                     <div>
-                                        <div class="row">
-                                            <div class="col-lg-7">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-expiration-input"
-                                                           class="form-label">Question 1</label>
-                                                    <input type="text" class="form-control" id="datepicker-basic" placeholder="Question 1" id="basicpill-expiration-input">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-expiration-input"
-                                                           class="form-label">Time</label>
-                                                    <input type="text" class="form-control" id="datepicker-basic" placeholder="Time" id="basicpill-expiration-input">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-1">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-expiration-input"
-                                                           class="form-label">Order</label>
-                                                    <input type="text" class="form-control" id="datepicker-basic" placeholder="Order" id="basicpill-expiration-input">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <label for="basicpill-expiration-input"
-                                                       class="form-label">&nbsp;</label>
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-                                                    <label class="form-check-label" for="flexSwitchCheckChecked">Status</label>
-                                                </div>
-                                            </div>
-                                        </div><!-- end row -->
-                                        <br>
-                                        <div class="row">
-                                            <div class="mb-3 row offset-md-1">
-                                                <label for="inputPassword" class="col-sm-2 col-form-label">Answer 1</label>
-                                                <div class="col-sm-7">
-                                                    <input type="text" class="form-control" id="inputPassword">
-                                                </div>
-                                                <div class="col-sm-2">
+                                        <div class="listQuiz" id="listRowQuiz">
+                                            @foreach($quiz as $itemQuiz)
+                                                <div class="mb-3 row itemQuizDetail" id="itemQuiz{{$itemQuiz->id}}">
+                                                    {{--id --}}
+                                                    <input type="hidden" name="quiz[{{$itemQuiz->id}}][id]" value="{{$itemQuiz->id}}">
+                                                    {{--Event Id--}}
+                                                    <input type="hidden" name="quiz[{{$itemQuiz->id}}][task_id]" value="{{$event->id}}">
 
-                                                    <div class="form-check mt-2">
-                                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                                        <label class="form-check-label" for="flexCheckDefault">
-                                                            Option
-                                                        </label>
+                                                    <div class="row">
+                                                        <div class="col-lg-7">
+                                                            <div class="mb-3">
+                                                                <label for="basicpill-expiration-input"
+                                                                       class="form-label">Question {{$loop->index}}</label>
+                                                                {{--Item question--}}
+                                                                <input type="text" class="form-control" id="quiz[{{$itemQuiz->id}}][name]"
+                                                                       placeholder="Question {{$loop->index}}" name="quiz[{{$itemQuiz->id}}][name]" value="{{$itemQuiz->name}}">
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-2">
+                                                            <div class="mb-3">
+                                                                <label for="basicpill-expiration-input"
+                                                                       class="form-label">Time</label>
+                                                                <input type="text" class="form-control" id="quiz[{{$itemQuiz->id}}][time_quiz]"
+                                                                       placeholder="Time" name="quiz[{{$itemQuiz->id}}][time_quiz]" value="{{$itemQuiz->time_quiz}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-1">
+                                                            <div class="mb-3">
+                                                                <label for="basicpill-expiration-input"
+                                                                       class="form-label">Order</label>
+                                                                <input type="text" class="form-control" id="quiz[{{$itemQuiz->id}}][order]"
+                                                                       placeholder="Order" name="quiz[{{$itemQuiz->id}}][order]" value="{{$itemQuiz->order}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-2">
+                                                            <label for="basicpill-expiration-input"
+                                                                   class="form-label">&nbsp;</label>
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" role="switch" id="quiz[{{$itemQuiz->id}}][status]"
+                                                                       name="quiz[{{$itemQuiz->id}}][status]" @if($itemQuiz->status == 1) checked @endif>
+                                                                <label class="form-check-label" for="flexSwitchCheckChecked">Status</label>
+                                                            </div>
+                                                        </div>
+                                                    </div><!-- end row -->
+                                                    <br>
+                                                    {{--QuizAnswer--}}
+                                                    @foreach($itemQuiz->detail as $itemQuizAnswer)
+                                                        {{--id --}}
+                                                        <input type="hidden" name="quiz[{{$itemQuiz->id}}][detail][{{$loop->parent->index}}][id]" value="{{$itemQuizAnswer->id}}">
+                                                        {{--quiz_id --}}
+                                                        <input type="hidden" name="quiz[{{$itemQuiz->id}}][detail][{{$loop->parent->index}}][quiz_id]" value="{{$itemQuizAnswer->quiz_id}}">
+
+                                                        <div class="row">
+                                                            <div class="mb-3 row offset-md-1">
+                                                                <label for="inputPassword" class="col-sm-2 col-form-label">Answer {{$loop->parent->index}}</label>
+                                                                <div class="col-sm-7">
+                                                                    {{--name--}}
+                                                                    <input type="text" class="form-control" id="quiz[{{$itemQuiz->id}}][detail][{{$loop->parent->index}}][name]"
+                                                                           placeholder="Answer 1" name="quiz[{{$itemQuiz->id}}][detail][{{$loop->parent->index}}][name]" value="{{$itemQuizAnswer->name}}">
+                                                                </div>
+                                                                <div class="col-sm-2">
+
+                                                                    <div class="form-check mt-2">
+                                                                        {{--status--}}
+                                                                        <input class="form-check-input" type="checkbox" value="1" id="quiz[{{$itemQuiz->id}}][detail][{{$loop->parent->index}}][status]"
+                                                                               name="quiz[{{$itemQuiz->id}}][detail][{{$loop->parent->index}}][status]" @if($itemQuizAnswer->status == 1) checked @endif>
+                                                                        <label class="form-check-label" for="flexCheckDefault">
+                                                                            Option
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+
+                                                    {{--Delete Item--}}
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="mb-3">
+                                                                <label for="basicpill-expiration-input"
+                                                                       class="form-label">&nbsp;</label>
+                                                                <button type="button" data-id="{{$itemQuiz->id}}" class="btnDeleteImageQuiz btn btn-danger btn-rounded waves-effect waves-light mb-2 me-2" onclick="deleteItemQuiz({{$itemQuiz->id}})"><i class="mdi mdi-delete me-1"></i> Delete</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                            @endforeach
+                                        </div>
+
+
+                                        <div class="row mt-3">
+
+                                            <div class="d-flex flex-row-reverse">
+                                                <div class="p-2">
+                                                    <button id="btnAddItemQuiz" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm câu hỏi</button>
+                                                </div>
                                             </div>
+                                            <hr>
                                         </div>
                                     </div><!-- end form -->
 
@@ -854,6 +906,67 @@
                 });
 
             });
+
+            /*Quiz*/
+
+            $(document).on('click', '#btnAddItemQuiz', function (event) {
+                //alert('123');
+                //Add loading on btnAddImageReform button
+
+                var rowCount = $('.itemQuizDetail').length;
+                //console.log(rowCount);
+                //Check max image
+                if(rowCount >= 20){
+                    alert('{{__('Maximum number of Item is')}} 20');
+                    return false;
+                }
+                //initImageWidge(1);
+                flag_check = Math.floor(Math.random() * 10000);
+                /*Ajax call get template*/
+                $.ajax({
+                    url: '{{route('cws.eventTemplate')}}' + '?type=3&flag_check=' + flag_check + '&inc=' + rowCount,
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        _token: _token,
+                        id: flag_check
+                    },
+                    success: function (data) {
+                        if (data.status == 200) {
+                            //console.log(data);
+                            $('#listRowQuiz').append(data.html);
+                            flag_check++;
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+
+            /*Delete Item Quiz*/
+            $(document).on('click', '.btnDeleteImageQuiz', function (event) {
+                event.preventDefault();
+
+                var id = $(this).attr('data-id');
+                //Swal confirm
+                Swal.fire({
+                    title: '{{__('Are you sure?')}}',
+                    text: '{{__('You will not be able to recover this imaginary file!')}}',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '{{__('Yes, delete it!')}}',
+                    cancelButtonText: '{{__('Cancel')}}',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#itemQuiz' + id).remove();
+                    }
+                });
+
+            });
+
         });
 
         var currentTab = {{$activeTab}}; // Current tab is set to be the first tab (0)

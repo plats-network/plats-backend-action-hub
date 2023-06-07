@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Auth;
 class EventController extends Controller
 {
     public function __construct(
-        private TaskEvent   $eventModel,
+        private TaskEvent    $eventModel,
         private EventService $eventService,
-        private TaskService $taskService
+        private TaskService  $taskService
     )
     {
     }
@@ -54,7 +54,7 @@ class EventController extends Controller
     /*
      * template
      * */
-    public function template(Request $request, $id='')
+    public function template(Request $request, $id = '')
     {
         $index = $request->get('index');
         $type = $request->get('type', 1);
@@ -67,7 +67,7 @@ class EventController extends Controller
         $dataView['indexImageItem'] = $id;
         $dataView['getInc'] = $getInc + 1;
 
-        if ($type ==1){
+        if ($type == 1) {
             return response()->json([
                 'code' => 200,
                 'status' => 200,
@@ -75,7 +75,7 @@ class EventController extends Controller
                 'message' => 'success',
             ], 200);
         }
-        if ($type ==2){
+        if ($type == 2) {
             return response()->json([
                 'code' => 200,
                 'status' => 200,
@@ -83,7 +83,17 @@ class EventController extends Controller
                 'message' => 'success',
             ], 200);
         }
+
+        if ($type == 3) {
+            return response()->json([
+                'code' => 200,
+                'status' => 200,
+                'html' => view('cws.event._template.item_quiz', $dataView)->render(),
+                'message' => 'success',
+            ], 200);
+        }
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -101,7 +111,7 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -114,18 +124,18 @@ class EventController extends Controller
 
         Event::create($request->post());
 
-        return redirect()->route('cws.eventList')->with('success','Event has been created successfully.');
+        return redirect()->route('cws.eventList')->with('success', 'Event has been created successfully.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\company  $company
+     * @param \App\company $company
      * @return \Illuminate\Http\Response
      */
     public function show(Event $company)
     {
-        return view('companies.show',compact('company'));
+        return view('companies.show', compact('company'));
     }
 
     /**
@@ -135,18 +145,18 @@ class EventController extends Controller
     public function edit(Request $request, $id)
     {
         /** @var Task $task */
-        $task = Task::with( 'taskSocials', 'taskLocations','taskEventSocials','taskGenerateLinks','taskEventDiscords')->find($id);
-        $taskGroup = TaskGroup::where('task_id',$id)->pluck('group_id');
-        $taskGallery = TaskGallery::where('task_id',$id)->pluck('url_image');
+        $task = Task::with('taskSocials', 'taskLocations', 'taskEventSocials', 'taskGenerateLinks', 'taskEventDiscords')->find($id);
+        $taskGroup = TaskGroup::where('task_id', $id)->pluck('group_id');
+        $taskGallery = TaskGallery::where('task_id', $id)->pluck('url_image');
 
-        $booths = TaskEvent::where('task_id',$id)->with('detail')->where('type',1)->first();
+        $booths = TaskEvent::where('task_id', $id)->with('detail')->where('type', 1)->first();
 
-        $sessions = TaskEvent::where('task_id',$id)->with('detail')->where('type',0)->first();
+        $sessions = TaskEvent::where('task_id', $id)->with('detail')->where('type', 0)->first();
         //taskEventDiscords EventDiscords
         /** @var EventDiscords $taskEventDiscords */
         $taskEventDiscords = $task->taskEventDiscords;
         //Check if $taskEventDiscords is null then create new EventDiscords
-        if($taskEventDiscords == null){
+        if ($taskEventDiscords == null) {
 
             $taskEventDiscords = new EventDiscords();
             $taskEventDiscords->task_id = $id;
@@ -156,7 +166,7 @@ class EventController extends Controller
         /** @var EventSocial $taskEventSocials */
         $taskEventSocials = $task->taskEventSocials;
         //Check if $taskEventSocials is null then create new EventSocial
-        if($taskEventSocials == null){
+        if ($taskEventSocials == null) {
             $taskEventSocials = new EventSocial();
             $taskEventSocials->task_id = $id;
             $taskEventSocials->save();
@@ -164,7 +174,7 @@ class EventController extends Controller
 
 
         //Check if $sessions is null then create new
-        if($sessions == null){
+        if ($sessions == null) {
             $sessions = new TaskEvent();
             $sessions->task_id = $id;
             $sessions->type = 0;
@@ -173,7 +183,7 @@ class EventController extends Controller
 
 
         //Check if $booths is null then create new
-        if($booths == null){
+        if ($booths == null) {
             $booths = new TaskEvent();
             $booths->task_id = $id;
             $booths->type = 1;
@@ -181,14 +191,15 @@ class EventController extends Controller
             $booths->save();
         }
 
-        $quiz = Quiz::where('task_id',$id)->with('detail')->get();
-        foreach ($quiz as  $value){
-            foreach ($value['detail'] as $key => $value){
+        $quiz = Quiz::where('task_id', $id)->with('detail')->get();
+
+        foreach ($quiz as $value) {
+            foreach ($value['detail'] as $key => $value) {
                 $value['key'] = $key;
             }
         }
         $image = [];
-        foreach ($taskGallery as $item){
+        foreach ($taskGallery as $item) {
             $image[]['url'] = $item;
         }
         $task['group_tasks'] = $taskGroup;
@@ -220,8 +231,8 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\company  $company
+     * @param \Illuminate\Http\Request $request
+     * @param \App\company $company
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Event $company)
@@ -243,18 +254,18 @@ class EventController extends Controller
         //$company->fill($request->post())->save();
         $this->eventService->store($request);
 
-        return redirect()->route('cws.eventList', ['tab' => 0])->with('success','Event Has Been updated successfully');
+        return redirect()->route('cws.eventList', ['tab' => 0])->with('success', 'Event Has Been updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Event  $company
+     * @param \App\Event $company
      * @return \Illuminate\Http\Response
      */
     public function destroy(Event $company)
     {
         $company->delete();
-        return redirect()->route('cws.eventList')->with('success','Event has been deleted successfully');
+        return redirect()->route('cws.eventList')->with('success', 'Event has been deleted successfully');
     }
 }

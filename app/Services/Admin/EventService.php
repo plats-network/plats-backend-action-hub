@@ -78,6 +78,10 @@ class EventService extends BaseService
                     if (isset($sessions['detail'])){
 
                         foreach ($sessions['detail'] as $key => $item){
+                            //Check not empty $item['name'] and $item['description']
+                            if (empty($item['name'])){
+                                continue;
+                            }
                             if (empty($item['id'])){
 
                                 $item['code'] = $this->generateBarcodeNumber().$key;
@@ -113,6 +117,10 @@ class EventService extends BaseService
                     TaskEvent::where('id',$booths['id'])->update($boothsUn);
                     if (isset($booths['detail'])){
                         foreach ($booths['detail'] as $key => $item){
+                            //Check not empty $item['name'] and $item['description']
+                            if (empty($item['name'])){
+                                continue;
+                            }
                             if (empty($item['id'])){
                                 $item['code'] = $this->generateBarcodeNumber().$key;
                                 $item['task_event_id'] = $booths['id'];
@@ -128,11 +136,24 @@ class EventService extends BaseService
             }
             $quiz = Arr::get($data, 'quiz');
             if ($quiz){
+                //Flush QuizAnswer ans Quiz
+                //QuizAnswer::where('quiz_id',$id)->delete();
+                //Quiz::where('task_id',$id)->delete();
+
                 foreach ($quiz as &$item){
                     $quizUn = $item;
                     unset($quizUn['detail']);
                     if (empty($item['id'])){
                         $item['task_id'] = $id;
+                        //Check time_quiz is null
+                        if (empty($item['time_quiz'])){
+                            $item['time_quiz'] = 10;
+                        }
+                        //Check order is null
+                        if (empty($item['order'])){
+                            $item['order'] = 1;
+                        }
+
                         $idQ = Quiz::create($item);
                         if ($item['detail']){
                             foreach ($item['detail'] as $itemDetail){
