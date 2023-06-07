@@ -511,10 +511,10 @@
                                                         <div class="col-lg-7">
                                                             <div class="mb-3">
                                                                 <label for="basicpill-expiration-input"
-                                                                       class="form-label">Question {{$loop->index}}</label>
+                                                                       class="form-label">Question {{$loop->index +1}}</label>
                                                                 {{--Item question--}}
                                                                 <input type="text" class="form-control" id="quiz[{{$itemQuiz->id}}][name]"
-                                                                       placeholder="Question {{$loop->index}}" name="quiz[{{$itemQuiz->id}}][name]" value="{{$itemQuiz->name}}">
+                                                                       placeholder="Question {{$loop->index +1}}" name="quiz[{{$itemQuiz->id}}][name]" value="{{$itemQuiz->name}}">
 
                                                             </div>
                                                         </div>
@@ -546,26 +546,26 @@
                                                     </div><!-- end row -->
                                                     <br>
                                                     {{--QuizAnswer--}}
-                                                    @foreach($itemQuiz->detail as $itemQuizAnswer)
+                                                    @foreach($itemQuiz->detail as $keyIndex => $itemQuizAnswer)
                                                         {{--id --}}
-                                                        <input type="hidden" name="quiz[{{$itemQuiz->id}}][detail][{{$loop->parent->index}}][id]" value="{{$itemQuizAnswer->id}}">
+                                                        <input type="hidden" name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][id]" value="{{$itemQuizAnswer->id}}">
                                                         {{--quiz_id --}}
-                                                        <input type="hidden" name="quiz[{{$itemQuiz->id}}][detail][{{$loop->parent->index}}][quiz_id]" value="{{$itemQuizAnswer->quiz_id}}">
+                                                        <input type="hidden" name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][quiz_id]" value="{{$itemQuizAnswer->quiz_id}}">
 
                                                         <div class="row">
                                                             <div class="mb-3 row offset-md-1">
-                                                                <label for="inputPassword" class="col-sm-2 col-form-label">Answer {{$loop->parent->index}}</label>
+                                                                <label for="inputPassword" class="col-sm-2 col-form-label">Answer {{$keyIndex +1}}</label>
                                                                 <div class="col-sm-7">
                                                                     {{--name--}}
-                                                                    <input type="text" class="form-control" id="quiz[{{$itemQuiz->id}}][detail][{{$loop->parent->index}}][name]"
-                                                                           placeholder="Answer 1" name="quiz[{{$itemQuiz->id}}][detail][{{$loop->parent->index}}][name]" value="{{$itemQuizAnswer->name}}">
+                                                                    <input type="text" class="form-control" id="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][name]"
+                                                                           placeholder="Answer 1" name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][name]" value="{{$itemQuizAnswer->name}}">
                                                                 </div>
                                                                 <div class="col-sm-2">
 
                                                                     <div class="form-check mt-2">
                                                                         {{--status--}}
-                                                                        <input class="form-check-input" type="checkbox" value="1" id="quiz[{{$itemQuiz->id}}][detail][{{$loop->parent->index}}][status]"
-                                                                               name="quiz[{{$itemQuiz->id}}][detail][{{$loop->parent->index}}][status]" @if($itemQuizAnswer->status == 1) checked @endif>
+                                                                        <input class="form-check-input" type="checkbox" value="1" id="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]"
+                                                                               name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]" @if($itemQuizAnswer->status == 1) checked @endif>
                                                                         <label class="form-check-label" for="flexCheckDefault">
                                                                             Option
                                                                         </label>

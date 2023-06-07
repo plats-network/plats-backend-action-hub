@@ -153,6 +153,12 @@ class EventService extends BaseService
                         if (empty($item['order'])){
                             $item['order'] = 1;
                         }
+                        //Check empty status
+                        if (empty($item['status'])){
+                            $item['status'] = 0;
+                        }elseif ($item['status'] == 'on'){
+                            $item['status'] = 1;
+                        }
 
                         $idQ = Quiz::create($item);
                         if ($item['detail']){
@@ -170,6 +176,20 @@ class EventService extends BaseService
                         }
                     }else{
                         unset($quizUn['id']);
+                        if (empty($quizUn['time_quiz'])){
+                            $quizUn['time_quiz'] = 10;
+                        }
+                        //Check order is null
+                        if (empty($quizUn['order'])){
+                            $quizUn['order'] = 1;
+                        }
+                        //Check empty status
+                        if (empty($quizUn['status'])){
+                            $quizUn['status'] = 0;
+                        }elseif ($quizUn['status'] == 'on'){
+                            $quizUn['status'] = 1;
+                        }
+
                         Quiz::where('id',$item['id'])->update($quizUn);
                         if ($item['detail']){
                             foreach ($item['detail'] as $itemDetail){
@@ -180,6 +200,12 @@ class EventService extends BaseService
                                 }else{
                                     $itemAUn = $itemDetail;
                                     unset($itemAUn['id']);
+                                    //Check empty status
+                                    if (empty($itemAUn['status'])){
+                                        $itemAUn['status'] = 0;
+                                    }elseif ($quizUn['status'] == 1){
+                                        $itemAUn['status'] = 1;
+                                    }
                                     QuizAnswer::where('id',$itemDetail['id'])->update($itemAUn);
                                 }
                             }
