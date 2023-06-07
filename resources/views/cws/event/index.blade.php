@@ -23,7 +23,7 @@
                                     <td>{{ $event->start_at }}</td>
                                     <td>{{ $event->end_at }}</td>
                                     <td>
-                                        <a href="{{ route('cws.eventEdit', $event->id) }}" class="btn btn-primary">Edit</a>
+                                        <a href="{{ route('cws.eventEdit', ['id' => $event->id, 'tab' => $tab]) }}" class="btn btn-primary">Edit</a>
                                         <a href="{{ route('cws.eventEdit', $event->id) }}" class="btn btn-danger">Delete</a>
                                     </td>
                                 </tr>

@@ -55,6 +55,8 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->get('event-preview/{id}', [EventController::class, 'preview'])->name('cws.eventPreview');
     //Event Delete
     $cws->get('event-delete/{id}', [EventController::class, 'delete'])->name('cws.eventDelete');
+    //Template form event
+    $cws->get('event-template', [EventController::class, 'template'])->name('cws.eventTemplate');
 });
 
 // OLD

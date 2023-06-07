@@ -72,16 +72,23 @@ class EventService extends BaseService
                     $sessionsUn = Arr::get($data, 'sessions');
                     unset($sessionsUn['detail']);
                     unset($sessionsUn['id']);
+
                     TaskEvent::where('id',$sessions['id'])->update($sessionsUn);
+
                     if (isset($sessions['detail'])){
+
                         foreach ($sessions['detail'] as $key => $item){
                             if (empty($item['id'])){
+
                                 $item['code'] = $this->generateBarcodeNumber().$key;
                                 $item['task_event_id'] = $sessions['id'];
-                                TaskEventDetail::create($item);
+
+                                $item = TaskEventDetail::create($item);
+
                             }else{
                                 $itemUn = $item;
                                 unset($itemUn['id']);
+
                                 TaskEventDetail::where('id',$item['id'])->update($itemUn);
                             }
                         }

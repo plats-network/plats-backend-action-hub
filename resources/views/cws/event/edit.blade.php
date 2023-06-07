@@ -2,6 +2,8 @@
 
 /**
  * @var App\Models\Task\ $event
+ * @var \App\Models\Event\TaskEvent $sessions
+ * @var \App\Models\Event\TaskEventDetail $sessionDetail
  * @var array $categories
  */
 
@@ -259,27 +261,41 @@
                                             </div><!-- end col -->
 
                                         </div><!-- end row -->
-                                        <div class="row">
-                                            <div class="mb-3 row">
-                                                <label for="inputPassword" class="col-sm-2 col-form-label">Session 1</label>
-                                                <div class="col-sm-4">
-                                                    <input type="text" class="form-control" id="inputPassword">
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <input type="text" class="form-control" id="inputPassword">
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    {{--Button delete--}}
-                                                    <div class="col-auto">
-                                                        <button type="submit" class="btn btn-danger mb-3">Xoá</button>
+                                        <div class="row mt-3">
+                                            <div class="listRowSession" id="listRowSession">
+                                                @if($sessions->detail)
+
+                                                @foreach($sessions->detail as $sessionDetail)
+
+                                                    <div class="mb-3 row itemSessionDetail" id="itemImage{{$sessionDetail->id}}">
+                                                        {{--Id--}}
+                                                        <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][id]" id="sessions[detail][{{$sessionDetail->id}}][id]" value="{{$sessionDetail->id}}">
+                                                        {{--Session Id--}}
+                                                        <label for="inputPassword" class="col-sm-2 col-form-label">Session 1</label>
+                                                        <div class="col-sm-4">
+                                                            {{--name--}}
+                                                            <input type="text" class="form-control" id="sessions[detail][{{$sessionDetail->id}}][name]" name="sessions[detail][{{$sessionDetail->id}}][name]" value="{{$sessionDetail->name}}">
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            {{--description--}}
+                                                            <input type="text" class="form-control" id="sessions[detail][{{$sessionDetail->id}}][description]" name="sessions[detail][{{$sessionDetail->id}}][description]" value="{{$sessionDetail->description}}">
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            {{--Button delete--}}
+                                                            <div class="col-auto">
+                                                                <button type="button" data-id="{{$sessionDetail->id}}" onclick="deleteImageReform({{$sessionDetail->id}})"  class="btn btn-danger mb-3 btnDeleteImage">Xoá</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                @endforeach
+                                                @endif
                                             </div>
+
                                             <div class="row mt-3">
 
                                                 <div class="d-flex flex-row-reverse">
                                                     <div class="p-2">
-                                                        <button type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2" data-bs-toggle="modal" data-bs-target=".add-new-order"><i class="mdi mdi-plus me-1"></i> Thêm Item</button>
+                                                        <button id="btnAddItemSession" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm Item</button>
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -374,27 +390,32 @@
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="row">
+                                                            {{--Id--}}
+                                                            <input type="hidden" name="task_event_socials[id]" id="booths[id]" value="{{$taskEventSocials->id}}">
+                                                            {{--Event Id--}}
+                                                            <input type="hidden" name="task_event_socials[task_id]" id="booths[task_id]" value="{{$event->id}}">
                                                             <div class="col-md-2">
                                                                 <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                                                                    {{--Checkbox is_comment--}}
+                                                                    <input class="form-check-input" @if( $taskEventSocials->is_comment) checked @endif type="checkbox" id="task_event_socials[is_comment]" name="task_event_socials[is_comment]" value="1">
                                                                     <label class="form-check-label" for="inlineCheckbox1">Comment</label>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                                                                    <input class="form-check-input" @if( $taskEventSocials->is_like) checked @endif type="checkbox" id="task_event_socials[is_like]" name="task_event_socials[is_like]" value="1">
                                                                     <label class="form-check-label" for="inlineCheckbox2">like</label>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+                                                                    <input class="form-check-input" @if( $taskEventSocials->is_retweet) checked @endif type="checkbox" id="task_event_socials[is_retweet]" name="task_event_socials[is_retweet]" value="1">
                                                                     <label class="form-check-label" for="inlineCheckbox3">Retweet</label>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option4">
+                                                                    <input class="form-check-input" @if( $taskEventSocials->is_tweet) checked @endif type="checkbox" id="task_event_socials[is_tweet]" name="task_event_socials[is_tweet]" value="1">
                                                                     <label class="form-check-label" for="inlineCheckbox4">Tweet</label>
                                                                 </div>
                                                             </div>
@@ -404,13 +425,13 @@
                                                             <div class="mb-3">
                                                                 <label for="basicpill-cardno-input"
                                                                        class="form-label">Url</label>
-                                                                <input type="text" class="form-control" placeholder="Url" id="basicpill-cardno-input">
+                                                                <input type="text" value="{{$taskEventSocials->url}}" class="form-control" placeholder="Url" id="task_event_socials[url]" name="task_event_socials[url]">
                                                             </div>
 
                                                             <div class="mb-3">
                                                                 <label for="basicpill-cardno-input"
                                                                        class="form-label">Text</label>
-                                                                <input type="text" class="form-control" placeholder="Text" id="basicpill-cardno-input">
+                                                                <input type="text"  value="{{$taskEventSocials->text}}" class="form-control" placeholder="Text" id="task_event_socials[text]" name="task_event_socials[text]">
                                                             </div>
                                                         </div>
 
@@ -421,24 +442,28 @@
                                                         Discord
                                                     </div>
                                                     <div class="card-body">
+                                                        {{--Id--}}
+                                                        <input type="hidden" name="task_event_discords[id]" id="booths[id]" value="{{$taskEventDiscords->id}}">
+                                                        {{--Event Id--}}
+                                                        <input type="hidden" name="task_event_discords[task_id]" id="booths[task_id]" value="{{$event->id}}">
                                                         <div class="mb-3">
                                                             <label for="basicpill-cardno-input"
                                                                    class="form-label">Bot Token</label>
-                                                            <input type="text" class="form-control" placeholder="Bot Token" id="basicpill-cardno-input">
+                                                            <input type="text" class="form-control" placeholder="Bot Token" value="{{$taskEventDiscords->bot_token}}" name="task_event_discords[bot_token]" id="task_event_discords[bot_token]">
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-lg-6">
                                                                 <div class="mb-3">
                                                                     <label for="basicpill-cardno-input"
                                                                            class="form-label">Channel Id</label>
-                                                                    <input type="text" class="form-control" placeholder="Channel Id" id="basicpill-cardno-input">
+                                                                    <input type="text" class="form-control" placeholder="Channel Id" value="{{$taskEventDiscords->channel_id}}" name="task_event_discords[channel_id]" id="task_event_discords[channel_id]">
                                                                 </div>
                                                             </div><!-- end col -->
                                                             <div class="col-lg-6">
                                                                 <div class="mb-3">
                                                                     <label for="basicpill-cardno-input"
                                                                            class="form-label">Channel Url</label>
-                                                                    <input type="text" class="form-control" placeholder="Channel Url" id="basicpill-cardno-input">
+                                                                    <input type="text" class="form-control" placeholder="Channel Url" value="{{$taskEventDiscords->channel_url}}" name="task_event_discords[channel_url]" id="task_event_discords[channel_url]">
                                                                 </div>
                                                             </div><!-- end col -->
                                                         </div>
@@ -574,11 +599,11 @@
 
     <script src="{{asset('plugins/filekit/assets/js/upload-kit.js')}}" referrerpolicy="origin"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-    <script src="{{asset('assets/yii2-assets/yii.js')}}"></script>
-    <script src="{{asset('assets/yii2-assets/yii.activeForm.js')}}"></script>
-    <script src="{{asset('assets/yii2-assets/yii.validation.js')}}"></script>
+    <script src="{{asset('plugins/yii2-assets/yii.js')}}"></script>
+    <script src="{{asset('plugins/yii2-assets/yii.activeForm.js')}}"></script>
+    <script src="{{asset('plugins/yii2-assets/yii.validation.js')}}"></script>
 
-
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
     <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.js"></script>
     <script src="https://uicdn.toast.com/editor/latest/i18n/ja-jp.js"></script>
@@ -684,17 +709,77 @@
             var flag_check = 1;
             $(document).on("submit", "#post_form", function (event) {
                 //Get Editor content
-                var content = editor.getHtml();//editor.getHTML();
-                var content2 = editor2.getHtml();//editor.getHTML();
-                var content3 = editor3.getHtml();//editor.getHTML();
+                var content = editor.getHTML();//editor.getHTML(); getMarkdown
+                var content2 = editor2.getHTML();//editor.getHTML();
+                var content3 = editor3.getHTML();//editor.getHTML();
                 //console.log(content);
 
-                $('[name=description]').attr('value', editor.getHtml());
-                $('[id=sessions-description]').attr('value', editor2.getHtml());
+                $('[name=description]').attr('value', editor.getHTML());
+                $('[id=sessions-description]').attr('value', editor2.getHTML());
 
-                $('[id=booths-description]').attr('value', editor3.getHtml());
+                $('[id=booths-description]').attr('value', editor3.getHTML());
 
                 $(window).off('beforeunload');
+            });
+
+            //btnAddItemSession onclick call ajax
+
+            $(document).on('click', '#btnAddItemSession', function (event) {
+                //alert('123');
+                //Add loading on btnAddImageReform button
+
+                var rowCount = $('.itemSessionDetail').length;
+                //console.log(rowCount);
+                //Check max image
+                if(rowCount >= 20){
+                    alert('{{__('Maximum number of Item is')}} 20');
+                    return false;
+                }
+                //initImageWidge(1);
+                flag_check = Math.floor(Math.random() * 10000);
+                /*Ajax call get template*/
+                $.ajax({
+                    url: '{{route('cws.eventTemplate')}}' + '?from_reform=1&flag_check=' + flag_check + '&inc=' + rowCount,
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        _token: _token,
+                        id: flag_check
+                    },
+                    success: function (data) {
+                        if (data.status == 200) {
+                            //console.log(data);
+                            $('#listRowSession').append(data.html);
+                            flag_check++;
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+
+            /*Delete Image Row*/
+            $(document).on('click', '.btnDeleteImage', function (event) {
+                event.preventDefault();
+
+                var id = $(this).attr('data-id');
+                //Swal confirm
+                Swal.fire({
+                    title: '{{__('Are you sure?')}}',
+                    text: '{{__('You will not be able to recover this imaginary file!')}}',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '{{__('Yes, delete it!')}}',
+                    cancelButtonText: '{{__('Cancel')}}',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#itemImage' + id).remove();
+                    }
+                });
+
             });
         });
 

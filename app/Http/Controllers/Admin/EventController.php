@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event\EventDiscords;
+use App\Models\Event\EventSocial;
 use App\Models\Event\TaskEvent;
 use App\Models\Event\TaskEvent as Event;
 use App\Models\Quiz\Quiz;
@@ -38,13 +40,40 @@ class EventController extends Controller
         } else {
             $events = $this->taskService->search(['limit' => $limit]);
         }
+
+        //tab
+        $tab = $request->get('tab') ?? 0;
         $data = [
             'events' => $events,
+            'tab' => $tab,
         ];
 
         return view('cws.event.index', $data);
     }
 
+    /*
+     * template
+     * */
+    public function template(Request $request, $id='')
+    {
+        $index = $request->get('index');
+        $type = $request->get('type', 1);
+        $getInc = $request->get('inc', 1);
+        if (empty($id)) {
+            $id = $request->get('flag_check');
+        }
+
+        $dataView['type'] = $type;
+        $dataView['indexImageItem'] = $id;
+        $dataView['getInc'] = $getInc + 1;
+
+        return response()->json([
+            'code' => 200,
+            'status' => 200,
+            'html' => view('cws.event._template.item_session', $dataView)->render(),
+            'message' => 'success',
+        ], 200);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -103,6 +132,26 @@ class EventController extends Controller
         $booths = TaskEvent::where('task_id',$id)->with('detail')->where('type',1)->first();
 
         $sessions = TaskEvent::where('task_id',$id)->with('detail')->where('type',0)->first();
+        //taskEventDiscords EventDiscords
+        /** @var EventDiscords $taskEventDiscords */
+        $taskEventDiscords = $task->taskEventDiscords;
+        //Check if $taskEventDiscords is null then create new EventDiscords
+        if($taskEventDiscords == null){
+
+            $taskEventDiscords = new EventDiscords();
+            $taskEventDiscords->task_id = $id;
+            $taskEventDiscords->save();
+        }
+        //taskEventSocials EventSocial
+        /** @var EventSocial $taskEventSocials */
+        $taskEventSocials = $task->taskEventSocials;
+        //Check if $taskEventSocials is null then create new EventSocial
+        if($taskEventSocials == null){
+            $taskEventSocials = new EventSocial();
+            $taskEventSocials->task_id = $id;
+            $taskEventSocials->save();
+        }
+
 
         //Check if $sessions is null then create new
         if($sessions == null){
@@ -111,6 +160,8 @@ class EventController extends Controller
             $sessions->type = 0;
             $sessions->save();
         }
+
+
         //Check if $booths is null then create new
         if($booths == null){
             $booths = new TaskEvent();
@@ -146,6 +197,8 @@ class EventController extends Controller
             'sessions' => $sessions,
             'booths' => $booths,
             'quiz' => $quiz,
+            'taskEventSocials' => $taskEventSocials,
+            'taskEventDiscords' => $taskEventDiscords,
             'group_tasks' => $taskGroup,
             'task_galleries' => $image,
             'activeTab' => $activeTab,
@@ -166,6 +219,10 @@ class EventController extends Controller
 
         $inputAll = $request->all();
         //dd($inputAll);
+        /*
+         * "id" => "99583545-472e-4710-8258-24b8b2b33110"
+    "task_id" => "c519af43-1349-46bb-ab52-de6b53981d8c"
+         * */
 
         $request->validate([
             'name' => 'required',
@@ -176,7 +233,7 @@ class EventController extends Controller
         //$company->fill($request->post())->save();
         $this->eventService->store($request);
 
-        return redirect()->route('cws.eventList')->with('success','Event Has Been updated successfully');
+        return redirect()->route('cws.eventList', ['tab' => 0])->with('success','Event Has Been updated successfully');
     }
 
     /**
