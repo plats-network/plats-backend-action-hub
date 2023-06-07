@@ -345,27 +345,41 @@
                                             </div><!-- end col -->
 
                                         </div><!-- end row -->
-                                        <div class="row">
-                                            <div class="mb-3 row">
-                                                <label for="inputPassword" class="col-sm-2 col-form-label">Booth 1</label>
-                                                <div class="col-sm-4">
-                                                    <input type="text" class="form-control" id="inputPassword">
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <input type="text" class="form-control" id="inputPassword">
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    {{--Button delete--}}
-                                                    <div class="col-auto">
-                                                        <button type="submit" class="btn btn-danger mb-3">Xoá</button>
-                                                    </div>
-                                                </div>
+                                        <div class="row mt-3">
+                                            <div class="listRowBooth" id="listRowBooth">
+                                                @if($booths->detail)
+
+                                                    @foreach($booths->detail as $sessionDetail)
+
+                                                        <div class="mb-3 row itemBoothDetail" id="itemBooth{{$sessionDetail->id}}">
+                                                            {{--Id--}}
+                                                            <input type="hidden" name="booths[detail][{{$sessionDetail->id}}][id]" id="booths[detail][{{$sessionDetail->id}}][id]" value="{{$sessionDetail->id}}">
+                                                            {{--Session Id--}}
+                                                            <label for="inputPassword" class="col-sm-2 col-form-label">Booth 1</label>
+                                                            <div class="col-sm-4">
+                                                                {{--name--}}
+                                                                <input type="text" class="form-control" id="booths[detail][{{$sessionDetail->id}}][name]" name="booths[detail][{{$sessionDetail->id}}][name]" value="{{$sessionDetail->name}}">
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                {{--description--}}
+                                                                <input type="text" class="form-control" id="booths[detail][{{$sessionDetail->id}}][description]" name="booths[detail][{{$sessionDetail->id}}][description]" value="{{$sessionDetail->description}}">
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                {{--Button delete--}}
+                                                                <div class="col-auto">
+                                                                    <button type="button" data-id="{{$sessionDetail->id}}" onclick="deleteImageReform({{$sessionDetail->id}})"  class="btn btn-danger mb-3 btnDeleteImageBooth">Xoá</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                @endif
                                             </div>
+
                                             <div class="row mt-3">
 
                                                 <div class="d-flex flex-row-reverse">
                                                     <div class="p-2">
-                                                        <button type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2" data-bs-toggle="modal" data-bs-target=".add-new-order"><i class="mdi mdi-plus me-1"></i> Thêm Item</button>
+                                                        <button id="btnAddItemBooth" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm Item</button>
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -777,6 +791,65 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $('#itemImage' + id).remove();
+                    }
+                });
+
+            });
+
+            /*Booth*/
+            $(document).on('click', '#btnAddItemBooth', function (event) {
+                //alert('123');
+                //Add loading on btnAddImageReform button
+
+                var rowCount = $('.itemBoothDetail').length;
+                //console.log(rowCount);
+                //Check max image
+                if(rowCount >= 20){
+                    alert('{{__('Maximum number of Item is')}} 20');
+                    return false;
+                }
+                //initImageWidge(1);
+                flag_check = Math.floor(Math.random() * 10000);
+                /*Ajax call get template*/
+                $.ajax({
+                    url: '{{route('cws.eventTemplate')}}' + '?type=2&flag_check=' + flag_check + '&inc=' + rowCount,
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        _token: _token,
+                        id: flag_check
+                    },
+                    success: function (data) {
+                        if (data.status == 200) {
+                            //console.log(data);
+                            $('#listRowBooth').append(data.html);
+                            flag_check++;
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+
+            /*Delete Image Row*/
+            $(document).on('click', '.btnDeleteImageBooth', function (event) {
+                event.preventDefault();
+
+                var id = $(this).attr('data-id');
+                //Swal confirm
+                Swal.fire({
+                    title: '{{__('Are you sure?')}}',
+                    text: '{{__('You will not be able to recover this imaginary file!')}}',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '{{__('Yes, delete it!')}}',
+                    cancelButtonText: '{{__('Cancel')}}',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#itemBooth' + id).remove();
                     }
                 });
 

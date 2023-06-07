@@ -67,12 +67,22 @@ class EventController extends Controller
         $dataView['indexImageItem'] = $id;
         $dataView['getInc'] = $getInc + 1;
 
-        return response()->json([
-            'code' => 200,
-            'status' => 200,
-            'html' => view('cws.event._template.item_session', $dataView)->render(),
-            'message' => 'success',
-        ], 200);
+        if ($type ==1){
+            return response()->json([
+                'code' => 200,
+                'status' => 200,
+                'html' => view('cws.event._template.item_session', $dataView)->render(),
+                'message' => 'success',
+            ], 200);
+        }
+        if ($type ==2){
+            return response()->json([
+                'code' => 200,
+                'status' => 200,
+                'html' => view('cws.event._template.item_booth', $dataView)->render(),
+                'message' => 'success',
+            ], 200);
+        }
     }
     /**
      * Show the form for creating a new resource.
