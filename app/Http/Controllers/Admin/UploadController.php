@@ -562,7 +562,7 @@ class UploadController extends Controller
 
         $item['base_url'] = $appBaseUrl;
         //$item['path'] = Str::replace('public/images', 'images', $imagePath);
-        $item['path'] = $imagePath;
+        $item['path'] = $appBaseUrl .'/'.$imagePath;
         $item['path_store'] = $fileInfo['path_store'] ?? $imagePath;
         $item['url'] = $fullUrl;
         //$item['url'] = $appBaseUrl . '/'.$imagePath;

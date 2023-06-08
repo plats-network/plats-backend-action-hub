@@ -49,7 +49,7 @@ class EventService extends BaseService
             $data = Arr::except($request->all(), '__token');
             //banner_url
             if (isset($data['thumbnail'])) {
-                $data['banner_url'] = $data['thumbnail']['base_url'] . '/' . $data['thumbnail']['path'];
+                $data['banner_url'] =  $data['thumbnail']['path'];
             } else {
                 $data['banner_url'] = '';
             }
@@ -57,7 +57,7 @@ class EventService extends BaseService
             if (isset($data['Article']) && is_array($data['Article'])) {
                 $inputListImage = $data['Article']['attachments'];
                 foreach ($inputListImage as $itemImage) {
-                    $data['task_galleries'][] = $itemImage['base_url'] . '/' . $itemImage['path'];
+                    $data['task_galleries'][] = $itemImage['path'];
                 }
             } else {
                 $data['task_galleries'] = [];
