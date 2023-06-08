@@ -22,14 +22,17 @@ use App\Http\Controllers\Web\Auth\{
     ForgotPassword
 };
 
-Route::middleware(['guest'])->group(function($auth) {
+Route::middleware(['guest'])->group(function ($auth) {
+    // Login social
+    Route::get('/login/facebook', [Login::class, 'redirectToFacebook']);
+    Route::get('/login/facebook/callback', [Login::class, 'handleFacebookCallback']);
+
     // Login
     $auth->get('login', [Login::class, 'showFormLogin'])->name('web.formLogin');
     $auth->post('login', [Login::class, 'login'])->name('web.login');
 
     $auth->get('login-guest', [Login::class, 'formLoginGuest'])->name('web.formLoginGuest');
     $auth->post('login-guest', [Login::class, 'loginGuest'])->name('web.loginGuest');
-
 
     // Comfirm register
     // $auth->get('confirm/{token}', [SignUp::class, 'confirmRegis'])->name('')
@@ -60,7 +63,7 @@ Route::get('resource', [PagesController::class, 'resource'])->name('web.resource
 Route::get('contact', [PagesController::class, 'contact'])->name('web.contact');
 
 
-Route::middleware(['user_event'])->group(function($r) {
+Route::middleware(['user_event'])->group(function ($r) {
     $r->get('event-job/{id}', [Dashboard::class, 'jobEvent'])->name('web.jobEvent');
 });
 
@@ -84,10 +87,12 @@ Route::post('/events/ticket', [Detail::class, 'addTicket'])->name('web.event.add
 Route::get('/events/{slug}', [Detail::class, 'index']);
 
 
-Route::prefix('quiz-game')->middleware('client_web')->group(function () {
-    Route::get('/scoreboard/{eventId}', [QuizGameController::class, 'getScoreboard']);
-    Route::get('/answers/{eventId}', [QuizGameController::class, 'showAnswers'])->name('quiz-name.answers');
-    Route::post('/next-question', [QuizGameController::class, 'getQuestionByNumber']);
-    Route::post('/send-total-score', [QuizGameController::class, 'sendTotalScore']);
+Route::prefix('quiz-game')->group(function () {
     Route::get('/questions/{eventId}', [QuizGameController::class, 'index']);
+    Route::middleware('user_event')->group(function () {
+        Route::get('/scoreboard/{eventId}', [QuizGameController::class, 'getScoreboard']);
+        Route::get('/answers/{eventId}', [QuizGameController::class, 'showAnswers'])->name('quiz-name.answers');
+        Route::post('/next-question', [QuizGameController::class, 'getQuestionByNumber']);
+        Route::post('/send-total-score', [QuizGameController::class, 'sendTotalScore']);
+    });
 });
