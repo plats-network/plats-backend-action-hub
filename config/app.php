@@ -24,6 +24,9 @@ return [
         0 => 'web',
         1 => 'users',
     ],
+
+    'upload_type' => env('UPLOAD_TYPE', 3),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -210,6 +213,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        App\Providers\BladeServiceProvider::class,
     ],
 
     /*

@@ -11,13 +11,14 @@
         @notifyCss
         @vite([
             'resources/sass/admin.scss',
-           'resources/js/admin/adminapp.js',
-            'resources/js/admin.js',
-            'resources/js/admin/cws/event.js',
+            'resources/js/admin.js'
         ])
 
         @yield('style')
         @livewireStyles
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" referrerpolicy="origin"></script>
+
     </head>
 
     <body data-layout-size="boxed">

@@ -13,9 +13,10 @@
 @extends('cws.layouts.app')
 @section('style')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.32.0/css/jquery.fileupload.css">
-    <link rel="stylesheet" href="{{asset('plugins/filekit/assets/css/upload-kit.css')}}">
+
+    @uploadFileCSS
+
+
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.1.1/dist/select2-bootstrap-5-theme.min.css"/>
@@ -147,6 +148,34 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <div class="form-group field-article-thumbnail">
+                                                        <label for="article-thumbnail" class="mb-3"><b>Ảnh Thumbnail</b></label>
+                                                        <div>
+                                                            <input type="hidden" id="article-thumbnail" class="empty-value"
+                                                                   name="thumbnail">
+                                                            <input type="file" id="w0" name="_fileinput_w0"></div>
+                                                        <div class="invalid-feedback">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-9">
+
+                                                    <div class="col-sm-12 mb-3">
+                                                        <label class="form-label" for="ap-category">Ảnh Slide <span
+                                                                class="text-danger">*</span>
+                                                        </label>
+                                                        <div><input type="hidden" id="article-attachments" class="empty-value"
+                                                                    name="Article[attachments]">
+                                                            <input type="file" id="w1" name="_fileinput_w1" multiple>
+                                                        </div>
+                                                        <div class="invalid-feedback"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
 
                                             <div class="row">
                                                 <div class="col-lg-6">
@@ -655,24 +684,7 @@
 
 
 @section('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" referrerpolicy="origin"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-load-image/5.14.0/load-image.all.min.js"
-            referrerpolicy="origin"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.32.0/js/vendor/jquery.ui.widget.js"
-            referrerpolicy="origin"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.32.0/js/jquery.iframe-transport.js"
-            referrerpolicy="origin"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.32.0/js/jquery.fileupload.js"
-            referrerpolicy="origin"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.32.0/js/jquery.fileupload-process.js"
-            referrerpolicy="origin"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.32.0/js/jquery.fileupload-image.js"
-            referrerpolicy="origin"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/10.32.0/js/jquery.fileupload-validate.js"
-            referrerpolicy="origin"></script>
-
-
-    <script src="{{asset('plugins/filekit/assets/js/upload-kit.js')}}" referrerpolicy="origin"></script>
+    @uploadFileJS
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="{{asset('plugins/yii2-assets/yii.js')}}"></script>
     <script src="{{asset('plugins/yii2-assets/yii.activeForm.js')}}"></script>
@@ -754,7 +766,37 @@
             language: 'en-US',
             initialEditType: 'wysiwyg', //markdown, wysiwyg
             height: '350px',
-            initialValue: contentEditor
+            initialValue: contentEditor,
+            hooks: {
+                addImageBlobHook(imgeBlob, callback) {
+                    // write your code
+                    //console.log(imgeBlob)
+                    var fd = new FormData();
+                    fd.append('file',imgeBlob);
+                    //Show loading
+                    modalLoading.modal("show");
+
+                    $.ajax({
+                        url :  "{{route('uploadEditor')}}",
+                        type: 'POST',
+                        data: fd,
+                        contentType: false,
+                        processData: false,
+                        cache: false,
+
+                        success: function(data) {
+                            urlImage = data.url_full;
+                            callback(urlImage, data.name)
+
+                            modalLoading.modal("hide");
+                        },
+                        error: function() {
+                            //alert("not so boa!");
+                        }
+                    });
+                    // ...
+                }
+            }
         });
 
         const editor2 = new toastui.Editor({
@@ -775,6 +817,115 @@
             initialValue: contentEditor3
         });
 
+    </script>
+    <script>
+        jQuery(document).ready(function ($) {
+            // display a modal (small modal)
+            var uploadUrl = '{{route('upload-storage-single', ['_token' => csrf_token()])}}';
+
+            var fileAvatarInit = null;
+            var fileSlideInit = null;
+
+            @if($event->banner_url)
+                fileAvatarInit = [{
+                "path": "{{$event->banner_url}}",
+                "base_url": "",
+                "type": null,
+                "size": null,
+                "name": null,
+                "order": null
+            }];
+            @endif
+
+                fileSlideInit = [
+                    @foreach($task_galleries as $key=> $fileItem)
+                {
+                    "path": "{{$fileItem['url']}}",
+                    "base_url": "",
+                    "type": null,
+                    "size": null,
+                    "name": null,
+                    "order": null
+                } @if($key < $total_file-1), @endif
+                @endforeach
+            ];
+
+            //Update init image
+            jQuery('#w0').yiiUploadKit({
+                "url": uploadUrl,
+                "multiple": false,
+                "sortable": false,
+                "maxNumberOfFiles": 1,
+                "maxFileSize": 5000000,
+                "minFileSize": null,
+                "acceptFileTypes": /(\.|\/)(gif|jpe?g|png|webp)$/i,
+                "files": fileAvatarInit,
+                "previewImage": true,
+                "showPreviewFilename": true,
+                "errorHandler": "popover",
+                "pathAttribute": "path",
+                "baseUrlAttribute": "base_url",
+                "pathAttributeName": "path",
+                "baseUrlAttributeName": "base_url",
+                "messages": {
+                    "maxNumberOfFiles": "Số lượng tối đa của tệp vượt quá",
+                    "acceptFileTypes": "Loại tệp không được phép",
+                    "maxFileSize": "Tập tin quá lớn",
+                    "minFileSize": "Tập tin quá nhỏ"
+                },
+                "start": function (e, data) {
+                    console.log('Upload Start')
+                },
+                "done": function (e, data) {
+                    console.log('Upload Done')
+                },
+                "fail": function (e, data) {
+                    console.log('Upload Fail')
+                },
+                "always": function (e, data) {
+                    console.log('Upload Alway')
+                },
+                "name": "thumbnail"
+            });
+
+            jQuery('#w1').yiiUploadKit({
+                "url": uploadUrl,
+                "multiple": true,
+                "sortable": false,
+                "maxNumberOfFiles": 30,
+                "maxFileSize": 10000000,
+                "minFileSize": null,
+                "acceptFileTypes": /(\.|\/)(gif|jpe?g|png|webp)$/i,
+                "files": fileSlideInit,
+                "previewImage": true,
+                "showPreviewFilename": false,
+                "errorHandler": "popover",
+                "pathAttribute": "path",
+                "baseUrlAttribute": "base_url",
+                "pathAttributeName": "path",
+                "baseUrlAttributeName": "base_url",
+                "messages": {
+                    "maxNumberOfFiles": "Số lượng tối đa của tệp vượt quá",
+                    "acceptFileTypes": "Loại tệp không được phép",
+                    "maxFileSize": "Tập tin quá lớn",
+                    "minFileSize": "Tập tin quá nhỏ"
+                },
+                "start": function (e, data) {
+                    console.log('Upload Start')
+                },
+                "done": function (e, data) {
+                    console.log('Upload Done')
+                },
+                "fail": function (e, data) {
+                    console.log('Upload Fail')
+                },
+                "always": function (e, data) {
+                    console.log('Upload Alway')
+                },
+                "name": "Article[attachments]"
+            });
+
+        });
     </script>
     <script>
         jQuery(document).ready(function ($) {
@@ -998,6 +1149,7 @@
             }
             if (n == (x.length - 1)) {
                 document.getElementById("nextBtn").innerHTML = "Submit";
+                //Type submit
             } else {
                 document.getElementById("nextBtn").innerHTML = "Next";
             }
