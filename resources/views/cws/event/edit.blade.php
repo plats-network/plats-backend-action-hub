@@ -12,7 +12,6 @@
 
 @extends('cws.layouts.app')
 @section('style')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     @uploadFileCSS
 
@@ -689,6 +688,7 @@
     <script src="{{asset('plugins/yii2-assets/yii.js')}}"></script>
     <script src="{{asset('plugins/yii2-assets/yii.activeForm.js')}}"></script>
     <script src="{{asset('plugins/yii2-assets/yii.validation.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
@@ -882,6 +882,34 @@
         jQuery(document).ready(function ($) {
             // display a modal (small modal)
             var uploadUrl = '{{route('upload-storage-single', ['_token' => csrf_token()])}}';
+
+            //Check flexCheckPaid is checked then show div #paid
+            $('#flexCheckPaid').on('change', function () {
+                if ($(this).is(':checked')) {
+                    $('#row_paid').show();
+                } else {
+                    $('#row_paid').hide();
+                }
+            });
+            //start_at datepicker
+            $('#start_at').flatpickr(
+                {
+                    enableTime: true,
+                    dateFormat: "Y-m-d H:i",
+                    time_24hr: true,
+                    locale: 'vn'
+                }
+            )
+            //End_at datepicker
+            $('#end_at').flatpickr(
+                {
+                    enableTime: true,
+                    dateFormat: "Y-m-d H:i",
+                    time_24hr: true,
+                    locale: 'vn'
+
+                }
+            )
 
             var fileAvatarInit = null;
             var fileSlideInit = null;

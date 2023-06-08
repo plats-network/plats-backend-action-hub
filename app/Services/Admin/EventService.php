@@ -55,7 +55,7 @@ class EventService extends BaseService
             }
             //task_galleries
             if (isset($data['Article']) && is_array($data['Article'])) {
-                $inputListImage = $data['Article']['attachments'];
+                $inputListImage = $data['Article']['attachments'] ? $data['Article']['attachments'] : [];
                 foreach ($inputListImage as $itemImage) {
                     $data['task_galleries'][] = $itemImage['path'];
                 }
@@ -320,11 +320,34 @@ class EventService extends BaseService
 
         try {
             $data = Arr::except($request->all(), '__token');
+            //banner_url
+            if (isset($data['thumbnail'])) {
+                $data['banner_url'] =  $data['thumbnail']['path'];
+            } else {
+                $data['banner_url'] = '';
+            }
+            //task_galleries
+            if (isset($data['Article']) && is_array($data['Article'])) {
+                $inputListImage = $data['Article']['attachments'] ? $data['Article']['attachments'] : [];
+                foreach ($inputListImage as $itemImage) {
+                    $data['task_galleries'][] = $itemImage['path'];
+                }
+            } else {
+                $data['task_galleries'] = [];
+            }
             $data['creator_id'] = Auth::user()->id;
             $data['status'] = true;
             $data['slug'] = $request->input('name');
             $data['max_job'] = 0;
             // $data['code'] = Str::random(35);
+            //Check order is null
+            if (empty($data['order'])){
+                $data['order'] = 1;
+            }
+            //Check reward is null
+            if (empty($data['reward'])){
+                $data['reward'] = 0;
+            }
             $dataBaseTask = $this->taskRepository->create($data);
             if (isset($data['task_galleries'])){
                 foreach ($data['task_galleries'] as $uploadedFile){

@@ -9,7 +9,7 @@ if (!defined('DEFINE_CONSTANT')) {
     define('TASK_SESSION', 0);
     define('TASK_BOOTH', 1);
 
-    define('PAGE_SIZE', 10);
+    define('PAGE_SIZE', 20);
     define('INPUT_MAX_LENGTH', 255);
     define('CONFIRM', 1);
     /**
