@@ -51,7 +51,7 @@
                             <ul class="wizard-nav mb-5">
                                 <li class="wizard-list-item">
                                     <div class="list-item">
-                                        <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        <div class="step-icon" data-step="0"  data-bs-toggle="tooltip" data-bs-placement="top"
                                              title="Seller Details">
                                             <i class="bx bx-user-circle"></i>
                                         </div>
@@ -59,7 +59,7 @@
                                 </li>
                                 <li class="wizard-list-item">
                                     <div class="list-item">
-                                        <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        <div class="step-icon" data-step="1"  data-bs-toggle="tooltip" data-bs-placement="top"
                                              title="Sessions">
                                             <i class="bx bx-file"></i>
                                         </div>
@@ -68,7 +68,7 @@
 
                                 <li class="wizard-list-item">
                                     <div class="list-item">
-                                        <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        <div class="step-icon" data-step="2"  data-bs-toggle="tooltip" data-bs-placement="top"
                                              title="Booths">
                                             <i class="bx bx-edit"></i>
                                         </div>
@@ -77,7 +77,7 @@
                                 {{--Social--}}
                                 <li class="wizard-list-item">
                                     <div class="list-item">
-                                        <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        <div class="step-icon" data-step="3"  data-bs-toggle="tooltip" data-bs-placement="top"
                                              title="Social">
                                             <i class="bx bx-edit"></i>
                                         </div>
@@ -85,7 +85,7 @@
                                 </li>
                                 <li class="wizard-list-item">
                                     <div class="list-item">
-                                        <div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        <div class="step-icon" data-step="4"  data-bs-toggle="tooltip" data-bs-placement="top"
                                              title="Quiz">
                                             <i class="bx bx-edit"></i>
                                         </div>
@@ -94,7 +94,7 @@
                             </ul>
                             <!-- wizard-nav -->
 
-                            <div class="wizard-tab">
+                            <div  id="tabwizard0" class="wizard-tab">
                                 <div class="text-center mb-4">
                                     <h5>Event Details</h5>
                                     <p class="card-title-desc">Detail Event</p>
@@ -251,7 +251,7 @@
                             </div>
                             <!-- wizard-tab -->
 
-                            <div class="wizard-tab">
+                            <div  id="tabwizard1" class="wizard-tab">
                                 <div>
                                     <div class="text-center mb-4">
                                         <h5>Sessions</h5>
@@ -338,7 +338,7 @@
                             </div>
                             <!-- wizard-tab -->
 
-                            <div class="wizard-tab">
+                            <div  id="tabwizard2" class="wizard-tab">
                                 <div>
                                     <div class="text-center mb-4">
                                         <h5>Booths</h5>
@@ -425,7 +425,8 @@
 
                                 </div>
                             </div>
-                            <div class="wizard-tab">
+
+                            <div  id="tabwizard3" class="wizard-tab">
                                 <div>
                                     <div class="text-center mb-4">
                                         <h5>Social</h5>
@@ -527,7 +528,8 @@
                                     </div><!-- end form -->
 
                             </div>
-                            <div class="wizard-tab">
+
+                            <div  id="tabwizard4" class="wizard-tab">
                                 <div>
                                     <div class="text-center mb-4">
                                         <h5>Quiz</h5>
@@ -1225,6 +1227,7 @@
 
             });
 
+
         });
 
         var currentTab = {{$activeTab}}; // Current tab is set to be the first tab (0)
@@ -1278,5 +1281,25 @@
             //... and adds the "active" class on the current step:
             x[n].className += " active";
         }
+
+        //step-icon onclick show tab
+        $(document).on('click', '.step-icon', function (event) {
+            event.preventDefault();
+            var id = $(this).attr('data-step');
+            //console.log(id);
+
+            showTab(id);
+            //Display tab with id tabwizard-index
+
+            $('#tabwizard0').css('display', 'none');
+            $('#tabwizard' + id).css('display', 'block');
+            //Hide other tab
+            for (var i = 1; i <= 4; i++) {
+                if (i != id) {
+                    $('#tabwizard' + i).css('display', 'none');
+                }
+            }
+            //fixStepIndicator(id);
+        });
     </script>
 @endsection
