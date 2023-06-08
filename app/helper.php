@@ -94,3 +94,28 @@ if (!function_exists('commonImg')) {
         return Storage::disk('s3')->url($img);
     }
 }
+
+
+/*
+ * Convert data size to bytes
+ * Example 2M => 2097152
+ * */
+function dataConvertToBytes(bool|string $upload_max_size)
+{
+    $upload_max_size = trim($upload_max_size);
+    $last = strtolower($upload_max_size[strlen($upload_max_size) - 1]);
+    $number = substr($upload_max_size, 0, -1);
+    switch ($last) {
+        // The 'G' modifier is available since PHP 5.1.0
+        case 'g':
+            $number *= 1024;
+        // no break
+        case 'm':
+            $number *= 1024;
+        // no break
+        case 'k':
+            $number *= 1024;
+    }
+
+    return $number;
+}

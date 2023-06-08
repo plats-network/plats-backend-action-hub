@@ -61,6 +61,10 @@ class EventService extends BaseService
             if ($sessions){
                 if (empty($sessions['id'])){
                     $sessions['code'] = Str::random(35);
+                    //Check empty max_job
+                    if (empty($sessions['max_job'])){
+                        $sessions['max_job'] = 0;
+                    }
                     $idTaskEventSessions = $dataBaseTask->taskEvents()->create($sessions);
                     if (isset($sessions['detail'])){
                         foreach ($sessions['detail'] as $key => $item){
@@ -77,6 +81,7 @@ class EventService extends BaseService
                     unset($sessionsUn['detail']);
                     unset($sessionsUn['id']);
 
+                    //dd($sessionsUn);
                     TaskEvent::where('id',$sessions['id'])->update($sessionsUn);
 
                     if (isset($sessions['detail'])){
@@ -128,6 +133,10 @@ class EventService extends BaseService
                     $boothsUn = Arr::get($data, 'booths');
                     unset($boothsUn['detail']);
                     unset($boothsUn['id']);
+                    //Check empty max_job
+                    if (empty($boothsUn['max_job'])){
+                        $boothsUn['max_job'] = 0;
+                    }
                     TaskEvent::where('id',$booths['id'])->update($boothsUn);
                     if (isset($booths['detail'])){
                         foreach ($booths['detail'] as $key => $item){
@@ -222,6 +231,8 @@ class EventService extends BaseService
                         }elseif ($quizUn['status'] == 'on'){
                             $quizUn['status'] = 1;
                         }
+                        //unset is_delete
+                        unset($quizUn['is_delete']);
 
                         Quiz::where('id',$item['id'])->update($quizUn);
                         if (isset($item['detail'])){
@@ -310,8 +321,12 @@ class EventService extends BaseService
             $sessions = Arr::get($data, 'sessions');
             if ($sessions){
                 $sessions['code'] = Str::random(35);
+                //Check empty max_job
+                if (empty($sessions['max_job'])){
+                    $sessions['max_job'] = 0;
+                }
                 $idTaskEventSessions = $dataBaseTask->taskEvents()->create($sessions);
-                if ($sessions['detail']){
+                if (isset($sessions['detail'])){
                     foreach ($sessions['detail'] as $key => $item){
                         $item['code'] = $this->generateBarcodeNumber().$key;
                         $idTaskEventSessions->detail()->create($item);
@@ -321,8 +336,12 @@ class EventService extends BaseService
             $booths = Arr::get($data, 'booths');
             if ($booths){
                 $booths['code'] = Str::random(35);
+                //Check empty max_job
+                if (empty($booths['max_job'])){
+                    $booths['max_job'] = 0;
+                }
                 $idTaskEventBooths = $dataBaseTask->taskEvents()->create($booths);
-                if ($booths['detail']){
+                if (isset($booths['detail'])){
                     foreach ($booths['detail'] as $key => $item){
                         $item['code'] = $this->generateBarcodeNumber().$key;
                         $idTaskEventBooths->detail()->create($item);
@@ -331,10 +350,14 @@ class EventService extends BaseService
             }
             $social = Arr::get($data, 'task_event_socials');
             if ($social){
+                //Unset id
+                unset($social['id']);
                 $dataBaseTask->taskEventSocials()->create($social);
             }
             $discords = Arr::get($data, 'task_event_discords');
             if ($discords){
+                //Unset id
+                unset($discords['id']);
                 $dataBaseTask->taskEventDiscords()->create($discords);
 
             }

@@ -99,13 +99,104 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        /** @var Task $task */
+        $task =  new Event();
+        $isCopyModel = $request->get('copy', null);
+        if ($isCopyModel) {
+            $post_id = $request->get('id', 0);
+            $modelClone = Task::with('taskSocials', 'taskLocations', 'taskEventSocials', 'taskGenerateLinks', 'taskEventDiscords')->find($post_id);
+            //Clone data
+            if ($modelClone) {
+                $task = $modelClone->replicate();
+
+            }
+        }
+        $id = $task->id;
+
+        $taskGroup = TaskGroup::where('task_id', $id)->pluck('group_id');
+        $taskGallery = TaskGallery::where('task_id', $id)->pluck('url_image');
+
+        $booths = TaskEvent::where('task_id', $id)->with('detail')->where('type', 1)->first();
+
+        $sessions = TaskEvent::where('task_id', $id)->with('detail')->where('type', 0)->first();
+        //taskEventDiscords EventDiscords
+        /** @var EventDiscords $taskEventDiscords */
+        $taskEventDiscords = $task->taskEventDiscords;
+        //Check if $taskEventDiscords is null then create new EventDiscords
+        if ($taskEventDiscords == null) {
+
+            $taskEventDiscords = new EventDiscords();
+            //$taskEventDiscords->task_id = $id;
+            //$taskEventDiscords->save();
+        }
+        //taskEventSocials EventSocial
+        /** @var EventSocial $taskEventSocials */
+        $taskEventSocials = $task->taskEventSocials;
+        //Check if $taskEventSocials is null then create new EventSocial
+        if ($taskEventSocials == null) {
+            $taskEventSocials = new EventSocial();
+            //$taskEventSocials->task_id = $id;
+            //$taskEventSocials->save();
+        }
+
+
+        //Check if $sessions is null then create new
+        if ($sessions == null) {
+            $sessions = new TaskEvent();
+            //$sessions->task_id = $id;
+            $sessions->type = 0;
+            //$sessions->save();
+        }
+
+
+        //Check if $booths is null then create new
+        if ($booths == null) {
+            $booths = new TaskEvent();
+            //$booths->task_id = $id;
+            $booths->type = 1;
+
+            //$booths->save();
+        }
+
+        $quiz = [];
+
+        /*foreach ($quiz as $value) {
+            foreach ($value['detail'] as $key => $value) {
+                $value['key'] = $key;
+            }
+        }*/
+        $image = [];
+        /*foreach ($taskGallery as $item) {
+            $image[]['url'] = $item;
+        }*/
+        $task['group_tasks'] = $taskGroup;
+        $task['task_galleries'] = $image;
+        $task['booths'] = $booths;
+        $task['sessions'] = $sessions;
+        $task['quiz'] = $quiz;
+        //dd($task);
+
+        //dd($sessions);
+        //dd($sessions);
+        $activeTab = $request->get('tab') ?? '0';
+
         $data = [
-            'event' => new Event(),
+            'event' => $task,
+            'sessions' => $sessions,
+            'booths' => $booths,
+            'quiz' => $quiz,
+            'taskEventSocials' => $taskEventSocials,
+            'taskEventDiscords' => $taskEventDiscords,
+            'group_tasks' => $taskGroup,
+            'task_galleries' => $image,
+            'total_file' => count($image),
+            'activeTab' => $activeTab,
             'is_update' => 0,
         ];
-        return view('companies.create');
+
+        return view('cws.event.edit', $data);
     }
 
     /**
@@ -116,13 +207,21 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+        $inputAll = $request->all();
+        //dd($inputAll);
+        /*
+         * "id" => "99583545-472e-4710-8258-24b8b2b33110"
+    "task_id" => "c519af43-1349-46bb-ab52-de6b53981d8c"
+         * */
+
         $request->validate([
             'name' => 'required',
-            'email' => 'required',
-            'address' => 'required',
+            //'email' => 'required',
+            //'address' => 'required',
         ]);
 
-        Event::create($request->post());
+        //$company->fill($request->post())->save();
+        $this->eventService->store($request);
 
         return redirect()->route('cws.eventList')->with('success', 'Event has been created successfully.');
     }
@@ -222,6 +321,7 @@ class EventController extends Controller
             'taskEventDiscords' => $taskEventDiscords,
             'group_tasks' => $taskGroup,
             'task_galleries' => $image,
+            'total_file' => count($image),
             'activeTab' => $activeTab,
             'is_update' => 1,
         ];

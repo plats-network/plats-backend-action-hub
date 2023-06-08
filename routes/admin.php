@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\Admin\{
 };
 use App\Http\Controllers\Auth\Admin\ForgotPassword;
 use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\UploadController;
 
 // NEW
 Route::middleware(['guest', 'web'])->group(function($authRoute) {
@@ -58,6 +59,16 @@ Route::middleware(['client_admin'])->group(function($cws) {
     //Template form event
     $cws->get('event-template', [EventController::class, 'template'])->name('cws.eventTemplate');
 });
+//Upload file
+/*Upload Single*/
+Route::match(['patch', 'post'], 'upload-single', [UploadController::class, 'uploadSingle'])
+    ->name('upload-storage-single')->withoutMiddleware(['csrf']);
+
+//Upload Editor
+Route::post('upload-editor', [UploadController::class, 'uploadEditor2'])->name('uploadEditor')->withoutMiddleware(['csrf']);
+/*Delete image*/
+Route::delete('delete-image', [UploadController::class, 'uploadDelete'])->name('delete-image')->withoutMiddleware(['csrf']);
+
 
 // OLD
 // Route::get('/', [Dashboard::class, 'index'])->name(DASHBOARD_ADMIN_ROUTER);
