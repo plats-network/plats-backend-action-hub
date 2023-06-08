@@ -4,14 +4,19 @@ namespace App\Http\Controllers\Web\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-// use App\Http\Requests\Admin\RegisRequest;
 use App\Http\Requests\Web\SignUpRequest;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use Log;
+use App\Services\UserService;
 
 class SignUp extends Controller
 {
+    public function __construct(
+        private UserService $userService,
+    ) {
+        // code
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -31,15 +36,9 @@ class SignUp extends Controller
      */
     public function store(SignUpRequest $request)
     {
-        // dd(1212);
         try {
-            // User::create([
-            //     'name' => $request->input('name'),
-            //     'email' => $request->input('email'),
-            //     'password' => $request->input('password'),
-            //     'role' => USER_ROLE,
-            //     'email_verified_at' => now()
-            // ]);
+            $datas = $request->except(['term']);
+            $this->userService->storeAccount($datas, USER_ROLE);
             notify()->success("Đăng ký tài khoản thành. Check email confirm.");
         } catch (Exception $exception) {
             Log::error('User signup error: ' . $e->getMessage());
