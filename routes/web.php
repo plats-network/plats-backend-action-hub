@@ -2,13 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Events\NextQuestionEvent;
+use App\Events\NotificationEvent;
+use App\Events\TotalPointEvent;
+use Illuminate\Support\Facades\Cache;
 
 use App\Http\Controllers\Web\{
     Dashboard,
     Detail,
     Likes,
     HistoryJoinEventTask,
-    PagesController
+    PagesController,
+    QuizGameController
 };
 
 use App\Http\Controllers\Web\Auth\{
@@ -77,3 +82,12 @@ Route::get('/events/likes/list', [Detail::class, 'listLike']);
 Route::get('/events/user/ticket', [Detail::class, 'userTicket']);
 Route::post('/events/ticket', [Detail::class, 'addTicket'])->name('web.event.addTicket');
 Route::get('/events/{slug}', [Detail::class, 'index']);
+
+
+Route::prefix('quiz-game')->middleware('client_web')->group(function () {
+    Route::get('/scoreboard/{eventId}', [QuizGameController::class, 'getScoreboard']);
+    Route::get('/answers/{eventId}', [QuizGameController::class, 'showAnswers'])->name('quiz-name.answers');
+    Route::post('/next-question', [QuizGameController::class, 'getQuestionByNumber']);
+    Route::post('/send-total-score', [QuizGameController::class, 'sendTotalScore']);
+    Route::get('/questions/{eventId}', [QuizGameController::class, 'index']);
+});

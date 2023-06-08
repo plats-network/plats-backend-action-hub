@@ -6,11 +6,3 @@
 <!-- Font Tags End -->
 <!-- Vendor Styles Start -->
 <link rel="stylesheet" href="{{ asset('css/admin/vendor.css') }}"/>
-@stack('css')
-<!-- Vendor Styles End -->
-<!-- Template Base Styles Start -->
-<link rel="stylesheet" href="{{ asset('css/admin/template.css') }}"/>
-<link rel="stylesheet" href="{{ asset('css/admin/custom.css') }}"/>
-<!-- Template Base Styles End -->
-<script src="{{ asset('js/admin/theme/base/loader.js') }}"></script>
-<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
