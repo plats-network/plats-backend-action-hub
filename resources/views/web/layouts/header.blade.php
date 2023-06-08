@@ -37,11 +37,11 @@
                             <li class="{{request()->is('contact') ? 'active' : ''}}">
                                 <a href="{{route('web.contact')}}">Contact</a>
                             </li>
-                            <li>
+                            <li class="{{request()->is('profile') ? 'active' : ''}}">
                                 @if (auth()->guest())
                                     <a href="{{route('web.formLogin')}}">Sign In</a>
                                 @else
-                                    <a href="#">
+                                    <a href="{{route('web.profile')}}">
                                         <i class="fa fa-user"></i>
                                     </a>
                                 @endif

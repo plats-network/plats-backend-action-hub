@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web\Auth;
 
-use App\Http\Controllers\Auth\Authenticates;
+// use App\Http\Controllers\Auth\Authenticates;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ use App\Models\Event\{
 
 class Login extends Controller
 {
-    use Authenticates;
+    // use Authenticates;
 
     public function __construct(
         private User $user,
@@ -27,6 +27,33 @@ class Login extends Controller
         private TaskEvent $taskEvent,
     ) {
         // Code
+    }
+
+    public function login(Request $request)
+    {
+        try {
+            $credentials = $request->only('email', 'password');
+
+            if (!Auth::attempt($credentials)) {
+                notify()->error("Tài khoản không đúng");
+                return redirect()->route('web.formLogin');
+            }
+            $user = Auth::getProvider()
+                ->retrieveByCredentials($credentials);
+
+            if ($user && $user->status != USER_ACTIVE) {
+                notify()->success('Tài khoản chưa active');
+                return redirect()->route('web.formLogin');
+            }
+
+            Auth::login($user, true);
+            notify()->success('Đăng nhập thành công');
+        } catch (\Exception $e) {
+            Log::error('Errors Cws Login: ' . $e->getMessage());
+            return redirect()->route('cws.formLogin');
+        }
+
+        return $this->authenticated($request, $user);
     }
 
     /**
@@ -154,6 +181,20 @@ class Login extends Controller
         return redirect()->route('web.home');
     }
 
+    public function logout(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            Auth::logout($user);
+            notify()->success('Logout successfull');
+        } catch (\Exception $e) {
+            notify()->error('Có lỗi xảy ra: ' . $e->getMessage());
+            return redirect()->route('web.home');
+        }
+
+        return redirect()->route('web.home');
+    }
+
     private function isPhone($phone)
     {
         if (!preg_match('/^[0-9]{10}+$/', $phone)) {
@@ -181,5 +222,10 @@ class Login extends Controller
     protected function guard()
     {
         return Auth::guard('web');
+    }
+
+    private function authenticated($request, $user)
+    {
+        return redirect()->intended();
     }
 }

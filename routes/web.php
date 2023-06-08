@@ -13,7 +13,8 @@ use App\Http\Controllers\Web\{
     Likes,
     HistoryJoinEventTask,
     PagesController,
-    QuizGameController
+    QuizGameController,
+    UserController
 };
 
 use App\Http\Controllers\Web\Auth\{
@@ -49,8 +50,7 @@ Route::middleware(['guest'])->group(function ($auth) {
     $auth->get('/sign-up', [SignUp::class, 'showSignup'])->name('web.formSignup');
     $auth->post('/sign-up', [SignUp::class, 'store'])->name('web.signUp');
 
-    // Logout
-    $auth->get('/logout', [Login::class, 'logout'])->name('web.logout');
+
 });
 
 // Những route login và ko login đều vào đc
@@ -64,7 +64,12 @@ Route::get('contact', [PagesController::class, 'contact'])->name('web.contact');
 
 
 Route::middleware(['user_event'])->group(function ($r) {
+    // Logout
+    $r->get('logout', [Login::class, 'logout'])->name('web.logout');
+
+    // Logined
     $r->get('event-job/{id}', [Dashboard::class, 'jobEvent'])->name('web.jobEvent');
+    $r->get('profile', [UserController::class, 'profile'])->name('web.profile');
 });
 
 Route::get('/discord/login', [App\Http\Controllers\Web\Discord::class, 'getUserDiscord']);
