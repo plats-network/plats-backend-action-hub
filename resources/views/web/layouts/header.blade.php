@@ -1,7 +1,7 @@
-<div id="preloader">
+{{-- <div id="preloader">
     <div class="loader"></div>
 </div>
-<header class="header-area">
+ --}}<header class="header-area">
     <div class="classy-nav-container breakpoint-off">
         <div class="container">
             <nav class="classy-navbar justify-content-between" id="conferNav">

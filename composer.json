@@ -22,6 +22,7 @@
         "prettus/l5-repository": "^2.8",
         "pschocke/laravel-telegram-login-widget": "^2.0",
         "psr/simple-cache": "^2.0",
+        "pusher/pusher-php-server": "^7.2",
         "ralphjsmit/laravel-seo": "^1.4",
         "sentry/sentry-laravel": "^3.1",
         "simplesoftwareio/simple-qrcode": "~2",
