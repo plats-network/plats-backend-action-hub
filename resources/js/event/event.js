@@ -92,9 +92,9 @@ $(document).ready(function() {
     }
   });
   $('[data-toggle="tooltip"]').tooltip();
-  $('.jarallax').jarallax({
-    speed: 0.5
-  });
+  // $('.jarallax').jarallax({
+  //   speed: 0.5
+  // });
   confer_window.scrollUp({
     scrollSpeed: 1000,
     scrollText: '<i class="arrow_carrot-up"</i>'
@@ -102,6 +102,8 @@ $(document).ready(function() {
   $('a[href="#"]').on('click', function($) {
     $.preventDefault();
   });
+
+  
   var pricingTable = $(".single-ticket-pricing-table");
   pricingTable.on("mouseenter", function() {
     pricingTable.removeClass("active");
