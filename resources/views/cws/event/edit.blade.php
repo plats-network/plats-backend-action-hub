@@ -237,7 +237,7 @@
                                                     <div class="mb-3">
                                                         <label for="basicpill-email-input"
                                                                class="form-label">End At</label>
-                                                        <input type="email" class="form-control" value="{{ $event->end_at }}"
+                                                        <input type="text" class="form-control" value="{{ $event->end_at }}"
                                                                placeholder="" id="end_at" name="end_at">
                                                     </div>
                                                 </div><!-- end col -->
@@ -651,7 +651,7 @@
                             {{--Submit button--}}
                             <div class="d-flex flex-wrap gap-3 mt-3">
                                 <button type="submit" class="btn btn-lg btn-primary" >Submit</button>
-                                <button type="button" class="btn btn-secondary btn-lg" >Cancel</button>
+                                <a  class="btn btn-secondary btn-lg" href="{{route('cws.eventList')}}" >Cancel</a>
                             </div>
                         </form>
                     </div>
@@ -805,7 +805,37 @@
             language: 'en-US',
             initialEditType: 'wysiwyg', //markdown, wysiwyg
             height: '350px',
-            initialValue: contentEditor2
+            initialValue: contentEditor2,
+            hooks: {
+                addImageBlobHook(imgeBlob, callback) {
+                    // write your code
+                    //console.log(imgeBlob)
+                    var fd = new FormData();
+                    fd.append('file',imgeBlob);
+                    //Show loading
+                    modalLoading.modal("show");
+
+                    $.ajax({
+                        url :  "{{route('uploadEditor')}}",
+                        type: 'POST',
+                        data: fd,
+                        contentType: false,
+                        processData: false,
+                        cache: false,
+
+                        success: function(data) {
+                            urlImage = data.url_full;
+                            callback(urlImage, data.name)
+
+                            modalLoading.modal("hide");
+                        },
+                        error: function() {
+                            //alert("not so boa!");
+                        }
+                    });
+                    // ...
+                }
+            }
         });
 
         const editor3 = new toastui.Editor({
@@ -814,7 +844,37 @@
             language: 'en-US',
             initialEditType: 'wysiwyg', //markdown, wysiwyg
             height: '350px',
-            initialValue: contentEditor3
+            initialValue: contentEditor3,
+            hooks: {
+                addImageBlobHook(imgeBlob, callback) {
+                    // write your code
+                    //console.log(imgeBlob)
+                    var fd = new FormData();
+                    fd.append('file',imgeBlob);
+                    //Show loading
+                    modalLoading.modal("show");
+
+                    $.ajax({
+                        url :  "{{route('uploadEditor')}}",
+                        type: 'POST',
+                        data: fd,
+                        contentType: false,
+                        processData: false,
+                        cache: false,
+
+                        success: function(data) {
+                            urlImage = data.url_full;
+                            callback(urlImage, data.name)
+
+                            modalLoading.modal("hide");
+                        },
+                        error: function() {
+                            //alert("not so boa!");
+                        }
+                    });
+                    // ...
+                }
+            }
         });
 
     </script>
@@ -946,6 +1006,12 @@
                 $('[id=booths-description]').attr('value', editor3.getHTML());
 
                 $(window).off('beforeunload');
+            });
+            //Btn click submit post form
+            $(document).on('click', '.btnSubmit', function (event) {
+                //event.preventDefault();
+                //console.log('123');
+                $('#post_form').submit();
             });
 
             //btnAddItemSession onclick call ajax

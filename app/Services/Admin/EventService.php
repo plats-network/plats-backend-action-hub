@@ -189,6 +189,10 @@ class EventService extends BaseService
                     $quizUn = $item;
                     unset($quizUn['detail']);
                     if (empty($item['id'])){
+                        //Check empty quiz name to continue
+                        if (empty($item['name'])){
+                            continue;
+                        }
                         $item['task_id'] = $id;
                         //Check time_quiz is null
                         if (empty($item['time_quiz'])){
@@ -231,6 +235,10 @@ class EventService extends BaseService
                         if (isset($item['is_delete']) && $item['is_delete'] == 1){
                             Quiz::where('id',$item['id'])->delete();
                             QuizAnswer::where('quiz_id',$item['id'])->delete();
+                            continue;
+                        }
+                        //Check empty quiz name to continue
+                        if (empty($item['name'])){
                             continue;
                         }
                         unset($quizUn['id']);
@@ -326,6 +334,10 @@ class EventService extends BaseService
             $quiz = Arr::get($data, 'quiz');
             if ($quiz){
                 foreach ($quiz as $item){
+                    //Check empty quiz name to continue
+                    if (empty($item['name'])){
+                        continue;
+                    }
                     $idQuiz = $dataBaseTask->quizs()->create($item);
                     if ($item['detail']){
                         foreach ($item['detail'] as $itemDetail){
