@@ -222,13 +222,10 @@
     // Show scoreboard
     function showScoreboard() {
         SPINNER.show();
-        checkScreenStep(SCOREBOARD_STEP)
         $.ajax({
             url: '/quiz-game/scoreboard/' + EVENT_ID,
             method: 'GET',
             success: function(data) {
-                // Handle successful submission
-                console.log(data);
                 // First rank
                 let firstRank = data[0] ?? null;
                 if (firstRank) {
@@ -271,6 +268,8 @@
                 // Handle submission error
             },
             complete: function(data) {
+                // Show scored board
+                checkScreenStep(SCOREBOARD_STEP)
                 SPINNER.hide();
             }
         });

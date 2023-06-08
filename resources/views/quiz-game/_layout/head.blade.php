@@ -2,13 +2,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" />
 <!-- Font Tags End -->
 <!-- Vendor Styles Start -->
-<link rel="stylesheet" href="{{ asset('css/admin/vendor.css') }}" />
+<link rel="stylesheet" href="{{ url('static/css/admin/vendor.css') }}" />
 @stack('css')
 <!-- Vendor Styles End -->
 <style>
     @font-face {
         font-family: Righteous-Regular;
-        src: url("{{ asset('/fonts/Righteous-Regular.ttf') }}");
+        src: url("{{ url('static/fonts/Righteous-Regular.ttf') }}");
     }
 
     body {
@@ -590,7 +590,7 @@
     }
 
     .wrap-scoreboard .scoreboard {
-        background-image: url('/static/img/quiz-game/highest-score.png');
+        background-image: url('/events/quiz-game/highest-score.png');
         background-repeat: no-repeat;
         text-align: center;
         background-size: contain;
@@ -599,6 +599,9 @@
         height: 100%;
         display: flex;
         align-items: center;
+    }
+    .wrap-scoreboard .scoreboard .container{
+        margin-top: 80px;
     }
 
     .wrap-scoreboard h1 {
@@ -765,7 +768,7 @@
     .highest-scores {
         height: calc(100vh - 100px);
         background: #7138A8;
-        background-image: url('/static/img/quiz-game/highest-score.png');
+        background-image: url('/events/quiz-game/highest-score.png');
         background-repeat: no-repeat;
         text-align: center;
     }

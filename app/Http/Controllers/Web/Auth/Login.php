@@ -7,9 +7,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Laravel\Socialite\Facades\Socialite;
 use App\Models\Event\{
-    EventUserTicket, TaskEvent,
-    TaskEventDetail, UserJoinEvent
+    EventUserTicket,
+    TaskEvent,
+    TaskEventDetail,
+    UserJoinEvent
 };
 
 class Login extends Controller
@@ -38,6 +41,39 @@ class Login extends Controller
         return view('web.auth.login');
     }
 
+    /**
+     * Handle redirect to Facebook
+     * 
+     */
+    public function redirectToFacebook()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    /**
+     * Handle Facebook callback
+     */
+    public function handleFacebookCallback()
+    {
+        $user = Socialite::driver('facebook')->user();
+
+        $existingUser = User::where('email', $user->email)->first();
+
+        if ($existingUser) {
+            Auth::login($existingUser);
+        } else {
+            $newUser = new User();
+            $newUser->name = $user->name;
+            $newUser->email = $user->email;
+            $newUser->facebook_id = $user->id;
+            $newUser->save();
+
+            Auth::login($newUser);
+        }
+
+        return redirect()->to('/home');
+    }
+
     public function formLoginGuest(Request $request)
     {
         return view('web.auth.login_guest');
@@ -52,7 +88,7 @@ class Login extends Controller
                 $account = $account;
             } else {
                 $phone = $account;
-                $account = $account.'@gmail.com';
+                $account = $account . '@gmail.com';
 
                 if (!$this->isPhone($phone)) {
                     notify()->error('Email hoặc số điện thoại không đúng');
@@ -120,7 +156,7 @@ class Login extends Controller
 
     private function isPhone($phone)
     {
-        if (!preg_match('/^[0-9]{10}+$/', $phone)){
+        if (!preg_match('/^[0-9]{10}+$/', $phone)) {
             return false;
         }
 
