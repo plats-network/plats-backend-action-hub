@@ -11,8 +11,7 @@
         @notifyCss
         @vite([
             'resources/sass/admin.scss',
-            'resources/js/admin.js',
-            'resources/js/admin/cws/event.js',
+            'resources/js/admin.js'
         ])
 
         @yield('style')

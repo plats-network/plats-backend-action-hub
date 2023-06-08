@@ -2,7 +2,7 @@
 @section('content')
     {{-- WAITING FOR PLAYER --}}
     <div class="waiting-player -container-fluid full-width body-section"
-        style="display:block; background-image: url('/static/img/quiz-game/background.jpg')">
+        style="display:block; background-image: url('/events/quiz-game/background.jpg')">
         <div class="overlay">
             <div class="container">
                 <div class="col-12">
@@ -72,7 +72,7 @@
                     <div class="countdown">15</div>
                 </div>
                 <div class="col-4">
-                    <img src="{{ asset('img/quiz-game/background.png') }}" alt="Image question">
+                    <img src="{{ url('events/quiz-game/background.png') }}" alt="Image question">
                 </div>
                 <div class="col-4 right-content">
                     <button class="btn-plats" onclick="nextQuestion()">Next</button>
@@ -87,13 +87,13 @@
                 <div class="wrap-line d-flex">
                     <div class="col-6">
                         <div class="answer-box polygon" id="A">
-                            <img src="{{ asset('img/quiz-game/polygon.png') }}" alt="polygon" class="img-fluid">
+                            <img src="{{ url('events/quiz-game/polygon.png') }}" alt="polygon" class="img-fluid">
                             <p>5 </p>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="answer-box ellipse" id="B">
-                            <img src="{{ asset('img/quiz-game/ellipse.png') }}" alt="ellipse" class="img-fluid">
+                            <img src="{{ url('events/quiz-game/ellipse.png') }}" alt="ellipse" class="img-fluid">
                             <p>5</p>
                         </div>
                     </div>
@@ -101,13 +101,13 @@
                 <div class="wrap-line d-flex">
                     <div class="col-6">
                         <div class="answer-box star" id="C">
-                            <img src="{{ asset('img/quiz-game/star.png') }}" alt="star" class="img-fluid">
+                            <img src="{{ url('events/quiz-game/star.png') }}" alt="star" class="img-fluid">
                             <p>5</p>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="answer-box rectangle" id="D">
-                            <img src="{{ asset('img/quiz-game/rectangle.png') }}" alt="rectangle" class="img-fluid">
+                            <img src="{{ url('events/quiz-game/rectangle.png') }}" alt="rectangle" class="img-fluid">
                             <p>5</p>
                         </div>
                     </div>
@@ -128,41 +128,41 @@
                 <div class="stats col-md-6 col-12 d-flex">
                     <div class="col-3">
                         <div class="free-space" style="height: calc(100% - 110px - 20%)"></div>
-                        <img class="icon-correct" src="{{ asset('img/quiz-game/icon-correct-polygon.svg') }}"
+                        <img class="icon-correct" src="{{ url('events/quiz-game/icon-correct-polygon.svg') }}"
                             alt="">
                         <div class="percentage polygon" style="height: 20%"></div>
                         <div class="answer-box polygon" data-value="A">
-                            <img src="{{ asset('img/quiz-game/polygon.png') }}" alt="polygon" class="img-fluid">
+                            <img src="{{ url('events/quiz-game/polygon.png') }}" alt="polygon" class="img-fluid">
                             <p>5</p>
                         </div>
                     </div>
                     <div class="col-3">
                         <div class="free-space" style="height: calc(100% - 110px - 30%)"></div>
-                        <img class="icon-correct" src="{{ asset('img/quiz-game/icon-correct-ellipse.svg') }}"
+                        <img class="icon-correct" src="{{ url('events/quiz-game/icon-correct-ellipse.svg') }}"
                             alt="">
                         <div class="percentage ellipse" style="height: 30%"></div>
                         <div class="answer-box ellipse" data-value="B">
-                            <img src="{{ asset('img/quiz-game/ellipse.png') }}" alt="ellipse" class="img-fluid">
+                            <img src="{{ url('events/quiz-game/ellipse.png') }}" alt="ellipse" class="img-fluid">
                             <p>5</p>
                         </div>
                     </div>
                     <div class="col-3">
                         <div class="free-space" style="height: calc(100% - 110px - 40%)"></div>
-                        <img class="icon-correct" src="{{ asset('img/quiz-game/icon-correct-star.svg') }}"
+                        <img class="icon-correct" src="{{ url('events/quiz-game/icon-correct-star.svg') }}"
                             alt="">
                         <div class="percentage star" style="height: 40%"></div>
                         <div class="answer-box star" data-value="C">
-                            <img src="{{ asset('img/quiz-game/star.png') }}" alt="star" class="img-fluid">
+                            <img src="{{ url('events/quiz-game/star.png') }}" alt="star" class="img-fluid">
                             <p>5</p>
                         </div>
                     </div>
                     <div class="col-3 pr-0">
                         <div class="free-space" style="height: calc(100% - 110px - 10%)"></div>
-                        <img class="icon-correct" src="{{ asset('img/quiz-game/icon-correct-rectangle.svg') }}"
+                        <img class="icon-correct" src="{{ url('events/quiz-game/icon-correct-rectangle.svg') }}"
                             alt="">
                         <div class="percentage rectangle" style="height: 10%"></div>
                         <div class="answer-box rectangle" data-value="D">
-                            <img src="{{ asset('img/quiz-game/rectangle.png') }}" alt="rectangle" class="img-fluid">
+                            <img src="{{ url('events/quiz-game/rectangle.png') }}" alt="rectangle" class="img-fluid">
                             <p>5</p>
                         </div>
                     </div>
@@ -170,25 +170,25 @@
                 <div class="wrap-answers col-md-6 col-12">
                     <div class="col-12">
                         <div class="answer-box polygon" data-value="A">
-                            <img src="{{ asset('img/quiz-game/polygon.png') }}" alt="polygon" class="img-fluid">
+                            <img src="{{ url('events/quiz-game/polygon.png') }}" alt="polygon" class="img-fluid">
                             <p>How many Infinity Stones are there? </p>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="answer-box ellipse" data-value="B">
-                            <img src="{{ asset('img/quiz-game/ellipse.png') }}" alt="ellipse" class="img-fluid">
+                            <img src="{{ url('events/quiz-game/ellipse.png') }}" alt="ellipse" class="img-fluid">
                             <p>5</p>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="answer-box star" data-value="C">
-                            <img src="{{ asset('img/quiz-game/star.png') }}" alt="star" class="img-fluid">
+                            <img src="{{ url('events/quiz-game/star.png') }}" alt="star" class="img-fluid">
                             <p>5</p>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="answer-box rectangle mb-0" data-value="D">
-                            <img src="{{ asset('img/quiz-game/rectangle.png') }}" alt="rectangle" class="img-fluid">
+                            <img src="{{ url('events/quiz-game/rectangle.png') }}" alt="rectangle" class="img-fluid">
                             <p>5</p>
                         </div>
                     </div>
@@ -247,7 +247,7 @@
 
     {{-- QUIZ COMPLETED --}}
     <div class="quiz-completed body-section"
-        style="display: none;background-image: url('/static/img/quiz-game/background.jpg')">
+        style="display: none;background-image: url('/events/quiz-game/background.jpg')">
         <div class="overlay">
             <div class="container">
                 <h1 class="quiz-name px-5">{{ $event->name }}</h1>
@@ -297,7 +297,7 @@
     {{-- SOUND AFFECT --}}
     <div class="wrap-sound-affect" style="display: none">
         <audio id="startGameSound">
-            <source src="{{ asset('sound/quiz-game/start_game.mp3') }}" type="audio/mpeg">
+            <source src="{{ url('static/sound/quiz-game/start_game.mp3') }}" type="audio/mpeg">
         </audio>
     </div>
     {{-- END SOUND AFFECT --}}

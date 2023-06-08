@@ -116,7 +116,7 @@ class QuizGameController extends Controller
             'correctAnswer' => $answerSymbols[$correctAnswerKey],
             'timeToAnswer' => $question->time_quiz,
             'totalQuestion' => Quiz::where('task_id', $eventId)->count(),
-            'image' => $request->getSchemeAndHttpHost() . '/static/img/quiz-game/' . rand(1, 4) . '.jpg'
+            'image' => $request->getSchemeAndHttpHost() . '/events/quiz-game/' . rand(1, 4) . '.jpg'
         ];
         event(new NextQuestionEvent($data));
 

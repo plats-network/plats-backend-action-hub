@@ -6,7 +6,7 @@
             </div>
             <div class="col-md-4">
                 <a href="/">
-                    <img src="{{ asset('img/quiz-game/logo.png') }}" alt="Logo" style="max-width: 100%;">
+                    <img src="{{ url('events/quiz-game/logo.png') }}" alt="Logo" style="max-width: 100%;">
                 </a>
             </div>
             <div class="col-md-4">

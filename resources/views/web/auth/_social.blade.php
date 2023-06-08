@@ -1,5 +1,5 @@
 <div class="social-sign">
-    <a href="#" class="loginBtn loginBtn--facebook">
+    <a href="{{ url('/login/facebook') }}" class="loginBtn loginBtn--facebook">
       Login with Facebook
     </a>
 
