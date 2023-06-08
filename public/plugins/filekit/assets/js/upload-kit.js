@@ -172,7 +172,8 @@
                     .append($('<span/>', {"class": "fas fa-times-circle remove", "data-url": file.delete_url}));
                 if ((!file.type || file.type.search(/image\/.*/g) !== -1) && options.previewImage) {
                     item.removeClass('not-image').addClass('image');
-                    item.prepend($('<img/>', {src: file[options.baseUrlAttribute] + '/' +file[options.pathAttribute],'class' : 'lazyload'} ));
+                    //item.prepend($('<img/>', {src: file[options.baseUrlAttribute] + '/' +file[options.pathAttribute],'class' : 'lazyload'} ));
+                    item.prepend($('<img/>', {src: file[options.pathAttribute],'class' : 'lazyload'} ));
                     item.find('span.type').text('');
                 } else {
                     item.removeClass('image').addClass('not-image');

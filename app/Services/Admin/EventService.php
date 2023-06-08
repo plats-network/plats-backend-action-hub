@@ -47,6 +47,22 @@ class EventService extends BaseService
 
         try {
             $data = Arr::except($request->all(), '__token');
+            //banner_url
+            if (isset($data['thumbnail'])) {
+                $data['banner_url'] = $data['thumbnail']['base_url'] . '/' . $data['thumbnail']['path'];
+            } else {
+                $data['banner_url'] = '';
+            }
+            //task_galleries
+            if (isset($data['Article']) && is_array($data['Article'])) {
+                $inputListImage = $data['Article']['attachments'];
+                foreach ($inputListImage as $itemImage) {
+                    $data['task_galleries'][] = $itemImage['base_url'] . '/' . $itemImage['path'];
+                }
+            } else {
+                $data['task_galleries'] = [];
+            }
+
             $data['creator_id'] = Auth::user()->id;
             $data['slug'] = $request->input('name');
             $dataBaseTask = $this->taskRepository->update($data,$id);

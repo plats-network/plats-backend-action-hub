@@ -338,8 +338,8 @@ class EventController extends Controller
     public function update(Request $request, Event $company)
     {
 
-        $inputAll = $request->all();
-        //dd($inputAll);
+        $input = $request->all();
+
         /*
          * "id" => "99583545-472e-4710-8258-24b8b2b33110"
     "task_id" => "c519af43-1349-46bb-ab52-de6b53981d8c"
@@ -351,6 +351,8 @@ class EventController extends Controller
             //'address' => 'required',
         ]);
 
+
+        //dd($input);
         //$company->fill($request->post())->save();
         $this->eventService->store($request);
 

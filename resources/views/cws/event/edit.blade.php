@@ -168,7 +168,7 @@
                                                                 class="text-danger">*</span>
                                                         </label>
                                                         <div><input type="hidden" id="article-attachments" class="empty-value"
-                                                                    name="Post[attachments]">
+                                                                    name="Article[attachments]">
                                                             <input type="file" id="w1" name="_fileinput_w1" multiple>
                                                         </div>
                                                         <div class="invalid-feedback"></div>
@@ -826,10 +826,10 @@
             var fileAvatarInit = null;
             var fileSlideInit = null;
 
-            @if($event->thumbnail_path)
+            @if($event->banner_url)
                 fileAvatarInit = [{
-                "path": "{{$event->thumbnail_path}}",
-                "base_url": "{{$event->thumbnail_base_url}}",
+                "path": "{{$event->banner_url}}",
+                "base_url": "",
                 "type": null,
                 "size": null,
                 "name": null,
@@ -840,7 +840,7 @@
                 fileSlideInit = [
                     @foreach($task_galleries as $key=> $fileItem)
                 {
-                    "path": "{{$fileItem}}",
+                    "path": "{{$fileItem['url']}}",
                     "base_url": "",
                     "type": null,
                     "size": null,
@@ -1149,6 +1149,7 @@
             }
             if (n == (x.length - 1)) {
                 document.getElementById("nextBtn").innerHTML = "Submit";
+                //Type submit
             } else {
                 document.getElementById("nextBtn").innerHTML = "Next";
             }
