@@ -29,11 +29,11 @@
                     <div class="single-footer-widget mb-60">
                         <h5 class="widget-title">Organize Events</h5>
                         <ul class="footer-nav">
-                            <li><a href="#">Create events</a></li>
-                            <li><a href="#">Pricing</a></li>
-                            <li><a href="#">Templates</a></li>
-                            <li><a href="#">Resources</a></li>
-                            <li><a href="#">Content Standards</a></li>
+                            <li><a href="https://{{config('plats.cws')}}" target="_blank">Create events</a></li>
+                            <li><a href="{{route('web.pricing')}}">Pricing</a></li>
+                            <li><a href="{{route('web.template')}}">Templates</a></li>
+                            <li><a href="{{route('web.resource')}}">Resources</a></li>
+                            <li><a href="{{route('web.contact')}}">Content Standards</a></li>
                             <li><a href="#">Guidelines</a></li>
                         </ul>
                     </div>
@@ -42,12 +42,12 @@
                     <div class="single-footer-widget mb-60">
                         <h5 class="widget-title">Solutions</h5>
                         <ul class="footer-nav">
-                            <li><a href="#">Sell you tickets online</a></li>
-                            <li><a href="#">Crypto events</a></li>
-                            <li><a href="#">Crypto payment</a></li>
-                            <li><a href="#">QR Code Setup</a></li>
-                            <li><a href="#">Download App</a></li>
-                            <li><a href="#">Loyal Membership Card</a></li>
+                            <li><a href="{{route('web.solution')}}">Sell you tickets online</a></li>
+                            <li><a href="{{route('web.solution')}}">Crypto events</a></li>
+                            <li><a href="{{route('web.solution')}}">Crypto payment</a></li>
+                            <li><a href="{{route('web.solution')}}">QR Code Setup</a></li>
+                            <li><a href="{{route('web.solution')}}">Download App</a></li>
+                            <li><a href="{{route('web.solution')}}">Loyal Membership Card</a></li>
                         </ul>
                     </div>
                 </div>
@@ -55,12 +55,12 @@
                     <div class="single-footer-widget mb-60">
                         <h5 class="widget-title">Search Events</h5>
                         <ul class="footer-nav">
-                            <li><a href="#">All events</a></li>
-                            <li><a href="#">Free events</a></li>
-                            <li><a href="#">Offline events</a></li>
-                            <li><a href="#">Online events</a></li>
-                            <li><a href="#">Upcoming events</a></li>
-                            <li><a href="#">Search by location</a></li>
+                            <li><a href="{{url('/')}}">All events</a></li>
+                            <li><a href="{{url('/')}}">Free events</a></li>
+                            <li><a href="{{url('/')}}">Offline events</a></li>
+                            <li><a href="{{url('/')}}">Online events</a></li>
+                            <li><a href="{{url('/')}}">Upcoming events</a></li>
+                            <li><a href="{{url('/')}}">Search by location</a></li>
                             
                         </ul>
                     </div>
@@ -69,12 +69,12 @@
                     <div class="single-footer-widget mb-60">
                         <h5 class="widget-title">Connect us</h5>
                         <ul class="footer-nav">
-                            <li><a href="#">Facebook</a></li>
-                            <li><a href="#">Linkedin</a></li>
-                            <li><a href="#">Twitter</a></li>
-                            <li><a href="#">Telegram</a></li>
-                            <li><a href="#">Contact Support</a></li>
-                            <li><a href="#">Contact Sales</a></li>
+                            <li><a href="https://www.facebook.com/platsnetwork">Facebook</a></li>
+                            <li><a href="https://www.linkedin.com/in/plats-network/">Linkedin</a></li>
+                            <li><a href="https://twitter.com/plats_network">Twitter</a></li>
+                            <li><a href="https://t.me/platsnetworkofficial">Telegram</a></li>
+                            <li><a href="{{route('web.contact')}}">Contact Support</a></li>
+                            <li><a href="{{route('web.contact')}}">Contact Sales</a></li>
                         </ul>
                     </div>
                 </div>

@@ -3,8 +3,8 @@
 @section('content')
     <div class="container" >
             <div class="main-body" style="padding-top: 120px;">
-                <div class="row gutters-sm">
-                    <div class="col-md-4 mb-3">
+                <div class="row">
+                    <div class="col-xl-3 mb-3">
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex flex-column align-items-center text-center">
@@ -78,7 +78,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-xl-9">
                         <div class="card mb-3">
                             <div class="card-body">
                                 <div class="row">

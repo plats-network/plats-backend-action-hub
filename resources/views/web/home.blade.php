@@ -207,7 +207,7 @@
                     <h3>Support Program for <br>10 Businesses</h3>
                     <img src="{{url('events/event/text-event.svg')}}">
                     <br>
-                    <a class="regis" href="#">Register now</a>
+                    <a class="regis" href="{{route('web.contact')}}">Register now</a>
                 </div>
             </div>
             

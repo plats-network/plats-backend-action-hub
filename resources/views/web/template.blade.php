@@ -8,7 +8,7 @@
                     <div class="home-content">
                         <h3>Effortless Event Management with Customizable Templates</h3>
                         <p>Plats Network provides you best-in-class customizable templates to power your events with data insights, built-in intelligence, and next-generation payment tools.</p>
-                        <a href="#" class="mt-50">Contact Sales</a>
+                        <a href="{{route('web.contact')}}" class="mt-50">Contact Sales</a>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -101,7 +101,7 @@
                     <div class="home-content">
                         <h3 class="h3-color">Hosting a large or complex event?</h3>
                         <p class="tmp-color">We offer tailored packages for you event. Get customized fee schedule, personalized support, and more individualized features by partnering with our sales team.</p>
-                        <a href="#" class="mt-50">Contact Sales</a>
+                        <a href="{{route('web.contact')}}" class="mt-50">Contact Sales</a>
                     </div>
                 </div>
                 <div class="col-md-3">
