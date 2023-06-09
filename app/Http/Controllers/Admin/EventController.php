@@ -181,7 +181,8 @@ class EventController extends Controller
         //dd($sessions);
         //dd($sessions);
         $activeTab = $request->get('tab') ?? '0';
-
+        //Is preview
+        $isPreview = $request->get('preview') ?? '0';
         $data = [
             'event' => $task,
             'sessions' => $sessions,
@@ -194,6 +195,7 @@ class EventController extends Controller
             'total_file' => count($image),
             'activeTab' => $activeTab,
             'is_update' => 0,
+            'isPreview' => $isPreview,
         ];
 
         return view('cws.event.edit', $data);
@@ -311,6 +313,8 @@ class EventController extends Controller
         //dd($sessions);
         //dd($sessions);
         $activeTab = $request->get('tab') ?? '0';
+        //Is preview
+        $isPreview = $request->get('preview') ?? '0';
 
         $data = [
             'event' => $task,
@@ -324,6 +328,7 @@ class EventController extends Controller
             'total_file' => count($image),
             'activeTab' => $activeTab,
             'is_update' => 1,
+            'isPreview' => $isPreview,
         ];
         return view('cws.event.edit', $data);
     }
@@ -359,6 +364,11 @@ class EventController extends Controller
         return redirect()->route('cws.eventList', ['tab' => 0])->with('success', 'Event Has Been updated successfully');
     }
 
+    //preview
+    public function preview(Request $request, $id)
+    {
+        //Preview Event
+    }
     /**
      * Remove the specified resource from storage.
      *

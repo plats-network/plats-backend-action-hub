@@ -23,12 +23,21 @@
 
     {{--Editor--}}
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.min.css" />
 @endsection
 @section('content')
     <div class="container-fluid">
 
         <div class="row">
+            <div class="col-md-12">
+                <h1>Event @if($isPreview) Preview @endif </h1>
+                {{--Button edit--}}
+                @if($isPreview)
+                    <a href="{{ route('cws.eventEdit', ['id' => $event->id]) }}" class="btn btn-primary mb-2">Edit Event</a>
+                @endif
+            </div>
             <div class="col-lg-12">
+
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title mb-0">Forms Steps</h4>
@@ -107,7 +116,7 @@
                                                     <div class="mb-3">
                                                         <label for="basicpill-firstname-input" class="form-label">Name</label>
                                                         <input type="text" value="{{ $event->name }}"
-                                                               class="form-control" placeholder="Event Name" id="name" name="name">
+                                                               class="form-control" placeholder="Name" id="name" name="name">
                                                     </div>
                                                 </div>
                                             </div>
@@ -116,7 +125,7 @@
                                                     <div class="mb-3">
                                                         <label for="basicpill-firstname-input" class="form-label">Address</label>
                                                         <input type="text" value="{{ $event->address }}"
-                                                               class="form-control" placeholder="Enter Event Address" id="address" name="address">
+                                                               class="form-control" placeholder="Address" id="address" name="address">
                                                     </div>
                                                 </div>
                                             </div>
@@ -125,14 +134,14 @@
                                                     <div class="mb-3">
                                                         <label for="basicpill-firstname-input" class="form-label">Lat</label>
                                                         <input type="text" class="form-control" value="{{ $event->lat }}"
-                                                               placeholder="Enter Event Name" id="lat" name="lat">
+                                                               placeholder="Lat" id="lat" name="lat">
                                                     </div>
                                                 </div><!-- end col -->
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="basicpill-lastname-input" class="form-label">Lng</label>
                                                         <input type="text" class="form-control" value="{{ $event->lng }}"
-                                                               placeholder="Enter Last Name" name="lng" id="lng">
+                                                               placeholder="Lng" name="lng" id="lng">
                                                     </div>
                                                 </div><!-- end col -->
                                             </div><!-- end row -->
@@ -303,14 +312,14 @@
                                                         {{--Is delete--}}
                                                         <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][is_delete]" id="sessionsFlagDelete{{$sessionDetail->id}}" value="0">
 
-                                                        <label for="inputPassword" class="col-sm-2 col-form-label">Session 1</label>
+                                                        <label for="inputPassword" class="col-sm-2 col-form-label">Session {{$loop->index+1}}</label>
                                                         <div class="col-sm-4">
                                                             {{--name--}}
-                                                            <input type="text" class="form-control" id="sessions[detail][{{$sessionDetail->id}}][name]" name="sessions[detail][{{$sessionDetail->id}}][name]" value="{{$sessionDetail->name}}">
+                                                            <input type="text" placeholder="Name" class="form-control" id="sessions[detail][{{$sessionDetail->id}}][name]" name="sessions[detail][{{$sessionDetail->id}}][name]" value="{{$sessionDetail->name}}">
                                                         </div>
                                                         <div class="col-sm-4">
                                                             {{--description--}}
-                                                            <input type="text" class="form-control" id="sessions[detail][{{$sessionDetail->id}}][description]" name="sessions[detail][{{$sessionDetail->id}}][description]" value="{{$sessionDetail->description}}">
+                                                            <input type="text" placeholder="Description" class="form-control" id="sessions[detail][{{$sessionDetail->id}}][description]" name="sessions[detail][{{$sessionDetail->id}}][description]" value="{{$sessionDetail->description}}">
                                                         </div>
                                                         <div class="col-sm-2">
                                                             {{--Button delete--}}
@@ -394,11 +403,11 @@
                                                             <label for="inputPassword" class="col-sm-2 col-form-label">Booth 1</label>
                                                             <div class="col-sm-4">
                                                                 {{--name--}}
-                                                                <input type="text" class="form-control" id="booths[detail][{{$boothDetail->id}}][name]" name="booths[detail][{{$boothDetail->id}}][name]" value="{{$boothDetail->name}}">
+                                                                <input type="text" placeholder="Name" class="form-control" id="booths[detail][{{$boothDetail->id}}][name]" name="booths[detail][{{$boothDetail->id}}][name]" value="{{$boothDetail->name}}">
                                                             </div>
                                                             <div class="col-sm-4">
                                                                 {{--description--}}
-                                                                <input type="text" class="form-control" id="booths[detail][{{$boothDetail->id}}][description]" name="booths[detail][{{$boothDetail->id}}][description]" value="{{$boothDetail->description}}">
+                                                                <input type="text" placeholder="Description" class="form-control" id="booths[detail][{{$boothDetail->id}}][description]" name="booths[detail][{{$boothDetail->id}}][description]" value="{{$boothDetail->description}}">
                                                             </div>
                                                             <div class="col-sm-2">
                                                                 {{--Button delete--}}
@@ -650,10 +659,12 @@
                             </div>
 
                             {{--Submit button--}}
+                            @if($isPreview == false)
                             <div class="d-flex flex-wrap gap-3 mt-3">
                                 <button type="submit" class="btn btn-lg btn-primary" >Submit</button>
                                 <a  class="btn btn-secondary btn-lg" href="{{route('cws.eventList')}}" >Cancel</a>
                             </div>
+                            @endif
                         </form>
                     </div>
                 </div>
@@ -693,7 +704,11 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    @if($isPreview == false)
+        <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    @else
+        <script src="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.js"></script>
+        @endif
     <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.js"></script>
     <script src="https://uicdn.toast.com/editor/latest/i18n/ja-jp.js"></script>
 
@@ -705,10 +720,9 @@
 
         var modalLoading = $('#modalLoading');
 
-        const { Editor } = toastui;
 
 
-        Editor.setLanguage('en-US', {
+        /*Editor.setLanguage('en-US', {
             Write: 'Viết',
             Preview: 'Xem trước',
             Headings: 'Tiêu đề',
@@ -755,7 +769,7 @@
             'Auto scroll enabled': 'Tự động cuộn',
             'Auto scroll disabled': 'Không tự động cuộn',
             'Choose language': 'Chọn ngôn ngữ',
-        });
+        });*/
 
         var initial_form_state, last_form_state;
         var contentEditor = document.getElementById('description').value;
@@ -767,7 +781,8 @@
             previewStyle: 'vertical',
             language: 'en-US',
             initialEditType: 'wysiwyg', //markdown, wysiwyg
-            height: '350px',
+            height: '380px',
+
             initialValue: contentEditor,
             hooks: {
                 addImageBlobHook(imgeBlob, callback) {
@@ -806,7 +821,7 @@
             previewStyle: 'vertical',
             language: 'en-US',
             initialEditType: 'wysiwyg', //markdown, wysiwyg
-            height: '350px',
+            height: '380px',
             initialValue: contentEditor2,
             hooks: {
                 addImageBlobHook(imgeBlob, callback) {
@@ -845,7 +860,7 @@
             previewStyle: 'vertical',
             language: 'en-US',
             initialEditType: 'wysiwyg', //markdown, wysiwyg
-            height: '350px',
+            height: '380px',
             initialValue: contentEditor3,
             hooks: {
                 addImageBlobHook(imgeBlob, callback) {
@@ -881,6 +896,7 @@
 
     </script>
     <script>
+        /*File Upload*/
         jQuery(document).ready(function ($) {
             // display a modal (small modal)
             var uploadUrl = '{{route('upload-storage-single', ['_token' => csrf_token()])}}';
@@ -1023,6 +1039,7 @@
             var modalDelete = $('#modalDelete');
             var uploadUrl = '{{config('admin.upload_url')}}';
             var flag_check = 1;
+
             $(document).on("submit", "#post_form", function (event) {
                 //Get Editor content
                 var content = editor.getHTML();//editor.getHTML(); getMarkdown
@@ -1037,12 +1054,23 @@
 
                 $(window).off('beforeunload');
             });
+
             //Btn click submit post form
             $(document).on('click', '.btnSubmit', function (event) {
                 //event.preventDefault();
                 //console.log('123');
                 $('#post_form').submit();
             });
+
+
+            var isPreview = {{$isPreview}};
+            //Check is preview page will disable all input
+            if(isPreview){
+                //Disable all input
+                $('input').attr('disabled', 'disabled');
+                $('textarea').attr('disabled', 'disabled');
+                $('select').attr('disabled', 'disabled');
+            }
 
             //btnAddItemSession onclick call ajax
 
