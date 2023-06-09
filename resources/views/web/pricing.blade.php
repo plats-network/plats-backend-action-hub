@@ -8,7 +8,7 @@
                     <div class="home-content">
                         <h3 class="pb-40">Join Our Community to grow Your Community!</h3>
                         <p class="text-danger">Join Our Community to grow Your Community !</p>
-                        <a href="#" class="mt-50">Register now</a>
+                        <a href="{{route('web.contact')}}" class="mt-50">Register now</a>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -78,7 +78,7 @@
                     <div class="home-content">
                         <h3 class="h3-color">Hosting a large or complex event?</h3>
                         <p class="tmp-color">We offer tailored packages for you event. Get customized fee schedule, personalized support, and more individualized features by partnering with our sales team.</p>
-                        <a href="#" class="mt-50">Contact Sales</a>
+                        <a href="{{route('web.contact')}}" class="mt-50">Contact Sales</a>
                     </div>
                 </div>
                 <div class="col-md-3">

@@ -1790,13 +1790,14 @@
     padding-top: 10px;
     padding: 0;
     margin-bottom: 20px;
+    padding-top: 20px;
 
     @media only screen and (max-width: 767px) {
       padding-right: 3px;
     }
 
     &.img-01 {
-      width: 82%;
+      width: 86%;
 
       @media only screen and (max-width: 767px) {
         width: 98%;

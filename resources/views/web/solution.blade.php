@@ -11,14 +11,14 @@
                                 <h2>Power Your Events with state-of-the-art Technologies</h2>
                                 <h6>Explore all the built-in tools you need to create, setup and evaluate your business with events.</h6>
                                 <div class="hero-btn-group">
-                                    <a href="#" class="btn confer-btn">Contact Sales <i class="zmdi zmdi-long-arrow-right"></i></a>
+                                    <a href="{{route('web.contact')}}" class="btn confer-btn">Contact Sales <i class="zmdi zmdi-long-arrow-right"></i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="single-welcome-slide bg-img bg-overlay jarallax" style="background-image: url(events/bg-img/45.jpg);">
+{{--             <div class="single-welcome-slide bg-img bg-overlay jarallax" style="background-image: url(events/bg-img/45.jpg);">
                 <div class="container h-100">
                     <div class="row h-100 align-items-center">
                         <div class="col-12">
@@ -30,14 +30,14 @@
                                     <a class="event-author" href="#"><i class="zmdi zmdi-alarm-check"></i> Laura Green</a>
                                 </div>
                                 <div class="hero-btn-group">
-                                    <a href="#" class="btn confer-btn m-2">Contact Sales <i class="zmdi zmdi-long-arrow-right"></i></a>
+                                    <a href="{{route('web.contact')}}" class="btn confer-btn m-2">Contact Sales <i class="zmdi zmdi-long-arrow-right"></i></a>
                                     <a href="#" class="btn confer-btn m-2">Get Tickets <i class="zmdi zmdi-long-arrow-right"></i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <div class="icon-scroll" id="scrollDown"></div>
     </section>

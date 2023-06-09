@@ -8,7 +8,7 @@
                     <div class="home-content">
                         <h3>Become a professional event-hosting entrepreneur</h3>
                         <p>Plats gives you all the built-in tools to easily create and manage your event in a simple and intuitive dashboard.</p>
-                        <a href="#" class="mt-50">Try it now</a>
+                        <a href="{{route('web.contact')}}" class="mt-50">Try it now</a>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -66,7 +66,7 @@
                         <img src="{{url('events/resources/resource-4.svg')}}" class="img-step" alt="Crypto Payment">
                     </p>
                     <p class="text-center pt-40">
-                        <a class="text-center" href="#">Contact Us</a>
+                        <a class="text-center" href="{{route('web.contact')}}">Contact Us</a>
                     </p>
                 </div>
             </div>
