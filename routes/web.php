@@ -49,8 +49,6 @@ Route::middleware(['guest'])->group(function ($auth) {
     // Sign up
     $auth->get('/sign-up', [SignUp::class, 'showSignup'])->name('web.formSignup');
     $auth->post('/sign-up', [SignUp::class, 'store'])->name('web.signUp');
-
-
 });
 
 // Những route login và ko login đều vào đc
@@ -93,11 +91,14 @@ Route::get('/events/{slug}', [Detail::class, 'index']);
 
 
 Route::prefix('quiz-game')->group(function () {
-    Route::get('/questions/{eventId}', [QuizGameController::class, 'index']);
-    Route::middleware('user_event')->group(function () {
+    Route::middleware('client_admin')->group(function () {
+        Route::get('/questions/{eventId}', [QuizGameController::class, 'index']);
         Route::get('/scoreboard/{eventId}', [QuizGameController::class, 'getScoreboard']);
-        Route::get('/answers/{eventId}', [QuizGameController::class, 'showAnswers'])->name('quiz-name.answers');
         Route::post('/next-question', [QuizGameController::class, 'getQuestionByNumber']);
+        Route::get('/summary-results/{eventId}', [QuizGameController::class, 'getSummaryResults']);
+    });
+    Route::middleware('user_event')->group(function () {
+        Route::get('/answers/{eventId}', [QuizGameController::class, 'showAnswers'])->name('quiz-name.answers');
         Route::post('/send-total-score', [QuizGameController::class, 'sendTotalScore']);
     });
 });

@@ -15,15 +15,17 @@ class NextQuestionEvent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $data;
+    public $eventId;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($nextQuestion)
+    public function __construct($nextQuestion, $eventId)
     {
         $this->data = $nextQuestion;
+        $this->eventId = $eventId;
     }
 
     /**
@@ -33,7 +35,7 @@ class NextQuestionEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('NextQuestion');
+        return new Channel('NextQuestion_' . $this->eventId);
     }
 
     /**

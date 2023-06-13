@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "cloudinary-labs/cloudinary-laravel": "^2.0",
         "guzzlehttp/guzzle": "^7.5",
         "laravel/framework": "^9.2",
         "laravel/sanctum": "^2.14.1",
@@ -16,10 +17,8 @@
         "maatwebsite/excel": "^3.1",
         "mckenziearts/laravel-notify": "^2.4",
         "mpdf/mpdf": "*",
-        "cloudinary-labs/cloudinary-laravel": "^2.0",
         "pagevamp/laravel-cloudwatch-logs": "^1.0",
         "php-open-source-saver/jwt-auth": "^1.4",
-        "predis/predis": "^1.1",
         "prettus/l5-repository": "^2.8",
         "pschocke/laravel-telegram-login-widget": "^2.0",
         "psr/simple-cache": "^2.0",

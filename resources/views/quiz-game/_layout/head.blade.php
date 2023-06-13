@@ -261,6 +261,9 @@
     .questions {
         height: calc(100vh - 100px);
         overflow: hidden;
+        background-repeat: no-repeat;
+        background-size: cover;
+        overflow: hidden;
     }
 
     .questions .body-section {
@@ -275,11 +278,7 @@
     /* END QUESTIONS */
 
     /* WAITING PLAYERS */
-    .waiting-player {
-        background-repeat: no-repeat;
-        background-size: cover;
-        overflow: hidden;
-    }
+    .waiting-player {}
 
     .waiting-player .overlay {
         padding-top: 150px;
@@ -361,7 +360,7 @@
 
 
     /*  END WAITING FOR PLAYER */
-    .wrap-prepare-start {
+    .wrap-prepare-start .container {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -600,7 +599,8 @@
         display: flex;
         align-items: center;
     }
-    .wrap-scoreboard .scoreboard .container{
+
+    .wrap-scoreboard .scoreboard .container {
         margin-top: 80px;
     }
 
@@ -785,6 +785,24 @@
         }
     }
 
+    /* PREPARE ANSWER */
+    .prepare-answer {
+        background: #409EFF;
+    }
+
+    .prepare-answer .container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .prepare-answer .loading-icon {
+        margin: 50px 0;
+    }
+
+    /* END PREPARE ANSWER */
+
     /* Small devices (tablets, 768px and up) */
     @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
         ...
@@ -799,5 +817,36 @@
     @media (min-width: @screen-lg-min) {
         ...
     }
+
+    /* Loader */
+    .lds-dual-ring {
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+    }
+
+    .lds-dual-ring:after {
+        content: " ";
+        display: block;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border-radius: 50%;
+        border: 6px solid #fff;
+        border-color: #fff transparent #fff transparent;
+        animation: lds-dual-ring 1.2s linear infinite;
+    }
+
+    @keyframes lds-dual-ring {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* End loader */
 </style>
 </head>

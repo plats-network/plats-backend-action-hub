@@ -15,14 +15,16 @@ class UserJoinQuizGameEvent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $data;
+    public $eventId;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($joinUsers)
+    public function __construct($joinUsers, $eventId)
     {
         $this->data = $joinUsers;
+        $this->eventId = $eventId;
     }
 
     /**
@@ -32,7 +34,7 @@ class UserJoinQuizGameEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('UserJoinQuiz');
+        return new Channel('UserJoinQuiz_' . $this->eventId);
     }
 
     /**

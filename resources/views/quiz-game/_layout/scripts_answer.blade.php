@@ -2,6 +2,7 @@
     // ELEMENTS
     const HEADER = $('header');
     const WELCOME_USER = $('.welcome-users');
+    const PREPARE_ANSWER = $('.prepare-answer');
     const SELECT_ANSWER = $('.select-answers');
     const CORRECT_ANSWER = $('.correct-answer');
     const INCORRECT_ANSWER = $('.incorrect-answer');
@@ -12,14 +13,13 @@
 
     // STEP SCREEN
     const WELCOME_STEP = 1;
-    const SELECT_ANSWER_STEP = 2;
-    const QUIZ_COMPLETED_STEP = 3;
-
-    // Bind event pusher
-    pusher.subscribe("NextQuestion").bind("NextQuestionEvent", handleNextQuestion);
+    const PREPARE_ANSWER_STEP = 2;
+    const SELECT_ANSWER_STEP = 3;
+    const QUIZ_COMPLETED_STEP = 4;
 
     // Declare global variable
     const EVENT_ID = "{{ $eventId }}";
+    const TIME_PREPARE_ANSWER = 5;
     var app = {
         userId: null,
         nickname: '',
@@ -35,6 +35,9 @@
         currentStep: 1
     }
 
+    // Bind event pusher
+    pusher.subscribe("NextQuestion_" + EVENT_ID).bind("NextQuestionEvent", handleNextQuestion);
+
     // Get variable from localStorage in case reload
     var storeQuizAnswerVariable = localStorage.getItem('quizAnswerVariable') ? JSON.parse(localStorage.getItem(
         'quizAnswerVariable')) : null;
@@ -44,7 +47,8 @@
         checkScreenStep(storeQuizAnswerVariable.currentStep);
 
         // Set label for header
-        HEADER.find('h2').text(storeQuizAnswerVariable.currentQuestion + ' of ' + storeQuizAnswerVariable.totalQuestion);
+        HEADER.find('h2').text(storeQuizAnswerVariable.currentQuestion + ' of ' + storeQuizAnswerVariable
+            .totalQuestion);
 
         // Set point
         FOOTER.find('.point').text(storeQuizAnswerVariable.totalPoint);
@@ -81,6 +85,8 @@
                 // Turn on correct sound
                 CORRECT_SOUND.play();
             }
+            // Send total point
+            sendTotalPoint();
 
             // Reset countDownMilliseconds to stop function countDownMillisecondsTimer
             app.countDownMilliseconds = 0;
@@ -90,51 +96,60 @@
         });
     });
 
+
     // Listen event next question to handle on player screen
     function handleNextQuestion(data) {
+        // Assign data from pusher
         var question = data?.data
 
-        // Show select answer screen
-        checkScreenStep(SELECT_ANSWER_STEP);
+        // Show prepare answers screen
+        checkScreenStep(PREPARE_ANSWER_STEP);
+        PREPARE_ANSWER.find('.question-name').text(question.name)
+        setTimeout(() => {
 
-        // Caculate time to answer to milisecond to calculate the point
-        app.countDownMilliseconds = parseInt(question.timeToAnswer) * 100;
+            // Show select answer screen
+            checkScreenStep(SELECT_ANSWER_STEP);
 
-        // Reset status answer
-        app.isAnswered = false;
-        app.correctAnswer = question.correctAnswer;
-        app.currentQuestion = question.number;
-        app.totalQuestion = question.totalQuestion;
-        app.currentStep = SELECT_ANSWER_STEP;
-        app.totalPoint = question.number === 1 ? 0 : app.totalPoint
+            // Caculate time to answer to milisecond to calculate the point
+            app.countDownMilliseconds = parseInt(question.timeToAnswer) * 100;
 
-        // Set data
-        HEADER.find('h2').text(app.currentQuestion + ' of ' + app.totalQuestion);
-        FOOTER.find('.point').text(app.totalPoint);
+            // Reset status answer
+            app.isAnswered = false;
+            app.correctAnswer = question.correctAnswer;
+            app.currentQuestion = question.number;
+            app.totalQuestion = question.totalQuestion;
+            app.currentStep = SELECT_ANSWER_STEP;
+            app.totalPoint = question.number === 1 ? 0 : app.totalPoint
 
-        // Countdown milisecond to get point
-        countDownMillisecondsTimer();
+            // Set data
+            HEADER.find('h2').text(app.currentQuestion + ' of ' + app.totalQuestion);
+            FOOTER.find('.point').text(app.totalPoint);
 
-        // If current question is the last question set timeout to show screen quiz completed
-        if (question.number >= question.totalQuestion) {
-            app.currentStep = QUIZ_COMPLETED_STEP;
-            
-            // Send point to server
-            setTimeout(() => {
-                sendTotalPoint();
-            }, parseInt(question.timeToAnswer) * 1000);
+            // Countdown milisecond to get point
+            countDownMillisecondsTimer();
 
-            // Move to the quiz complete screen and remove localStorage after delay 5 seconds
-            setTimeout(() => {
-                checkScreenStep(QUIZ_COMPLETED_STEP);
+            // If current question is the last question set timeout to show screen quiz completed
+            if (question.number >= question.totalQuestion) {
+                app.currentStep = QUIZ_COMPLETED_STEP;
 
-                // Remove localstorage
-                localStorage.removeItem('quizAnswerVariable')
-            }, (parseInt(question.timeToAnswer) + 5) * 1000);
-        }
+                // Send point to server
+                setTimeout(() => {
+                    sendTotalPoint();
+                }, parseInt(question.timeToAnswer) * 1000);
 
-        // Save variable to storage
-        localStorage.setItem('quizAnswerVariable', JSON.stringify(app));
+                // Move to the quiz complete screen and remove localStorage after delay 5 seconds
+                setTimeout(() => {
+                    checkScreenStep(QUIZ_COMPLETED_STEP);
+
+                    // Remove localstorage
+                    localStorage.removeItem('quizAnswerVariable')
+                }, (parseInt(question.timeToAnswer) + 5) * 1000);
+            }
+
+            // Save variable to storage
+            localStorage.setItem('quizAnswerVariable', JSON.stringify(app));
+
+        }, TIME_PREPARE_ANSWER * 1000);
     }
 
     // Count down milisecond to caculate the point
@@ -151,26 +166,29 @@
     // Change the step screen
     function checkScreenStep(step) {
         switch (step) {
-            case WELCOME_STEP:
-                // Hide other screen
-                CORRECT_ANSWER.hide();
-                INCORRECT_ANSWER.hide();
-                QUIZ_COMPLETED.hide();
-                SELECT_ANSWER.hide();
 
+            case WELCOME_STEP:
                 // Show welcome screen
                 WELCOME_USER.show();
+                break;
+            case PREPARE_ANSWER_STEP:
+                // Hide other screen
+                WELCOME_USER.hide("slow");
+                CORRECT_ANSWER.hide("slow");
+                INCORRECT_ANSWER.hide("slow");
+                SELECT_ANSWER.hide("slow");
+
+                // Show welcome screen
+                PREPARE_ANSWER.show("slow");
                 break;
 
             case SELECT_ANSWER_STEP:
                 // Hide other screen
-                WELCOME_USER.hide();
-                CORRECT_ANSWER.hide();
-                INCORRECT_ANSWER.hide();
-                QUIZ_COMPLETED.hide();
+                WELCOME_USER.hide("slow");
+                PREPARE_ANSWER.hide("slow");
 
                 // Show select answer screen
-                SELECT_ANSWER.show();
+                SELECT_ANSWER.show("slow");
                 break;
 
             case QUIZ_COMPLETED_STEP:
@@ -179,6 +197,7 @@
                 CORRECT_ANSWER.hide();
                 INCORRECT_ANSWER.hide();
                 SELECT_ANSWER.hide();
+                PREPARE_ANSWER.hide();
 
                 // Show quiz complete screen
                 QUIZ_COMPLETED.show();
@@ -204,6 +223,7 @@
         // Send the selected answer to the server
         var data = {
             eventId: EVENT_ID,
+            answer: app.selectedAnswer,
             totalPoint: app.totalPoint
         };
         $.ajax({

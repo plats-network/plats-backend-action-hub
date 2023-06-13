@@ -11,8 +11,6 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Task;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\View\View;
 use Illuminate\Support\Str;
 
 class QuizGameController extends Controller
@@ -32,7 +30,7 @@ class QuizGameController extends Controller
         }
 
         $event = $this->getEventById($eventId);
-
+        $totalQuiz = $event->quizs->count();
         // Check event not found
         if (!$event) {
             return redirect()->route(DASHBOARD_WEB_ROUTER);
@@ -40,7 +38,7 @@ class QuizGameController extends Controller
         $urlAnswers = route('quiz-name.answers', $eventId);
         $qrCode = QrCode::format('png')->size(300)->generate($urlAnswers);
 
-        return view('quiz-game.questions', compact('qrCode', 'event'));
+        return view('quiz-game.questions', compact('qrCode', 'event', 'totalQuiz'));
     }
 
     /**
@@ -77,10 +75,10 @@ class QuizGameController extends Controller
             array_push($listJoinedUsers, $data);
         }
 
-        Cache::put('list_joined_users_' . $eventId, $listJoinedUsers);
+        Cache::put('list_joined_users_' . $eventId, $listJoinedUsers, now()->addMinutes(60));
 
         // Notify new user join and show total users
-        event(new UserJoinQuizGameEvent($listJoinedUsers));
+        event(new UserJoinQuizGameEvent($listJoinedUsers, $eventId));
 
         return view('quiz-game.answers', [
             'eventId' => $eventId,
@@ -118,7 +116,7 @@ class QuizGameController extends Controller
             'totalQuestion' => Quiz::where('task_id', $eventId)->count(),
             'image' => $request->getSchemeAndHttpHost() . '/events/quiz-game/' . rand(1, 4) . '.jpg'
         ];
-        event(new NextQuestionEvent($data));
+        event(new NextQuestionEvent($data, $request->eventId));
 
         return response()->json([$data]);
     }
@@ -140,7 +138,8 @@ class QuizGameController extends Controller
                 'user_id' => $user->id
             ],
             [
-                'point'   => $request->totalPoint
+                'point'   => $request->totalPoint,
+                'answer'   => $request->answer
             ]
         );
 
@@ -157,13 +156,12 @@ class QuizGameController extends Controller
      */
     public function getScoreboard(Request $request, $eventId)
     {
-        define('TOP_HIGHEST_SCORE', 10);
         $quizResult = QuizResult::with('user:name,id')
-        ->select('id', 'user_id', 'point')
-        ->where('task_id', $eventId)
-        ->orderBy('point', 'DESC')
-        ->limit(TOP_HIGHEST_SCORE)
-        ->get();
+            ->select('id', 'user_id', 'point')
+            ->where('task_id', $eventId)
+            ->orderBy('point', 'DESC')
+            ->limit(10)
+            ->get();
 
         // Delete cache
         Cache::forget('list_joined_users_' . $eventId);
@@ -180,5 +178,51 @@ class QuizGameController extends Controller
     public function getEventById($eventId)
     {
         return Task::where('id', $eventId)->where('status', TASK_PUBLIC)->first();
+    }
+
+    /**
+     * Get summary results answers
+     *
+     * @param string $eventId The UUID of the event
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the data.
+     */
+    public function getSummaryResults($eventId)
+    {
+        define('TOP_HIGHEST_SCORE', 10);
+        $summaryAnswer = QuizResult::where('task_id', $eventId)->get();
+        $countByAnswer = $summaryAnswer->countBy('answer');
+        $totalAnswered = $summaryAnswer->count();
+        $scoreboard = QuizResult::with('user:name,id')
+            ->select('id', 'user_id', 'point')
+            ->where('task_id', $eventId)
+            ->orderBy('point', 'DESC')
+            ->limit(TOP_HIGHEST_SCORE)
+            ->get();
+
+        // Reset answers
+        QuizResult::where('task_id', $eventId)->update(['answer' => null]);
+
+        return response()->json([
+            'summaryAnswer' => [
+                [
+                    'label' => 'A',
+                    'total' => $countByAnswer['A'] ?? 0
+                ],
+                [
+                    'label' => 'B',
+                    'total' => $countByAnswer['B'] ?? 0
+                ],
+                [
+                    'label' => 'C',
+                    'total' => $countByAnswer['C'] ?? 0
+                ],
+                [
+                    'label' => 'D',
+                    'total' => $countByAnswer['D'] ?? 0
+                ],
+            ],
+            'scoreboard' => $scoreboard,
+            'totalAnswered' => $totalAnswered
+        ]);
     }
 }
