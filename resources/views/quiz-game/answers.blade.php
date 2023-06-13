@@ -14,6 +14,16 @@
         </div>
         {{-- END WELCOME PLAYER --}}
 
+        {{-- PREPARE ANSWER --}}
+        <div class="prepare-answer body-section" style="display: none">
+            <div class="container">
+                <h3 class="question-name text-white">Question number</h3>
+                <div class="loading-icon lds-dual-ring"></div>
+                <div class="text-white">Loading...</div>
+            </div>
+        </div>
+        {{-- END PREPARE ANSWER --}}
+
         {{-- SELECT ANSWER --}}
         <div class="select-answers body-section" style="display: none">
             <div class="container">
