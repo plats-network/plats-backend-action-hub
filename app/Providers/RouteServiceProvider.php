@@ -44,6 +44,11 @@ class RouteServiceProvider extends ServiceProvider
             // Dev: https://dev-api.plats.network
             // Prod: https://api.plats.network
             $this->mapApiRoute(ENV('APP_URL'));
+
+            // Local: http://minigame.plats.test
+            // Dev: https://dev-minigame.plats.network
+            // Prod: https://minigame.plats.network
+            $this->mapGameRoute(ENV('APP_URL'));
         });
     }
 
@@ -79,5 +84,12 @@ class RouteServiceProvider extends ServiceProvider
         Route::domain(ENV('SUB_EVENT').'.'.$domain)
             ->middleware(['web'])
             ->group(base_path('routes/web.php'));
+    }
+
+    protected function mapGameRoute($domain)
+    {
+        Route::domain(ENV('SUB_MINIGAME').'.'.$domain)
+            ->middleware(['web'])
+            ->group(base_path('routes/game.php'));
     }
 }
