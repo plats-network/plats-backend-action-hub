@@ -29,7 +29,7 @@ class QuizResult extends Model
         'task_id',
         'user_id',
         'point',
-        'answer'
+        'answer_id'
     ];
 
     /**

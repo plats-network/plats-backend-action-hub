@@ -28,4 +28,12 @@ class QuizAnswer extends Model
         'name',
         'status', // true or false
     ];
+    
+    /**
+     * Get the quiz result for the quiz.
+     */
+    public function quizResults()
+    {
+        return $this->hasMany(QuizResult::class, 'answer_id', 'id');
+    }
 }

@@ -22,6 +22,7 @@
     const TIME_PREPARE_ANSWER = 5;
     var app = {
         userId: null,
+        questionId: null,
         nickname: '',
         currentQuestion: 0,
         totalQuestion: 0,
@@ -57,7 +58,7 @@
     $(document).ready(function() {
         $('.answers .answer-box').click(function() {
             var self = this;
-            var selectedAnswer = $(this).attr('id');
+            var selectedAnswer = $(this).data('id');
             // Check end of reply time or answered
             if (app.isAnswered || !app.countDownMilliseconds) {
                 showFlashMessage('Answered or time is over!')
@@ -116,6 +117,8 @@
             // Reset status answer
             app.isAnswered = false;
             app.correctAnswer = question.correctAnswer;
+            app.answers = question.answers;
+            app.questionId = question.id;
             app.currentQuestion = question.number;
             app.totalQuestion = question.totalQuestion;
             app.currentStep = SELECT_ANSWER_STEP;
@@ -124,6 +127,10 @@
             // Set data
             HEADER.find('h2').text(app.currentQuestion + ' of ' + app.totalQuestion);
             FOOTER.find('.point').text(app.totalPoint);
+            app.answers.forEach((value, index) => {
+                let boxAnswer = SELECT_ANSWER.find('.answer-box').get(index);
+                $(boxAnswer).data("id", value.id );;
+            });
 
             // Countdown milisecond to get point
             countDownMillisecondsTimer();
@@ -186,6 +193,9 @@
                 // Hide other screen
                 WELCOME_USER.hide("slow");
                 PREPARE_ANSWER.hide("slow");
+                QUIZ_COMPLETED.hide();
+                CORRECT_ANSWER.hide();
+                INCORRECT_ANSWER.hide();
 
                 // Show select answer screen
                 SELECT_ANSWER.show("slow");
@@ -223,7 +233,7 @@
         // Send the selected answer to the server
         var data = {
             eventId: EVENT_ID,
-            answer: app.selectedAnswer,
+            answerId: app.selectedAnswer,
             totalPoint: app.totalPoint
         };
         $.ajax({

@@ -86,29 +86,29 @@
             <div class="wrap-answers">
                 <div class="wrap-line d-flex">
                     <div class="col-6">
-                        <div class="answer-box polygon" id="A">
+                        <div class="answer-box polygon">
                             <img src="{{ url('events/quiz-game/polygon.png') }}" alt="polygon" class="img-fluid">
-                            <p>5 </p>
+                            <p></p>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="answer-box ellipse" id="B">
+                        <div class="answer-box ellipse">
                             <img src="{{ url('events/quiz-game/ellipse.png') }}" alt="ellipse" class="img-fluid">
-                            <p>5</p>
+                            <p></p>
                         </div>
                     </div>
                 </div>
                 <div class="wrap-line d-flex">
                     <div class="col-6">
-                        <div class="answer-box star" id="C">
+                        <div class="answer-box star">
                             <img src="{{ url('events/quiz-game/star.png') }}" alt="star" class="img-fluid">
-                            <p>5</p>
+                            <p></p>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="answer-box rectangle" id="D">
+                        <div class="answer-box rectangle">
                             <img src="{{ url('events/quiz-game/rectangle.png') }}" alt="rectangle" class="img-fluid">
-                            <p>5</p>
+                            <p></p>
                         </div>
                     </div>
                 </div>
@@ -127,40 +127,40 @@
             <div class="wrap-stats d-flex flex-wrap">
                 <div class="stats col-md-6 col-12 d-flex">
                     <div class="item col-3">
-                        <div class="free-space" style="height: calc(100% - 110px - 20%)"></div>
+                        <div class="free-space"></div>
                         <img class="icon-correct" src="{{ url('events/quiz-game/icon-correct-polygon.svg') }}"
                             alt="">
-                        <div class="percentage polygon" style="height: 20%"></div>
+                        <div class="percentage polygon"></div>
                         <div class="answer-box polygon" data-value="A">
                             <img src="{{ url('events/quiz-game/polygon.png') }}" alt="polygon" class="img-fluid">
                             <p></p>
                         </div>
                     </div>
                     <div class="item col-3">
-                        <div class="free-space" style="height: calc(100% - 110px - 30%)"></div>
+                        <div class="free-space"></div>
                         <img class="icon-correct" src="{{ url('events/quiz-game/icon-correct-ellipse.svg') }}"
                             alt="">
-                        <div class="percentage ellipse" style="height: 30%"></div>
+                        <div class="percentage ellipse"></div>
                         <div class="answer-box ellipse" data-value="B">
                             <img src="{{ url('events/quiz-game/ellipse.png') }}" alt="ellipse" class="img-fluid">
                             <p></p>
                         </div>
                     </div>
                     <div class="item col-3">
-                        <div class="free-space" style="height: calc(100% - 110px - 40%)"></div>
+                        <div class="free-space"></div>
                         <img class="icon-correct" src="{{ url('events/quiz-game/icon-correct-star.svg') }}"
                             alt="">
-                        <div class="percentage star" style="height: 40%"></div>
+                        <div class="percentage star"></div>
                         <div class="answer-box star" data-value="C">
                             <img src="{{ url('events/quiz-game/star.png') }}" alt="star" class="img-fluid">
                             <p></p>
                         </div>
                     </div>
                     <div class="item col-3 pr-0">
-                        <div class="free-space" style="height: calc(100% - 110px - 10%)"></div>
+                        <div class="free-space"></div>
                         <img class="icon-correct" src="{{ url('events/quiz-game/icon-correct-rectangle.svg') }}"
                             alt="">
-                        <div class="percentage rectangle" style="height: 10%"></div>
+                        <div class="percentage rectangle"></div>
                         <div class="answer-box rectangle" data-value="D">
                             <img src="{{ url('events/quiz-game/rectangle.png') }}" alt="rectangle" class="img-fluid">
                             <p></p>
