@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('task_id')->index();
             $table->uuid('user_id')->index();
-            $table->char('answer')->comment('A,B,C,D');
+            $table->uuid('answer_id')->nullable();
             $table->unsignedInteger('point')->default(0);
             $table->timestamps();
         });

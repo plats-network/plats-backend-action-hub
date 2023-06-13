@@ -6,6 +6,7 @@ use App\Events\NextQuestionEvent;
 use App\Events\UserJoinQuizGameEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Quiz\Quiz;
+use App\Models\Quiz\QuizAnswer;
 use App\Models\Quiz\QuizResult;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Cache;
@@ -103,15 +104,16 @@ class QuizGameController extends Controller
             ->take(1)
             ->first();
 
-        $correctAnswerKey = $question->detail->search(function ($answer) {
+        $correctAnswerKey = $question->detail->filter(function ($answer) {
             return $answer->status;
-        });
-        $answerSymbols = ['A', 'B', 'C', 'D'];
+        })->first();
+
         $data = [
+            'id' => $question->id,
             'number' => $questionNumber,
             'name' => 'Question number ' . $questionNumber . ' : ' . $question->name,
             'answers' => $question->detail,
-            'correctAnswer' => $answerSymbols[$correctAnswerKey],
+            'correctAnswer' => $correctAnswerKey->id ?? null,
             'timeToAnswer' => $question->time_quiz,
             'totalQuestion' => Quiz::where('task_id', $eventId)->count(),
             'image' => $request->getSchemeAndHttpHost() . '/events/quiz-game/' . rand(1, 4) . '.jpg'
@@ -139,7 +141,7 @@ class QuizGameController extends Controller
             ],
             [
                 'point'   => $request->totalPoint,
-                'answer'   => $request->answer
+                'answer_id'   => $request->answerId
             ]
         );
 
@@ -183,15 +185,16 @@ class QuizGameController extends Controller
     /**
      * Get summary results answers
      *
+     * @param Request $request The request object.
      * @param string $eventId The UUID of the event
      * @return \Illuminate\Http\JsonResponse The JSON response containing the data.
      */
-    public function getSummaryResults($eventId)
+    public function getSummaryResults(Request $request, $eventId)
     {
         define('TOP_HIGHEST_SCORE', 10);
-        $summaryAnswer = QuizResult::where('task_id', $eventId)->get();
-        $countByAnswer = $summaryAnswer->countBy('answer');
-        $totalAnswered = $summaryAnswer->count();
+        $quizAnswerResults = QuizAnswer::withCount('quizResults')->where('quiz_id', $request->quiz_id)->get();
+        $totalQuizResultsCount = $quizAnswerResults->sum('quiz_results_count');
+
         $scoreboard = QuizResult::with('user:name,id')
             ->select('id', 'user_id', 'point')
             ->where('task_id', $eventId)
@@ -200,29 +203,12 @@ class QuizGameController extends Controller
             ->get();
 
         // Reset answers
-        QuizResult::where('task_id', $eventId)->update(['answer' => null]);
+        QuizResult::where('task_id', $eventId)->update(['answer_id' => null]);
 
         return response()->json([
-            'summaryAnswer' => [
-                [
-                    'label' => 'A',
-                    'total' => $countByAnswer['A'] ?? 0
-                ],
-                [
-                    'label' => 'B',
-                    'total' => $countByAnswer['B'] ?? 0
-                ],
-                [
-                    'label' => 'C',
-                    'total' => $countByAnswer['C'] ?? 0
-                ],
-                [
-                    'label' => 'D',
-                    'total' => $countByAnswer['D'] ?? 0
-                ],
-            ],
+            'summaryAnswer' => $quizAnswerResults,
             'scoreboard' => $scoreboard,
-            'totalAnswered' => $totalAnswered
+            'totalAnswered' => $totalQuizResultsCount
         ]);
     }
 }

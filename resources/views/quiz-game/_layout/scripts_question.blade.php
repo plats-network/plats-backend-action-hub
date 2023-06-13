@@ -24,6 +24,7 @@
     const TIME_PREPARE_QUESTION = 5;
     var app = {
         userId: null,
+        questionId: null,
         nickname: '',
         currentQuestion: 0,
         totalQuestion: null,
@@ -136,8 +137,9 @@
             handleScreenStep(QUESTION_DETAIL_STEP);
 
             // Assigne value for question content
-            app.questionName = question.name
-            app.questionImage = question.image
+            app.questionName = question.name;
+            app.questionImage = question.image;
+            app.questionId = question.id;
             app.countDownSeconds = question.timeToAnswer;
             app.currentQuestion = question.number;
             app.answers = question.answers;
@@ -311,6 +313,9 @@
         SPINNER.show();
         $.ajax({
             url: '/quiz-game/summary-results/' + EVENT_ID,
+            data: {
+                'quiz_id': app.questionId
+            },
             method: 'GET',
             success: function(res) {
                 // Handle successful submission
@@ -320,16 +325,16 @@
                 summaryAnswer.forEach((value, index) => {
                     let boxStats = QUESTION_RESULT.find('.wrap-stats .stats .item').get(index);
                     let boxAnswers = QUESTION_RESULT.find('.wrap-answers .answer-box').get(index);
-                    let percentage = '';
-                    $(boxStats).find('.answer-box p').text(value.total);
+                    $(boxStats).find('.answer-box p').text(value.quiz_results_count);
 
-                    // Caculate height
-                    percentage = parseInt(value.total) * 100 / totalAnswered + '%';
-                    $(boxStats).find('.free-space').css('height', 'calc(100% - 110px - ' +
-                        percentage + ')');
-                    $(boxStats).find('.percentage').css('height', percentage);
+                    // Caculate height (110px is the height of except class percentage)
+                    let defaultHeight = "(100% - 110px)";
+                    let percentAnswer = totalAnswered ? parseInt(value.quiz_results_count)/ totalAnswered : 0;
+                    let percentage = percentAnswer + '*' + defaultHeight;
+                    $(boxStats).find('.percentage').css('height', 'calc(' + percentage + ')');
+                    $(boxStats).find('.free-space').css('height', 'calc(' + defaultHeight + ' - ' + percentage + ')');
 
-                    if (value.label === app.correctAnswer) {
+                    if (value.id === app.correctAnswer) {
                         $(boxStats).find('.icon-correct').css('visibility', 'visible');
                         $(boxAnswers).find('.icon-correct').css('visibility', 'visible');
                     } else {

@@ -29,24 +29,24 @@
             <div class="container">
                 <div class="row">
                     <div class="col-6">
-                        <div class="answer-box polygon" id="A">
+                        <div class="answer-box polygon" data-id="">
                             <img src="{{ url('events/quiz-game/polygon.png') }}" alt="polygon" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="answer-box ellipse" id="B">
+                        <div class="answer-box ellipse" data-id="">
                             <img src="{{ url('events/quiz-game/ellipse.png') }}" alt="ellipse" class="img-fluid">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
-                        <div class="answer-box star" id="C">
+                        <div class="answer-box star" data-id="">
                             <img src="{{ url('events/quiz-game/star.png') }}" alt="star" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="answer-box rectangle" id="D">
+                        <div class="answer-box rectangle" data-id="">
                             <img src="{{ url('events/quiz-game/rectangle.png') }}" alt="rectangle" class="img-fluid">
                         </div>
                     </div>
