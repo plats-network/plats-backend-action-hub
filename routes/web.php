@@ -49,11 +49,8 @@ Route::middleware(['guest'])->group(function ($auth) {
     // Sign up
     $auth->get('/sign-up', [SignUp::class, 'showSignup'])->name('web.formSignup');
     $auth->post('/sign-up', [SignUp::class, 'store'])->name('web.signUp');
-
-
 });
 
-// Những route login và ko login đều vào đc
 Route::get('/', [Dashboard::class, 'index'])->name('web.home');
 Route::get('/events/code', [HistoryJoinEventTask::class, 'index'])->name('web.eventCode');
 Route::get('solution', [PagesController::class, 'solution'])->name('web.solution');
