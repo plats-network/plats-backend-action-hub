@@ -24,8 +24,8 @@ use App\Http\Controllers\Web\Auth\{
 
 Route::middleware(['guest'])->group(function ($auth) {
     // Login social
-    Route::get('/login/facebook', [Login::class, 'redirectToFacebook']);
-    Route::get('/login/facebook/callback', [Login::class, 'handleFacebookCallback']);
+    Route::get('/login/{providerName}', [Login::class, 'redirectToProvider']);
+    Route::post('login/{providerName}/callback', [Login::class, 'handleProviderCallback']);
 
     // Login
     $auth->get('login', [Login::class, 'showFormLogin'])->name('web.formLogin');
