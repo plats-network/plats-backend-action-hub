@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Validation\Rule;
 use App\Models\Event\{
     EventUserTicket,
     TaskEvent,
@@ -61,30 +62,35 @@ class Login extends Controller
      */
     public function showFormLogin()
     {
-
         if (Auth::guard('web')->user()) {
             return redirect('/');
         }
-
 
         return view('web.auth.login');
     }
 
     /**
-     * Handle redirect to Facebook
-     *
+     * Handle redirect to Provider
+     * 
+     * @param Request $request The request object.
      */
-    public function redirectToFacebook()
+    public function redirectToProvider(Request $request)
     {
-        return Socialite::driver('facebook')->redirect();
+        $request->validate([
+            'providerName' => ['required', Rule::in(['facebook', 'google'])],
+        ]);;
+        return Socialite::driver($request->providerName)->redirect();
     }
 
     /**
-     * Handle Facebook callback
+     * Handle Provider callback
+     * 
+     * @param Request $request The request object.
      */
-    public function handleFacebookCallback()
+    public function handleProviderCallback(Request $request)
     {
-        $user = Socialite::driver('facebook')->user();
+        $providerName = $request->providerName;
+        $user = Socialite::driver($providerName)->user();
 
         $existingUser = User::where('email', $user->email)->first();
 
@@ -94,13 +100,18 @@ class Login extends Controller
             $newUser = new User();
             $newUser->name = $user->name;
             $newUser->email = $user->email;
-            $newUser->facebook_id = $user->id;
+            $newUser->email_verified_at = now();
+            if($providerName === 'facebook') {
+                $newUser->facebook = $user->id;
+            } else if($providerName === 'google') {
+                $newUser->google = $user->id;
+            }
             $newUser->save();
 
             Auth::login($newUser);
         }
 
-        return redirect()->to('/home');
+        return redirect()->to('/');
     }
 
     public function formLoginGuest(Request $request)

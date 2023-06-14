@@ -98,6 +98,7 @@ if (!defined('DEFINE_CONSTANT')) {
     define('FACEBOOK', 2);
     define('DISCORD', 3);
     define('TELEGRAM', 4);
+    define('GOOGLE', 5);
 
     // Twitter
     define('TWITTER_FOLLOW', 0);
