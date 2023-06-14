@@ -61,16 +61,18 @@ class Login extends Controller
      */
     public function showFormLogin()
     {
+
         if (Auth::guard('web')->user()) {
             return redirect('/');
         }
+
 
         return view('web.auth.login');
     }
 
     /**
      * Handle redirect to Facebook
-     * 
+     *
      */
     public function redirectToFacebook()
     {
