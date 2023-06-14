@@ -332,7 +332,7 @@
                                                 @endif
                                             </div>
 
-                                            <div class="row mt-3">
+                                            <div class="row mt-3 @if($isPreview) invisible  @endif ">
 
                                                 <div class="d-flex flex-row-reverse">
                                                     <div class="p-2">
@@ -420,7 +420,7 @@
                                                 @endif
                                             </div>
 
-                                            <div class="row mt-3">
+                                            <div class="row mt-3 @if($isPreview) invisible  @endif ">
 
                                                 <div class="d-flex flex-row-reverse">
                                                     <div class="p-2">
@@ -638,8 +638,7 @@
                                         </div>
 
 
-                                        <div class="row mt-3">
-
+                                        <div class="row mt-3 @if($isPreview) invisible  @endif ">
                                             <div class="d-flex flex-row-reverse">
                                                 <div class="p-2">
                                                     <button id="btnAddItemQuiz" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm câu hỏi</button>
