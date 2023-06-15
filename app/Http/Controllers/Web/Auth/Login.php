@@ -77,8 +77,9 @@ class Login extends Controller
     public function redirectToProvider(Request $request)
     {
         $request->validate([
-            'providerName' => ['required', Rule::in(['facebook', 'google'])],
-        ]);;
+            'providerName' => [Rule::in(['facebook', 'google'])],
+        ]);
+        
         return Socialite::driver($request->providerName)->redirect();
     }
 
