@@ -1,5 +1,11 @@
 @extends('cws.layouts.app')
 
+@section('name_page')
+    <div class="page-title-box align-self-center d-none d-md-block">
+        <h4 class="page-title mb-0">User</h4>
+    </div>
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-xl-12">

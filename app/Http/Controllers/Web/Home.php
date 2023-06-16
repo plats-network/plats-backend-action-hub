@@ -18,7 +18,7 @@ use App\Services\Admin\{
     TaskService
 };
 
-class Dashboard extends Controller
+class Home extends Controller
 {
     public function __construct(
         private TaskEvent $eventModel,
@@ -31,15 +31,36 @@ class Dashboard extends Controller
 
     public function index(Request $request)
     {
-        if (empty(Auth::user()->id)){
-            $active = 0;
-        }else{
-            $active = 1;
+        try {
+            $limit = $request->get('limit') ?? 4;
+            $events = $this->taskService->search([
+                'limit' => $limit,
+                'type' => 1,
+                'status' => 1
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Errors: ' . $e->getMessage());
         }
-        return view('web.home',['active' => $active]);
+        
+        return view('web.home', [
+            'events' => $events
+        ]);
     }
 
+    public function show(Request $request, $id)
+    {
+        try {
+            $event = $this->taskService->find($id);
+        } catch (\Exception $e) {
+            
+        }
 
+        return view('web.events.show', [
+            'event' => $event
+        ]);
+    }
+
+    // User work job session, booth
     public function jobEvent(Request $request, $id)
     {
         try {
@@ -77,8 +98,6 @@ class Dashboard extends Controller
             $this->redirectPath();
         }
 
-        // dd($sessionDatas, $boothDatas);
-
         return view('web.events.job', [
             'sessions' => $sessionDatas,
             'booths' => $boothDatas,
@@ -113,7 +132,6 @@ class Dashboard extends Controller
     {
         $user = Auth::user();
         if (empty($user)){
-            dd(1);
         }
         $eventDetails = UserJoinEvent::where('user_id',$user->id)->get();
         $eventTaskJoins= $this->getEventTaskJoin($eventDetails);

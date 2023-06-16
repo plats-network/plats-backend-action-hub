@@ -80,6 +80,11 @@ class Task extends Model
      */
     protected $appends = ['cover_url'];
 
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'creator_id', 'id');
+    }
+
     /**
      * Get the task_guides for the tasks.
      */

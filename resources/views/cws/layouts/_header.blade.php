@@ -1,24 +1,14 @@
 @php
     $name = auth()->user()->name ?: 'client';
     $email = auth()->user()->email ?: 'client@gmail.com';
-    $avatar = asset('imgs/users/avatar-3.jpg');
+    $avatar = imgAvatar(auth()->user()->avatar_path);
 @endphp
 
 <header id="page-topbar" class="isvertical-topbar">
     <div class="navbar-header">
         <div class="d-flex">
-            <!-- LOGO -->
             <div class="navbar-brand-box">
-                <a href="index.html" class="logo logo-dark">
-                    <span class="logo-sm">
-                        <img src="assets/images/logo-dark-sm.png" alt="" height="26">
-                    </span>
-                    <span class="logo-lg">
-                        <img src="assets/images/logo-dark-sm.png" alt="" height="26">
-                    </span>
-                </a>
-
-                <a href="index.html" class="logo logo-light">
+                <a href="{{url('/')}}" class="logo logo-light">
                     <span class="logo-lg">
                         <img src="assets/images/logo-light.png" alt="" height="30">
                     </span>
@@ -31,9 +21,8 @@
             <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn">
                 <i class="bx bx-menu align-middle"></i>
             </button>
-            <div class="page-title-box align-self-center d-none d-md-block">
-                <h4 class="page-title mb-0">Home</h4>
-            </div>
+
+            @yield('name_page')
         </div>
         <div class="d-flex">
             <div class="dropdown d-inline-block">

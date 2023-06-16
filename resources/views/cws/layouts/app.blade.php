@@ -16,9 +16,8 @@
 
         @yield('style')
         @livewireStyles
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" referrerpolicy="origin"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.bundle.min.js" ></script>
     </head>
 
     <body data-layout-size="boxed">
@@ -40,7 +39,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="text-sm-end d-none d-sm-block">
-                                    Crafted with by <a href="#" target="_blank" class="text-reset">Plats</a>
+                                    Cws with by <a href="#" target="_blank" class="text-reset">Plats</a>
                                 </div>
                             </div>
                         </div>

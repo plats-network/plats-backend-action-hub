@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Helpers\{BaseImage, DateHelper};
 use App\Services\UserService;
-use App\Models\{
-    User as UserModel
-};
-use Illuminate\Http\Request;
+use App\Models\{User as UserModel};
 use App\Http\Requests\Cws\{
     EditEmailRequest,
     EditInfoRequest,
@@ -39,12 +37,6 @@ class User extends Controller
             'users' => $users
         ]);
     }
-
-    // public function apiListUser(Request $request)
-    // {
-    //     $users = $this->userService->search(['limit' => $request->get('limit') ?? PAGE_SIZE]);
-    //     return  response()->json($users);
-    // }
 
     // Get setting client user
     // Method: GET

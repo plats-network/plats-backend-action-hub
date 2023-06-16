@@ -78,6 +78,7 @@ class UserService extends BaseService
 
         if ($user && $user->role == CLIENT_ROLE) {
             $this->builder->where(function($q) {
+                
                 // $q->whereRole($user->id);
             });
         }

@@ -39,6 +39,7 @@ class HistoryJoinEventTask extends Controller
                 return redirect()->route('web.formLoginGuest');
             } else {
                 return redirect()->route('web.jobEvent', [
+                    // http://event.plats.test/event-job/ewqf2143e
                     'id' => 'ewqf2143e'
                 ]);
             }
@@ -50,7 +51,6 @@ class HistoryJoinEventTask extends Controller
 
     public function createUser(CreateUserForm $request)
     {
-
         try {
             if (filter_var($request->input('email'), FILTER_VALIDATE_EMAIL)) {
                 $account = $request->input('email');
@@ -107,7 +107,9 @@ class HistoryJoinEventTask extends Controller
             'task_id' => $getIdTask->task_id,
             'task_event_id' => $getIdEventDetail->task_event_id,
         ];
-        $check = UserJoinEvent::where('user_id',$user->id)->where('task_event_detail_id',$getIdEventDetail->id)->first();
+        $check = UserJoinEvent::where('user_id',$user->id)
+            ->where('task_event_detail_id',$getIdEventDetail->id)
+            ->first();
         if (!$check){
             UserJoinEvent::create($dataInsert);
         }
@@ -146,7 +148,10 @@ class HistoryJoinEventTask extends Controller
     {
         $eventTasks= [];
         foreach($data as $key => $value) {
-            $eventTasks[$key]= TaskEventDetail::where('task_event_id',$key)->orderBy('id', 'ASC')->pluck('id')->toArray();
+            $eventTasks[$key]= TaskEventDetail::where('task_event_id',$key)
+                ->orderBy('id', 'ASC')
+                ->pluck('id')
+                ->toArray();
         }
         return $eventTasks;
     }

@@ -122,7 +122,9 @@ class Login extends Controller
     public function loginGuest(Request $request)
     {
         try {
+            $code = session()->get('code');
             $account = $request->input('account');
+
             if (filter_var($account, FILTER_VALIDATE_EMAIL)) {
                 $phone = "0";
                 $account = $account;
@@ -137,12 +139,23 @@ class Login extends Controller
             }
 
             $user = $this->user->whereEmail($account)->first();
-            if ($user) {
+            if ($user && in_array($user->role, [ADMIN_ROLE, CLIENT_ROLE])) {
+                notify()->error('Account fail!');
+
+                return redirect()->route('web.formLoginGuest');
+            }
+
+            if ($user && $code) {
                 Auth::login($user, true);
                 notify()->success('Hoàn thành task');
+            } elseif ($user && !$code) {
+                Auth::login($user, true);
+                notify()->success('Login successfull');
+
+                return $this->authenticated($request, $user);
             } else {
                 $userName = $request->input('name');
-                $code = session()->get('code');
+                
                 $eventDetail = $this->eventDetail->whereCode($code)->first();
                 $taskEvent = $this->taskEvent
                     ->whereId(optional($eventDetail)->task_event_id)

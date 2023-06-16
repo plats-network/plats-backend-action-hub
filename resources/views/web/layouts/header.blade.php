@@ -1,7 +1,4 @@
-{{-- <div id="preloader">
-    <div class="loader"></div>
-</div>
- --}}<header class="header-area">
+<header class="header-area">
     <div class="classy-nav-container breakpoint-off">
         <div class="container">
             <nav class="classy-navbar justify-content-between" id="conferNav">
@@ -21,7 +18,7 @@
                     </div>
                     <div class="classynav">
                         <ul id="nav">
-                            <li><a href="https://{{config('plats.cws')}}">Create Event</a></li>
+                            <li class="sp-hidden"><a href="https://{{config('plats.cws')}}">Create Event</a></li>
                             <li class="{{request()->is('solution') ? 'active' : ''}}">
                                 <a href="{{route('web.solution')}}">Solutions</a>
                             </li>
@@ -34,18 +31,38 @@
                             <li class="{{request()->is('resource') ? 'active' : ''}}">
                                 <a href="{{route('web.resource')}}">Resources</a>
                             </li>
-                            <li class="{{request()->is('contact') ? 'active' : ''}}">
+                            <li class="border-r {{request()->is('contact') ? 'active' : ''}}">
                                 <a href="{{route('web.contact')}}">Contact</a>
                             </li>
-                            <li class="{{request()->is('profile') ? 'active' : ''}}">
-                                @if (auth()->guest())
+                            @if (auth()->guest())
+                                <li>
                                     <a href="{{route('web.formLogin')}}">Sign In</a>
-                                @else
-                                    <a href="{{route('web.profile')}}">
-                                        <i class="fa fa-user"></i>
-                                    </a>
-                                @endif
-                            </li>
+                                </li>
+                                <li class="btn-signup">
+                                    <a class="btn btn-info" href="{{route('web.formLogin')}}">Sign Up for Free</a>
+                                </li>
+                            @else
+                                <li class="pl-5">
+                                    @php
+                                        $avatar = optional(auth()->user())->avatar_path;
+                                    @endphp
+                                    <div class="dropdown">
+                                      <button id="info"
+                                        class="dropbtn"
+                                        style="
+                                            background-image: url({{imgAvatar($avatar)}});
+                                            background-position: center;
+                                            background-size: contain;"
+                                        ></button>
+                                      <div id="e-menu" class="dropdown-content">
+                                        <a href="{{route('web.profile')}}">Profile</a>
+                                        <a href="#">Link 2</a>
+
+                                        <a href="{{route('web.logout')}}">Logout</a>
+                                      </div>
+                                    </div>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </div>
