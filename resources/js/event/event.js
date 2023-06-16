@@ -6,6 +6,10 @@ $(document).ready(function() {
     });
   });
 
+  $('#info').on('click', function(e) {
+    $('#e-menu').toggle('show');
+  })
+
   var welcomeSlider = $('.welcome-slides');
   welcomeSlider.owlCarousel({
     items: 1,

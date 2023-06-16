@@ -8,7 +8,7 @@ use App\Events\TotalPointEvent;
 use Illuminate\Support\Facades\Cache;
 
 use App\Http\Controllers\Web\{
-    Dashboard,
+    Home,
     Detail,
     Likes,
     HistoryJoinEventTask,
@@ -51,7 +51,9 @@ Route::middleware(['guest'])->group(function ($auth) {
     $auth->post('/sign-up', [SignUp::class, 'store'])->name('web.signUp');
 });
 
-Route::get('/', [Dashboard::class, 'index'])->name('web.home');
+Route::get('/', [Home::class, 'index'])->name('web.home');
+Route::get('events', [Home::class, 'index'])->name('web.events');
+Route::get('events/{id}', [Home::class, 'show'])->name('web.events.show');
 Route::get('/events/code', [HistoryJoinEventTask::class, 'index'])->name('web.eventCode');
 Route::get('solution', [PagesController::class, 'solution'])->name('web.solution');
 Route::get('template', [PagesController::class, 'template'])->name('web.template');
@@ -61,11 +63,8 @@ Route::get('contact', [PagesController::class, 'contact'])->name('web.contact');
 
 
 Route::middleware(['user_event'])->group(function ($r) {
-    // Logout
     $r->get('logout', [Login::class, 'logout'])->name('web.logout');
-
-    // Logined
-    $r->get('event-job/{id}', [Dashboard::class, 'jobEvent'])->name('web.jobEvent');
+    $r->get('event-job/{id}', [Home::class, 'jobEvent'])->name('web.jobEvent');
     $r->get('profile', [UserController::class, 'profile'])->name('web.profile');
 });
 
@@ -73,12 +72,12 @@ Route::get('/discord/login', [App\Http\Controllers\Web\Discord::class, 'getUserD
 Route::get('/discord', [App\Http\Controllers\Web\Discord::class, 'index'])->name('discord');
 Route::get('/telegram', [App\Http\Controllers\Web\Discord::class, 'telegram'])->name('telegram');
 Route::get('logout-discord', [App\Http\Controllers\Web\Discord::class, 'logout']);
-Route::get('/events/list', [Dashboard::class, 'webList']);
+Route::get('/events/list', [Home::class, 'webList']);
 Route::post('/create-user', [HistoryJoinEventTask::class, 'createUser'])->name('web.createUser');
 
 
 Route::get('/events/history/list', [HistoryJoinEventTask::class, 'apiList']);
-Route::get('/events/history/user', [Dashboard::class, 'apiList']);
+Route::get('/events/history/user', [Home::class, 'apiList']);
 Route::get('/events/likes', [Likes::class, 'index'])->name('web.like');;
 Route::get('/events/task/{id}', [Detail::class, 'edit'])->whereUuid('id');
 Route::post('/events/likes', [Detail::class, 'like']);

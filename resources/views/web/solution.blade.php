@@ -18,28 +18,8 @@
                     </div>
                 </div>
             </div>
-{{--             <div class="single-welcome-slide bg-img bg-overlay jarallax" style="background-image: url(events/bg-img/45.jpg);">
-                <div class="container h-100">
-                    <div class="row h-100 align-items-center">
-                        <div class="col-12">
-                            <div class="welcome-text-two">
-                                <h5 data-animation="fadeInUp" data-delay="100ms">The event consistently</h5>
-                                <h2>OSHA Compliance</h2>
-                                <div class="event-meta">
-                                    <a class="event-date" href="#"><i class="zmdi zmdi-account"></i> 2023-04-20 21:00:00</a>
-                                    <a class="event-author" href="#"><i class="zmdi zmdi-alarm-check"></i> Laura Green</a>
-                                </div>
-                                <div class="hero-btn-group">
-                                    <a href="{{route('web.contact')}}" class="btn confer-btn m-2">Contact Sales <i class="zmdi zmdi-long-arrow-right"></i></a>
-                                    <a href="#" class="btn confer-btn m-2">Get Tickets <i class="zmdi zmdi-long-arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
         </div>
-        <div class="icon-scroll" id="scrollDown"></div>
+        {{-- <div class="icon-scroll" id="scrollDown"></div> --}}
     </section>
 
     <section class="confer-blog-details-area section-padding-100-0">
@@ -106,4 +86,6 @@
             </div>
         </div>
     </section>
+
+    @include('web.layouts.subscribe')
 @endsection

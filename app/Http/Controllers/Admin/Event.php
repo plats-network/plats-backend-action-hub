@@ -27,13 +27,10 @@ class Event extends Controller
 
     public function index(Request $request)
     {
-        //dd('Event');
-
         return view(
             'cws.event.index'
         );
     }
-
 
     public function userEvent($id)
     {

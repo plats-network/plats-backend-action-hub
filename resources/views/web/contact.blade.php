@@ -160,4 +160,6 @@
             </div>
         </div>
     </section>
+
+    @include('web.layouts.subscribe')
 @endsection

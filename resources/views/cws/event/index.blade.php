@@ -1,10 +1,15 @@
 @extends('cws.layouts.app')
 
+@section('name_page')
+    <div class="page-title-box align-self-center d-none d-md-block">
+        <h4 class="page-title mb-0">Event</h4>
+    </div>
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>Events</h1>
                 <a href="{{ route('cws.eventCreate') }}" class="btn btn-primary">Create Event</a>
                 <div class="card mt-3">
                     <div class="card-header">
@@ -45,8 +50,6 @@
                                                ></div>
                                 </div>
                             </div>
-
-
                             <div class="mt-3 text-right">
                                 <button class="btn btn-primary btn-gray-800 mt-2 animate-up-2" type="submit">Search
                                 </button>
@@ -54,7 +57,6 @@
                         </form>
                     </div>
                 </div>
-
                 <hr>
                 <table class="table table-bordered">
                     <thead>
@@ -69,8 +71,8 @@
                     @foreach($events as $event)
                         <tr>
                             <td>{{ $event->name }}</td>
-                            <td>{{ $event->start_at }}</td>
-                            <td>{{ $event->end_at }}</td>
+                            <td>{{ dateFormat($event->start_at) }}</td>
+                            <td>{{ dateFormat($event->end_at) }}</td>
                             <td>
                                 <a href="{{ route('cws.eventCreate', ['id' => $event->id, 'tab' => $tab, 'copy' => 1]) }}"
                                    class="btn btn-info">Copy</a>

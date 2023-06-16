@@ -7,13 +7,10 @@ use Illuminate\Http\Request;
 
 class PagesController extends Controller
 {
-    public function __construct() {
-        //
-    }
+    public function __construct() {}
 
     public function solution(Request $request)
     {
-
         return view('web.solution');
     }
 

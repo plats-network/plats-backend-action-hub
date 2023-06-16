@@ -4,6 +4,7 @@
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Models\{Task, User};
+use Carbon\Carbon;
 
 // Task
 if (!function_exists('genCodeTask')) {
@@ -91,10 +92,27 @@ if (!function_exists('commonImg')) {
             return null;
         }
 
+        if ($img && Str::contains($img, 'http')) {
+            return $img;
+        }
+
         return Storage::disk('s3')->url($img);
     }
 }
 
+if (!function_exists('imgAvatar')) {
+    function imgAvatar($img) {
+        if (is_null($img) || $img == '') {
+            return ENV('AWS_URL').'/avatar/avatar.jpg';
+        }
+
+        if ($img && Str::contains($img, 'http')) {
+            return $img;
+        }
+
+        return Storage::disk('s3')->url($img);
+    }
+}
 
 /*
  * Convert data size to bytes
@@ -118,4 +136,14 @@ function dataConvertToBytes(bool|string $upload_max_size)
     }
 
     return $number;
+}
+
+if (!function_exists('dateFormat')) {
+    function dateFormat($dateTime) {
+        if (is_null($dateTime) || $dateTime == '') {
+            return null;
+        }
+
+        return Carbon::parse($dateTime)->format('Y-m-d H:i');
+    }
 }

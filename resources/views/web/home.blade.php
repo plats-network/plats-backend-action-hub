@@ -35,6 +35,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-12">
                     <div class="schedule-tab">
@@ -60,69 +61,28 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="col-3">
-                            Search
-                        </div>
                     </div>
                     <div class="tab-content" id="conferScheduleTabContent">
                         <div class="tab-pane fade show active" id="step-one" role="tabpanel" aria-labelledby="monday-tab">
                             <div class="row">
-                                <div class="col-12 col-md-6 col-xl-3 item-event">
-                                    <div class="single-blog-area style-2">
-                                        <div class="single-blog-thumb">
-                                            <a href="#"><img src="{{url('events/event/event-1.png')}}" alt=""></a>
-                                        </div>
-                                        <div class="single-blog-text">
-                                            <a class="blog-title" href="#">International Curriculum Conference 2023: Vietnam</a>
-                                            <div class="post-meta">
-                                                <a class="post-date" href="#"><i class="zmdi zmdi-alarm-check"></i> 2023-04-20 21:00:00</a>
+                                @foreach($events as $event)
+                                    <div class="col-12 col-md-6 col-xl-3 item-event">
+                                        <div class="single-blog-area style-2">
+                                            <div class="single-blog-thumb">
+                                                <a href="{{route('web.events.show', $event->id)}}"><img src="{{$event->banner_url}}" alt=""></a>
                                             </div>
-                                            <p>International Curriculum Conference 2023: Vietnam ...</p>
+                                            <div class="single-blog-text">
+                                                <a class="blog-title" href="{{route('web.events.show', $event->id)}}">{{$event->name}}</a>
+                                                <div class="post-meta">
+                                                    <a class="post-date" href="{{route('web.events.show', $event->id)}}">
+                                                        <i class="zmdi zmdi-alarm-check"></i> {{ dateFormat($event->created_at)}}
+                                                    </a>
+                                                </div>
+                                                <p>{!! Str::limit($event->description, 100) !!}</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-3 item-event">
-                                    <div class="single-blog-area style-2">
-                                        <div class="single-blog-thumb">
-                                            <img src="{{url('events/event/event-2.png')}}" alt="">
-                                        </div>
-                                        <div class="single-blog-text">
-                                            <a class="blog-title" href="#">Buy, Sell & Lease Australian Property</a>
-                                            <div class="post-meta">
-                                                <a class="post-date" href="#"><i class="zmdi zmdi-alarm-check"></i> 2023-04-20 21:00:00</a>
-                                            </div>
-                                            <p>International Curriculum Conference 2023: Vietnam ...</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-3 item-event">
-                                    <div class="single-blog-area style-2">
-                                        <div class="single-blog-thumb">
-                                            <img src="{{url('events/event/event-3.png')}}" alt="">
-                                        </div>
-                                        <div class="single-blog-text">
-                                            <a class="blog-title" href="#">HYFI Conference</a>
-                                            <div class="post-meta">
-                                                <a class="post-date" href="#"><i class="zmdi zmdi-alarm-check"></i>2023-04-20 21:00:00</a>
-                                            </div>
-                                            <p>International Curriculum Conference 2023: Vietnam ...</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-xl-3 item-event">
-                                    <div class="single-blog-area style-2">
-                                        <div class="single-blog-thumb">
-                                            <img src="{{url('events/event/event-4.png')}}" alt="">
-                                        </div>
-                                        <div class="single-blog-text">
-                                            <a class="blog-title" href="#">The Connect - Singapore</a>
-                                            <div class="post-meta">
-                                                <a class="post-date" href="#"><i class="zmdi zmdi-alarm-check"></i>2023-04-20 21:00:00</a>
-                                            </div>
-                                            <p>International Curriculum Conference 2023: Vietnam ...</p>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                             <div class="row">
                                 <div class="col-12">
@@ -337,4 +297,6 @@
             </div>
         </div>
     </section>
+
+    @include('web.layouts.subscribe')
 @endsection

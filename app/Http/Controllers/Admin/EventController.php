@@ -3,16 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Event\EventDiscords;
-use App\Models\Event\EventSocial;
-use App\Models\Event\TaskEvent;
-use App\Models\Event\TaskEvent as Event;
+use App\Models\Event\{EventDiscords, EventSocial, TaskEvent, TaskEvent as Event};
 use App\Models\Quiz\Quiz;
-use App\Models\Task;
-use App\Models\TaskGallery;
-use App\Models\TaskGroup;
-use App\Services\Admin\EventService;
-use App\Services\Admin\TaskService;
+use App\Models\{Task, TaskGallery, TaskGroup};
+use App\Services\Admin\{EventService, TaskService};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,7 +26,6 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
-        //$events = Event::orderBy('id','desc')->paginate(5);
         $limit = $request->get('limit') ?? PAGE_SIZE;
         $user = Auth::user();
         if ($user->role == ADMIN_ROLE) {
