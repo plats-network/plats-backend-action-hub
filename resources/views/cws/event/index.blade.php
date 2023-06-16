@@ -78,7 +78,7 @@
                                    class="btn btn-info">Copy</a>
                                 <a href="{{ route('cws.eventPreview', ['id' => $event->id, 'tab' => $tab, 'preview' => 1]) }}"
                                    class="btn btn-primary">View</a>
-                                <a href="{{ route('cws.eventEdit', $event->id) }}" class="btn btn-danger">Delete</a>
+                                <button  data-url="{{ route('cws.eventDelete', $event->id)}}" href="{{ route('cws.eventDelete', $event->id) }}" data-id="{{ $event->id}}" class="btn btn-danger btnDeleteRow">Delete</button>
                             </td>
                         </tr>
                     @endforeach
@@ -89,4 +89,36 @@
         </div>
     </div>
 
+    <!-- Modal Confirm -->
+    @include('cws.layouts.data.modal_confirm_delete')
 @endsection
+
+{{--Script--}}
+
+@section('scripts')
+    <script>
+        var _token = $('meta[name="csrf-token"]').attr('content');
+        var spinText = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ';
+        var hasPage = {{Request::get('page', 0)}};
+
+        jQuery(document).ready(function ($) {
+            // display a modal (small modal)
+            var modalDelete = $('#modalDelete');
+            var btnDeleteRow = $('.btnDeleteRow');
+
+            $(document).on('click', '.btnDeleteRow', function (event) {
+                event.preventDefault();
+                let urlDelete = $(this).attr('data-url');
+                let id = $(this).attr('data-id');
+                $('#formDeleteItem').attr('action', urlDelete);
+                modalDelete.modal("show");
+            });
+
+            $(document).on('click', '#hideModalDelete', function (event) {
+                modalDelete.modal("hide");
+            });
+        });
+    </script>
+
+@endsection
+

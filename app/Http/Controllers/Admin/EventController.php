@@ -3,7 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Event\{EventDiscords, EventSocial, TaskEvent, TaskEvent as Event};
+
+use App\Models\Event\EventDiscords;
+use App\Models\Event\EventSocial;
+use App\Models\Event\TaskEvent;
+use App\Models\Event\TaskEvent as Event;
+use App\Models\Event\TaskEventDetail;
+use App\Models\Event\TaskEventReward;
 use App\Models\Quiz\Quiz;
 use App\Models\{Task, TaskGallery, TaskGroup};
 use App\Services\Admin\{EventService, TaskService};
@@ -368,9 +374,17 @@ class EventController extends Controller
      * @param \App\Event $company
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Event $company)
+    public function destroy($id, Request $request)
     {
-        $company->delete();
+        try {
+            $event = Task::where('id',$id)->findOrFail($id);
+            $event->delete();
+            TaskEventDetail::where('task_event_id',$id)->delete();
+            TaskEventReward::where('task_id',$event->task_id)->delete();
+        } catch (\Exception $e) {
+            return $this->respondError($e->getMessage());
+        }
+
         return redirect()->route('cws.eventList')->with('success', 'Event has been deleted successfully');
     }
 }
