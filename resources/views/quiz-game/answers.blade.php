@@ -78,12 +78,44 @@
         {{-- QUIZ COMPLETED --}}
         <div class="quiz-completed status-answer body-section" style="display: none">
             <div class="container">
-                <img src="{{ url('events/quiz-game/logo.png') }}" alt="Logo" style="max-width: 100%;">
+                <a href="/">
+                    <img src="{{ url('events/quiz-game/logo.png') }}" alt="Logo" style="max-width: 100%;">
+                </a>
                 <h4>{{ $eventName }}</h4>
                 <h2>Quiz Completed</h2>
             </div>
         </div>
         {{-- END QUIZ COMPLETED --}}
+
+        {{-- RANKED --}}
+        <div class="final-rank body-section" style="display: none">
+            <div class="container">
+                <div class="top-high-rank">
+                    <img src="{{ url('events/quiz-game/logo.png') }}" alt="Logo" style="max-width: 100%;">
+                    <h4>{{ $eventName }}</h4>
+                    <h5 class="player-name">{{ $userName }}</h5>
+                    <img src="{{ url('events/quiz-game/congratulation.png') }}" alt="Logo" style="max-width: 100%;">
+                    <div class="congrat" style="background-image: url({{ url('events/quiz-game/rank-star.png') }})">
+                        <p class="rank">1</p>
+                    </div>
+                    <div class="wrap-point-final">
+                        <span class="point mx-2">0</span>Points
+                    </div>
+                </div>
+                <div class="other-rank">
+                    <img src="{{ url('events/quiz-game/logo.png') }}" alt="Logo" style="max-width: 100%;">
+                    <h4>{{ $eventName }}</h4>
+                    <h5 class="player-name text-white">{{ $userName }}</h5>
+                    <h5 class="good-luck">Better luck next time !</h5>
+                    <img src="{{ url('events/quiz-game/other-rank.png') }}" alt="Logo" style="max-width: 100%;">
+                    <div class="wrap-point-final">
+                        <span class="point mx-2">0</span>Points
+                    </div>
+                    <p class="text-white">You are at <span class="rank">1</span> place</p>
+                </div>
+            </div>
+        </div>
+        {{-- END RANKED --}}
 
         {{-- SOUND AFFECT --}}
         <div class="wrap-sound-affect" style="display: none">

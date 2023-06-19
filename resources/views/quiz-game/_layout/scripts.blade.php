@@ -6,7 +6,7 @@
 </script>
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script src="{{ url('static/js/admin/theme/plugins/pusher.js') }}"></script>
-
+@include('quiz-game.reload_confirm_modal')
 @yield('js_vendor')
 <!-- Vendor Scripts End -->
 <!-- Page Specific Scripts Start -->

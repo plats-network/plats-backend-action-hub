@@ -216,7 +216,7 @@
     {{-- QUESTION QUESTION RESULT AND STATS --}}
 
     {{-- SCOREBOARD --}}
-    <div class="wrap-scoreboard body-section" style="display: none;">
+    <div class="wrap-scoreboard normal body-section" style="display: none;">
         <div class="scoreboard">
             <div class="container">
                 <h1 class="text-center text-white">Scoreboard</h1>
@@ -247,6 +247,53 @@
         </div>
     </div>
     {{-- END SCOREBOARD --}}
+    
+    {{-- FINAL SCOREBOARD --}}
+    <div class="wrap-scoreboard final body-section" style="display: none;">
+        <div class="scoreboard">
+            <div class="container">
+                <h1 class="text-center text-white">Scoreboard</h1>
+                <div class="d-flex justify-content-end mb-5">
+                    <button class="btn-plats" onclick="quizComplete()">Finish quiz</button>
+                </div>
+                <div class="wrap-content d-flex flex-wrap">
+                    <div class="top-rank col-md-6 col-12 d-flex text-center">
+                        <div class="col-4 second-rank">
+                            <div class="rank">2</div>
+                            <div class="wrap-point" height="23">
+                                <div class="nickname">_</div>
+                                <div class="point">0</div>
+                            </div>
+                        </div>
+                        <div class="col-4 first-rank">
+                            <div class="rank">1</div>
+                            <div class="wrap-point">
+                                <div class="nickname">_</div>
+                                <div class="point">0</div>
+                            </div>
+                        </div>
+                        <div class="col-4 third-rank">
+                            <div class="rank">3</div>
+                            <div class="wrap-point">
+                                <div class="nickname">_</div>
+                                <div class="point">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mid-rank col-md-6 col-12">
+                        <div class="rank-item d-flex items-center">
+                            <div class="rank"></div>
+                            <div class="wrap-point d-flex">
+                                <div class="nickname"></div>
+                                <div class="point"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- END FINAL SCOREBOARD --}}
 
     {{-- QUIZ COMPLETED --}}
     <div class="quiz-completed body-section"
@@ -255,9 +302,9 @@
             <div class="container">
                 <h1 class="quiz-name px-5">{{ $event->name }}</h1>
                 <div class="alert">Quiz Completed</div>
-                <div>
+                {{-- <div>
                     <button class="btn-plats d-inline-block p-2 px-4" onclick="showScoreboard()">View result</button>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

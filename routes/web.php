@@ -87,14 +87,8 @@ Route::get('/events/user/ticket', [Detail::class, 'userTicket']);
 Route::post('/events/ticket', [Detail::class, 'addTicket'])->name('web.event.addTicket');
 Route::get('/events/{slug}', [Detail::class, 'index']);
 
-
+// Quiz game route
 Route::prefix('quiz-game')->group(function () {
-    Route::middleware('client_admin')->group(function () {
-        Route::get('/questions/{eventId}', [QuizGameController::class, 'index']);
-        Route::get('/scoreboard/{eventId}', [QuizGameController::class, 'getScoreboard']);
-        Route::post('/next-question', [QuizGameController::class, 'getQuestionByNumber']);
-        Route::get('/summary-results/{eventId}', [QuizGameController::class, 'getSummaryResults']);
-    });
     Route::middleware('user_event')->group(function () {
         Route::get('/answers/{eventId}', [QuizGameController::class, 'showAnswers'])->name('quiz-name.answers');
         Route::post('/send-total-score', [QuizGameController::class, 'sendTotalScore']);

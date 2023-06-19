@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\Admin\{
 use App\Http\Controllers\Auth\Admin\ForgotPassword;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\UploadController;
+use App\Http\Controllers\Web\QuizGameController;
 
 // NEW
 Route::middleware(['guest', 'web'])->group(function($authRoute) {
@@ -127,4 +128,12 @@ Route::prefix('api')->group(function($router) {
         $router->post('/store', 'store');
         $router->get('/delete/{id}', 'destroy')->whereUuid('id');
     });
+});
+
+// Quiz game route
+Route::prefix('quiz-game')->group(function () {
+    Route::get('/questions/{eventId}', [QuizGameController::class, 'index']);
+    Route::get('/scoreboard/{eventId}', [QuizGameController::class, 'getScoreboard']);
+    Route::post('/next-question', [QuizGameController::class, 'getQuestionByNumber']);
+    Route::get('/summary-results/{eventId}', [QuizGameController::class, 'getSummaryResults']);
 });

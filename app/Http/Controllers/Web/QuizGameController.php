@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Events\NextQuestionEvent;
+use App\Events\SummaryResultQuizGameEvent;
 use App\Events\UserJoinQuizGameEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Quiz\Quiz;
@@ -84,6 +85,7 @@ class QuizGameController extends Controller
         return view('quiz-game.answers', [
             'eventId' => $eventId,
             'userName' => $user->name,
+            'userId' => $user->id,
             'eventName' => $event->name,
         ]);
     }
@@ -158,17 +160,22 @@ class QuizGameController extends Controller
      */
     public function getScoreboard(Request $request, $eventId)
     {
-        $quizResult = QuizResult::with('user:name,id')
+        define('TOP_HIGHEST_SCORE', 10);
+        $scoreboard = QuizResult::with('user:name,id')
             ->select('id', 'user_id', 'point')
             ->where('task_id', $eventId)
             ->orderBy('point', 'DESC')
-            ->limit(10)
             ->get();
 
-        // Delete cache
-        Cache::forget('list_joined_users_' . $eventId);
+        // Notify rank to players
+        if ($request->isLastQuestion === 'true') {
+            event(new SummaryResultQuizGameEvent($scoreboard, $request->eventId));
+        }
 
-        return response()->json($quizResult);
+        return response()->json([
+            'topScoreboard' => $scoreboard->take(TOP_HIGHEST_SCORE),
+            'scoreboard' => $scoreboard
+        ]);
     }
 
     /**
@@ -191,23 +198,14 @@ class QuizGameController extends Controller
      */
     public function getSummaryResults(Request $request, $eventId)
     {
-        define('TOP_HIGHEST_SCORE', 10);
         $quizAnswerResults = QuizAnswer::withCount('quizResults')->where('quiz_id', $request->quiz_id)->get();
         $totalQuizResultsCount = $quizAnswerResults->sum('quiz_results_count');
-
-        $scoreboard = QuizResult::with('user:name,id')
-            ->select('id', 'user_id', 'point')
-            ->where('task_id', $eventId)
-            ->orderBy('point', 'DESC')
-            ->limit(TOP_HIGHEST_SCORE)
-            ->get();
 
         // Reset answers
         QuizResult::where('task_id', $eventId)->update(['answer_id' => null]);
 
         return response()->json([
             'summaryAnswer' => $quizAnswerResults,
-            'scoreboard' => $scoreboard,
             'totalAnswered' => $totalQuizResultsCount
         ]);
     }
