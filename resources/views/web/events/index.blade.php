@@ -8,15 +8,15 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    {!!$events->links()!!}
+                    {{-- {!!$events->links()!!} --}}
 
-                    {{-- <div
+                    <div
                         class="more-schedule-btn text-center mb-80"
                         data-page="2"
                         data-link="{{route('web.events')}}?page="
                         data-div="#boxEvent" onclick="loadMoreData('{{route('web.events')}}', 2);">
                         <a href="#" class="btn confer-gb-btn">See more</a>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
         </div>

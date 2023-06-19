@@ -12,7 +12,7 @@
                     </a>
                 </div>
                 <p class="desc">
-                    {{Str::limit($event->description, 100)}}
+                    {{-- {{Str::limit($event->description, 100)}} --}}
                 </p>
             </div>
         </div>
