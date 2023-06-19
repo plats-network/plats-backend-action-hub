@@ -8,7 +8,72 @@ $(document).ready(function() {
 
   $('#info').on('click', function(e) {
     $('#e-menu').toggle('show');
-  })
+  });
+
+  // var page = 1;
+  // $(window).scroll(function() {
+  //     if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+  //         page++;
+  //         loadMoreData(page);
+  //     }
+  // });
+
+  // function loadMoreData(url, page){
+  //   debugger
+  //   $.ajax({
+  //     url: url + '?page=' + page,
+  //     type: "get",
+  //     beforeSend: function() {
+  //       $('.ajax-load').show();
+  //     }
+  //   }).done(function(data) {
+  //     if(data.html == " "){
+  //       $('.ajax-load').html("No more records found");
+  //       return;
+  //     }
+  //     $('.ajax-load').hide();
+  //     $("#post-data").append(data.html);
+  //   }).fail(function(jqXHR, ajaxOptions, thrownError) {
+  //     alert('server not responding...');
+  //   });
+  // }
+
+  // $('.more-schedule-btn').on('click', function(e) {
+  //   var $div = $($(this).data('div'));
+  //   var $link = $(this).data('link');
+  //   var $page = $(this).data('page');
+  //   var $href = $link + $page;
+  //   $.get($href, function(response) {
+  //     var $html = $(response).find("#boxEvent").html();
+  //     $div.append($html);
+  //   });
+
+  //   $(this).data('page', (parseInt($page) + 1));
+
+
+
+  //   // var page = $(this).data('page'),
+  //   //   link = $(this).data('link'),
+  //   //   href = link + page,
+  //   //   div = $(this).data('div');
+
+
+
+  //   // // debugger
+  //   // $.get(href, function(r) {
+  //   //   // var a =  $('.ev-list').find('#boxEvent').html();
+  //   //   var a = $(r).find('#boxEvent').html();
+  //   //   div.append(a);
+
+  //   //   // var htmlList = $(r).('.ev-list').find('#boxEvent').html();
+  //   //   // var htmlList = $(r).find("#boxEvent").html();
+  //   //   debugger
+  //   //   // div = $(this).data('div');
+  //   // });
+
+  //   // $(this).data('page', 2+1);
+  //   // $(this).data('page', (parseInt(page) + 1));
+  // });
 
   var welcomeSlider = $('.welcome-slides');
   welcomeSlider.owlCarousel({

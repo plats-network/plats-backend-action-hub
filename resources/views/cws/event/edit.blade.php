@@ -7,37 +7,45 @@
  * @var \App\Models\Event\TaskEventDetail $sessionDetail
  * @var array $categories
  */
-
 ?>
 
 @extends('cws.layouts.app')
+
 @section('style')
-
     @uploadFileCSS
-
-
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.1.1/dist/select2-bootstrap-5-theme.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.1.1/dist/select2-bootstrap-5-theme.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
     {{--Editor--}}
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.min.css" />
 @endsection
+
+@section('name_page')
+    <div class="page-title-box align-self-center d-none d-md-block">
+        <h4 class="page-title mb-0">
+            @if($isPreview)
+                Preview
+            @elseif($event->id)
+                Edit
+            @else
+                Create
+            @endif
+             Event
+        </h4>
+    </div>
+@endsection
+
 @section('content')
     <div class="container-fluid">
-
         <div class="row">
             <div class="col-md-12">
-                <h1>Event @if($isPreview) Preview @endif </h1>
-                {{--Button edit--}}
+                {{-- <h1>Event @if($isPreview) Preview @endif </h1> --}}
                 @if($isPreview)
                     <a href="{{ route('cws.eventEdit', ['id' => $event->id]) }}" class="btn btn-primary mb-2">Edit Event</a>
                 @endif
             </div>
             <div class="col-lg-12">
-
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title mb-0">Forms Steps</h4>
@@ -102,7 +110,6 @@
                                 </li>
                             </ul>
                             <!-- wizard-nav -->
-
                             <div  id="tabwizard0" class="wizard-tab">
                                 <div class="text-center mb-4">
                                     <h5>Event Details</h5>
@@ -659,10 +666,10 @@
 
                             {{--Submit button--}}
                             @if($isPreview == false)
-                            <div class="d-flex flex-wrap gap-3 mt-3">
-                                <button type="submit" class="btn btn-lg btn-primary" >Submit</button>
-                                <a  class="btn btn-secondary btn-lg" href="{{route('cws.eventList')}}" >Cancel</a>
-                            </div>
+                                <div class="d-flex flex-wrap gap-3 mt-3">
+                                    <button type="submit" class="btn btn-lg btn-primary" >Submit</button>
+                                    <a  class="btn btn-secondary btn-lg" href="{{route('cws.eventList')}}" >Cancel</a>
+                                </div>
                             @endif
                         </form>
                     </div>
@@ -693,7 +700,6 @@
     {{--End Modal Loading--}}
 @endsection
 
-
 @section('scripts')
     @uploadFileJS
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
@@ -701,13 +707,12 @@
     <script src="{{asset('plugins/yii2-assets/yii.activeForm.js')}}"></script>
     <script src="{{asset('plugins/yii2-assets/yii.validation.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @if($isPreview == false)
         <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
     @else
         <script src="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.js"></script>
-        @endif
+    @endif
     <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.js"></script>
     <script src="https://uicdn.toast.com/editor/latest/i18n/ja-jp.js"></script>
 
@@ -716,11 +721,7 @@
         var spinText = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ';
         var fileAvatarInit = null;
         var flag_check = 1;
-
         var modalLoading = $('#modalLoading');
-
-
-
         /*Editor.setLanguage('en-US', {
             Write: 'Viết',
             Preview: 'Xem trước',
@@ -785,11 +786,8 @@
             initialValue: contentEditor,
             hooks: {
                 addImageBlobHook(imgeBlob, callback) {
-                    // write your code
-                    //console.log(imgeBlob)
                     var fd = new FormData();
                     fd.append('file',imgeBlob);
-                    //Show loading
                     modalLoading.modal("show");
 
                     $.ajax({
@@ -810,7 +808,6 @@
                             //alert("not so boa!");
                         }
                     });
-                    // ...
                 }
             }
         });
@@ -824,13 +821,9 @@
             initialValue: contentEditor2,
             hooks: {
                 addImageBlobHook(imgeBlob, callback) {
-                    // write your code
-                    //console.log(imgeBlob)
                     var fd = new FormData();
                     fd.append('file',imgeBlob);
-                    //Show loading
                     modalLoading.modal("show");
-
                     $.ajax({
                         url :  "{{route('uploadEditor')}}",
                         type: 'POST',
@@ -892,15 +885,11 @@
                 }
             }
         });
-
     </script>
     <script>
         /*File Upload*/
         jQuery(document).ready(function ($) {
-            // display a modal (small modal)
             var uploadUrl = '{{route('upload-storage-single', ['_token' => csrf_token()])}}';
-
-            //Check flexCheckPaid is checked then show div #paid
             $('#flexCheckPaid').on('change', function () {
                 if ($(this).is(':checked')) {
                     $('#row_paid').show();
@@ -930,20 +919,19 @@
 
             var fileAvatarInit = null;
             var fileSlideInit = null;
-
             @if($event->banner_url)
                 fileAvatarInit = [{
-                "path": "{{$event->banner_url}}",
-                "base_url": "",
-                "type": null,
-                "size": null,
-                "name": null,
-                "order": null
-            }];
+                    "path": "{{$event->banner_url}}",
+                    "base_url": "",
+                    "type": null,
+                    "size": null,
+                    "name": null,
+                    "order": null
+                }];
             @endif
 
-                fileSlideInit = [
-                    @foreach($task_galleries as $key=> $fileItem)
+            fileSlideInit = [
+                @foreach($task_galleries as $key=> $fileItem)
                 {
                     "path": "{{$fileItem['url']}}",
                     "base_url": "",
@@ -997,7 +985,7 @@
                 "url": uploadUrl,
                 "multiple": true,
                 "sortable": false,
-                "maxNumberOfFiles": 30,
+                "maxNumberOfFiles": 5,
                 "maxFileSize": 10000000,
                 "minFileSize": null,
                 "acceptFileTypes": /(\.|\/)(gif|jpe?g|png|webp)$/i,
@@ -1034,7 +1022,6 @@
     </script>
     <script>
         jQuery(document).ready(function ($) {
-            // display a modal (small modal)
             var modalDelete = $('#modalDelete');
             var uploadUrl = '{{config('admin.upload_url')}}';
             var flag_check = 1;
@@ -1044,20 +1031,14 @@
                 var content = editor.getHTML();//editor.getHTML(); getMarkdown
                 var content2 = editor2.getHTML();//editor.getHTML();
                 var content3 = editor3.getHTML();//editor.getHTML();
-                //console.log(content);
-
                 $('[name=description]').attr('value', editor.getHTML());
                 $('[id=sessions-description]').attr('value', editor2.getHTML());
-
                 $('[id=booths-description]').attr('value', editor3.getHTML());
-
                 $(window).off('beforeunload');
             });
 
             //Btn click submit post form
             $(document).on('click', '.btnSubmit', function (event) {
-                //event.preventDefault();
-                //console.log('123');
                 $('#post_form').submit();
             });
 
@@ -1072,14 +1053,8 @@
             }
 
             //btnAddItemSession onclick call ajax
-
             $(document).on('click', '#btnAddItemSession', function (event) {
-                //alert('123');
-                //Add loading on btnAddImageReform button
-
                 var rowCount = $('.itemSessionDetail').length;
-                //console.log(rowCount);
-                //Check max image
                 if(rowCount >= 20){
                     alert('{{__('Maximum number of Item is')}} 20');
                     return false;
@@ -1111,7 +1086,6 @@
             /*Delete Image Row*/
             $(document).on('click', '.btnDeleteImage', function (event) {
                 event.preventDefault();
-
                 var id = $(this).attr('data-id');
                 //Swal confirm
                 Swal.fire({
@@ -1135,12 +1109,7 @@
 
             /*Booth*/
             $(document).on('click', '#btnAddItemBooth', function (event) {
-                //alert('123');
-                //Add loading on btnAddImageReform button
-
                 var rowCount = $('.itemBoothDetail').length;
-                //console.log(rowCount);
-                //Check max image
                 if(rowCount >= 20){
                     alert('{{__('Maximum number of Item is')}} 20');
                     return false;
@@ -1158,7 +1127,6 @@
                     },
                     success: function (data) {
                         if (data.status == 200) {
-                            //console.log(data);
                             $('#listRowBooth').append(data.html);
                             flag_check++;
                         }
@@ -1172,7 +1140,6 @@
             /*Delete Image Row*/
             $(document).on('click', '.btnDeleteImageBooth', function (event) {
                 event.preventDefault();
-
                 var id = $(this).attr('data-id');
                 //Swal confirm
                 Swal.fire({
@@ -1196,12 +1163,7 @@
             /*Quiz*/
 
             $(document).on('click', '#btnAddItemQuiz', function (event) {
-                //alert('123');
-                //Add loading on btnAddImageReform button
-
                 var rowCount = $('.itemQuizDetail').length;
-                //console.log(rowCount);
-                //Check max image
                 if(rowCount >= 20){
                     alert('{{__('Maximum number of Item is')}} 20');
                     return false;
@@ -1219,7 +1181,6 @@
                     },
                     success: function (data) {
                         if (data.status == 200) {
-                            //console.log(data);
                             $('#listRowQuiz').append(data.html);
                             flag_check++;
                         }
@@ -1251,10 +1212,7 @@
                         $('#quizFlagDelete' + id).val(1);
                     }
                 });
-
             });
-
-
         });
 
         var currentTab = {{$activeTab}}; // Current tab is set to be the first tab (0)
@@ -1282,20 +1240,13 @@
         }
 
         function nextPrev(n) {
-            // This function will figure out which tab to display
             var x = document.getElementsByClassName("wizard-tab");
-            //console.log(x)
-
-            // Hide the current tab:
             x[currentTab].style.display = "none";
-            // Increase or decrease the current tab by 1:
             currentTab = currentTab + n;
-            // if you have reached the end of the form...
             if (currentTab >= x.length) {
                 currentTab = currentTab - n;
                 x[currentTab].style.display = "block";
             }
-            // Otherwise, display the correct tab:
             showTab(currentTab)
         }
 

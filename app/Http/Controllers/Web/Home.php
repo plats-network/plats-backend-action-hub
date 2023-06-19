@@ -60,6 +60,29 @@ class Home extends Controller
         ]);
     }
 
+    public function events(Request $request)
+    {
+        try {
+            $limit = $request->get('limit') ?? 8;
+            $events = $this->taskService->search([
+                'limit' => $limit,
+                'type' => 1,
+                'status' => 1
+            ]);
+
+            // if ($request->ajax()) {
+            //     $view = view('data',compact('posts'))->render();
+            //     return response()->json(['html'=>$view]);
+            // }
+        } catch (\Exception $e) {
+            Log::error('Errors: ' . $e->getMessage());
+        }
+        
+        return view('web.events.index', [
+            'events' => $events
+        ]);
+    }
+
     // User work job session, booth
     public function jobEvent(Request $request, $id)
     {

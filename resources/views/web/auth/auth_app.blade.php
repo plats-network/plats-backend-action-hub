@@ -13,7 +13,7 @@
         <div id="auth" class="row justify-content-center">
             <div class="col-md-12">
                 <p class="text-center">
-                    <a href="{{url('/')}}" class="text-center home">Home</a>
+                    <a href="{{url('/')}}" class="text-center home home-back">Back to Home</a>
                 </p>
                 @yield('content')
             </div>

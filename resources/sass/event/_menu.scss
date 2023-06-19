@@ -64,15 +64,9 @@
     .classynav {
       ul {
         li {
-          img {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 2px solid $primary-color;
-          }
-
           &.border-r {
             border-right: 1px solid #c3cad8;
+            padding-right: 10px;
           }
 
           &.pl-5 {
@@ -193,6 +187,10 @@
     color: #232323;
     display: inline-block;
     margin-right: 30px;
+
+    img {
+      width: 90%;
+    }
 
     @media only screen and (max-width: 767px) {
       img {
