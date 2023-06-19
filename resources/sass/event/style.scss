@@ -2611,6 +2611,37 @@
   position: relative;
   z-index: 1;
   background-color: #2D2E32;
+  &.ev-list {
+    background-color: $white;
+    padding-top: 140px;
+
+    @media only screen and (max-width: 767px) {
+      padding-top: 100px!important;
+
+      .col-12 {
+        flex: 0 0 50%;
+        max-width: 50%;
+      }
+    }
+
+    .blog-title {
+      color: #333;
+    }
+
+    .desc {
+      color: #333!important;
+      line-height: 17px;
+      p, h3 {
+        color: #333!important;
+        line-height: 17px;
+
+        strong {
+          color: #333!important;
+          line-height: 17px;
+        }
+      }
+    }
+  }
 
   @media only screen and (max-width: 767px) {
     &.pt-70 {

@@ -23,7 +23,6 @@
                 </div>
             </div>
         </div>
-        <div class="icon-scroll" id="scrollDown"></div>
     </section>
 
     <section class="event-list pt-70">
@@ -87,7 +86,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="more-schedule-btn text-center mb-80" style="visibility: visible; animation-delay: 300ms; animation-name: fadeInUp;">
-                                        <a href="#" class="btn confer-gb-btn">See more</a>
+                                        <a href="{{route('web.events')}}" class="btn confer-gb-btn">See more</a>
                                     </div>
                                 </div>
                             </div>

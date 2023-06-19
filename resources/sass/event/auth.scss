@@ -1,8 +1,5 @@
-// body {
-//   background-color: rgb(228, 229, 247);
-// }
+@import "variables";
 
-/* Shared */
 .loginBtn {
   box-sizing: border-box;
   position: relative;
@@ -57,7 +54,6 @@
 }
 /* Google */
 .loginBtn--google {
-  /*font-family: "Roboto", Roboto, arial, sans-serif;*/
   background: #DD4B39;
 }
 .loginBtn--google:hover,
@@ -150,12 +146,23 @@ a {
   }
 }
 
+.home-back {
+  top: 50px;
+  display: block;
+  position: relative;
+}
+
 .email-login {
   display: flex;
   flex-direction: column;
 
+  &:focus {
+    border: 1px solid $primary-color;
+  }
+
   label {
-    color: rgb(170 166 166);
+    color: #888;
+    font-weight: normal;
   }
 
 }
@@ -169,16 +176,30 @@ input[type="password"] {
   border: 1px solid #ccc;
   border-radius: 8px;
   box-sizing: border-box;
+
+  &:focus,
+  &:focus-visible {
+    border: 1px solid $primary-color;
+  }
+}
+
+input[type=text]:focus,
+input[type=text]:focus-visible,
+input[type=email]:focus,
+input[type=email]:focus-visible,
+input[type=password]:focus,
+input[type=password]:focus-visible {
+  border: 1px solid $primary-color!important;
 }
 
 .cta-btn {
-  background-color: #3EA2FF;
-  color: white;
-  padding: 15px 20px;
+  background-color: $primary-color;
+  color: $white;
+  padding: 10px 20px;
   margin-top: 10px;
   margin-bottom: 20px;
   width: 40%;
-  border-radius: 10px;
+  border-radius: 5px;
   border: none;
   margin: 0 auto;
   display: block;

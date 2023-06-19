@@ -6,6 +6,9 @@ if (!defined('DEFINE_CONSTANT')) {
     // Zero
     define('ZERO', 0);
 
+    define('CHECKIN', 0);
+    define('EVENT', 1);
+
     define('TASK_SESSION', 0);
     define('TASK_BOOTH', 1);
 

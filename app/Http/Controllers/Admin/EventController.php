@@ -33,12 +33,19 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $limit = $request->get('limit') ?? PAGE_SIZE;
-        $user = Auth::user();
-        if ($user->role == ADMIN_ROLE) {
-            $events = $this->taskService->search(['limit' => $limit]);
-        } else {
-            $events = $this->taskService->search(['limit' => $limit]);
-        }
+        //$user = Auth::user();
+        $events = $this->taskService->search([
+            'limit' => $limit,
+            'type' => EVENT
+        ]);
+        // if ($user->role == ADMIN_ROLE) {
+            
+        // } else {
+        //     $events = $this->taskService->search([
+        //         'limit' => $limit,
+        //         'type' => EVENT
+        //     ]);
+        // }
 
         //tab
         $tab = $request->get('tab') ?? 0;
@@ -52,7 +59,8 @@ class EventController extends Controller
 
     /*
      * template
-     * */
+     *
+     */
     public function template(Request $request, $id = '')
     {
         $index = $request->get('index');
