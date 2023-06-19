@@ -52,7 +52,7 @@ Route::middleware(['guest'])->group(function ($auth) {
 });
 
 Route::get('/', [Home::class, 'index'])->name('web.home');
-Route::get('events', [Home::class, 'events'])->name('web.events');
+Route::get('event-lists', [Home::class, 'events'])->name('web.events');
 Route::get('events/{id}', [Home::class, 'show'])->name('web.events.show');
 Route::get('/events/code', [HistoryJoinEventTask::class, 'index'])->name('web.eventCode');
 Route::get('solution', [PagesController::class, 'solution'])->name('web.solution');
