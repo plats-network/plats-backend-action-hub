@@ -60,6 +60,7 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->delete('event-delete/{id}', [EventController::class, 'destroy'])->name('cws.eventDelete');
     //Template form event
     $cws->get('event-template', [EventController::class, 'template'])->name('cws.eventTemplate');
+    $cws->get('event-status/{id}', [EventController::class, 'updateStatus'])->name('cws.updateStatus');
 });
 //Upload file
 /*Upload Single*/

@@ -21,7 +21,8 @@ class EventController extends Controller
     public function __construct(
         private TaskEvent    $eventModel,
         private EventService $eventService,
-        private TaskService  $taskService
+        private TaskService  $taskService,
+        private Task $task,
     )
     {
     }
@@ -217,7 +218,7 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $inputAll = $request->all();
-        //dd($inputAll);
+        // dd($inputAll);
         /*
          * "id" => "99583545-472e-4710-8258-24b8b2b33110"
     "task_id" => "c519af43-1349-46bb-ab52-de6b53981d8c"
@@ -394,5 +395,32 @@ class EventController extends Controller
         }
 
         return redirect()->route('cws.eventList')->with('success', 'Event has been deleted successfully');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        try {
+            $task = $this->task->find($id);
+            if ($task) {
+                if ($task->status == true) {
+                    $task->update(['status' => false]);
+                } else {
+                    $task->update(['status' => true]);
+                }
+            } else {
+                return response()->json([
+                    'message' => 'ok'
+                ], 200);
+            }
+
+        } catch (\Exception $e) {
+            return response()->json([
+                    'message' => $e->getMessage()
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'ok'
+        ], 200);
     }
 }

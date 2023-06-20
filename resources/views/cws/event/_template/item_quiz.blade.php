@@ -1,6 +1,4 @@
-
 <div class="mb-3 row itemQuizDetail" id="itemQuiz{{$indexImageItem}}">
-
     <div class="row">
         <div class="col-lg-7">
             <div class="mb-3">
@@ -45,6 +43,7 @@
         </div>
     </div><!-- end row -->
     <br>
+
     {{--QuizAnswer--}}
     @for($index2 = 0; $index2<=3; $index2++)
         <div class="row">

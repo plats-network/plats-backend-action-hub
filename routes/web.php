@@ -25,7 +25,7 @@ use App\Http\Controllers\Web\Auth\{
 
 Route::middleware(['guest'])->group(function ($auth) {
     // Login social
-    Route::get('/login/{providerName}', [Login::class, 'redirectToProvider']);
+    Route::get('login/{providerName}', [Login::class, 'redirectToProvider']);
     Route::post('login/{providerName}/callback', [Login::class, 'handleProviderCallback']);
 
     // Login
@@ -47,8 +47,8 @@ Route::middleware(['guest'])->group(function ($auth) {
     $auth->post('reset-password', [ForgotPassword::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
     // Sign up
-    $auth->get('/sign-up', [SignUp::class, 'showSignup'])->name('web.formSignup');
-    $auth->post('/sign-up', [SignUp::class, 'store'])->name('web.signUp');
+    $auth->get('sign-up', [SignUp::class, 'showSignup'])->name('web.formSignup');
+    $auth->post('sign-up', [SignUp::class, 'store'])->name('web.signUp');
 });
 
 Route::get('/', [Home::class, 'index'])->name('web.home');
@@ -75,7 +75,6 @@ Route::get('logout-discord', [App\Http\Controllers\Web\Discord::class, 'logout']
 Route::get('/events/list', [Home::class, 'webList']);
 Route::post('/create-user', [HistoryJoinEventTask::class, 'createUser'])->name('web.createUser');
 
-
 Route::get('/events/history/list', [HistoryJoinEventTask::class, 'apiList']);
 Route::get('/events/history/user', [Home::class, 'apiList']);
 Route::get('/events/likes', [Likes::class, 'index'])->name('web.like');;
@@ -87,7 +86,6 @@ Route::get('/events/user/ticket', [Detail::class, 'userTicket']);
 Route::post('/events/ticket', [Detail::class, 'addTicket'])->name('web.event.addTicket');
 Route::get('/events/{slug}', [Detail::class, 'index']);
 
-// Quiz game route
 Route::prefix('quiz-game')->group(function () {
     Route::middleware('user_event')->group(function () {
         Route::get('/answers/{eventId}', [QuizGameController::class, 'showAnswers'])->name('quiz-name.answers');

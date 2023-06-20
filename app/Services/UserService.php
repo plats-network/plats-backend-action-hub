@@ -10,13 +10,20 @@ use Illuminate\Support\Facades\{DB, Hash, Storage};
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Log;
+use App\Models\Event\EventUserTicket;
+use App\Models\Task;
+
 
 class UserService extends BaseService
 {
     /**
      * @param \App\Repositories\UserRepository $repository
      */
-    public function __construct(UserRepository $repository)
+    public function __construct(
+        UserRepository $repository,
+        private EventUserTicket $eventUserTicket,
+        private Task $task,
+    )
     {
         $this->repository = $repository;
     }
@@ -41,6 +48,7 @@ class UserService extends BaseService
     {
         $user = auth()->user();
 
+
         $this->makeBuilder($conditions);
 
         if ($this->filter->has('name')) {
@@ -61,7 +69,7 @@ class UserService extends BaseService
         }
         if ($this->filter->has('status')) {
             $this->builder->where(function ($q) {
-                $q->where('status',$this->filter->get('status'));
+                $q->where('status', $this->filter->get('status'));
             });
 
             // Remove condition after apply query builder
@@ -72,14 +80,15 @@ class UserService extends BaseService
             $this->builder->where(function ($q) {
                 $q->whereBetween('created_at', [$this->filter->get('date_to') ?? date('Y-m-d'), $this->filter->get('date_end')?? date('Y-m-d')]);
             });
-            // Remove condition after apply query builder
             $this->cleanFilterBuilder('date_to');
         }
 
         if ($user && $user->role == CLIENT_ROLE) {
-            $this->builder->where(function($q) {
-                
-                // $q->whereRole($user->id);
+            $taskIds = $this->task->select('id')->whereCreatorId($user->id)->pluck('id')->toArray();
+            $userIds = $this->eventUserTicket->select('user_id')->whereIn('task_id', $taskIds)->pluck('user_id')->toArray();
+            $userIds = array_unique($userIds);
+            $this->builder->where(function ($q) use ($userIds) {
+                $q->whereIn('id', $userIds);
             });
         }
 

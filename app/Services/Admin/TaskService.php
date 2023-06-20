@@ -32,6 +32,8 @@ class TaskService extends BaseService
 
     public function search($conditions = [])
     {
+        $user = auth()->user();
+
         $this->makeBuilder($conditions);
 
         if ($this->filter->has('status')) {
@@ -63,6 +65,13 @@ class TaskService extends BaseService
             // Remove condition after apply query builder
             $this->cleanFilterBuilder('name');
         }
+
+        if ($user && $user->role == CLIENT_ROLE) {
+            $this->builder->where(function ($q) use ($user) {
+                $q->where('creator_id', $user->id);
+            });
+        }
+
         $this->builder->with('taskLocations','taskSocials','taskGalleries','taskGenerateLinks','taskEvents','userGetTickets')->orderBy('end_at', 'desc');
         return $this->endFilter();
     }

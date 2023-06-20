@@ -8,9 +8,7 @@
  * @var array $categories
  */
 ?>
-
 @extends('cws.layouts.app')
-
 @section('style')
     @uploadFileCSS
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
@@ -51,9 +49,10 @@
                         <h4 class="card-title mb-0">Forms Steps</h4>
                     </div><!-- end card header -->
                     <div class="card-body">
-                        <form method="POST" id="post_form" action="{{$is_update ? route('cws.eventUpdate', ['id' => $event->id]) : route('cws.eventStore')}}">
+                        <form method="POST"
+                            id="post_form"
+                            action="{{$is_update ? route('cws.eventUpdate', ['id' => $event->id]) : route('cws.eventStore')}}">
                             @csrf
-
                             <input type="hidden" name="id" value="{{ $event->id }}">
                             @if ($errors->any())
                                 <div class="alert alert-danger">
@@ -64,7 +63,6 @@
                                     </ul>
                                 </div>
                             @endif
-
                             <ul class="wizard-nav mb-5">
                                 <li class="wizard-list-item">
                                     <div class="list-item">
@@ -117,13 +115,13 @@
                                 </div>
                                 <div>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-8">
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="mb-3">
                                                         <label for="basicpill-firstname-input" class="form-label">Name</label>
                                                         <input type="text" value="{{ $event->name }}"
-                                                               class="form-control" placeholder="Name" id="name" name="name">
+                                                               class="form-control" placeholder="[TECH-ED PROGRAM] Cross-chain: Sidechain Solutions & BAS Case Study" id="name" name="name">
                                                     </div>
                                                 </div>
                                             </div>
@@ -132,40 +130,54 @@
                                                     <div class="mb-3">
                                                         <label for="basicpill-firstname-input" class="form-label">Address</label>
                                                         <input type="text" value="{{ $event->address }}"
-                                                               class="form-control" placeholder="Address" id="address" name="address">
+                                                               class="form-control" placeholder="30 Đường Văn Cao Hà Nội, Hà Nội" id="address" name="address">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-4">
                                                     <div class="mb-3">
-                                                        <label for="basicpill-firstname-input" class="form-label">Lat</label>
+                                                        <label for="basicpill-firstname-input" class="form-label">Latitude</label>
                                                         <input type="text" class="form-control" value="{{ $event->lat }}"
-                                                               placeholder="Lat" id="lat" name="lat">
+                                                               placeholder="21.027763" id="lat" name="lat">
+                                                    </div>
+                                                </div><!-- end col -->
+                                                <div class="col-lg-4">
+                                                    <div class="mb-3">
+                                                        <label for="basicpill-lastname-input" class="form-label">Longitude</label>
+                                                        <input type="text" class="form-control" value="{{ $event->lng }}"
+                                                               placeholder="105.834160" name="lng" id="lng">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="mb-3">
+                                                        <label for="basicpill-address-input" class="form-label">Order</label>
+                                                        <input type="text" class="form-control" placeholder="2" value="{{ $event->order }}" id="order" name="order">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label for="basicpill-phoneno-input"
+                                                               class="form-label">Start At</label>
+                                                        <input type="text" class="form-control" value="{{ $event->start_at }}"
+                                                               placeholder="2023-06-19 08:00" id="start_at" name="start_at">
                                                     </div>
                                                 </div><!-- end col -->
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
-                                                        <label for="basicpill-lastname-input" class="form-label">Lng</label>
-                                                        <input type="text" class="form-control" value="{{ $event->lng }}"
-                                                               placeholder="Lng" name="lng" id="lng">
-                                                    </div>
-                                                </div><!-- end col -->
-                                            </div><!-- end row -->
-
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div class="mb-3">
-                                                        <label for="event_description" class="form-label">Description</label>
-
-                                                        <div id="editor"></div>
-                                                        <input type="hidden" id="description" name="description" value="{{ $event->description }}">
+                                                        <label for="basicpill-email-input"
+                                                               class="form-label">End At</label>
+                                                        <input type="text" class="form-control" value="{{ $event->end_at }}"
+                                                               placeholder="2023-06-19 17:30" id="end_at" name="end_at">
                                                     </div>
                                                 </div>
                                             </div>
-
+                                        </div>
+                                        <div class="col-md-4">
                                             <div class="row">
-                                                <div class="col-lg-3">
+                                                <div class="col-lg-6">
                                                     <div class="form-group field-article-thumbnail">
                                                         <label for="article-thumbnail" class="mb-3"><b>Ảnh Thumbnail</b></label>
                                                         <div>
@@ -176,8 +188,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-9">
-
+                                                <div class="col-lg-6">
                                                     <div class="col-sm-12 mb-3">
                                                         <label class="form-label" for="ap-category">Ảnh Slide <span
                                                                 class="text-danger">*</span>
@@ -190,16 +201,19 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
+                                        </div>
+                                        <div class="col-lg-12">
                                             <div class="row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-12">
                                                     <div class="mb-3">
-                                                        <label for="basicpill-address-input"
-                                                               class="form-label">Order</label>
-                                                        <input type="text" class="form-control" placeholder="" value="{{ $event->order }}" id="order" name="order">
+                                                        <label for="event_description" class="form-label">Description</label>
+
+                                                        <div id="editor"></div>
+                                                        <input type="hidden" id="description" name="description" value="{{ $event->description }}">
                                                     </div>
-                                                </div><!-- end col -->
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label for="basicpill-address-input"
@@ -211,9 +225,10 @@
                                                             </label>
                                                         </div>
                                                     </div>
-
-                                                </div><!-- end col -->
-                                            </div><!-- end row -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
                                             <div class="row" id="row_paid">
                                                 <div class="col-lg-6">
                                                 </div><!-- end col -->
@@ -234,40 +249,14 @@
                                                             </select>
                                                         </div>
                                                     </div>
-
-                                                </div><!-- end col -->
-                                            </div><!-- end row -->
-
-
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label for="basicpill-phoneno-input"
-                                                               class="form-label">Start At</label>
-                                                        <input type="text" class="form-control" value="{{ $event->start_at }}"
-                                                               placeholder="" id="start_at" name="start_at">
-                                                    </div>
-                                                </div><!-- end col -->
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label for="basicpill-email-input"
-                                                               class="form-label">End At</label>
-                                                        <input type="text" class="form-control" value="{{ $event->end_at }}"
-                                                               placeholder="" id="end_at" name="end_at">
-                                                    </div>
-                                                </div><!-- end col -->
-                                            </div><!-- end row -->
+                                                </div>
+                                            </div>
                                         </div>
-
                                     </div>
-
-
                                 </div>
-
                             </div>
                             <!-- wizard-tab -->
-
-                            <div  id="tabwizard1" class="wizard-tab">
+                            <div id="tabwizard1" class="wizard-tab">
                                 <div>
                                     <div class="text-center mb-4">
                                         <h5>Sessions</h5>
@@ -676,11 +665,8 @@
                 </div>
             </div><!-- end col -->
         </div><!-- end row -->
-
-
-
-
     </div>
+
     {{--Modal Loading--}}
     <div class="modal fade" id="modalLoading" tabindex="-1" role="dialog" aria-labelledby="modal-default"
          aria-hidden="true">
@@ -722,55 +708,6 @@
         var fileAvatarInit = null;
         var flag_check = 1;
         var modalLoading = $('#modalLoading');
-        /*Editor.setLanguage('en-US', {
-            Write: 'Viết',
-            Preview: 'Xem trước',
-            Headings: 'Tiêu đề',
-            Paragraph: 'Trang',
-            Bold: 'In đậm',
-            Italic: 'Nghiêng',
-            Strike: 'Gạch xuyên ngang',
-            Code: 'Inline code',
-            Line: 'Dòng',
-            Blockquote: 'Blockquote',
-            'Unordered list': 'Danh sách không thứ tự',
-            'Ordered list': 'Danh sách có thứ tự',
-            Task: 'Công việc',
-            Indent: 'Indent',
-            Outdent: 'Outdent',
-            'Insert link': 'Chèn link',
-            'Insert CodeBlock': 'Chèn codeBlock',
-            'Insert table': 'Chèn bảng',
-            'Insert image': 'Chèn ảnh',
-            Heading: 'Tiêu đề',
-            'Image URL': 'Image URL',
-            'Select image file': 'Hãy chọn file hình ảnh',
-            'Choose a file': 'Chọn file',
-            'No file': 'Chưa chọn file',
-            Description: 'Miêu tả',
-            OK: 'OK',
-            More: 'Thêm',
-            Cancel: 'Huỷ',
-            File: 'File',
-            URL: 'URL',
-            'Link text': '',
-            'Add row to up': 'Thêm dòng lên trên',
-            'Add row to down': 'Thêm dòng xuống dưới',
-            'Add column to left': 'Thêm cột trái',
-            'Add column to right': 'Thêm cột phải',
-            'Remove row': 'Xoá hàng',
-            'Remove column': 'Xoá cột',
-            'Align column to left': 'Căn cột trái',
-            'Align column to center': 'Căn cột giữa',
-            'Align column to right': 'Căn cột phải',
-            'Remove table': 'Xoá bảng',
-            'Would you like to paste as table?': 'Bạn có muốn chèn nội dung như bảng?',
-            'Text color': 'Màu chữ',
-            'Auto scroll enabled': 'Tự động cuộn',
-            'Auto scroll disabled': 'Không tự động cuộn',
-            'Choose language': 'Chọn ngôn ngữ',
-        });*/
-
         var initial_form_state, last_form_state;
         var contentEditor = document.getElementById('description').value;
         var contentEditor2 = document.getElementById('sessions-description').value;
@@ -781,7 +718,7 @@
             previewStyle: 'vertical',
             language: 'en-US',
             initialEditType: 'wysiwyg', //markdown, wysiwyg
-            height: '380px',
+            height: '300px',
 
             initialValue: contentEditor,
             hooks: {
