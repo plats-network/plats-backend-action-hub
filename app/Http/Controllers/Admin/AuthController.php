@@ -40,6 +40,11 @@ class AuthController extends Controller
             $user = Auth::getProvider()
                 ->retrieveByCredentials($credentials);
 
+            if ($user && !in_array($user->role, [ADMIN_ROLE, CLIENT_ROLE])) {
+                notify()->error("Tài khoản này không có quyền truy cập.");
+                return redirect()->route('cws.formLogin');
+            }
+
             Auth::login($user, true);
             notify()->success('Đăng nhập thành công');
         } catch (\Exception $e) {

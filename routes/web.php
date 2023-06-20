@@ -25,7 +25,7 @@ use App\Http\Controllers\Web\Auth\{
 
 Route::middleware(['guest'])->group(function ($auth) {
     // Login social
-    Route::get('/login/{providerName}', [Login::class, 'redirectToProvider']);
+    Route::get('login/{providerName}', [Login::class, 'redirectToProvider']);
     Route::post('login/{providerName}/callback', [Login::class, 'handleProviderCallback']);
 
     // Login
@@ -47,12 +47,12 @@ Route::middleware(['guest'])->group(function ($auth) {
     $auth->post('reset-password', [ForgotPassword::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
     // Sign up
-    $auth->get('/sign-up', [SignUp::class, 'showSignup'])->name('web.formSignup');
-    $auth->post('/sign-up', [SignUp::class, 'store'])->name('web.signUp');
+    $auth->get('sign-up', [SignUp::class, 'showSignup'])->name('web.formSignup');
+    $auth->post('sign-up', [SignUp::class, 'store'])->name('web.signUp');
 });
 
 Route::get('/', [Home::class, 'index'])->name('web.home');
-Route::get('events', [Home::class, 'events'])->name('web.events');
+Route::get('event-lists', [Home::class, 'events'])->name('web.events');
 Route::get('events/{id}', [Home::class, 'show'])->name('web.events.show');
 Route::get('/events/code', [HistoryJoinEventTask::class, 'index'])->name('web.eventCode');
 Route::get('solution', [PagesController::class, 'solution'])->name('web.solution');
@@ -76,6 +76,7 @@ Route::get('/events/list', [Home::class, 'webList']);
 Route::post('/create-user', [HistoryJoinEventTask::class, 'createUser'])->name('web.createUser');
 
 
+
 Route::get('/events/history/list', [HistoryJoinEventTask::class, 'apiList']);
 Route::get('/events/history/user', [Home::class, 'apiList']);
 Route::get('/events/likes', [Likes::class, 'index'])->name('web.like');;
@@ -86,7 +87,6 @@ Route::get('/events/likes/list', [Detail::class, 'listLike']);
 Route::get('/events/user/ticket', [Detail::class, 'userTicket']);
 Route::post('/events/ticket', [Detail::class, 'addTicket'])->name('web.event.addTicket');
 Route::get('/events/{slug}', [Detail::class, 'index']);
-
 
 Route::prefix('quiz-game')->group(function () {
     Route::middleware('client_admin')->group(function () {
