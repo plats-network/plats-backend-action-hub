@@ -602,7 +602,7 @@
                                                                 <div class="col-sm-7">
                                                                     {{--name--}}
                                                                     <input type="text" class="form-control" id="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][name]"
-                                                                           placeholder="Answer 1" name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][name]" value="{{$itemQuizAnswer->name}}">
+                                                                           placeholder="Answer {{$keyIndex +1}}" name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][name]" value="{{$itemQuizAnswer->name}}">
                                                                 </div>
                                                                 <div class="col-sm-2">
 
@@ -610,7 +610,7 @@
                                                                         {{--status--}}
                                                                         <input class="form-check-input" type="checkbox" value="1" id="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]"
                                                                                name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]" @if($itemQuizAnswer->status == 1) checked @endif>
-                                                                        <label class="form-check-label" for="flexCheckDefault">
+                                                                        <label class="form-check-label" for="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]">
                                                                             Option
                                                                         </label>
                                                                     </div>

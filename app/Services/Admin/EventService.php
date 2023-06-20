@@ -339,6 +339,7 @@ class EventService extends BaseService
             $data['status'] = true;
             $data['slug'] = $request->input('name');
             $data['max_job'] = 0;
+            $data['type'] = EVENT;
             // $data['code'] = Str::random(35);
             //Check order is null
             if (empty($data['order'])){

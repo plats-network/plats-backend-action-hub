@@ -40,7 +40,7 @@ class EventController extends Controller
             'type' => EVENT
         ]);
         // if ($user->role == ADMIN_ROLE) {
-            
+
         // } else {
         //     $events = $this->taskService->search([
         //         'limit' => $limit,
@@ -218,7 +218,8 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $inputAll = $request->all();
-        // dd($inputAll);
+        //Input type = 1
+        $inputAll['type'] = 1;
         /*
          * "id" => "99583545-472e-4710-8258-24b8b2b33110"
     "task_id" => "c519af43-1349-46bb-ab52-de6b53981d8c"
@@ -352,6 +353,7 @@ class EventController extends Controller
     {
 
         $input = $request->all();
+        //dd($input);
 
         /*
          * "id" => "99583545-472e-4710-8258-24b8b2b33110"

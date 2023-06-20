@@ -71,7 +71,7 @@ class Login extends Controller
 
     /**
      * Handle redirect to Provider
-     * 
+     *
      * @param Request $request The request object.
      */
     public function redirectToProvider(Request $request)
@@ -84,7 +84,7 @@ class Login extends Controller
 
     /**
      * Handle Provider callback
-     * 
+     *
      * @param Request $request The request object.
      */
     public function handleProviderCallback(Request $request)
@@ -155,7 +155,7 @@ class Login extends Controller
                 return $this->authenticated($request, $user);
             } else {
                 $userName = $request->input('name');
-                
+
                 $eventDetail = $this->eventDetail->whereCode($code)->first();
                 $taskEvent = $this->taskEvent
                     ->whereId(optional($eventDetail)->task_event_id)
