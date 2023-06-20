@@ -594,14 +594,6 @@
         text-align: center;
         background-size: contain;
         background-position: top;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-    }
-
-    .wrap-scoreboard .scoreboard .container {
-        margin-top: 80px;
     }
 
     .wrap-scoreboard h1 {
@@ -764,6 +756,96 @@
 
     /* END QUIZ COMPLETED */
 
+    /* QUIZ COMPLETED FINAL RANK */
+
+    .answers .final-rank h4 {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 22px;
+        text-align: center;
+        color: #F8F8F8;
+    }
+
+    .answers .final-rank img {
+        margin: 0;
+        margin-bottom: 30px;
+    }
+
+    .final-rank {
+        text-align: center;
+        background: #5299ED;
+    }
+
+    .final-rank {
+        text-align: center;
+        background: #5299ED;
+    }
+
+    .final-rank .congrat {
+        background-repeat: no-repeat;
+        text-align: center;
+        background-position: center;
+        height: 200px;
+        background-size: contain;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .final-rank .congrat {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 50px;
+        line-height: 62px;
+        text-align: center;
+        color: #000000;
+    }
+
+    .final-rank .wrap-point-final {
+        display: flex;
+        justify-content: center;
+        color: white;
+        font-weight: 400;
+        font-size: 25px;
+        line-height: 31px;
+    }
+
+    .final-rank .player-name {
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 25px;
+        margin-top: 30px;
+    }
+
+    .answers .final-rank {
+        height: 100vh;
+    }
+
+    .answers .final-rank .other-rank .good-luck {
+        color: #00FFFF;
+        font-weight: 400;
+        font-size: 25px;
+        line-height: 31px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .answers .final-rank .other-rank .rank {
+        color: #00FFFF;
+    }
+
+    .answers .final-rank .other-rank .wrap-point-final {
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 15px;
+        text-align: center;
+        color: #FFFFFF;
+        margin-top: 40px;
+    }
+
+    /* END QUIZ COMPLETED FINAL RANK*/
+
     /* HIGHEST SCORES */
     .highest-scores {
         height: calc(100vh - 100px);
@@ -797,6 +879,7 @@
         justify-content: center;
         align-items: center;
     }
+
     .prepare-answer .loading-icon {
         margin: 50px 0;
     }

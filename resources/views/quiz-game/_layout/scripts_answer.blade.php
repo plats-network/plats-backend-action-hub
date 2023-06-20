@@ -7,6 +7,7 @@
     const CORRECT_ANSWER = $('.correct-answer');
     const INCORRECT_ANSWER = $('.incorrect-answer');
     const QUIZ_COMPLETED = $('.quiz-completed');
+    const FINAL_RANK = $('.final-rank');
     const FOOTER = $('footer');
     const INCORRECT_SOUND = $('#incorrectSound')[0];
     const CORRECT_SOUND = $('#correctSound')[0];
@@ -16,10 +17,12 @@
     const PREPARE_ANSWER_STEP = 2;
     const SELECT_ANSWER_STEP = 3;
     const QUIZ_COMPLETED_STEP = 4;
+    const FINAL_RANK_STEP = 5;
 
     // Declare global variable
     const EVENT_ID = "{{ $eventId }}";
-    const TIME_PREPARE_ANSWER = 5;
+    const USER_ID = "{{ $userId }}";
+    const TIME_PREPARE_ANSWER = 3;
     var app = {
         userId: null,
         questionId: null,
@@ -33,29 +36,43 @@
         currentQuestionPoints: 0,
         isAnswered: false,
         totalPoint: 0,
-        currentStep: 1
+        isFinishQuiz: false,
+        currentStep: 1,
+        currentTime: new Date(),
+        timeExpirationStorage: new Date(new Date().getTime() + 60 * 60000), // Save data to localStorage 60 minutes
     }
 
     // Bind event pusher
     pusher.subscribe("NextQuestion_" + EVENT_ID).bind("NextQuestionEvent", handleNextQuestion);
+    pusher.subscribe("SummaryResultQuizGame_" + EVENT_ID).bind("SummaryResultQuizGameEvent", handleSummaryResult);
 
     // Get variable from localStorage in case reload
     var storeQuizAnswerVariable = localStorage.getItem('quizAnswerVariable') ? JSON.parse(localStorage.getItem(
         'quizAnswerVariable')) : null;
     if (storeQuizAnswerVariable) {
-        app = storeQuizAnswerVariable;
-        // Check current screen step
-        checkScreenStep(storeQuizAnswerVariable.currentStep);
+        let isValidStorage = new Date(storeQuizAnswerVariable.timeExpirationStorage) > new Date(app.currentTime);
+        if (!storeQuizAnswerVariable.isFinishQuiz && isValidStorage) {
+            app = storeQuizAnswerVariable;
+            // Check current screen step
+            checkScreenStep(storeQuizAnswerVariable.currentStep);
 
-        // Set label for header
-        HEADER.find('h2').text(storeQuizAnswerVariable.currentQuestion + ' of ' + storeQuizAnswerVariable
-            .totalQuestion);
+            // Set label for header
+            HEADER.find('h2').text(storeQuizAnswerVariable.currentQuestion + ' of ' + storeQuizAnswerVariable
+                .totalQuestion);
 
-        // Set point
-        FOOTER.find('.point').text(storeQuizAnswerVariable.totalPoint);
+            // Set point
+            FOOTER.find('.point').text(storeQuizAnswerVariable.totalPoint);
+
+        }
     }
 
+    // Catch even reload page
+    $(window).on('beforeunload', function(event) {
+        return "";
+    });
+
     $(document).ready(function() {
+        // User select answer
         $('.answers .answer-box').click(function() {
             var self = this;
             var selectedAnswer = $(this).data('id');
@@ -123,13 +140,12 @@
             app.totalQuestion = question.totalQuestion;
             app.currentStep = SELECT_ANSWER_STEP;
             app.totalPoint = question.number === 1 ? 0 : app.totalPoint
-
             // Set data
             HEADER.find('h2').text(app.currentQuestion + ' of ' + app.totalQuestion);
             FOOTER.find('.point').text(app.totalPoint);
             app.answers.forEach((value, index) => {
                 let boxAnswer = SELECT_ANSWER.find('.answer-box').get(index);
-                $(boxAnswer).data("id", value.id );;
+                $(boxAnswer).data("id", value.id);;
             });
 
             // Countdown milisecond to get point
@@ -143,14 +159,6 @@
                 setTimeout(() => {
                     sendTotalPoint();
                 }, parseInt(question.timeToAnswer) * 1000);
-
-                // Move to the quiz complete screen and remove localStorage after delay 5 seconds
-                setTimeout(() => {
-                    checkScreenStep(QUIZ_COMPLETED_STEP);
-
-                    // Remove localstorage
-                    localStorage.removeItem('quizAnswerVariable')
-                }, (parseInt(question.timeToAnswer) + 5) * 1000);
             }
 
             // Save variable to storage
@@ -200,15 +208,29 @@
                 // Show select answer screen
                 SELECT_ANSWER.show("slow");
                 break;
-
-            case QUIZ_COMPLETED_STEP:
+            case FINAL_RANK_STEP:
                 // Hide other screen
                 WELCOME_USER.hide();
                 CORRECT_ANSWER.hide();
                 INCORRECT_ANSWER.hide();
                 SELECT_ANSWER.hide();
                 PREPARE_ANSWER.hide();
+                HEADER.hide();
+                FOOTER.hide();
+                // Show quiz complete screen
+                FINAL_RANK.show();
+                break;
 
+            case QUIZ_COMPLETED_STEP:
+                // Hide other screen
+                WELCOME_USER.hide();
+                CORRECT_ANSWER.hide();
+                INCORRECT_ANSWER.hide();
+                PREPARE_ANSWER.hide("slow");
+                SELECT_ANSWER.hide("slow");
+                FINAL_RANK.hide("slow");
+                HEADER.show("slow");
+                FOOTER.show("slow");
                 // Show quiz complete screen
                 QUIZ_COMPLETED.show();
                 break;
@@ -247,5 +269,42 @@
                 // Handle submission error
             }
         });
+    }
+    // Handle show rank on player screen
+    function handleSummaryResult(data) {
+
+        // Allow user reload page doesnt need to confirm
+        window.onbeforeunload = null;
+
+        app.isFinishQuiz = true;
+        localStorage.setItem('quizQuestionVariable', JSON.stringify(app));
+
+        var scoreboard = data?.data;
+        $.each(scoreboard, function(index, element) {
+            if (element.user_id === USER_ID) {
+                let rank = index + 1;
+                FINAL_RANK.find('.point').text(element.point);
+                if (rank <= 10) {
+                    FINAL_RANK.find('.rank').text(rank);
+                    FINAL_RANK.find('.top-high-rank').show();
+                    FINAL_RANK.find('.other-rank').hide();
+                } else {
+                    FINAL_RANK.find('.other-rank').show();
+                    FINAL_RANK.find('.top-high-rank').hide();
+                    FINAL_RANK.find('.rank').text(rank + 'th');
+                    FINAL_RANK.css('background', '#3B3494');
+                }
+                return false;
+            }
+        });
+        checkScreenStep(FINAL_RANK_STEP);
+
+        // Move to the quiz complete screen and remove localStorage after delay 5 seconds
+        setTimeout(() => {
+            checkScreenStep(QUIZ_COMPLETED_STEP);
+
+            // Remove localstorage
+            localStorage.removeItem('quizAnswerVariable')
+        }, 10000);
     }
 </script>

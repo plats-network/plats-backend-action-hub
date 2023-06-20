@@ -5,7 +5,8 @@
     const PREPARE_START_QUESTION = $('.wrap-prepare-start.start-question');
     const QUESTION_DETAIL = $('.wrap-question-detail');
     const QUESTION_RESULT = $('.wrap-question-result');
-    const SCOREBOARD = $('.wrap-scoreboard');
+    const SCOREBOARD = $('.wrap-scoreboard.normal');
+    const SCOREBOARD_FINAL = $('.wrap-scoreboard.final');
     const QUIZ_COMPLETED = $('.quiz-completed');
     const SPINNER = $('#loading-overlay');
     const STARTGAMESOUND = $('#startGameSound')[0];
@@ -21,7 +22,8 @@
 
     // Declare global variable
     const EVENT_ID = "{{ $event->id }}";
-    const TIME_PREPARE_QUESTION = 5;
+    const TIME_PREPARE_QUESTION = 3;
+    const TIME_PREPARE_START_GAME = 5;
     var app = {
         userId: null,
         questionId: null,
@@ -37,7 +39,11 @@
         questionImage: null,
         timeToAnswer: 0,
         currentStep: 1,
-        expirationQuestionTime: null
+        expirationQuestionTime: null,
+        isFinalQuestion: false,
+        isFinishQuiz: false,
+        currentTime: new Date(),
+        timeExpirationStorage: new Date(new Date().getTime() + 60 * 60000), // Save data to localStorage 60 minutes
     }
 
     // Bind event pusher
@@ -48,12 +54,20 @@
     var storeQuizQuestionVariable = localStorage.getItem('quizQuestionVariable') ? JSON.parse(localStorage.getItem(
         'quizQuestionVariable')) : null;
     if (storeQuizQuestionVariable) {
-        app = storeQuizQuestionVariable;
-        // Check current screen step
-        handleScreenStep(storeQuizQuestionVariable.currentStep);
+        let isValidStorage = new Date(storeQuizQuestionVariable.timeExpirationStorage) > new Date(app.currentTime);
+        if (!storeQuizQuestionVariable.isFinishQuiz && isValidStorage) {
+            app = storeQuizQuestionVariable;
+            // Check current screen step
+            handleScreenStep(storeQuizQuestionVariable.currentStep);
 
-        // Bind data question
-        bindDataQuestion(QUESTION_DETAIL);
+            // Bind data question
+            bindDataQuestion(QUESTION_DETAIL);
+        }
+    }
+
+    // Catch even reload page
+    window.onbeforeunload = function() {
+        return "";
     }
 
     $(document).ready(function() {});
@@ -64,7 +78,7 @@
             // Start sound if game ready
             STARTGAMESOUND.play();
         }
-        app.countDownSecondsStartGame = TIME_PREPARE_QUESTION;
+        app.countDownSecondsStartGame = TIME_PREPARE_START_GAME;
 
         // Show select answer screen
         handleScreenStep(PREPARE_START_QUIZ_STEP);
@@ -75,7 +89,7 @@
         // Move to prepare question screen
         setTimeout(() => {
             nextQuestion();
-        }, TIME_PREPARE_QUESTION * 1000);
+        }, TIME_PREPARE_START_GAME * 1000);
     }
 
     // Handle next question
@@ -147,6 +161,7 @@
             app.countDownSecondsStartQuestion = 5;
             app.correctAnswer = question.correctAnswer;
             app.currentStep = QUESTION_DETAIL_STEP;
+            app.isFinalQuestion = question.totalQuestion === question.number
 
             // Bind new data question 
             bindDataQuestion(QUESTION_DETAIL)
@@ -270,7 +285,13 @@
                 QUESTION_RESULT.hide();
 
                 // Show select answer screen
-                SCOREBOARD.show();
+                if (app.isFinalQuestion) {
+                    SCOREBOARD.hide();
+                    SCOREBOARD_FINAL.show();
+                } else {
+                    SCOREBOARD_FINAL.hide();
+                    SCOREBOARD.show();
+                }
                 break;
 
             case QUIZ_COMPLETED_STEP:
@@ -278,6 +299,7 @@
                 WAITING_PLAYER.hide();
                 QUESTION_DETAIL.hide();
                 SCOREBOARD.hide();
+                SCOREBOARD_FINAL.hide();
 
                 // Show quiz complete screen
                 QUIZ_COMPLETED.show();
@@ -303,25 +325,24 @@
     }
     // Handle show result answers
     function showResultAnswer() {
-
         // Bind data question
         bindDataQuestion(QUESTION_RESULT);
-        let scoreboard = '';
         let summaryAnswer = '';
         let totalAnswered = 0;
-        console.log(scoreboard, summaryAnswer);
         SPINNER.show();
         $.ajax({
             url: '/quiz-game/summary-results/' + EVENT_ID,
             data: {
-                'quiz_id': app.questionId
+                'quiz_id': app.questionId,
+                'isLastQuestion': app.isFinalQuestion
             },
             method: 'GET',
             success: function(res) {
                 // Handle successful submission
-                scoreboard = res.scoreboard;
                 summaryAnswer = res.summaryAnswer;
                 totalAnswered = res.totalAnswered;
+
+                // Show correct answers
                 summaryAnswer.forEach((value, index) => {
                     let boxStats = QUESTION_RESULT.find('.wrap-stats .stats .item').get(index);
                     let boxAnswers = QUESTION_RESULT.find('.wrap-answers .answer-box').get(index);
@@ -329,10 +350,12 @@
 
                     // Caculate height (110px is the height of except class percentage)
                     let defaultHeight = "(100% - 110px)";
-                    let percentAnswer = totalAnswered ? parseInt(value.quiz_results_count)/ totalAnswered : 0;
+                    let percentAnswer = totalAnswered ? parseInt(value.quiz_results_count) /
+                        totalAnswered : 0;
                     let percentage = percentAnswer + '*' + defaultHeight;
                     $(boxStats).find('.percentage').css('height', 'calc(' + percentage + ')');
-                    $(boxStats).find('.free-space').css('height', 'calc(' + defaultHeight + ' - ' + percentage + ')');
+                    $(boxStats).find('.free-space').css('height', 'calc(' + defaultHeight + ' - ' +
+                        percentage + ')');
 
                     if (value.id === app.correctAnswer) {
                         $(boxStats).find('.icon-correct').css('visibility', 'visible');
@@ -342,30 +365,6 @@
                         $(boxAnswers).find('.icon-correct').css('visibility', 'hidden');
                     }
                 });
-                let topRank = '';
-                let midRank = '';
-                // Scoreboard
-                for (let rank = 1; rank <= 10; rank++) {
-                    let element = scoreboard[rank - 1] ?? null;
-                    let nickname = element ? element.user.name : '_';
-                    let point = element ? element.point : 0;
-                    rankItem =
-                        "<div class='rank-item d-flex items-center'><div class='rank' style='background-color:" +
-                        getColorRank(rank) + "'>" + rank +
-                        "</div><div class='wrap-point d-flex'>" +
-                        "<div class='nickname'>" + nickname + "</div><div class='point'>" +
-                        point +
-                        "</div></div></div>";
-                    if (rank < 6) {
-                        topRank += rankItem;
-                    } else {
-                        midRank += rankItem;
-                    }
-                }
-                SCOREBOARD.find('.wrap-top-rank').empty();
-                SCOREBOARD.find('.wrap-top-rank').append(topRank);
-                SCOREBOARD.find('.wrap-mid-rank').empty();
-                SCOREBOARD.find('.wrap-mid-rank').append(midRank);
             },
             error: function(error) {
                 // Handle submission error
@@ -374,7 +373,6 @@
                 // A function to be called when the request finishes 
                 // (after success and error callbacks are executed).
                 SPINNER.hide();
-                console.log(data);
                 // Move to prepare question
                 handleScreenStep(QUESTION_RESULT_STEP);
             }
@@ -383,7 +381,112 @@
 
     // Show scoreboard
     function showScoreboard() {
-        handleScreenStep(SCOREBOARD_STEP)
+        SPINNER.show();
+        $.ajax({
+            url: '/quiz-game/scoreboard/' + EVENT_ID,
+            data: {
+                'quiz_id': app.questionId,
+                'isLastQuestion': app.isFinalQuestion
+            },
+            method: 'GET',
+            success: function(res) {
+                // Handle successful submission
+                let scoreboard = res.scoreboard;
+                let topScoreboard = res.topScoreboard;
+                // Scoreboard
+                if (!app.isFinalQuestion) {
+                    let topRank = '';
+                    let midRank = '';
+                    for (let rank = 1; rank <= 10; rank++) {
+                        let element = scoreboard[rank - 1] ?? null;
+                        let nickname = element ? element.user.name : '_';
+                        let point = element ? element.point : 0;
+                        rankItem =
+                            "<div class='rank-item d-flex items-center'><div class='rank' style='background-color:" +
+                            getColorRank(rank) + "'>" + rank +
+                            "</div><div class='wrap-point d-flex'>" +
+                            "<div class='nickname'>" + nickname + "</div><div class='point'>" +
+                            point +
+                            "</div></div></div>";
+                        if (rank < 6) {
+                            topRank += rankItem;
+                        } else {
+                            midRank += rankItem;
+                        }
+                    }
+                    SCOREBOARD.find('.wrap-top-rank').empty();
+                    SCOREBOARD.find('.wrap-top-rank').append(topRank);
+                    SCOREBOARD.find('.wrap-mid-rank').empty();
+                    SCOREBOARD.find('.wrap-mid-rank').append(midRank);
+                } else {
+                    // Show other scoreboard if final questions
+                    showFinalScoreboard(topScoreboard);
+
+                    // Allow user reload page doesnt need to confirm
+                    window.onbeforeunload = null;
+                }
+            },
+            error: function(error) {
+                // Handle submission error
+            },
+            complete: function(data) {
+                // A function to be called when the request finishes 
+                // (after success and error callbacks are executed).
+                SPINNER.hide();
+                // Move to prepare question
+                handleScreenStep(SCOREBOARD_STEP)
+            }
+        });
+    };
+    // Show scoreboard
+    function quizComplete() {
+        handleScreenStep(QUIZ_COMPLETED_STEP)
+    };
+
+    // Show final scoreboard
+    function showFinalScoreboard(data) {
+        app.isFinishQuiz = true;
+
+        // Save variable to storage
+        localStorage.setItem('quizQuestionVariable', JSON.stringify(app));
+
+        // First rank
+        let firstRank = data[0] ?? null;
+        if (firstRank) {
+            SCOREBOARD_FINAL.find('.first-rank .nickname').text(firstRank.user.name);
+            SCOREBOARD_FINAL.find('.first-rank .point').text(firstRank.point);
+        }
+
+        // Second rank
+        let secondRank = data[1] ?? null;
+        if (secondRank) {
+            SCOREBOARD_FINAL.find('.second-rank .nickname').text(secondRank.user.name);
+            SCOREBOARD_FINAL.find('.second-rank .point').text(secondRank.point);
+        }
+
+        // Third rank
+        let thirdRank = data[2] ?? null;
+        if (thirdRank) {
+            SCOREBOARD_FINAL.find('.third-rank .nickname').text(thirdRank.user.name);
+            SCOREBOARD_FINAL.find('.third-rank .point').text(thirdRank.point);
+        }
+
+        // Mid rank
+        var rankItem = SCOREBOARD_FINAL.find('.mid-rank .rank-item').get(0);
+        var midRank = '';
+        for (let rank = 4; rank <= 10; rank++) {
+            let element = data[rank - 1] ?? null;
+            let nickname = element ? element.user.name : '_';
+            let point = element ? element.point : 0;
+            midRank +=
+                "<div class='rank-item d-flex items-center'><div class='rank' style='background-color:" +
+                getColorRank(rank) + "'>" + rank +
+                "</div><div class='wrap-point d-flex'>" +
+                "<div class='nickname'>" + nickname + "</div><div class='point'>" + point +
+                "</div></div></div>";
+        }
+        SCOREBOARD_FINAL.find('.mid-rank').empty();
+        SCOREBOARD_FINAL.find('.mid-rank').append(midRank);
     };
 
     // Get color scoreboard
