@@ -118,59 +118,66 @@
                                         <div class="col-md-8">
                                             <div class="row">
                                                 <div class="col-lg-12">
-                                                    <div class="mb-3">
-                                                        <label for="basicpill-firstname-input" class="form-label">Name</label>
-                                                        <input type="text" value="{{ $event->name }}"
+                                                    <div class="mb-3 field-name">
+                                                        <label for="basicpill-firstname-input" class="form-label">Name <span class="text-danger">*</span></label>
+                                                        <input type="text" value="{{ $event->name }}" required
                                                                class="form-control" placeholder="[TECH-ED PROGRAM] Cross-chain: Sidechain Solutions & BAS Case Study" id="name" name="name">
+                                                        <div class="valid-feedback"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-12">
-                                                    <div class="mb-3">
-                                                        <label for="basicpill-firstname-input" class="form-label">Address</label>
+                                                    <div class="mb-3 field-address">
+                                                        <label for="basicpill-firstname-input" class="form-label">Address <span class="text-danger">*</span></label>
                                                         <input type="text" value="{{ $event->address }}"
                                                                class="form-control" placeholder="30 Đường Văn Cao Hà Nội, Hà Nội" id="address" name="address">
+                                                        <div class="valid-feedback"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-4">
-                                                    <div class="mb-3">
+                                                    <div class="mb-3 field-lat">
                                                         <label for="basicpill-firstname-input" class="form-label">Latitude</label>
                                                         <input type="text" class="form-control" value="{{ $event->lat }}"
                                                                placeholder="21.027763" id="lat" name="lat">
+                                                        <div class="valid-feedback"></div>
                                                     </div>
                                                 </div><!-- end col -->
                                                 <div class="col-lg-4">
-                                                    <div class="mb-3">
+                                                    <div class="mb-3 field-lng">
                                                         <label for="basicpill-lastname-input" class="form-label">Longitude</label>
                                                         <input type="text" class="form-control" value="{{ $event->lng }}"
                                                                placeholder="105.834160" name="lng" id="lng">
+                                                        <div class="valid-feedback"></div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
-                                                    <div class="mb-3">
+                                                    <div class="mb-3 field-order">
                                                         <label for="basicpill-address-input" class="form-label">Order</label>
                                                         <input type="text" class="form-control" placeholder="2" value="{{ $event->order }}" id="order" name="order">
+                                                        <div class="valid-feedback"></div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-6">
-                                                    <div class="mb-3">
+                                                    <div class="mb-3 field-start_at">
                                                         <label for="basicpill-phoneno-input"
                                                                class="form-label">Start At</label>
                                                         <input type="text" class="form-control" value="{{ $event->start_at }}"
                                                                placeholder="2023-06-19 08:00" id="start_at" name="start_at">
+                                                        <div class="valid-feedback"></div>
                                                     </div>
                                                 </div><!-- end col -->
                                                 <div class="col-lg-6">
-                                                    <div class="mb-3">
+                                                    <div class="mb-3 field-end_at">
                                                         <label for="basicpill-email-input"
                                                                class="form-label">End At</label>
                                                         <input type="text" class="form-control" value="{{ $event->end_at }}"
                                                                placeholder="2023-06-19 17:30" id="end_at" name="end_at">
+                                                        <div class="valid-feedback"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -206,7 +213,7 @@
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="mb-3">
-                                                        <label for="event_description" class="form-label">Description</label>
+                                                        <label for="event_description" class="form-label">Description <span class="text-danger">*</span></label>
 
                                                         <div id="editor"></div>
                                                         <input type="hidden" id="description" name="description" value="{{ $event->description }}">
@@ -236,6 +243,7 @@
                                                     <div class="mb-3">
                                                         <div class="mb-3">
                                                             <input type="text" class="form-control" placeholder="reward" id="reward" name="reward" value="{{$event->reward}}">
+                                                            <div class="valid-feedback"></div>
                                                         </div>
                                                     </div>
 
@@ -273,6 +281,7 @@
                                                 <div class="mb-3">
                                                     <label for="basicpill-pancard-input" class="form-label">Session Name</label>
                                                     <input type="text" class="form-control" value="{{$sessions->name}}" placeholder="Session Name" id="sessions[name]" name="sessions[name]">
+                                                    <div class="valid-feedback"></div>
                                                 </div>
                                             </div><!-- end col -->
 
@@ -281,6 +290,7 @@
                                                     <label for="basicpill-vatno-input"
                                                            class="form-label">&nbsp;</label>
                                                     <input type="text" class="form-control" placeholder="" value="{{$sessions->max_job}}" id="sessions[max_job]" name="sessions[max_job]">
+                                                    <div class="valid-feedback"></div>
                                                 </div>
                                             </div><!-- end col -->
                                         </div><!-- end row -->
@@ -360,6 +370,7 @@
                                                 <div class="mb-3">
                                                     <label for="booths[name]" class="form-label">Scan Booth</label>
                                                     <input type="text" class="form-control" value="{{$booths->name}}" placeholder="Booth Name" id="booths[name]" name="booths[name]" />
+                                                    <div class="valid-feedback"></div>
                                                 </div>
                                             </div><!-- end col -->
 
@@ -368,6 +379,7 @@
                                                     <label for="basicpill-vatno-input"
                                                            class="form-label">&nbsp;</label>
                                                     <input type="text" class="form-control" value="{{$booths->max_job}}" placeholder="max_job" id="booths[max_job]" name="booths[max_job]" >
+                                                    <div class="valid-feedback"></div>
                                                 </div>
                                             </div><!-- end col -->
                                         </div><!-- end row -->
@@ -608,7 +620,7 @@
 
                                                                     <div class="form-check mt-2">
                                                                         {{--status--}}
-                                                                        <input class="form-check-input" type="checkbox" value="1" id="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]"
+                                                                        <input class="form-check-input checkOptionQuiz" type="checkbox" value="1" id="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]"
                                                                                name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]" @if($itemQuizAnswer->status == 1) checked @endif>
                                                                         <label class="form-check-label" for="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]">
                                                                             Option
@@ -694,12 +706,15 @@
     <script src="{{asset('plugins/yii2-assets/yii.validation.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     @if($isPreview == false)
         <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
     @else
         <script src="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.js"></script>
     @endif
+
     <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.js"></script>
+
     <script src="https://uicdn.toast.com/editor/latest/i18n/ja-jp.js"></script>
 
     <script>
@@ -823,6 +838,7 @@
             }
         });
     </script>
+
     <script>
         /*File Upload*/
         jQuery(document).ready(function ($) {
@@ -957,6 +973,7 @@
 
         });
     </script>
+
     <script>
         jQuery(document).ready(function ($) {
             var modalDelete = $('#modalDelete');
@@ -1197,6 +1214,8 @@
             x[n].className += " active";
         }
 
+        //Check if edit not alow click
+        @if($isPreview)
         //step-icon onclick show tab
         $(document).on('click', '.step-icon', function (event) {
             event.preventDefault();
@@ -1216,5 +1235,106 @@
             }
             //fixStepIndicator(id);
         });
+        @endif
     </script>
+
+    {{--validate--}}
+    <script>
+        jQuery(function ($) {
+
+            jQuery('#post_form').yiiActiveForm([
+                {
+                    "id": "name",
+                    "name": "name",
+                    "container": ".field-name",
+                    "input": "#name",
+                    "error": ".valid-feedback",
+                    "validate": function (attribute, value, messages, deferred, $form) {
+                        yii.validation.required(value, messages, {"message": "{{__('validation-inline.required') }}"});
+                    }
+                },
+                /*address*/
+                {
+                    "id": "address",
+                    "name": "address",
+                    "container": ".field-address",
+                    "input": "#address",
+                    "error": ".valid-feedback",
+                    "validate": function (attribute, value, messages, deferred, $form) {
+                        yii.validation.required(value, messages, {"message": "{{__('validation-inline.required') }}"});
+                    }
+                },
+                {
+                    "id": "category_name",
+                    "name": "category_name",
+                    "container": ".field-category_name",
+                    "input": "#category_name",
+                    "error": ".valid-feedback",
+                    "validate": function (attribute, value, messages, deferred, $form) {
+                        yii.validation.required(value, messages, {"message": "{{__('validation-inline.required') }}"});
+                    }
+                },
+                /*lat*/
+                {
+                    "id": "lat",
+                    "name": "lat",
+                    "container": ".field-lat",
+                    "input": "#lat",
+                    "error": ".valid-feedback",
+                    "validate": function (attribute, value, messages, deferred, $form) {
+                        yii.validation.required(value, messages, {"message": "{{__('validation-inline.required') }}"});
+                    }
+                },
+                //lng
+                {
+                    "id": "lng",
+                    "name": "lng",
+                    "container": ".field-lng",
+                    "input": "#lng",
+                    "error": ".valid-feedback",
+                    "validate": function (attribute, value, messages, deferred, $form) {
+                        yii.validation.required(value, messages, {"message": "{{__('validation-inline.required') }}"});
+                    }
+                },
+
+                //start_date
+                {
+                    "id": "start_at",
+                    "name": "start_at",
+                    "container": ".field-start_at",
+                    "input": "#start_at",
+                    "error": ".valid-feedback",
+                    "validate": function (attribute, value, messages, deferred, $form) {
+                        yii.validation.required(value, messages, {"message": "{{__('validation-inline.required') }}"});
+                        //Validate date check less than end_date
+                        if (value && $('#end_at').val()) {
+                            if (value > $('#end_at').val()) {
+                                yii.validation.addMessage(messages, "{{__('validation-inline.start_date_less_than_end_date') }}");
+                            }
+                        }
+                    }
+                },
+                //end_date
+                {
+                    "id": "end_at",
+                    "name": "end_at",
+                    "container": ".field-end_at",
+                    "input": "#end_at",
+                    "error": ".valid-feedback",
+                    "validate": function (attribute, value, messages, deferred, $form) {
+                        yii.validation.required(value, messages, {"message": "{{__('validation-inline.required') }}"});
+                        //Validate date check grater than end_date
+                        if (value && $('#start_at').val()) {
+                            if (value < $('#start_at').val()) {
+                                yii.validation.addMessage(messages, "{{__('validation-inline.end_date_greater_than_start_date') }}");
+                            }
+                        }
+                    }
+                },
+
+            ], []);
+        });
+    </script>
+
+
 @endsection
