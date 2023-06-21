@@ -80,9 +80,8 @@
     {{--Delete Item--}}
     <div class="row">
         <div class="col-lg-12">
-            <div class="mb-3">
-                <label for="basicpill-expiration-input"
-                       class="form-label">&nbsp;</label>
+            <div class="mb-3 d-flex flex-row-reverse">
+                <label for="basicpill-expiration-input" class="form-label">&nbsp;</label>
                 <button type="button" data-id="{{$indexImageItem}}" class="btnDeleteImageQuiz btn btn-danger btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-delete me-1"></i> Delete</button>
             </div>
         </div>

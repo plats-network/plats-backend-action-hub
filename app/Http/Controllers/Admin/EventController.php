@@ -15,6 +15,7 @@ use App\Services\Admin\{EventService, TaskService};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Log;
 
 class EventController extends Controller
 {
@@ -102,7 +103,7 @@ class EventController extends Controller
     public function create(Request $request)
     {
         /** @var Task $task */
-        $task =  new Event();
+        $task =  new TaskEvent();
         $isCopyModel = $request->get('copy', null);
         if ($isCopyModel) {
             $post_id = $request->get('id', 0);
@@ -196,24 +197,21 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        $inputAll = $request->all();
-        //Input type = 1
-        $inputAll['type'] = 1;
-        /*
-         * "id" => "99583545-472e-4710-8258-24b8b2b33110"
-    "task_id" => "c519af43-1349-46bb-ab52-de6b53981d8c"
-         * */
+        try {
+            $inputAll = $request->all();
+            $inputAll['type'] = 1;
+            $request->validate(['name' => 'required']);
 
-        $request->validate([
-            'name' => 'required',
-            //'email' => 'required',
-            //'address' => 'required',
-        ]);
+            //$company->fill($request->post())->save();
+            $this->eventService->store($request);
+            notify()->success('Create event successfully');
+        } catch (\Exception $e) {
+            notify::error('Create event fail!');
+            Log::error('Create event cws: ' . $e->getMessage());
+            return redirect()->route('cws.eventCreate');
+        }
 
-        //$company->fill($request->post())->save();
-        $this->eventService->store($request);
-
-        return redirect()->route('cws.eventList')->with('success', 'Event has been created successfully.');
+        return redirect()->route('cws.eventList');
     }
 
     /**
@@ -235,7 +233,7 @@ class EventController extends Controller
     {
         if (Str::contains($request->path(), 'event-preview')) {
             if (!$request->get('preview') == 1) {
-                notify()->error('Error view');
+                notify()->error('Không thể truy cập');
                 return redirect()->route('cws.eventList');
             }
         }
@@ -337,27 +335,18 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $company)
     {
+        try {
+            $input = $request->all();
+            $request->validate(['name' => 'required']);
+            $this->eventService->store($request);
+            notify()->success('Update successful!');
+        } catch (\Exception $e) {
+            notify()->error('Update fail!');
+            Log::error('Update Event Cws: '. $e->getMessage());
+            return redirect()->route('cws.eventList', ['tab' => 0]);
+        }
 
-        $input = $request->all();
-        //dd($input);
-
-        /*
-         * "id" => "99583545-472e-4710-8258-24b8b2b33110"
-    "task_id" => "c519af43-1349-46bb-ab52-de6b53981d8c"
-         * */
-
-        $request->validate([
-            'name' => 'required',
-            //'email' => 'required',
-            //'address' => 'required',
-        ]);
-
-
-        //dd($input);
-        //$company->fill($request->post())->save();
-        $this->eventService->store($request);
-
-        return redirect()->route('cws.eventList', ['tab' => 0])->with('success', 'Event Has Been updated successfully');
+        return redirect()->route('cws.eventList', ['tab' => 0]);
     }
 
     //preview
@@ -391,7 +380,7 @@ class EventController extends Controller
             $task = $this->task->find($id);
             if ($task) {
                 $status = $task->status == true ? false : true;
-                $task->update(['status' => false]);
+                $task->update(['status' => $status]);
             }
         } catch (\Exception $e) {
             return response()->json([

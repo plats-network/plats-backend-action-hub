@@ -1,4 +1,4 @@
-<ul class="wizard-nav mb-5">
+<ul class="wizard-nav mb-2">
     <li class="wizard-list-item">
         <div class="list-item">
             <div class="step-icon" data-step="0"  data-bs-toggle="tooltip" data-bs-placement="top"

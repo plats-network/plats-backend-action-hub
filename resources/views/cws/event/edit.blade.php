@@ -155,9 +155,9 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-12">
                                                     <div class="form-group field-article-thumbnail">
-                                                        <label for="article-thumbnail" class="mb-3"><b>Ảnh Thumbnail</b></label>
+                                                        <label for="article-thumbnail" class="mb-3"><b>Banner</b></label>
                                                         <div>
                                                             <input type="hidden" id="article-thumbnail" class="empty-value"
                                                                    name="thumbnail">
@@ -236,57 +236,187 @@
                             </div>
                             <!-- wizard-tab -->
                             <div id="tabwizard1" class="wizard-tab">
+                                <div class="text-center mb-4">
+                                    <h5>Sessions</h5>
+                                    <p class="card-title-desc">Fill all information below</p>
+                                </div>
                                 <div>
-                                    <div class="text-center mb-4">
-                                        <h5>Sessions</h5>
-                                        <p class="card-title-desc">Fill all information below</p>
+                                    {{--Id--}}
+                                    <input type="hidden" name="sessions[id]" id="sessions[id]" value="{{$sessions->id}}">
+                                    {{--Event Id--}}
+                                    <input type="hidden" name="sessions[task_id]" id="sessions[task_id]" value="{{$event->id}}">
+                                    {{--Session Id--}}
+                                    <div class="row">
+                                        <div class="col-lg-9">
+                                            <div class="mb-3">
+                                                <label for="basicpill-pancard-input" class="form-label">Session Name</label>
+                                                <input type="text" class="form-control" value="{{$sessions->name}}" placeholder="Session Name" id="sessions[name]" name="sessions[name]">
+                                                <div class="valid-feedback"></div>
+                                            </div>
+                                        </div><!-- end col -->
+
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                <label for="basicpill-vatno-input"
+                                                    class="form-label">Max job</label>
+                                                {{-- <p class="card-title-desc">Số lượng job hoàn thành để nhận được mã số quay thưởng.</p> --}}
+                                                <input
+                                                    type="number"
+                                                    class="form-control"
+                                                    placeholder="2"
+                                                    value="{{$sessions->max_job}}"
+                                                    id="sessions[max_job]"
+                                                    name="sessions[max_job]"
+                                                    min="0"
+                                                    max="100">
+                                                <div class="valid-feedback"></div>
+                                            </div>
+                                        </div><!-- end col -->
+                                    </div><!-- end row -->
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label for="basicpill-cstno-input" class="form-label">Mô tả session</label>
+                                                <div id="editor2"></div>
+                                                <input type="hidden" class="form-control" id="sessions-description" name="sessions[description]" value="{{$sessions->description}}"  />
+
+                                            </div>
+                                        </div><!-- end col -->
                                     </div>
-                                    <div>
-                                        {{--Id--}}
-                                        <input type="hidden" name="sessions[id]" id="sessions[id]" value="{{$sessions->id}}">
-                                        {{--Event Id--}}
-                                        <input type="hidden" name="sessions[task_id]" id="sessions[task_id]" value="{{$event->id}}">
-                                        {{--Session Id--}}
-                                        <div class="row">
-                                            <div class="col-lg-9">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-pancard-input" class="form-label">Session Name</label>
-                                                    <input type="text" class="form-control" value="{{$sessions->name}}" placeholder="Session Name" id="sessions[name]" name="sessions[name]">
-                                                    <div class="valid-feedback"></div>
-                                                </div>
-                                            </div><!-- end col -->
+                                    @if ($isPreview)
+                                        <table class="table table-bordered mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Name</th>
+                                                    <th>Description</th>
+                                                    <th>QR Code</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($sessions->detail as $k => $session)
+                                                    <tr>
+                                                       <td>{{$k+1}}</td> 
+                                                       <td>{{$session->name}}</td> 
+                                                       <td>{!!$session->description!!}</td> 
+                                                       <td>
+                                                            @php
+                                                                $qr = 'https://'.config('plats.event').'/events/code?type=event&id='.$session->code;
+                                                            @endphp
+                                                            {!! QrCode::size(200)->generate($qr) !!}
+                                                       </td> 
+                                                       <td>
+                                                            <input
+                                                                    type="checkbox"
+                                                                    id="session_{{ $k+1 }}"
+                                                                    switch="none"
+                                                                    @if($session->status) checked @endif
+                                                                >
+                                                                <label class="job"
+                                                                    data-id="{{$session->code}}"
+                                                                    data-detail-id="{{$sessions->id}}"
+                                                                    for="session_{{ $k+1 }}"
+                                                                    data-on-label="On"
+                                                                    data-off-label="Off">
+                                                                </label>
+                                                       </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <div class="row mt-3">
+                                            <div class="listRowSession" id="listRowSession">
+                                                @if($sessions->detail)
+                                                @foreach($sessions->detail as $sessionDetail)
+                                                    <div class="mb-3 row itemSessionDetail" id="itemImage{{$sessionDetail->id}}">
+                                                        {{--Id--}}
+                                                        <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][id]" id="sessions[detail][{{$sessionDetail->id}}][id]" value="{{$sessionDetail->id}}">
+                                                        {{--Session Id--}}
+                                                        {{--Is delete--}}
+                                                        <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][is_delete]" id="sessionsFlagDelete{{$sessionDetail->id}}" value="0">
 
-                                            <div class="col-lg-2">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-vatno-input"
-                                                        class="form-label">Max job</label>
-                                                    {{-- <p class="card-title-desc">Số lượng job hoàn thành để nhận được mã số quay thưởng.</p> --}}
-                                                    <input
-                                                        type="number"
-                                                        class="form-control"
-                                                        placeholder="2"
-                                                        value="{{$sessions->max_job}}"
-                                                        id="sessions[max_job]"
-                                                        name="sessions[max_job]"
-                                                        min="0"
-                                                        max="100">
-                                                    <div class="valid-feedback"></div>
-                                                </div>
-                                            </div><!-- end col -->
-                                        </div><!-- end row -->
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-cstno-input" class="form-label">Mô tả session</label>
-                                                    <div id="editor2"></div>
-                                                    <input type="hidden" class="form-control" id="sessions-description" name="sessions[description]" value="{{$sessions->description}}"  />
+                                                        <label for="inputPassword" class="col-sm-2 col-form-label">Session {{$loop->index+1}}</label>
+                                                        <div class="col-sm-4">
+                                                            {{--name--}}
+                                                            <input type="text" placeholder="Name" class="form-control" id="sessions[detail][{{$sessionDetail->id}}][name]" name="sessions[detail][{{$sessionDetail->id}}][name]" value="{{$sessionDetail->name}}">
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            {{--description--}}
+                                                            <input type="text" placeholder="Description" class="form-control" id="sessions[detail][{{$sessionDetail->id}}][description]" name="sessions[detail][{{$sessionDetail->id}}][description]" value="{{$sessionDetail->description}}">
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            {{--Button delete--}}
+                                                            <div class="col-auto">
+                                                                <button type="button" data-id="{{$sessionDetail->id}}" onclick="deleteImageReform({{$sessionDetail->id}})"  class="btn btn-danger mb-3 btnDeleteImage">Xoá</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                                @endif
+                                            </div>
 
+                                            <div class="row mt-3">
+                                                <div class="d-flex flex-row-reverse">
+                                                    <div class="p-2">
+                                                        <button id="btnAddItemSession" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm</button>
+                                                    </div>
                                                 </div>
-                                            </div><!-- end col -->
+                                                <hr>
+                                            </div>
                                         </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <!-- wizard-tab -->
+                            <div id="tabwizard2" class="wizard-tab">
+                                <div class="text-center mb-4">
+                                    <h5>Booths</h5>
+                                    <p class="card-title-desc">Fill all information below</p>
+                                </div>
+                                <div>
+                                    <div class="row">
+                                        <input type="hidden" name="booths[id]" id="booths[id]" value="{{$booths->id}}">
+                                        <input type="hidden" name="booths[task_id]" id="booths[task_id]" value="{{$event->id}}">
+                                        <div class="col-lg-9">
+                                            <div class="mb-3">
+                                                <label for="booths[name]" class="form-label">Name Booth</label>
+                                                <input type="text" class="form-control" value="{{$booths->name}}" placeholder="Booth Name" id="booths[name]" name="booths[name]" />
+                                                <div class="valid-feedback"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                <label
+                                                    for="basicpill-vatno-input"
+                                                    class="form-label">Max Job</label>
+                                                <input
+                                                    type="number"
+                                                    class="form-control"
+                                                    value="{{$booths->max_job}}"
+                                                    placeholder="2"
+                                                    id="booths[max_job]"
+                                                    name="booths[max_job]">
+                                                <div class="valid-feedback"></div>
+                                            </div>
+                                        </div><!-- end col -->
+                                    </div><!-- end row -->
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label for="booths[description]" class="form-label">Mô tả Booth</label>
+                                                <div id="editor3"></div>
+                                                <input type="hidden" class="form-control" id="booths-description" name="booths[description]" value="{{$booths->description}}"  />
+
+                                            </div>
+                                        </div><!-- end col -->
+
+                                    </div><!-- end row -->
+                                    <div class="row mt-3">
                                         @if ($isPreview)
-                                            <table class="table table-striped table-centered align-middle table-nowrap mb-0 table-check">
-                                                <thead>
+                                            <table class="table table-bordered mb-0">
+                                                <thead class="table-light">
                                                     <tr>
                                                         <th>No</th>
                                                         <th>Name</th>
@@ -296,209 +426,75 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach($sessions->detail as $k => $session)
+                                                    @foreach($booths->detail as $k => $booth)
+                                                        @php
+                                                            $qr = 'https://'.config('plats.event').'/events/code?type=event&id='.$booth->code;
+                                                        @endphp
                                                         <tr>
                                                            <td>{{$k+1}}</td> 
-                                                           <td>{{$session->name}}</td> 
-                                                           <td>{!!$session->description!!}</td> 
-                                                           <td>
-                                                                @php
-                                                                    $qr = 'https://'.config('plats.event').'/events/code?type=event&id='.$session->code;
-                                                                @endphp
+                                                           <td>{{$booth->name}}</td> 
+                                                           <td>{!!$booth->description!!}</td> 
+                                                           <td data-url="{{$qr}}">
                                                                 {!! QrCode::size(200)->generate($qr) !!}
                                                            </td> 
                                                            <td>
                                                                 <input
-                                                                        type="checkbox"
-                                                                        id="session_{{ $k+1 }}"
-                                                                        switch="none"
-                                                                        @if($session->status) checked @endif
-                                                                    >
-                                                                    <label class="job"
-                                                                        data-id="{{$session->code}}"
-                                                                        data-detail-id="{{$sessions->id}}"
-                                                                        for="session_{{ $k+1 }}"
-                                                                        data-on-label="On"
-                                                                        data-off-label="Off">
-                                                                    </label>
+                                                                    type="checkbox"
+                                                                    id="booth_{{ $k+1 }}"
+                                                                    switch="none"
+                                                                    @if($booth->status) checked @endif
+                                                                >
+                                                                <label class="job"
+                                                                    data-id="{{$booth->code}}"
+                                                                    data-detail-id="{{$booths->id}}"
+                                                                    for="booth_{{ $k+1 }}"
+                                                                    data-on-label="On"
+                                                                    data-off-label="Off">
+                                                                </label>
                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
                                             </table>
                                         @else
-                                            <div class="row mt-3">
-                                                <div class="listRowSession" id="listRowSession">
-                                                    @if($sessions->detail)
-                                                    @foreach($sessions->detail as $sessionDetail)
-                                                        <div class="mb-3 row itemSessionDetail" id="itemImage{{$sessionDetail->id}}">
-                                                            {{--Id--}}
-                                                            <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][id]" id="sessions[detail][{{$sessionDetail->id}}][id]" value="{{$sessionDetail->id}}">
-                                                            {{--Session Id--}}
-                                                            {{--Is delete--}}
-                                                            <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][is_delete]" id="sessionsFlagDelete{{$sessionDetail->id}}" value="0">
+                                            <div class="listRowBooth" id="listRowBooth">
+                                                @foreach($booths->detail as $boothDetail)
+                                                    <div class="mb-3 row itemBoothDetail" id="itemBooth{{$boothDetail->id}}">
+                                                        {{--Id--}}
+                                                        <input type="hidden" name="booths[detail][{{$boothDetail->id}}][id]" id="booths[detail][{{$boothDetail->id}}][id]" value="{{$boothDetail->id}}">
+                                                        {{--Session Id--}}
+                                                        {{--Is delete--}}
+                                                        <input type="hidden" name="booths[detail][{{$boothDetail->id}}][is_delete]" id="boothFlagDelete{{$boothDetail->id}}" value="0">
 
-                                                            <label for="inputPassword" class="col-sm-2 col-form-label">Session {{$loop->index+1}}</label>
-                                                            <div class="col-sm-4">
-                                                                {{--name--}}
-                                                                <input type="text" placeholder="Name" class="form-control" id="sessions[detail][{{$sessionDetail->id}}][name]" name="sessions[detail][{{$sessionDetail->id}}][name]" value="{{$sessionDetail->name}}">
-                                                            </div>
-                                                            <div class="col-sm-4">
-                                                                {{--description--}}
-                                                                <input type="text" placeholder="Description" class="form-control" id="sessions[detail][{{$sessionDetail->id}}][description]" name="sessions[detail][{{$sessionDetail->id}}][description]" value="{{$sessionDetail->description}}">
-                                                            </div>
-                                                            <div class="col-sm-2">
-                                                                {{--Button delete--}}
-                                                                <div class="col-auto">
-                                                                    <button type="button" data-id="{{$sessionDetail->id}}" onclick="deleteImageReform({{$sessionDetail->id}})"  class="btn btn-danger mb-3 btnDeleteImage">Xoá</button>
-                                                                </div>
-                                                            </div>
+
+                                                        <label for="inputPassword" class="col-sm-2 col-form-label">Booth 1</label>
+                                                        <div class="col-sm-4">
+                                                            {{--name--}}
+                                                            <input type="text" placeholder="Name" class="form-control" id="booths[detail][{{$boothDetail->id}}][name]" name="booths[detail][{{$boothDetail->id}}][name]" value="{{$boothDetail->name}}">
                                                         </div>
-                                                    @endforeach
-                                                    @endif
-                                                </div>
-
-                                                <div class="row mt-3">
-                                                    <div class="d-flex flex-row-reverse">
-                                                        <div class="p-2">
-                                                            <button id="btnAddItemSession" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm</button>
+                                                        <div class="col-sm-4">
+                                                            {{--description--}}
+                                                            <input type="text" placeholder="Description" class="form-control" id="booths[detail][{{$boothDetail->id}}][description]" name="booths[detail][{{$boothDetail->id}}][description]" value="{{$boothDetail->description}}">
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            {{--Button delete--}}
+                                                            <div class="col-auto">
+                                                                <button type="button" data-id="{{$boothDetail->id}}" onclick="deleteImageReform({{$boothDetail->id}})"  class="btn btn-danger mb-3 btnDeleteImageBooth">Xoá</button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <hr>
+                                                @endforeach
+                                            </div>
+                                            <div class="row mt-3">
+
+                                                <div class="d-flex flex-row-reverse">
+                                                    <div class="p-2">
+                                                        <button id="btnAddItemBooth" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm job</button>
+                                                    </div>
                                                 </div>
+                                                <hr>
                                             </div>
                                         @endif
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- wizard-tab -->
-                            <div id="tabwizard2" class="wizard-tab">
-                                <div>
-                                    <div class="text-center mb-4">
-                                        <h5>Booths</h5>
-                                        <p class="card-title-desc">Fill all information below</p>
-                                    </div>
-                                    <div>
-                                        <div class="row">
-                                            <input type="hidden" name="booths[id]" id="booths[id]" value="{{$booths->id}}">
-                                            <input type="hidden" name="booths[task_id]" id="booths[task_id]" value="{{$event->id}}">
-                                            <div class="col-lg-9">
-                                                <div class="mb-3">
-                                                    <label for="booths[name]" class="form-label">Name Booth</label>
-                                                    <input type="text" class="form-control" value="{{$booths->name}}" placeholder="Booth Name" id="booths[name]" name="booths[name]" />
-                                                    <div class="valid-feedback"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class="mb-3">
-                                                    <label
-                                                        for="basicpill-vatno-input"
-                                                        class="form-label">Max Job</label>
-                                                    <input
-                                                        type="number"
-                                                        class="form-control"
-                                                        value="{{$booths->max_job}}"
-                                                        placeholder="2"
-                                                        id="booths[max_job]"
-                                                        name="booths[max_job]">
-                                                    <div class="valid-feedback"></div>
-                                                </div>
-                                            </div><!-- end col -->
-                                        </div><!-- end row -->
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label for="booths[description]" class="form-label">Mô tả Booth</label>
-                                                    <div id="editor3"></div>
-                                                    <input type="hidden" class="form-control" id="booths-description" name="booths[description]" value="{{$booths->description}}"  />
-
-                                                </div>
-                                            </div><!-- end col -->
-
-                                        </div><!-- end row -->
-                                        <div class="row mt-3">
-                                            @if ($isPreview)
-                                                <table class="table table-striped table-centered align-middle table-nowrap mb-0 table-check">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>No</th>
-                                                            <th>Name</th>
-                                                            <th>Description</th>
-                                                            <th>QR Code</th>
-                                                            <th>Status</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach($booths->detail as $k => $booth)
-                                                            @php
-                                                                $qr = 'https://'.config('plats.event').'/events/code?type=event&id='.$booth->code;
-                                                            @endphp
-                                                            <tr>
-                                                               <td>{{$k+1}}</td> 
-                                                               <td>{{$booth->name}}</td> 
-                                                               <td>{!!$booth->description!!}</td> 
-                                                               <td data-url="{{$qr}}">
-                                                                    {!! QrCode::size(200)->generate($qr) !!}
-                                                               </td> 
-                                                               <td>
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        id="booth_{{ $k+1 }}"
-                                                                        switch="none"
-                                                                        @if($booth->status) checked @endif
-                                                                    >
-                                                                    <label class="job"
-                                                                        data-id="{{$booth->code}}"
-                                                                        data-detail-id="{{$booths->id}}"
-                                                                        for="booth_{{ $k+1 }}"
-                                                                        data-on-label="On"
-                                                                        data-off-label="Off">
-                                                                    </label>
-                                                               </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            @else
-                                                <div class="listRowBooth" id="listRowBooth">
-                                                    @foreach($booths->detail as $boothDetail)
-                                                        <div class="mb-3 row itemBoothDetail" id="itemBooth{{$boothDetail->id}}">
-                                                            {{--Id--}}
-                                                            <input type="hidden" name="booths[detail][{{$boothDetail->id}}][id]" id="booths[detail][{{$boothDetail->id}}][id]" value="{{$boothDetail->id}}">
-                                                            {{--Session Id--}}
-                                                            {{--Is delete--}}
-                                                            <input type="hidden" name="booths[detail][{{$boothDetail->id}}][is_delete]" id="boothFlagDelete{{$boothDetail->id}}" value="0">
-
-
-                                                            <label for="inputPassword" class="col-sm-2 col-form-label">Booth 1</label>
-                                                            <div class="col-sm-4">
-                                                                {{--name--}}
-                                                                <input type="text" placeholder="Name" class="form-control" id="booths[detail][{{$boothDetail->id}}][name]" name="booths[detail][{{$boothDetail->id}}][name]" value="{{$boothDetail->name}}">
-                                                            </div>
-                                                            <div class="col-sm-4">
-                                                                {{--description--}}
-                                                                <input type="text" placeholder="Description" class="form-control" id="booths[detail][{{$boothDetail->id}}][description]" name="booths[detail][{{$boothDetail->id}}][description]" value="{{$boothDetail->description}}">
-                                                            </div>
-                                                            <div class="col-sm-2">
-                                                                {{--Button delete--}}
-                                                                <div class="col-auto">
-                                                                    <button type="button" data-id="{{$boothDetail->id}}" onclick="deleteImageReform({{$boothDetail->id}})"  class="btn btn-danger mb-3 btnDeleteImageBooth">Xoá</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                                <div class="row mt-3">
-
-                                                    <div class="d-flex flex-row-reverse">
-                                                        <div class="p-2">
-                                                            <button id="btnAddItemBooth" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm job</button>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                </div>
-                                            @endif
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -506,7 +502,7 @@
                             <div id="tabwizard3" class="wizard-tab">
                                 <div class="text-center mb-4">
                                     <h5>Social</h5>
-                                    <p class="card-title-desc">Fill all information below</p>
+                                    {{-- <p class="card-title-desc">Fill all information below</p> --}}
                                 </div>
                                 <div>
                                     <div class="row">
@@ -596,9 +592,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                        </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -692,7 +685,7 @@
                                                     {{--Delete Item--}}
                                                     <div class="row">
                                                         <div class="col-lg-12">
-                                                            <div class="mb-3">
+                                                            <div class="mb-3 d-flex flex-row-reverse">
                                                                 <label for="basicpill-expiration-input"
                                                                        class="form-label">&nbsp;</label>
                                                                 <button type="button" data-id="{{$itemQuiz->id}}" class="btnDeleteImageQuiz btn btn-danger btn-rounded waves-effect waves-light mb-2 me-2" onclick="deleteItemQuiz({{$itemQuiz->id}})"><i class="mdi mdi-delete me-1"></i> Delete</button>
@@ -718,17 +711,24 @@
                             <!-- wizard-tab -->
 
                             <div class="d-flex align-items-start gap-3 mt-4">
-                                <button type="button" class="btn btn-primary w-sm" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                                <button type="button" class="btn btn-primary w-sm ms-auto" id="nextBtn" onclick="nextPrev(1)">Next</button>
-                            </div>
+                                <button
+                                    type="button"
+                                    class="btn btn-primary w-sm"
+                                    id="prevBtn" onclick="nextPrev(-1)">
+                                    Previous</button>
 
-                            {{--Submit button--}}
-                            @if($isPreview == false)
-                                <div class="d-flex flex-wrap gap-3 mt-3">
-                                    <button type="submit" class="btn btn-lg btn-primary" >Submit</button>
-                                    <a  class="btn btn-secondary btn-lg" href="{{route('cws.eventList')}}" >Cancel</a>
-                                </div>
-                            @endif
+                                <button
+                                    type="button"
+                                    class="btn btn-primary w-sm ms-auto"
+                                    id="nextBtn" onclick="nextPrev(1)">Next</button>
+
+                                @if($isPreview == false)
+                                    <div id="subForm" class="w-sm ms-auto d-none">
+                                        <a class="btn btn-secondary w-sm ms-auto" href="{{route('cws.eventList')}}">Cancel</a>
+                                        <button type="submit" class="btn btn-primary w-sm ms-auto" >Save</button>
+                                    </div>
+                                @endif
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -909,16 +909,15 @@
                     event_id: event_id,
                 },
                 success: function (data) {
-                    console.log(data);
-                    if (data.status == 200) {
+                    // console.log(data.message);
+                    if (data.message == 'OK') {
                         $.notify("Chuyển trạng thái thành công.", "success");
-                        console.log(data);
                     } else {
                         $.notify("Không thể thay đổi trạng thái.", "error");
                     }
                 },
                 error: function (data) {
-                    $.notify("Không thể thay đổi trạng thái.", "error");
+                    // $.notify("Không thể thay đổi trạng thái.", "error");
                 }
             });
         })
@@ -936,23 +935,21 @@
                 }
             });
             //start_at datepicker
-            $('#start_at').flatpickr(
-                {
-                    enableTime: true,
-                    dateFormat: "Y-m-d H:i",
-                    time_24hr: true,
-                    locale: 'vn'
-                }
-            )
+            var option = {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                time_24hr: true,
+                locale: 'en'
+            };
+
+            if ($('#start_at').length > 0) {
+                $('#start_at').flatpickr(option);
+            }
+
             //End_at datepicker
-            $('#end_at').flatpickr(
-                {
-                    enableTime: true,
-                    dateFormat: "Y-m-d H:i",
-                    time_24hr: true,
-                    locale: 'vn'
-                }
-            )
+            if ($('#end_at').length > 0) {
+                $('#end_at').flatpickr(option);
+            }
 
             var fileAvatarInit = null;
             var fileSlideInit = null;
@@ -1088,6 +1085,7 @@
                 $('input').attr('disabled', 'disabled');
                 $('textarea').attr('disabled', 'disabled');
                 $('select').attr('disabled', 'disabled');
+                $('input[type=checkbox]').removeAttr('disabled');
             }
 
             //btnAddItemSession onclick call ajax
@@ -1268,9 +1266,13 @@
             }
             if (n == (x.length - 1)) {
                 document.getElementById("nextBtn").innerHTML = "Submit";
+                $('#nextBtn').addClass('d-none');
+                $('#subForm').removeClass('d-none');
                 //Type submit
             } else {
                 document.getElementById("nextBtn").innerHTML = "Next";
+                $('#nextBtn').removeClass('d-none');
+                $('#subForm').addClass('d-none');
             }
             //... and run a function that will display the correct step indicator:
             fixStepIndicator(n)
