@@ -2,7 +2,7 @@
 
 @section('name_page')
     <div class="page-title-box align-self-center d-none d-md-block">
-        <h4 class="page-title mb-0">User</h4>
+        <h4 class="page-title mb-0">User by Event</h4>
     </div>
 @endsection
 
@@ -86,18 +86,6 @@
                 <div class="card-body">
                     <div class="d-flex flex-wrap align-items-center mb-2">
                         <h5 class="card-title">Lists Users</h5>
-                        {{-- <div class="ms-auto">
-                            <div class="dropdown">
-                                <a class="dropdown-toggle text-reset" href="#" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="text-muted font-size-12">Sort By: </span> <span class="fw-medium"> Monthly<i class="mdi mdi-chevron-down ms-1"></i></span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                                    <a class="dropdown-item" href="#">Weekly</a>
-                                    <a class="dropdown-item" href="#">Monthly</a>
-                                    <a class="dropdown-item" href="#">Yearly</a>
-                                </div>
-                            </div>
-                        </div> --}}
                     </div>
 
                     <div class="table-responsive">
@@ -150,7 +138,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-
                         <div class="row">
                             <div class="col-md-12 mt-3">
                                 {!! $users->links() !!}

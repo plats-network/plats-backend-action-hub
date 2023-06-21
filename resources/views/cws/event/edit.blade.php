@@ -1,14 +1,5 @@
-<?php
-
-/**
- * @var App\Models\Task\ $event
- * @var \App\Models\Quiz\Quiz $itemQuiz
- * @var \App\Models\Event\TaskEvent $sessions
- * @var \App\Models\Event\TaskEventDetail $sessionDetail
- * @var array $categories
- */
-?>
 @extends('cws.layouts.app')
+
 @section('style')
     @uploadFileCSS
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
@@ -38,12 +29,12 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
-                {{-- <h1>Event @if($isPreview) Preview @endif </h1> --}}
-                @if($isPreview)
+            @if($isPreview)
+                <div class="col-md-12">
                     <a href="{{ route('cws.eventEdit', ['id' => $event->id]) }}" class="btn btn-primary mb-2">Edit Event</a>
-                @endif
-            </div>
+                </div>
+            @endif
+
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
@@ -234,270 +225,24 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- wizard-tab -->
-                            <div id="tabwizard1" class="wizard-tab">
-                                <div class="text-center mb-4">
-                                    <h5>Sessions</h5>
-                                    <p class="card-title-desc">Fill all information below</p>
-                                </div>
-                                <div>
-                                    {{--Id--}}
-                                    <input type="hidden" name="sessions[id]" id="sessions[id]" value="{{$sessions->id}}">
-                                    {{--Event Id--}}
-                                    <input type="hidden" name="sessions[task_id]" id="sessions[task_id]" value="{{$event->id}}">
-                                    {{--Session Id--}}
-                                    <div class="row">
-                                        <div class="col-lg-9">
-                                            <div class="mb-3">
-                                                <label for="basicpill-pancard-input" class="form-label">Session Name</label>
-                                                <input type="text" class="form-control" value="{{$sessions->name}}" placeholder="Session Name" id="sessions[name]" name="sessions[name]">
-                                                <div class="valid-feedback"></div>
-                                            </div>
-                                        </div><!-- end col -->
-
-                                        <div class="col-lg-2">
-                                            <div class="mb-3">
-                                                <label for="basicpill-vatno-input"
-                                                    class="form-label">Max job</label>
-                                                {{-- <p class="card-title-desc">Số lượng job hoàn thành để nhận được mã số quay thưởng.</p> --}}
-                                                <input
-                                                    type="number"
-                                                    class="form-control"
-                                                    placeholder="2"
-                                                    value="{{$sessions->max_job}}"
-                                                    id="sessions[max_job]"
-                                                    name="sessions[max_job]"
-                                                    min="0"
-                                                    max="100">
-                                                <div class="valid-feedback"></div>
-                                            </div>
-                                        </div><!-- end col -->
-                                    </div><!-- end row -->
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label for="basicpill-cstno-input" class="form-label">Mô tả session</label>
-                                                <div id="editor2"></div>
-                                                <input type="hidden" class="form-control" id="sessions-description" name="sessions[description]" value="{{$sessions->description}}"  />
-
-                                            </div>
-                                        </div><!-- end col -->
-                                    </div>
-                                    @if ($isPreview)
-                                        <table class="table table-bordered mb-0">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Name</th>
-                                                    <th>Description</th>
-                                                    <th>QR Code</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($sessions->detail as $k => $session)
-                                                    <tr>
-                                                       <td>{{$k+1}}</td> 
-                                                       <td>{{$session->name}}</td> 
-                                                       <td>{!!$session->description!!}</td> 
-                                                       <td>
-                                                            @php
-                                                                $qr = 'https://'.config('plats.event').'/events/code?type=event&id='.$session->code;
-                                                            @endphp
-                                                            {!! QrCode::size(200)->generate($qr) !!}
-                                                       </td> 
-                                                       <td>
-                                                            <input
-                                                                    type="checkbox"
-                                                                    id="session_{{ $k+1 }}"
-                                                                    switch="none"
-                                                                    @if($session->status) checked @endif
-                                                                >
-                                                                <label class="job"
-                                                                    data-id="{{$session->code}}"
-                                                                    data-detail-id="{{$sessions->id}}"
-                                                                    for="session_{{ $k+1 }}"
-                                                                    data-on-label="On"
-                                                                    data-off-label="Off">
-                                                                </label>
-                                                       </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    @else
-                                        <div class="row mt-3">
-                                            <div class="listRowSession" id="listRowSession">
-                                                @if($sessions->detail)
-                                                @foreach($sessions->detail as $sessionDetail)
-                                                    <div class="mb-3 row itemSessionDetail" id="itemImage{{$sessionDetail->id}}">
-                                                        {{--Id--}}
-                                                        <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][id]" id="sessions[detail][{{$sessionDetail->id}}][id]" value="{{$sessionDetail->id}}">
-                                                        {{--Session Id--}}
-                                                        {{--Is delete--}}
-                                                        <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][is_delete]" id="sessionsFlagDelete{{$sessionDetail->id}}" value="0">
-
-                                                        <label for="inputPassword" class="col-sm-2 col-form-label">Session {{$loop->index+1}}</label>
-                                                        <div class="col-sm-4">
-                                                            {{--name--}}
-                                                            <input type="text" placeholder="Name" class="form-control" id="sessions[detail][{{$sessionDetail->id}}][name]" name="sessions[detail][{{$sessionDetail->id}}][name]" value="{{$sessionDetail->name}}">
-                                                        </div>
-                                                        <div class="col-sm-4">
-                                                            {{--description--}}
-                                                            <input type="text" placeholder="Description" class="form-control" id="sessions[detail][{{$sessionDetail->id}}][description]" name="sessions[detail][{{$sessionDetail->id}}][description]" value="{{$sessionDetail->description}}">
-                                                        </div>
-                                                        <div class="col-sm-2">
-                                                            {{--Button delete--}}
-                                                            <div class="col-auto">
-                                                                <button type="button" data-id="{{$sessionDetail->id}}" onclick="deleteImageReform({{$sessionDetail->id}})"  class="btn btn-danger mb-3 btnDeleteImage">Xoá</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                                @endif
-                                            </div>
-
-                                            <div class="row mt-3">
-                                                <div class="d-flex flex-row-reverse">
-                                                    <div class="p-2">
-                                                        <button id="btnAddItemSession" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm</button>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                            </div>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                            <!-- wizard-tab -->
-                            <div id="tabwizard2" class="wizard-tab">
-                                <div class="text-center mb-4">
-                                    <h5>Booths</h5>
-                                    <p class="card-title-desc">Fill all information below</p>
-                                </div>
-                                <div>
-                                    <div class="row">
-                                        <input type="hidden" name="booths[id]" id="booths[id]" value="{{$booths->id}}">
-                                        <input type="hidden" name="booths[task_id]" id="booths[task_id]" value="{{$event->id}}">
-                                        <div class="col-lg-9">
-                                            <div class="mb-3">
-                                                <label for="booths[name]" class="form-label">Name Booth</label>
-                                                <input type="text" class="form-control" value="{{$booths->name}}" placeholder="Booth Name" id="booths[name]" name="booths[name]" />
-                                                <div class="valid-feedback"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2">
-                                            <div class="mb-3">
-                                                <label
-                                                    for="basicpill-vatno-input"
-                                                    class="form-label">Max Job</label>
-                                                <input
-                                                    type="number"
-                                                    class="form-control"
-                                                    value="{{$booths->max_job}}"
-                                                    placeholder="2"
-                                                    id="booths[max_job]"
-                                                    name="booths[max_job]">
-                                                <div class="valid-feedback"></div>
-                                            </div>
-                                        </div><!-- end col -->
-                                    </div><!-- end row -->
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label for="booths[description]" class="form-label">Mô tả Booth</label>
-                                                <div id="editor3"></div>
-                                                <input type="hidden" class="form-control" id="booths-description" name="booths[description]" value="{{$booths->description}}"  />
-
-                                            </div>
-                                        </div><!-- end col -->
-
-                                    </div><!-- end row -->
-                                    <div class="row mt-3">
-                                        @if ($isPreview)
-                                            <table class="table table-bordered mb-0">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Name</th>
-                                                        <th>Description</th>
-                                                        <th>QR Code</th>
-                                                        <th>Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach($booths->detail as $k => $booth)
-                                                        @php
-                                                            $qr = 'https://'.config('plats.event').'/events/code?type=event&id='.$booth->code;
-                                                        @endphp
-                                                        <tr>
-                                                           <td>{{$k+1}}</td> 
-                                                           <td>{{$booth->name}}</td> 
-                                                           <td>{!!$booth->description!!}</td> 
-                                                           <td data-url="{{$qr}}">
-                                                                {!! QrCode::size(200)->generate($qr) !!}
-                                                           </td> 
-                                                           <td>
-                                                                <input
-                                                                    type="checkbox"
-                                                                    id="booth_{{ $k+1 }}"
-                                                                    switch="none"
-                                                                    @if($booth->status) checked @endif
-                                                                >
-                                                                <label class="job"
-                                                                    data-id="{{$booth->code}}"
-                                                                    data-detail-id="{{$booths->id}}"
-                                                                    for="booth_{{ $k+1 }}"
-                                                                    data-on-label="On"
-                                                                    data-off-label="Off">
-                                                                </label>
-                                                           </td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        @else
-                                            <div class="listRowBooth" id="listRowBooth">
-                                                @foreach($booths->detail as $boothDetail)
-                                                    <div class="mb-3 row itemBoothDetail" id="itemBooth{{$boothDetail->id}}">
-                                                        {{--Id--}}
-                                                        <input type="hidden" name="booths[detail][{{$boothDetail->id}}][id]" id="booths[detail][{{$boothDetail->id}}][id]" value="{{$boothDetail->id}}">
-                                                        {{--Session Id--}}
-                                                        {{--Is delete--}}
-                                                        <input type="hidden" name="booths[detail][{{$boothDetail->id}}][is_delete]" id="boothFlagDelete{{$boothDetail->id}}" value="0">
 
 
-                                                        <label for="inputPassword" class="col-sm-2 col-form-label">Booth 1</label>
-                                                        <div class="col-sm-4">
-                                                            {{--name--}}
-                                                            <input type="text" placeholder="Name" class="form-control" id="booths[detail][{{$boothDetail->id}}][name]" name="booths[detail][{{$boothDetail->id}}][name]" value="{{$boothDetail->name}}">
-                                                        </div>
-                                                        <div class="col-sm-4">
-                                                            {{--description--}}
-                                                            <input type="text" placeholder="Description" class="form-control" id="booths[detail][{{$boothDetail->id}}][description]" name="booths[detail][{{$boothDetail->id}}][description]" value="{{$boothDetail->description}}">
-                                                        </div>
-                                                        <div class="col-sm-2">
-                                                            {{--Button delete--}}
-                                                            <div class="col-auto">
-                                                                <button type="button" data-id="{{$boothDetail->id}}" onclick="deleteImageReform({{$boothDetail->id}})"  class="btn btn-danger mb-3 btnDeleteImageBooth">Xoá</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                            <div class="row mt-3">
+                            <!-- Sessiom -->
+                            @include('cws.event.forms._session', [
+                                'sessions' => $sessions,
+                                'isPreview' => $isPreview,
+                                'event' => $event
+                            ])
 
-                                                <div class="d-flex flex-row-reverse">
-                                                    <div class="p-2">
-                                                        <button id="btnAddItemBooth" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm job</button>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- Booth -->
+                            @include('cws.event.forms._booth', [
+                                'booths' => $booths,
+                                'isPreview' => $isPreview,
+                                'event' => $event
+                            ])
+
+                            
+                            
 
                             <div id="tabwizard3" class="wizard-tab">
                                 <div class="text-center mb-4">
@@ -597,117 +342,12 @@
                                 </div>
                             </div>
 
-                            <div  id="tabwizard4" class="wizard-tab">
-                                <div>
-                                    <div class="text-center mb-4">
-                                        <h5>Quiz</h5>
-                                        <p class="card-title-desc">Fill all information below</p>
-                                    </div>
-                                    <div>
-                                        <div class="listQuiz" id="listRowQuiz">
-                                            @foreach($quiz as $itemQuiz)
-                                                <div class="mb-3 row itemQuizDetail" id="itemQuiz{{$itemQuiz->id}}">
-                                                    {{--id --}}
-                                                    <input type="hidden" name="quiz[{{$itemQuiz->id}}][id]" value="{{$itemQuiz->id}}">
-                                                    {{--Event Id--}}
-                                                    <input type="hidden" name="quiz[{{$itemQuiz->id}}][task_id]" value="{{$event->id}}">
-                                                    {{--Is delete--}}
-                                                    <input type="hidden" name="quiz[{{$itemQuiz->id}}][is_delete]" id="quizFlagDelete{{$event->id}}" value="0">
+                            {{-- Quiz --}}
+                            @include('cws.event.forms._quiz', [
+                                'quiz' => $quiz,
+                                'isPreview' => $isPreview
+                            ])
 
-                                                    <div class="row">
-                                                        <div class="col-lg-7">
-                                                            <div class="mb-3">
-                                                                <label for="basicpill-expiration-input"
-                                                                       class="form-label">Question {{$loop->index +1}}</label>
-                                                                {{--Item question--}}
-                                                                <input type="text" class="form-control" id="quiz[{{$itemQuiz->id}}][name]"
-                                                                       placeholder="Question {{$loop->index +1}}" name="quiz[{{$itemQuiz->id}}][name]" value="{{$itemQuiz->name}}">
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-2">
-                                                            <div class="mb-3">
-                                                                <label for="basicpill-expiration-input"
-                                                                       class="form-label">Time</label>
-                                                                <input type="text" class="form-control" id="quiz[{{$itemQuiz->id}}][time_quiz]"
-                                                                       placeholder="Time" name="quiz[{{$itemQuiz->id}}][time_quiz]" value="{{$itemQuiz->time_quiz}}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-1">
-                                                            <div class="mb-3">
-                                                                <label for="basicpill-expiration-input"
-                                                                       class="form-label">Order</label>
-                                                                <input type="text" class="form-control" id="quiz[{{$itemQuiz->id}}][order]"
-                                                                       placeholder="Order" name="quiz[{{$itemQuiz->id}}][order]" value="{{$itemQuiz->order}}">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-2">
-                                                            <label for="basicpill-expiration-input"
-                                                                   class="form-label">&nbsp;</label>
-                                                            <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox" role="switch" id="quiz[{{$itemQuiz->id}}][status]"
-                                                                       name="quiz[{{$itemQuiz->id}}][status]" @if($itemQuiz->status == 1) checked @endif>
-                                                                <label class="form-check-label" for="flexSwitchCheckChecked">Status</label>
-                                                            </div>
-                                                        </div>
-                                                    </div><!-- end row -->
-                                                    <br>
-                                                    {{--QuizAnswer--}}
-                                                    @foreach($itemQuiz->detail as $keyIndex => $itemQuizAnswer)
-                                                        {{--id --}}
-                                                        <input type="hidden" name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][id]" value="{{$itemQuizAnswer->id}}">
-                                                        {{--quiz_id --}}
-                                                        <input type="hidden" name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][quiz_id]" value="{{$itemQuizAnswer->quiz_id}}">
-
-                                                        <div class="row">
-                                                            <div class="mb-3 row offset-md-1">
-                                                                <label for="inputPassword" class="col-sm-2 col-form-label">Answer {{$keyIndex +1}}</label>
-                                                                <div class="col-sm-7">
-                                                                    {{--name--}}
-                                                                    <input type="text" class="form-control" id="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][name]"
-                                                                           placeholder="Answer {{$keyIndex +1}}" name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][name]" value="{{$itemQuizAnswer->name}}">
-                                                                </div>
-                                                                <div class="col-sm-2">
-
-                                                                    <div class="form-check mt-2">
-                                                                        {{--status--}}
-                                                                        <input class="form-check-input checkOptionQuiz" type="checkbox" value="1" id="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]"
-                                                                               name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]" @if($itemQuizAnswer->status == 1) checked @endif>
-                                                                        <label class="form-check-label" for="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]">
-                                                                            Option
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-
-                                                    {{--Delete Item--}}
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <div class="mb-3 d-flex flex-row-reverse">
-                                                                <label for="basicpill-expiration-input"
-                                                                       class="form-label">&nbsp;</label>
-                                                                <button type="button" data-id="{{$itemQuiz->id}}" class="btnDeleteImageQuiz btn btn-danger btn-rounded waves-effect waves-light mb-2 me-2" onclick="deleteItemQuiz({{$itemQuiz->id}})"><i class="mdi mdi-delete me-1"></i> Delete</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-
-                                        <div class="row mt-3 @if($isPreview) invisible  @endif ">
-                                            <div class="d-flex flex-row-reverse">
-                                                <div class="p-2">
-                                                    <button id="btnAddItemQuiz" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm câu hỏi</button>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                        </div>
-                                    </div><!-- end form -->
-
-                                </div>
-                            </div>
                             <!-- wizard-tab -->
 
                             <div class="d-flex align-items-start gap-3 mt-4">

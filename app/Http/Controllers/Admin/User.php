@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Helpers\{BaseImage, DateHelper};
 use App\Services\UserService;
 use App\Models\{User as UserModel};
+use App\Models\Event\EventUserTicket;
 use App\Http\Requests\Cws\{
     EditEmailRequest,
     EditInfoRequest,
@@ -23,6 +24,7 @@ class User extends Controller
     public function __construct(
         private UserService $userService,
         private UserModel $user,
+        private EventUserTicket $eventUserTicket,
     ) {
         // Code
     }
@@ -34,6 +36,29 @@ class User extends Controller
         ]);
 
         return view('cws.users.index', [
+            'users' => $users
+        ]);
+    }
+
+    public function listUsers(Request $request, $id)
+    {
+        try {
+            $userIds = $this->eventUserTicket
+                ->select('user_id')
+                ->whereTaskId($id)
+                ->pluck('user_id')
+                ->toArray();
+
+            $userIds = array_unique($userIds);
+            $users = $this->userService->search([
+                'limit' => $request->get('limit') ?? PAGE_SIZE,
+                'userIds' => $userIds
+            ]);
+        } catch (\Exception $e) {
+            
+        }
+
+        return view('cws.users.list', [
             'users' => $users
         ]);
     }
@@ -96,7 +121,6 @@ class User extends Controller
                 'new_email' => $email,
                 'email' => $email
             ]);
-            // TODO: Send Email verify
             notify()->success('Change email successfully!');
             session()->forget(['type']);
         } catch (\Exception $e) {
