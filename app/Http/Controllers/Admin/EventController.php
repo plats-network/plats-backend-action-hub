@@ -4,17 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
-use App\Models\Event\EventDiscords;
-use App\Models\Event\EventSocial;
-use App\Models\Event\TaskEvent;
-use App\Models\Event\TaskEvent as Event;
-use App\Models\Event\TaskEventDetail;
-use App\Models\Event\TaskEventReward;
+use App\Models\Event\{
+    EventDiscords, EventSocial,
+    TaskEvent, TaskEventDetail,
+    TaskEventReward
+};
 use App\Models\Quiz\Quiz;
 use App\Models\{Task, TaskGallery, TaskGroup};
 use App\Services\Admin\{EventService, TaskService};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Log;
 
 class EventController extends Controller
 {
@@ -23,8 +24,10 @@ class EventController extends Controller
         private EventService $eventService,
         private TaskService  $taskService,
         private Task $task,
+        private TaskEventDetail $taskEventDetail,
     )
     {
+        // code
     }
 
     /**
@@ -39,16 +42,6 @@ class EventController extends Controller
             'limit' => $limit,
             'type' => EVENT
         ]);
-        // if ($user->role == ADMIN_ROLE) {
-
-        // } else {
-        //     $events = $this->taskService->search([
-        //         'limit' => $limit,
-        //         'type' => EVENT
-        //     ]);
-        // }
-
-        //tab
         $tab = $request->get('tab') ?? 0;
         $data = [
             'events' => $events,
@@ -110,7 +103,7 @@ class EventController extends Controller
     public function create(Request $request)
     {
         /** @var Task $task */
-        $task =  new Event();
+        $task =  new TaskEvent();
         $isCopyModel = $request->get('copy', null);
         if ($isCopyModel) {
             $post_id = $request->get('id', 0);
@@ -118,16 +111,12 @@ class EventController extends Controller
             //Clone data
             if ($modelClone) {
                 $task = $modelClone->replicate();
-
             }
         }
         $id = $task->id;
-
         $taskGroup = TaskGroup::where('task_id', $id)->pluck('group_id');
         $taskGallery = TaskGallery::where('task_id', $id)->pluck('url_image');
-
         $booths = TaskEvent::where('task_id', $id)->with('detail')->where('type', 1)->first();
-
         $sessions = TaskEvent::where('task_id', $id)->with('detail')->where('type', 0)->first();
         //taskEventDiscords EventDiscords
         /** @var EventDiscords $taskEventDiscords */
@@ -153,19 +142,13 @@ class EventController extends Controller
         //Check if $sessions is null then create new
         if ($sessions == null) {
             $sessions = new TaskEvent();
-            //$sessions->task_id = $id;
             $sessions->type = 0;
-            //$sessions->save();
         }
-
 
         //Check if $booths is null then create new
         if ($booths == null) {
             $booths = new TaskEvent();
-            //$booths->task_id = $id;
             $booths->type = 1;
-
-            //$booths->save();
         }
 
         $quiz = [];
@@ -184,10 +167,7 @@ class EventController extends Controller
         $task['booths'] = $booths;
         $task['sessions'] = $sessions;
         $task['quiz'] = $quiz;
-        //dd($task);
 
-        //dd($sessions);
-        //dd($sessions);
         $activeTab = $request->get('tab') ?? '0';
         //Is preview
         $isPreview = $request->get('preview') ?? '0';
@@ -217,24 +197,21 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        $inputAll = $request->all();
-        //Input type = 1
-        $inputAll['type'] = 1;
-        /*
-         * "id" => "99583545-472e-4710-8258-24b8b2b33110"
-    "task_id" => "c519af43-1349-46bb-ab52-de6b53981d8c"
-         * */
+        try {
+            $inputAll = $request->all();
+            $inputAll['type'] = 1;
+            $request->validate(['name' => 'required']);
 
-        $request->validate([
-            'name' => 'required',
-            //'email' => 'required',
-            //'address' => 'required',
-        ]);
+            //$company->fill($request->post())->save();
+            $this->eventService->store($request);
+            notify()->success('Create event successfully');
+        } catch (\Exception $e) {
+            notify::error('Create event fail!');
+            Log::error('Create event cws: ' . $e->getMessage());
+            return redirect()->route('cws.eventCreate');
+        }
 
-        //$company->fill($request->post())->save();
-        $this->eventService->store($request);
-
-        return redirect()->route('cws.eventList')->with('success', 'Event has been created successfully.');
+        return redirect()->route('cws.eventList');
     }
 
     /**
@@ -254,6 +231,13 @@ class EventController extends Controller
      */
     public function edit(Request $request, $id)
     {
+        if (Str::contains($request->path(), 'event-preview')) {
+            if (!$request->get('preview') == 1) {
+                notify()->error('Không thể truy cập');
+                return redirect()->route('cws.eventList');
+            }
+        }
+
         /** @var Task $task */
         $task = Task::with('taskSocials', 'taskLocations', 'taskEventSocials', 'taskGenerateLinks', 'taskEventDiscords')->find($id);
         $taskGroup = TaskGroup::where('task_id', $id)->pluck('group_id');
@@ -351,27 +335,18 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $company)
     {
+        try {
+            $input = $request->all();
+            $request->validate(['name' => 'required']);
+            $this->eventService->store($request);
+            notify()->success('Update successful!');
+        } catch (\Exception $e) {
+            notify()->error('Update fail!');
+            Log::error('Update Event Cws: '. $e->getMessage());
+            return redirect()->route('cws.eventList', ['tab' => 0]);
+        }
 
-        $input = $request->all();
-        //dd($input);
-
-        /*
-         * "id" => "99583545-472e-4710-8258-24b8b2b33110"
-    "task_id" => "c519af43-1349-46bb-ab52-de6b53981d8c"
-         * */
-
-        $request->validate([
-            'name' => 'required',
-            //'email' => 'required',
-            //'address' => 'required',
-        ]);
-
-
-        //dd($input);
-        //$company->fill($request->post())->save();
-        $this->eventService->store($request);
-
-        return redirect()->route('cws.eventList', ['tab' => 0])->with('success', 'Event Has Been updated successfully');
+        return redirect()->route('cws.eventList', ['tab' => 0]);
     }
 
     //preview
@@ -404,25 +379,46 @@ class EventController extends Controller
         try {
             $task = $this->task->find($id);
             if ($task) {
-                if ($task->status == true) {
-                    $task->update(['status' => false]);
-                } else {
-                    $task->update(['status' => true]);
-                }
-            } else {
-                return response()->json([
-                    'message' => 'ok'
-                ], 200);
+                $status = $task->status == true ? false : true;
+                $task->update(['status' => $status]);
             }
-
         } catch (\Exception $e) {
             return response()->json([
-                    'message' => $e->getMessage()
+                'message' => $e->getMessage()
             ], 200);
         }
 
         return response()->json([
             'message' => 'ok'
+        ], 200);
+    }
+
+    public function updateJob(Request $request, $id)
+    {
+        try {
+            $taskEventId = $request->get('event_id');
+            $detail = $this->taskEventDetail
+                ->whereTaskEventId($taskEventId)
+                ->whereCode($id)
+                ->latest()
+                ->first();
+
+            if ($detail) {
+                $status = $detail->status == true ? false : true;
+                $detail->update(['status' => $status]);
+            } else {
+                return response()->json([
+                    'message' => 'Not Found!'
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'OK'
         ], 200);
     }
 }

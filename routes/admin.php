@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     Dashboard, Reward, Event, TaskBeta,
@@ -40,7 +39,6 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->post('change-password', [User::class, 'changePassword'])->name('cws.changePassword');
     $cws->post('change-email', [User::class, 'changeEmail'])->name('cws.changeEmail');
     $cws->post('change-info', [User::class, 'changeInfo'])->name('cws.changeInfo');
-
     // User
     $cws->get('users', [User::class, 'index'])->name('cws.users');
 
@@ -61,6 +59,7 @@ Route::middleware(['client_admin'])->group(function($cws) {
     //Template form event
     $cws->get('event-template', [EventController::class, 'template'])->name('cws.eventTemplate');
     $cws->get('event-status/{id}', [EventController::class, 'updateStatus'])->name('cws.updateStatus');
+    $cws->get('event-job/{id}', [EventController::class, 'updateJob'])->name('cws.updateJob');
 });
 //Upload file
 /*Upload Single*/
@@ -83,24 +82,24 @@ Route::delete('delete-image', [UploadController::class, 'uploadDelete'])->name('
 // Route::post('reset-password', [ForgotPassword::class, 'submitResetPasswordForm'])->name('admin.reset.password.post');
 // Route::get('/verify/{code}', [Register::class, 'verify'])->name('cws.verify');
 // Task management
-Route::prefix('tasks')->controller(TaskBeta::class)->group(function () {
-    Route::get('/', 'index')->name('cws.tasks');
-    Route::get('edit/{id}', 'edit')->whereUuid('id');
-    Route::get('create', 'create');
-    Route::post('/save-avatar-api', 'uploadAvatar');
-    Route::post('/save-sliders-api', 'uploadSliders');
-});
-Route::prefix('rewards')->controller(Reward::class)->group(function () {
-    Route::get('/', 'index')->name('cws.rewards');
-});
-Route::prefix('events')->controller(Event::class)->group(function () {
-    Route::get('/', 'index')->name('cws.events');
-    Route::get('/preview/{task_id}', 'preview');
-    Route::get('/edit/{task_id}', 'edit');
-    Route::get('/create', 'create');
-    Route::get('/api/{task_id}', 'apiUserEvent');
-    Route::get('/{task_id}', 'userEvent')->name('cws.userEvent');
-});
+// Route::prefix('tasks')->controller(TaskBeta::class)->group(function () {
+//     Route::get('/', 'index')->name('cws.tasks');
+//     Route::get('edit/{id}', 'edit')->whereUuid('id');
+//     Route::get('create', 'create');
+//     Route::post('/save-avatar-api', 'uploadAvatar');
+//     Route::post('/save-sliders-api', 'uploadSliders');
+// });
+// Route::prefix('rewards')->controller(Reward::class)->group(function () {
+//     Route::get('/', 'index')->name('cws.rewards');
+// });
+// Route::prefix('events')->controller(Event::class)->group(function () {
+//     Route::get('/', 'index')->name('cws.events');
+//     Route::get('/preview/{task_id}', 'preview');
+//     Route::get('/edit/{task_id}', 'edit');
+//     Route::get('/create', 'create');
+//     Route::get('/api/{task_id}', 'apiUserEvent');
+//     Route::get('/{task_id}', 'userEvent')->name('cws.userEvent');
+// });
 Route::prefix('groups')->controller(Group::class)->group(function () {
     Route::get('/', 'index')->name('cws.groups');
 });
@@ -111,25 +110,25 @@ Route::prefix('groups')->controller(Group::class)->group(function () {
 Route::prefix('export')->controller(Export::class)->group(function () {
     Route::post('/user-join-event', 'userJoinEvent');
 });
-Route::prefix('api')->group(function($router) {
-    Route::get('events/confirm-ticket/', [\App\Http\Controllers\Admin\Api\Event::class, 'confirmTicket'])->middleware('client_admin');
-    Route::post('events/change-status', [\App\Http\Controllers\Admin\Api\Event::class, 'changeStatus']);
-    Route::post('events/change-status-detail', [\App\Http\Controllers\Admin\Api\Event::class, 'changeStatusDetail']);
-    $router->resource('groups', \App\Http\Controllers\Admin\Api\Group::class)->only(['index', 'store', 'show', 'destroy']);
-    $router->resource('events', \App\Http\Controllers\Admin\Api\Event::class)->only(['index', 'store', 'show', 'destroy']);
-    Route::prefix('rewards')->controller(\App\Http\Controllers\Admin\Api\Reward::class)->group(function ($router) {
-        $router->get('/', 'index');
-        $router->get('/edit/{id}', 'edit')->whereUuid('id');
-        $router->post('/store', 'store');
-        $router->get('/delete/{id}', 'destroy')->whereUuid('id');
-    });
-    Route::prefix('tasks-cws')->controller(\App\Http\Controllers\Admin\Api\Tasks::class)->group(function ($router) {
-        $router->get('/', 'index');
-        $router->get('/edit/{id}', 'edit')->whereUuid('id');
-        $router->post('/store', 'store');
-        $router->get('/delete/{id}', 'destroy')->whereUuid('id');
-    });
-});
+// Route::prefix('api')->group(function($router) {
+//     Route::get('events/confirm-ticket/', [\App\Http\Controllers\Admin\Api\Event::class, 'confirmTicket'])->middleware('client_admin');
+//     Route::post('events/change-status', [\App\Http\Controllers\Admin\Api\Event::class, 'changeStatus']);
+//     Route::post('events/change-status-detail', [\App\Http\Controllers\Admin\Api\Event::class, 'changeStatusDetail']);
+//     $router->resource('groups', \App\Http\Controllers\Admin\Api\Group::class)->only(['index', 'store', 'show', 'destroy']);
+//     $router->resource('events', \App\Http\Controllers\Admin\Api\Event::class)->only(['index', 'store', 'show', 'destroy']);
+//     Route::prefix('rewards')->controller(\App\Http\Controllers\Admin\Api\Reward::class)->group(function ($router) {
+//         $router->get('/', 'index');
+//         $router->get('/edit/{id}', 'edit')->whereUuid('id');
+//         $router->post('/store', 'store');
+//         $router->get('/delete/{id}', 'destroy')->whereUuid('id');
+//     });
+//     Route::prefix('tasks-cws')->controller(\App\Http\Controllers\Admin\Api\Tasks::class)->group(function ($router) {
+//         $router->get('/', 'index');
+//         $router->get('/edit/{id}', 'edit')->whereUuid('id');
+//         $router->post('/store', 'store');
+//         $router->get('/delete/{id}', 'destroy')->whereUuid('id');
+//     });
+// });
 
 // Quiz game route
 Route::prefix('quiz-game')->group(function () {

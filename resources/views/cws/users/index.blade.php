@@ -104,9 +104,9 @@
                         <table class="table table-striped table-centered align-middle table-nowrap mb-0 table-check">
                             <thead>
                                 <tr>
-                                    <th style="width: 90px;"></th>
-                                    <th style="width: 210px;">Product Name</th>
-                                    <th>Customer Name</th>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Email</th>
                                     <th>Order ID</th>
                                     <th>Color</th>
                                     <th>Date</th>
@@ -117,14 +117,14 @@
                             <tbody>
                                 @foreach($users as $user)
                                     <tr>
-                                        <td>
+                                        <td style="width: 5%;">
                                             <div class="avatar">
                                                 <div class="product-img avatar-title img-thumbnail bg-soft-primary border-0">
-                                                    <img src="assets/images/product/img-1.png" class="img-fluid" alt="">
+                                                    <img src="{{imgAvatar($user->avatar_path)}}" class="img-fluid" alt="{{$user->name}}">
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="fw-semibold">{{$user->name}}</td>
+                                        <td class="fw-semibold" style="width: 5%;">{{$user->name}}</td>
                                         <td>{{$user->email}}</td>
                                         <td>{{$user->name}}</td>
                                         <td>{{$user->name}}</td>

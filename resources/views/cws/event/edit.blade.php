@@ -17,6 +17,7 @@
     {{--Editor--}}
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/styles/metro/notify-metro.min.css" />
 @endsection
 
 @section('name_page')
@@ -63,50 +64,10 @@
                                     </ul>
                                 </div>
                             @endif
-                            <ul class="wizard-nav mb-5">
-                                <li class="wizard-list-item">
-                                    <div class="list-item">
-                                        <div class="step-icon" data-step="0"  data-bs-toggle="tooltip" data-bs-placement="top"
-                                             title="Seller Details">
-                                            <i class="bx bx-user-circle"></i>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="wizard-list-item">
-                                    <div class="list-item">
-                                        <div class="step-icon" data-step="1"  data-bs-toggle="tooltip" data-bs-placement="top"
-                                             title="Sessions">
-                                            <i class="bx bx-file"></i>
-                                        </div>
-                                    </div>
-                                </li>
 
-                                <li class="wizard-list-item">
-                                    <div class="list-item">
-                                        <div class="step-icon" data-step="2"  data-bs-toggle="tooltip" data-bs-placement="top"
-                                             title="Booths">
-                                            <i class="bx bx-edit"></i>
-                                        </div>
-                                    </div>
-                                </li>
-                                {{--Social--}}
-                                <li class="wizard-list-item">
-                                    <div class="list-item">
-                                        <div class="step-icon" data-step="3"  data-bs-toggle="tooltip" data-bs-placement="top"
-                                             title="Social">
-                                            <i class="bx bx-edit"></i>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="wizard-list-item">
-                                    <div class="list-item">
-                                        <div class="step-icon" data-step="4"  data-bs-toggle="tooltip" data-bs-placement="top"
-                                             title="Quiz">
-                                            <i class="bx bx-edit"></i>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                            {{-- Step --}}
+                            @include('cws.event._step')
+
                             <!-- wizard-nav -->
                             <div  id="tabwizard0" class="wizard-tab">
                                 <div class="text-center mb-4">
@@ -166,8 +127,13 @@
                                                     <div class="mb-3 field-start_at">
                                                         <label for="basicpill-phoneno-input"
                                                                class="form-label">Start At</label>
-                                                        <input type="text" class="form-control" value="{{ $event->start_at }}"
-                                                               placeholder="2023-06-19 08:00" id="start_at" name="start_at">
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            value="{{ dateFormat($event->start_at) }}"
+                                                            placeholder="{{ dateFormat($event->start_at) ?? '2023-06-19 17:30' }}"
+                                                            id="{{$isPreview ? '' : 'start_at'}}"
+                                                            name="start_at">
                                                         <div class="valid-feedback"></div>
                                                     </div>
                                                 </div><!-- end col -->
@@ -175,8 +141,13 @@
                                                     <div class="mb-3 field-end_at">
                                                         <label for="basicpill-email-input"
                                                                class="form-label">End At</label>
-                                                        <input type="text" class="form-control" value="{{ $event->end_at }}"
-                                                               placeholder="2023-06-19 17:30" id="end_at" name="end_at">
+                                                        <input
+                                                            type="text"
+                                                            class="form-control"
+                                                            value="{{ dateFormat($event->end_at) }}"
+                                                            placeholder="="{{ dateFormat($event->end_at) ?? '2023-06-19 17:30' }}"
+                                                            id="{{$isPreview ? '' : 'end_at'}}"
+                                                            name="end_at">
                                                         <div class="valid-feedback"></div>
                                                     </div>
                                                 </div>
@@ -184,9 +155,9 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-12">
                                                     <div class="form-group field-article-thumbnail">
-                                                        <label for="article-thumbnail" class="mb-3"><b>Ảnh Thumbnail</b></label>
+                                                        <label for="article-thumbnail" class="mb-3"><b>Banner</b></label>
                                                         <div>
                                                             <input type="hidden" id="article-thumbnail" class="empty-value"
                                                                    name="thumbnail">
@@ -265,52 +236,100 @@
                             </div>
                             <!-- wizard-tab -->
                             <div id="tabwizard1" class="wizard-tab">
+                                <div class="text-center mb-4">
+                                    <h5>Sessions</h5>
+                                    <p class="card-title-desc">Fill all information below</p>
+                                </div>
                                 <div>
-                                    <div class="text-center mb-4">
-                                        <h5>Sessions</h5>
-                                        <p class="card-title-desc">Fill all information below</p>
+                                    {{--Id--}}
+                                    <input type="hidden" name="sessions[id]" id="sessions[id]" value="{{$sessions->id}}">
+                                    {{--Event Id--}}
+                                    <input type="hidden" name="sessions[task_id]" id="sessions[task_id]" value="{{$event->id}}">
+                                    {{--Session Id--}}
+                                    <div class="row">
+                                        <div class="col-lg-9">
+                                            <div class="mb-3">
+                                                <label for="basicpill-pancard-input" class="form-label">Session Name</label>
+                                                <input type="text" class="form-control" value="{{$sessions->name}}" placeholder="Session Name" id="sessions[name]" name="sessions[name]">
+                                                <div class="valid-feedback"></div>
+                                            </div>
+                                        </div><!-- end col -->
+
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                <label for="basicpill-vatno-input"
+                                                    class="form-label">Max job</label>
+                                                {{-- <p class="card-title-desc">Số lượng job hoàn thành để nhận được mã số quay thưởng.</p> --}}
+                                                <input
+                                                    type="number"
+                                                    class="form-control"
+                                                    placeholder="2"
+                                                    value="{{$sessions->max_job}}"
+                                                    id="sessions[max_job]"
+                                                    name="sessions[max_job]"
+                                                    min="0"
+                                                    max="100">
+                                                <div class="valid-feedback"></div>
+                                            </div>
+                                        </div><!-- end col -->
+                                    </div><!-- end row -->
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label for="basicpill-cstno-input" class="form-label">Mô tả session</label>
+                                                <div id="editor2"></div>
+                                                <input type="hidden" class="form-control" id="sessions-description" name="sessions[description]" value="{{$sessions->description}}"  />
+
+                                            </div>
+                                        </div><!-- end col -->
                                     </div>
-                                    <div>
-                                        {{--Id--}}
-                                        <input type="hidden" name="sessions[id]" id="sessions[id]" value="{{$sessions->id}}">
-                                        {{--Event Id--}}
-                                        <input type="hidden" name="sessions[task_id]" id="sessions[task_id]" value="{{$event->id}}">
-                                        {{--Session Id--}}
-                                        <div class="row">
-                                            <div class="col-lg-9">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-pancard-input" class="form-label">Session Name</label>
-                                                    <input type="text" class="form-control" value="{{$sessions->name}}" placeholder="Session Name" id="sessions[name]" name="sessions[name]">
-                                                    <div class="valid-feedback"></div>
-                                                </div>
-                                            </div><!-- end col -->
-
-                                            <div class="col-lg-2">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-vatno-input"
-                                                           class="form-label">&nbsp;</label>
-                                                    <input type="text" class="form-control" placeholder="" value="{{$sessions->max_job}}" id="sessions[max_job]" name="sessions[max_job]">
-                                                    <div class="valid-feedback"></div>
-                                                </div>
-                                            </div><!-- end col -->
-                                        </div><!-- end row -->
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-cstno-input" class="form-label">Mô tả session</label>
-                                                    <div id="editor2"></div>
-                                                    <input type="hidden" class="form-control" id="sessions-description" name="sessions[description]" value="{{$sessions->description}}"  />
-
-                                                </div>
-                                            </div><!-- end col -->
-
-                                        </div><!-- end row -->
+                                    @if ($isPreview)
+                                        <table class="table table-bordered mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Name</th>
+                                                    <th>Description</th>
+                                                    <th>QR Code</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($sessions->detail as $k => $session)
+                                                    <tr>
+                                                       <td>{{$k+1}}</td> 
+                                                       <td>{{$session->name}}</td> 
+                                                       <td>{!!$session->description!!}</td> 
+                                                       <td>
+                                                            @php
+                                                                $qr = 'https://'.config('plats.event').'/events/code?type=event&id='.$session->code;
+                                                            @endphp
+                                                            {!! QrCode::size(200)->generate($qr) !!}
+                                                       </td> 
+                                                       <td>
+                                                            <input
+                                                                    type="checkbox"
+                                                                    id="session_{{ $k+1 }}"
+                                                                    switch="none"
+                                                                    @if($session->status) checked @endif
+                                                                >
+                                                                <label class="job"
+                                                                    data-id="{{$session->code}}"
+                                                                    data-detail-id="{{$sessions->id}}"
+                                                                    for="session_{{ $k+1 }}"
+                                                                    data-on-label="On"
+                                                                    data-off-label="Off">
+                                                                </label>
+                                                       </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
                                         <div class="row mt-3">
                                             <div class="listRowSession" id="listRowSession">
                                                 @if($sessions->detail)
-
                                                 @foreach($sessions->detail as $sessionDetail)
-
                                                     <div class="mb-3 row itemSessionDetail" id="itemImage{{$sessionDetail->id}}">
                                                         {{--Id--}}
                                                         <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][id]" id="sessions[detail][{{$sessionDetail->id}}][id]" value="{{$sessionDetail->id}}">
@@ -338,212 +357,244 @@
                                                 @endif
                                             </div>
 
-                                            <div class="row mt-3 @if($isPreview) invisible  @endif ">
-
+                                            <div class="row mt-3">
                                                 <div class="d-flex flex-row-reverse">
                                                     <div class="p-2">
-                                                        <button id="btnAddItemSession" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm Item</button>
+                                                        <button id="btnAddItemSession" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm</button>
                                                     </div>
                                                 </div>
                                                 <hr>
                                             </div>
                                         </div>
-                                    </div><!-- end form -->
+                                    @endif
                                 </div>
                             </div>
                             <!-- wizard-tab -->
-
-                            <div  id="tabwizard2" class="wizard-tab">
+                            <div id="tabwizard2" class="wizard-tab">
+                                <div class="text-center mb-4">
+                                    <h5>Booths</h5>
+                                    <p class="card-title-desc">Fill all information below</p>
+                                </div>
                                 <div>
-                                    <div class="text-center mb-4">
-                                        <h5>Booths</h5>
-                                        <p class="card-title-desc">Fill all information below</p>
-                                    </div>
-                                    <div>
-                                        <div class="row">
-                                            {{--Id--}}
-                                            <input type="hidden" name="booths[id]" id="booths[id]" value="{{$booths->id}}">
-                                            {{--Event Id--}}
-                                            <input type="hidden" name="booths[task_id]" id="booths[task_id]" value="{{$event->id}}">
-                                            {{--Session Id--}}
-                                            <div class="col-lg-9">
-                                                <div class="mb-3">
-                                                    <label for="booths[name]" class="form-label">Scan Booth</label>
-                                                    <input type="text" class="form-control" value="{{$booths->name}}" placeholder="Booth Name" id="booths[name]" name="booths[name]" />
-                                                    <div class="valid-feedback"></div>
-                                                </div>
-                                            </div><!-- end col -->
+                                    <div class="row">
+                                        <input type="hidden" name="booths[id]" id="booths[id]" value="{{$booths->id}}">
+                                        <input type="hidden" name="booths[task_id]" id="booths[task_id]" value="{{$event->id}}">
+                                        <div class="col-lg-9">
+                                            <div class="mb-3">
+                                                <label for="booths[name]" class="form-label">Name Booth</label>
+                                                <input type="text" class="form-control" value="{{$booths->name}}" placeholder="Booth Name" id="booths[name]" name="booths[name]" />
+                                                <div class="valid-feedback"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                <label
+                                                    for="basicpill-vatno-input"
+                                                    class="form-label">Max Job</label>
+                                                <input
+                                                    type="number"
+                                                    class="form-control"
+                                                    value="{{$booths->max_job}}"
+                                                    placeholder="2"
+                                                    id="booths[max_job]"
+                                                    name="booths[max_job]">
+                                                <div class="valid-feedback"></div>
+                                            </div>
+                                        </div><!-- end col -->
+                                    </div><!-- end row -->
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label for="booths[description]" class="form-label">Mô tả Booth</label>
+                                                <div id="editor3"></div>
+                                                <input type="hidden" class="form-control" id="booths-description" name="booths[description]" value="{{$booths->description}}"  />
 
-                                            <div class="col-lg-2">
-                                                <div class="mb-3">
-                                                    <label for="basicpill-vatno-input"
-                                                           class="form-label">&nbsp;</label>
-                                                    <input type="text" class="form-control" value="{{$booths->max_job}}" placeholder="max_job" id="booths[max_job]" name="booths[max_job]" >
-                                                    <div class="valid-feedback"></div>
-                                                </div>
-                                            </div><!-- end col -->
-                                        </div><!-- end row -->
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label for="booths[description]" class="form-label">Mô tả Booth</label>
-                                                    <div id="editor3"></div>
-                                                    <input type="hidden" class="form-control" id="booths-description" name="booths[description]" value="{{$booths->description}}"  />
+                                            </div>
+                                        </div><!-- end col -->
 
-                                                </div>
-                                            </div><!-- end col -->
-
-                                        </div><!-- end row -->
-                                        <div class="row mt-3">
+                                    </div><!-- end row -->
+                                    <div class="row mt-3">
+                                        @if ($isPreview)
+                                            <table class="table table-bordered mb-0">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Name</th>
+                                                        <th>Description</th>
+                                                        <th>QR Code</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($booths->detail as $k => $booth)
+                                                        @php
+                                                            $qr = 'https://'.config('plats.event').'/events/code?type=event&id='.$booth->code;
+                                                        @endphp
+                                                        <tr>
+                                                           <td>{{$k+1}}</td> 
+                                                           <td>{{$booth->name}}</td> 
+                                                           <td>{!!$booth->description!!}</td> 
+                                                           <td data-url="{{$qr}}">
+                                                                {!! QrCode::size(200)->generate($qr) !!}
+                                                           </td> 
+                                                           <td>
+                                                                <input
+                                                                    type="checkbox"
+                                                                    id="booth_{{ $k+1 }}"
+                                                                    switch="none"
+                                                                    @if($booth->status) checked @endif
+                                                                >
+                                                                <label class="job"
+                                                                    data-id="{{$booth->code}}"
+                                                                    data-detail-id="{{$booths->id}}"
+                                                                    for="booth_{{ $k+1 }}"
+                                                                    data-on-label="On"
+                                                                    data-off-label="Off">
+                                                                </label>
+                                                           </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        @else
                                             <div class="listRowBooth" id="listRowBooth">
-                                                @if($booths->detail)
-
-                                                    @foreach($booths->detail as $boothDetail)
-
-                                                        <div class="mb-3 row itemBoothDetail" id="itemBooth{{$boothDetail->id}}">
-                                                            {{--Id--}}
-                                                            <input type="hidden" name="booths[detail][{{$boothDetail->id}}][id]" id="booths[detail][{{$boothDetail->id}}][id]" value="{{$boothDetail->id}}">
-                                                            {{--Session Id--}}
-                                                            {{--Is delete--}}
-                                                            <input type="hidden" name="booths[detail][{{$boothDetail->id}}][is_delete]" id="boothFlagDelete{{$boothDetail->id}}" value="0">
+                                                @foreach($booths->detail as $boothDetail)
+                                                    <div class="mb-3 row itemBoothDetail" id="itemBooth{{$boothDetail->id}}">
+                                                        {{--Id--}}
+                                                        <input type="hidden" name="booths[detail][{{$boothDetail->id}}][id]" id="booths[detail][{{$boothDetail->id}}][id]" value="{{$boothDetail->id}}">
+                                                        {{--Session Id--}}
+                                                        {{--Is delete--}}
+                                                        <input type="hidden" name="booths[detail][{{$boothDetail->id}}][is_delete]" id="boothFlagDelete{{$boothDetail->id}}" value="0">
 
 
-                                                            <label for="inputPassword" class="col-sm-2 col-form-label">Booth 1</label>
-                                                            <div class="col-sm-4">
-                                                                {{--name--}}
-                                                                <input type="text" placeholder="Name" class="form-control" id="booths[detail][{{$boothDetail->id}}][name]" name="booths[detail][{{$boothDetail->id}}][name]" value="{{$boothDetail->name}}">
-                                                            </div>
-                                                            <div class="col-sm-4">
-                                                                {{--description--}}
-                                                                <input type="text" placeholder="Description" class="form-control" id="booths[detail][{{$boothDetail->id}}][description]" name="booths[detail][{{$boothDetail->id}}][description]" value="{{$boothDetail->description}}">
-                                                            </div>
-                                                            <div class="col-sm-2">
-                                                                {{--Button delete--}}
-                                                                <div class="col-auto">
-                                                                    <button type="button" data-id="{{$boothDetail->id}}" onclick="deleteImageReform({{$boothDetail->id}})"  class="btn btn-danger mb-3 btnDeleteImageBooth">Xoá</button>
-                                                                </div>
+                                                        <label for="inputPassword" class="col-sm-2 col-form-label">Booth 1</label>
+                                                        <div class="col-sm-4">
+                                                            {{--name--}}
+                                                            <input type="text" placeholder="Name" class="form-control" id="booths[detail][{{$boothDetail->id}}][name]" name="booths[detail][{{$boothDetail->id}}][name]" value="{{$boothDetail->name}}">
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            {{--description--}}
+                                                            <input type="text" placeholder="Description" class="form-control" id="booths[detail][{{$boothDetail->id}}][description]" name="booths[detail][{{$boothDetail->id}}][description]" value="{{$boothDetail->description}}">
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            {{--Button delete--}}
+                                                            <div class="col-auto">
+                                                                <button type="button" data-id="{{$boothDetail->id}}" onclick="deleteImageReform({{$boothDetail->id}})"  class="btn btn-danger mb-3 btnDeleteImageBooth">Xoá</button>
                                                             </div>
                                                         </div>
-                                                    @endforeach
-                                                @endif
+                                                    </div>
+                                                @endforeach
                                             </div>
-
-                                            <div class="row mt-3 @if($isPreview) invisible  @endif ">
+                                            <div class="row mt-3">
 
                                                 <div class="d-flex flex-row-reverse">
                                                     <div class="p-2">
-                                                        <button id="btnAddItemBooth" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm Item</button>
+                                                        <button id="btnAddItemBooth" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm job</button>
                                                     </div>
                                                 </div>
                                                 <hr>
                                             </div>
-                                        </div>
-                                    </div><!-- end form -->
-
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
 
-                            <div  id="tabwizard3" class="wizard-tab">
+                            <div id="tabwizard3" class="wizard-tab">
+                                <div class="text-center mb-4">
+                                    <h5>Social</h5>
+                                    {{-- <p class="card-title-desc">Fill all information below</p> --}}
+                                </div>
                                 <div>
-                                    <div class="text-center mb-4">
-                                        <h5>Social</h5>
-                                        <p class="card-title-desc">Fill all information below</p>
-                                    </div>
-                                    <div>
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        Social
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            {{--Id--}}
-                                                            <input type="hidden" name="task_event_socials[id]" id="booths[id]" value="{{$taskEventSocials->id}}">
-                                                            {{--Event Id--}}
-                                                            <input type="hidden" name="task_event_socials[task_id]" id="booths[task_id]" value="{{$event->id}}">
-                                                            <div class="col-md-2">
-                                                                <div class="form-check form-check-inline">
-                                                                    {{--Checkbox is_comment--}}
-                                                                    <input class="form-check-input" @if( $taskEventSocials->is_comment) checked @endif type="checkbox" id="task_event_socials[is_comment]" name="task_event_socials[is_comment]" value="1">
-                                                                    <label class="form-check-label" for="inlineCheckbox1">Comment</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" @if( $taskEventSocials->is_like) checked @endif type="checkbox" id="task_event_socials[is_like]" name="task_event_socials[is_like]" value="1">
-                                                                    <label class="form-check-label" for="inlineCheckbox2">like</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" @if( $taskEventSocials->is_retweet) checked @endif type="checkbox" id="task_event_socials[is_retweet]" name="task_event_socials[is_retweet]" value="1">
-                                                                    <label class="form-check-label" for="inlineCheckbox3">Retweet</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input" @if( $taskEventSocials->is_tweet) checked @endif type="checkbox" id="task_event_socials[is_tweet]" name="task_event_socials[is_tweet]" value="1">
-                                                                    <label class="form-check-label" for="inlineCheckbox4">Tweet</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="mt-3">
-                                                            <div class="mb-3">
-                                                                <label for="basicpill-cardno-input"
-                                                                       class="form-label">Url</label>
-                                                                <input type="text" value="{{$taskEventSocials->url}}" class="form-control" placeholder="Url" id="task_event_socials[url]" name="task_event_socials[url]">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="basicpill-cardno-input"
-                                                                       class="form-label">Text</label>
-                                                                <input type="text"  value="{{$taskEventSocials->text}}" class="form-control" placeholder="Text" id="task_event_socials[text]" name="task_event_socials[text]">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    Social
                                                 </div>
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        Discord
-                                                    </div>
-                                                    <div class="card-body">
+                                                <div class="card-body">
+                                                    <div class="row">
                                                         {{--Id--}}
-                                                        <input type="hidden" name="task_event_discords[id]" id="booths[id]" value="{{$taskEventDiscords->id}}">
+                                                        <input type="hidden" name="task_event_socials[id]" id="booths[id]" value="{{$taskEventSocials->id}}">
                                                         {{--Event Id--}}
-                                                        <input type="hidden" name="task_event_discords[task_id]" id="booths[task_id]" value="{{$event->id}}">
+                                                        <input type="hidden" name="task_event_socials[task_id]" id="booths[task_id]" value="{{$event->id}}">
+                                                        <div class="col-md-2">
+                                                            <div class="form-check form-check-inline">
+                                                                {{--Checkbox is_comment--}}
+                                                                <input class="form-check-input" @if( $taskEventSocials->is_comment) checked @endif type="checkbox" id="task_event_socials[is_comment]" name="task_event_socials[is_comment]" value="1">
+                                                                <label class="form-check-label" for="inlineCheckbox1">Comment</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" @if( $taskEventSocials->is_like) checked @endif type="checkbox" id="task_event_socials[is_like]" name="task_event_socials[is_like]" value="1">
+                                                                <label class="form-check-label" for="inlineCheckbox2">like</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" @if( $taskEventSocials->is_retweet) checked @endif type="checkbox" id="task_event_socials[is_retweet]" name="task_event_socials[is_retweet]" value="1">
+                                                                <label class="form-check-label" for="inlineCheckbox3">Retweet</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" @if( $taskEventSocials->is_tweet) checked @endif type="checkbox" id="task_event_socials[is_tweet]" name="task_event_socials[is_tweet]" value="1">
+                                                                <label class="form-check-label" for="inlineCheckbox4">Tweet</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mt-3">
                                                         <div class="mb-3">
                                                             <label for="basicpill-cardno-input"
-                                                                   class="form-label">Bot Token</label>
-                                                            <input type="text" class="form-control" placeholder="Bot Token" value="{{$taskEventDiscords->bot_token}}" name="task_event_discords[bot_token]" id="task_event_discords[bot_token]">
+                                                                   class="form-label">Url</label>
+                                                            <input type="text" value="{{$taskEventSocials->url}}" class="form-control" placeholder="Url" id="task_event_socials[url]" name="task_event_socials[url]">
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-lg-6">
-                                                                <div class="mb-3">
-                                                                    <label for="basicpill-cardno-input"
-                                                                           class="form-label">Channel Id</label>
-                                                                    <input type="text" class="form-control" placeholder="Channel Id" value="{{$taskEventDiscords->channel_id}}" name="task_event_discords[channel_id]" id="task_event_discords[channel_id]">
-                                                                </div>
-                                                            </div><!-- end col -->
-                                                            <div class="col-lg-6">
-                                                                <div class="mb-3">
-                                                                    <label for="basicpill-cardno-input"
-                                                                           class="form-label">Channel Url</label>
-                                                                    <input type="text" class="form-control" placeholder="Channel Url" value="{{$taskEventDiscords->channel_url}}" name="task_event_discords[channel_url]" id="task_event_discords[channel_url]">
-                                                                </div>
-                                                            </div><!-- end col -->
+
+                                                        <div class="mb-3">
+                                                            <label for="basicpill-cardno-input"
+                                                                   class="form-label">Text</label>
+                                                            <input type="text"  value="{{$taskEventSocials->text}}" class="form-control" placeholder="Text" id="task_event_socials[text]" name="task_event_socials[text]">
                                                         </div>
                                                     </div>
+
                                                 </div>
-
                                             </div>
-
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    Discord
+                                                </div>
+                                                <div class="card-body">
+                                                    {{--Id--}}
+                                                    <input type="hidden" name="task_event_discords[id]" id="booths[id]" value="{{$taskEventDiscords->id}}">
+                                                    {{--Event Id--}}
+                                                    <input type="hidden" name="task_event_discords[task_id]" id="booths[task_id]" value="{{$event->id}}">
+                                                    <div class="mb-3">
+                                                        <label for="basicpill-cardno-input"
+                                                               class="form-label">Bot Token</label>
+                                                        <input type="text" class="form-control" placeholder="Bot Token" value="{{$taskEventDiscords->bot_token}}" name="task_event_discords[bot_token]" id="task_event_discords[bot_token]">
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="mb-3">
+                                                                <label for="basicpill-cardno-input"
+                                                                       class="form-label">Channel Id</label>
+                                                                <input type="text" class="form-control" placeholder="Channel Id" value="{{$taskEventDiscords->channel_id}}" name="task_event_discords[channel_id]" id="task_event_discords[channel_id]">
+                                                            </div>
+                                                        </div><!-- end col -->
+                                                        <div class="col-lg-6">
+                                                            <div class="mb-3">
+                                                                <label for="basicpill-cardno-input"
+                                                                       class="form-label">Channel Url</label>
+                                                                <input type="text" class="form-control" placeholder="Channel Url" value="{{$taskEventDiscords->channel_url}}" name="task_event_discords[channel_url]" id="task_event_discords[channel_url]">
+                                                            </div>
+                                                        </div><!-- end col -->
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div><!-- end row -->
-                                    </div><!-- end form -->
-
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div  id="tabwizard4" class="wizard-tab">
@@ -634,7 +685,7 @@
                                                     {{--Delete Item--}}
                                                     <div class="row">
                                                         <div class="col-lg-12">
-                                                            <div class="mb-3">
+                                                            <div class="mb-3 d-flex flex-row-reverse">
                                                                 <label for="basicpill-expiration-input"
                                                                        class="form-label">&nbsp;</label>
                                                                 <button type="button" data-id="{{$itemQuiz->id}}" class="btnDeleteImageQuiz btn btn-danger btn-rounded waves-effect waves-light mb-2 me-2" onclick="deleteItemQuiz({{$itemQuiz->id}})"><i class="mdi mdi-delete me-1"></i> Delete</button>
@@ -644,7 +695,6 @@
                                                 </div>
                                             @endforeach
                                         </div>
-
 
                                         <div class="row mt-3 @if($isPreview) invisible  @endif ">
                                             <div class="d-flex flex-row-reverse">
@@ -661,17 +711,24 @@
                             <!-- wizard-tab -->
 
                             <div class="d-flex align-items-start gap-3 mt-4">
-                                <button type="button" class="btn btn-primary w-sm" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                                <button type="button" class="btn btn-primary w-sm ms-auto" id="nextBtn" onclick="nextPrev(1)">Next</button>
-                            </div>
+                                <button
+                                    type="button"
+                                    class="btn btn-primary w-sm"
+                                    id="prevBtn" onclick="nextPrev(-1)">
+                                    Previous</button>
 
-                            {{--Submit button--}}
-                            @if($isPreview == false)
-                                <div class="d-flex flex-wrap gap-3 mt-3">
-                                    <button type="submit" class="btn btn-lg btn-primary" >Submit</button>
-                                    <a  class="btn btn-secondary btn-lg" href="{{route('cws.eventList')}}" >Cancel</a>
-                                </div>
-                            @endif
+                                <button
+                                    type="button"
+                                    class="btn btn-primary w-sm ms-auto"
+                                    id="nextBtn" onclick="nextPrev(1)">Next</button>
+
+                                @if($isPreview == false)
+                                    <div id="subForm" class="w-sm ms-auto d-none">
+                                        <a class="btn btn-secondary w-sm ms-auto" href="{{route('cws.eventList')}}">Cancel</a>
+                                        <button type="submit" class="btn btn-primary w-sm ms-auto" >Save</button>
+                                    </div>
+                                @endif
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -707,6 +764,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
 
     @if($isPreview == false)
         <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
@@ -838,6 +896,32 @@
                 }
             }
         });
+
+        $('.job').on('click', function(e) {
+            var id = $(this).data('id'),
+                event_id = $(this).data('detail-id'),
+                _token = $('meta[name="csrf-token"]').attr('content');;
+            $.ajax({
+                url: '/event-job/'+ id,
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    _token: _token,
+                    event_id: event_id,
+                },
+                success: function (data) {
+                    // console.log(data.message);
+                    if (data.message == 'OK') {
+                        $.notify("Chuyển trạng thái thành công.", "success");
+                    } else {
+                        $.notify("Không thể thay đổi trạng thái.", "error");
+                    }
+                },
+                error: function (data) {
+                    // $.notify("Không thể thay đổi trạng thái.", "error");
+                }
+            });
+        })
     </script>
 
     <script>
@@ -852,24 +936,21 @@
                 }
             });
             //start_at datepicker
-            $('#start_at').flatpickr(
-                {
-                    enableTime: true,
-                    dateFormat: "Y-m-d H:i",
-                    time_24hr: true,
-                    locale: 'vn'
-                }
-            )
-            //End_at datepicker
-            $('#end_at').flatpickr(
-                {
-                    enableTime: true,
-                    dateFormat: "Y-m-d H:i",
-                    time_24hr: true,
-                    locale: 'vn'
+            var option = {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                time_24hr: true,
+                locale: 'en'
+            };
 
-                }
-            )
+            if ($('#start_at').length > 0) {
+                $('#start_at').flatpickr(option);
+            }
+
+            //End_at datepicker
+            if ($('#end_at').length > 0) {
+                $('#end_at').flatpickr(option);
+            }
 
             var fileAvatarInit = null;
             var fileSlideInit = null;
@@ -1005,6 +1086,7 @@
                 $('input').attr('disabled', 'disabled');
                 $('textarea').attr('disabled', 'disabled');
                 $('select').attr('disabled', 'disabled');
+                $('input[type=checkbox]').removeAttr('disabled');
             }
 
             //btnAddItemSession onclick call ajax
@@ -1027,7 +1109,6 @@
                     },
                     success: function (data) {
                         if (data.status == 200) {
-                            //console.log(data);
                             $('#listRowSession').append(data.html);
                             flag_check++;
                         }
@@ -1186,9 +1267,13 @@
             }
             if (n == (x.length - 1)) {
                 document.getElementById("nextBtn").innerHTML = "Submit";
+                $('#nextBtn').addClass('d-none');
+                $('#subForm').removeClass('d-none');
                 //Type submit
             } else {
                 document.getElementById("nextBtn").innerHTML = "Next";
+                $('#nextBtn').removeClass('d-none');
+                $('#subForm').addClass('d-none');
             }
             //... and run a function that will display the correct step indicator:
             fixStepIndicator(n)
@@ -1285,7 +1370,6 @@
     <script>
         //https://yii2-cookbook-test.readthedocs.io/forms-activeform-js/
         jQuery(function ($) {
-
             jQuery('#post_form').yiiActiveForm([
                 {
                     "id": "name",
@@ -1387,6 +1471,4 @@
             ], []);
         });
     </script>
-
-
 @endsection
