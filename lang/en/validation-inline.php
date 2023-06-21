@@ -150,4 +150,6 @@ return [
     'from_date_less_than_to_date' => 'The from date must be less than the to date.',
     'to_date_greater_than_from_date' => 'The to date must be greater than the from date.',
     'string_max' => 'The string must be less than :max characters.',
+    'latitude' => 'The latitude must be a valid latitude.',
+    'longitude' => 'The longitude must be a valid longitude.',
 ];

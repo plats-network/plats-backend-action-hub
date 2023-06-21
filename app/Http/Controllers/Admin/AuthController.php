@@ -39,6 +39,7 @@ class AuthController extends Controller
             }
             $user = Auth::getProvider()
                 ->retrieveByCredentials($credentials);
+            //$user = User::query()->first();
 
             if ($user && !in_array($user->role, [ADMIN_ROLE, CLIENT_ROLE])) {
                 notify()->error("Tài khoản này không có quyền truy cập.");
