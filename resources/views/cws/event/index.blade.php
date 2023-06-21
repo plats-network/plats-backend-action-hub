@@ -240,10 +240,7 @@
                         data: {_token: _token},
                         success: function (data) {
                             if (data.status == 200) {
-                                alert('ok');
-                                //console.log(data);
-                                // $('#listRowSession').append(data.html);
-                                // flag_check++;
+                                console.log(data);
                             }
                         },
                         error: function (data) {

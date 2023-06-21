@@ -40,7 +40,6 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->post('change-password', [User::class, 'changePassword'])->name('cws.changePassword');
     $cws->post('change-email', [User::class, 'changeEmail'])->name('cws.changeEmail');
     $cws->post('change-info', [User::class, 'changeInfo'])->name('cws.changeInfo');
-
     // User
     $cws->get('users', [User::class, 'index'])->name('cws.users');
 
@@ -61,6 +60,7 @@ Route::middleware(['client_admin'])->group(function($cws) {
     //Template form event
     $cws->get('event-template', [EventController::class, 'template'])->name('cws.eventTemplate');
     $cws->get('event-status/{id}', [EventController::class, 'updateStatus'])->name('cws.updateStatus');
+    $cws->get('event-job/{id}', [EventController::class, 'updateJob'])->name('cws.updateJob');
 });
 //Upload file
 /*Upload Single*/
