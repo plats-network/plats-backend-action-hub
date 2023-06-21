@@ -1218,10 +1218,27 @@
             if(step==1){
                 //Check name input is empty
                 if($('#name').val() == '') {
-                    alert('Please input name');
+                    //alert('Please input name');
+                    //Trigger validation
+
+                    $('#post_form').data('yiiActiveForm').submitting = true;
+                    $('#post_form').yiiActiveForm('validate');
+
+
                     //Force focus input
                     $('#name').focus();
+                    //Scroll to top
+                    $('html, body').animate({
+                        scrollTop: $("#name").offset().top - 250
+                    });
                     isValid = false;
+                }
+                //Check address input is empty
+                if($('#address').val() == '') {
+                    //alert('Please input address');
+                    //Force focus input
+                    //$('#address').focus();
+                    //isValid = false;
                 }
 
             }
