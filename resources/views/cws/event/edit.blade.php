@@ -1277,14 +1277,56 @@
         }
 
         function nextPrev(n) {
-            var x = document.getElementsByClassName("wizard-tab");
-            x[currentTab].style.display = "none";
-            currentTab = currentTab + n;
-            if (currentTab >= x.length) {
-                currentTab = currentTab - n;
-                x[currentTab].style.display = "block";
+
+            //Todo check validate then next
+            //Check if n = 1 and validate form before next
+            if ( validateForm(n) == false){
+                return false;
+            } else{
+                var x = document.getElementsByClassName("wizard-tab");
+                x[currentTab].style.display = "none";
+                currentTab = currentTab + n;
+                if (currentTab >= x.length) {
+                    currentTab = currentTab - n;
+                    x[currentTab].style.display = "block";
+                }
+                showTab(currentTab)
             }
-            showTab(currentTab)
+
+
+        }
+        //validateForm step
+        function validateForm(step){
+            let isValid = true
+            if(step==1){
+                //Check name input is empty
+                if($('#name').val() == '') {
+                    //alert('Please input name');
+                    //Trigger validation
+
+                    $('#post_form').data('yiiActiveForm').submitting = true;
+                    $('#post_form').yiiActiveForm('validate');
+
+
+                    //Force focus input
+                    $('#name').focus();
+                    //Scroll to top
+                    $('html, body').animate({
+                        scrollTop: $("#name").offset().top - 250
+                    });
+                    isValid = false;
+                }
+                //Check address input is empty
+                if($('#address').val() == '') {
+                    //alert('Please input address');
+                    //Force focus input
+                    //$('#address').focus();
+                    //isValid = false;
+                }
+
+            }
+
+            return isValid;
         }
 
         function fixStepIndicator(n) {
