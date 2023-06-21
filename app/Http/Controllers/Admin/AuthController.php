@@ -33,13 +33,13 @@ class AuthController extends Controller
         try {
             $credentials = $request->only('email', 'password');
 
-           /* if (!Auth::attempt($credentials)) {
+            if (!Auth::attempt($credentials)) {
                 notify()->error("Tài khoản không đúng");
                 return redirect()->route('cws.formLogin');
-            }*/
-            /*$user = Auth::getProvider()
-                ->retrieveByCredentials($credentials);*/
-            $user = User::query()->first();
+            }
+            $user = Auth::getProvider()
+                ->retrieveByCredentials($credentials);
+            //$user = User::query()->first();
 
             if ($user && !in_array($user->role, [ADMIN_ROLE, CLIENT_ROLE])) {
                 notify()->error("Tài khoản này không có quyền truy cập.");
