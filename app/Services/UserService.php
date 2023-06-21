@@ -47,10 +47,7 @@ class UserService extends BaseService
     public function search($conditions = [])
     {
         $user = auth()->user();
-
-
         $this->makeBuilder($conditions);
-
         if ($this->filter->has('name')) {
             $this->builder->where(function ($q) {
                 $q->where(DB::raw('LOWER(name)'), 'like', '%' . strtolower($this->filter->get('name')) . '%');
@@ -91,6 +88,15 @@ class UserService extends BaseService
                 $q->whereIn('id', $userIds);
             });
         }
+
+        if ($this->filter->has('userIds')) {
+            $userIds = $this->filter->get('userIds');
+            $this->builder->where(function ($q) use ($userIds) {
+                $q->whereIn('id', $userIds);
+            });
+            $this->cleanFilterBuilder('userIds');
+        }
+
 
         return $this->endFilter();
     }

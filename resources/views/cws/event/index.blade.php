@@ -69,8 +69,8 @@
                         </div>
                     </div>
 
-                    <table class="table table-striped table-responsive">
-                        <thead>
+                    <table class="table table-bordered mb-0 table-responsive">
+                        <thead class="table-light">
                             <tr>
                                 <th>No</th>
                                 <th>Img</th>
@@ -109,10 +109,21 @@
                                         >
                                         <label class="event" data-id="{{$event->id}}" for="switch_{{ $i+1 }}" data-on-label="On" data-off-label="Off"></label>
                                     </td>
-                                    <td style="width: 10%;">
+                                    <td style="width: 20%;">
                                         <ul class="list-inline mb-0">
                                             <li class="list-inline-item">
-                                                <a
+                                                @include('cws.actions.link', [
+                                                    'url' => route('cws.eventPreview', ['id' => $event->id, 'tab' => $tab, 'preview' => 1]),
+                                                    'label' => 'Show',
+                                                    'icon' => 'show'
+                                                ])
+                                                @include('cws.actions.link', [
+                                                    'url' => route('cws.event.users', ['id' => $event->id]),
+                                                    'label' => 'Users',
+                                                    'icon' => 'user-plus'
+                                                ])
+
+                                                {{-- <a
                                                     href="{{ route('cws.eventPreview', [
                                                             'id' => $event->id,
                                                             'tab' => $tab,
@@ -124,16 +135,16 @@
                                                     data-bs-original-title="Show"
                                                     aria-label="Show">
                                                         <i class="bx bx-show font-size-18"></i>
-                                                </a>
+                                                </a> --}}
                                             </li>
                                             {{-- <li class="list-inline-item">
-                                                <a href="javascript:void(0);"
+                                                <a href="#"
                                                     data-bs-toggle="tooltip"
                                                     data-bs-placement="top"
                                                     class="px-2 text-primary"
-                                                    data-bs-original-title="Edit"
-                                                    aria-label="Edit">
-                                                        <i class="bx bx-pencil font-size-18"></i>
+                                                    data-bs-original-title="Users"
+                                                    aria-label="Users">
+                                                        <i class="bx bx-user-plus font-size-18"></i>
                                                 </a>
                                             </li> --}}
                                             <li class="list-inline-item">

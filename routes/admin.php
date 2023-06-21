@@ -60,6 +60,7 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->get('event-template', [EventController::class, 'template'])->name('cws.eventTemplate');
     $cws->get('event-status/{id}', [EventController::class, 'updateStatus'])->name('cws.updateStatus');
     $cws->get('event-job/{id}', [EventController::class, 'updateJob'])->name('cws.updateJob');
+    $cws->get('event-users/{id}', [User::class, 'listUsers'])->name('cws.event.users');
 });
 //Upload file
 /*Upload Single*/
