@@ -59,7 +59,8 @@ class User extends Controller
         }
 
         return view('cws.users.list', [
-            'users' => $users
+            'users' => $users,
+            'id' => $id
         ]);
     }
 

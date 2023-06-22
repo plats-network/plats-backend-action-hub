@@ -75,7 +75,10 @@ class UserService extends BaseService
 
         if ($this->filter->has('date_to') || $this->filter->has('date_end')) {
             $this->builder->where(function ($q) {
-                $q->whereBetween('created_at', [$this->filter->get('date_to') ?? date('Y-m-d'), $this->filter->get('date_end')?? date('Y-m-d')]);
+                $q->whereBetween('created_at', [
+                    $this->filter->get('date_to') ?? date('Y-m-d'),
+                    $this->filter->get('date_end')?? date('Y-m-d')
+                ]);
             });
             $this->cleanFilterBuilder('date_to');
         }
@@ -96,7 +99,6 @@ class UserService extends BaseService
             });
             $this->cleanFilterBuilder('userIds');
         }
-
 
         return $this->endFilter();
     }

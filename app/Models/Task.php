@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use App\Helpers\BaseImage;
-use App\Models\Event\EventDiscords;
-use App\Models\Event\EventSocial;
-use App\Models\Event\EventUserTicket;
-use App\Models\Event\TaskEvent;
-use App\Models\Event\UserEventLike;
+use App\Models\Event\{
+    EventDiscords, EventSocial,
+    EventUserTicket, TaskEvent,
+    UserEventLike
+};
 use App\Models\Quiz\Quiz;
 use App\Models\Traits\Attribute\TaskAttribute;
 use App\Models\Traits\Method\TaskMethod;
@@ -52,15 +52,15 @@ class Task extends Model
         'address',
         'lat',
         'lng',
-        'status',
+        'status', // 0: Draft , 1: Public, 99: Delete
         'slug',
         'address',
         'type', // 0: task, 1: event
         'creator_id',
-        'is_paid',
-        'reward',
-        'reward_type',
-        'code',
+        'is_paid', // 0: Free, 1: Paid
+        'reward', // SL phan thuong
+        'reward_type', // Loai phan thuong
+        'code', // Hash
     ];
 
     /**

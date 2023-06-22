@@ -1,3 +1,10 @@
+@php
+    $path = request()->segment(1);
+    $menuUser = in_array($path, ['users']);
+    $e = 'event-';
+    $menuEvent = in_array($path, [$e.'list', $e.'preview', $e.'users', $e.'edit', $e.'create']);
+@endphp
+
 <div class="vertical-menu">
     <div class="navbar-brand-box">
         <a href="{{url('/')}}" class="logo logo-dark">
@@ -40,15 +47,15 @@
                     </ul>
                 </li> --}}
 
-                <li>
-                    <a href="{{route('cws.users')}}">
+                <li class="{{$menuUser ? 'mm-active' : ''}}">
+                    <a href="{{route('cws.users')}}" class="{{$menuUser ? 'active' : ''}}">
                         <i class="bx bx-calendar-event icon nav-icon"></i>
                         <span class="menu-item" data-key="t-calendar">Users</span>
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{route('cws.eventList')}}">
+                <li class="{{$menuEvent ? 'mm-active' : ''}}">
+                    <a href="{{route('cws.eventList')}}" class="{{$menuEvent ? 'active' : ''}}">
                         <i class="bx bx-check-square icon nav-icon"></i>
                         <span class="menu-item" data-key="t-todo">Events</span>
                         {{-- <span class="badge rounded-pill bg-success" data-key="t-new">New</span> --}}

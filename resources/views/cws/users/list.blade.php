@@ -14,7 +14,7 @@
                     <h4 class="card-title mb-0">Search</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('cws.users')}}">
+                    <form action="{{route('cws.event.users', ['id' => $id])}}">
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="mb-3">

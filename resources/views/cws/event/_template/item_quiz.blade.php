@@ -41,16 +41,14 @@
                 <label class="form-check-label" for="flexSwitchCheckChecked">Status</label>
             </div>
         </div>
-    </div><!-- end row -->
+    </div>
     <br>
-
     {{--QuizAnswer--}}
-    @for($index2 = 0; $index2<=3; $index2++)
+    @for($index2=0; $index2<=3; $index2++)
         <div class="row">
             <div class="mb-3 row offset-md-1">
                 <label for="inputPassword" class="col-sm-2 col-form-label">Answer {{$index2 +1}}</label>
                 <div class="col-sm-7">
-                    {{--name--}}
                     <input
                         type="text"
                         class="form-control"
@@ -61,14 +59,13 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="form-check mt-2">
-                        {{--status--}}
                         <input
                             class="form-check-input"
                             type="checkbox"
                             value="1"
-                            id="quiz[{{$indexImageItem}}][detail][{{$index2}}][status]"
+                            id="{{$indexImageItem+$index2}}"
                             name="quiz[{{$indexImageItem}}][detail][{{$index2}}][status]">
-                        <label class="form-check-label" for="flexCheckDefault">
+                        <label class="form-check-label" for="{{$indexImageItem+$index2}}">
                             Option
                         </label>
                     </div>
@@ -87,3 +84,16 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $("input:checkbox").click(function() {
+        if ($(this).is(":checked")) {
+            var group = "input:checkbox[name='" + $(this).attr("name") + "']";
+            console.log(group);
+            $(group).prop("checked", false);
+            $(this).prop("checked", true);
+        } else {
+            $(this).prop("checked", false);
+        }
+    });
+</script>

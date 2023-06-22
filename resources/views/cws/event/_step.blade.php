@@ -15,7 +15,6 @@
             </div>
         </div>
     </li>
-
     <li class="wizard-list-item">
         <div class="list-item">
             <div class="step-icon" data-step="2"  data-bs-toggle="tooltip" data-bs-placement="top"
@@ -24,7 +23,6 @@
             </div>
         </div>
     </li>
-    {{--Social--}}
     <li class="wizard-list-item">
         <div class="list-item">
             <div class="step-icon" data-step="3"  data-bs-toggle="tooltip" data-bs-placement="top"

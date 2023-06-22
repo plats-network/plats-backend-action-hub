@@ -31,7 +31,8 @@
         <div class="row">
             @if($isPreview)
                 <div class="col-md-12">
-                    <a href="{{ route('cws.eventEdit', ['id' => $event->id]) }}" class="btn btn-primary mb-2">Edit Event</a>
+                    <a class="btn btn-primary mb-2 mr-5" style="margin-right: 10px;" href="{{ route('cws.eventEdit', ['id' => $event->id]) }}" >Edit Event</a>
+                    <a class="ml-5 btn btn-primary mb-2" href="{{route('cws.event.users', ['id' => $event->id])}}">List User</a>
                 </div>
             @endif
 
@@ -117,7 +118,9 @@
                                                 <div class="col-lg-6">
                                                     <div class="mb-3 field-start_at">
                                                         <label for="basicpill-phoneno-input"
-                                                               class="form-label">Start At</label>
+                                                            class="form-label">Start At
+                                                            <span style="width: 10px; height: 10px; border-radius: 50%;background-color: red;">i</span>
+                                                        </label>
                                                         <input
                                                             type="text"
                                                             class="form-control"
@@ -136,7 +139,7 @@
                                                             type="text"
                                                             class="form-control"
                                                             value="{{ dateFormat($event->end_at) }}"
-                                                            placeholder="="{{ dateFormat($event->end_at) ?? '2023-06-19 17:30' }}"
+                                                            placeholder="{{ dateFormat($event->end_at) ?? '2023-06-19 17:30' }}"
                                                             id="{{$isPreview ? '' : 'end_at'}}"
                                                             name="end_at">
                                                         <div class="valid-feedback"></div>

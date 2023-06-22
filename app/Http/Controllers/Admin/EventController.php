@@ -363,15 +363,16 @@ class EventController extends Controller
     public function destroy($id, Request $request)
     {
         try {
-            $event = Task::where('id',$id)->findOrFail($id);
-            $event->delete();
-            TaskEventDetail::where('task_event_id',$id)->delete();
-            TaskEventReward::where('task_id',$event->task_id)->delete();
+            $event = Task::findOrFail($id);
+            $event->update(['status' => 99]);
+            notify()->success('Delete event successfully!');
         } catch (\Exception $e) {
-            return $this->respondError($e->getMessage());
+            notify()->error('Delete event fail');
+            Log::error('Error delete event cws: ' . $e->getMessage());
+            return redirect()->route('cws.eventList');
         }
 
-        return redirect()->route('cws.eventList')->with('success', 'Event has been deleted successfully');
+        return redirect()->route('cws.eventList');
     }
 
     public function updateStatus(Request $request, $id)
