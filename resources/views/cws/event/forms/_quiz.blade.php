@@ -2,17 +2,14 @@
     <div>
         <div class="text-center mb-4">
             <h5>Quiz</h5>
-            <p class="card-title-desc">Fill all information below</p>
+            <p class="card-title-desc">Tạo câu hỏi để tham gia trò chơi.</p>
         </div>
         <div>
             <div class="listQuiz" id="listRowQuiz">
-                @foreach($quiz as $itemQuiz)
+                @foreach($quiz as $k => $itemQuiz)
                     <div class="mb-3 row itemQuizDetail" id="itemQuiz{{$itemQuiz->id}}">
-                        {{--id --}}
                         <input type="hidden" name="quiz[{{$itemQuiz->id}}][id]" value="{{$itemQuiz->id}}">
-                        {{--Event Id--}}
                         <input type="hidden" name="quiz[{{$itemQuiz->id}}][task_id]" value="{{$event->id}}">
-                        {{--Is delete--}}
                         <input type="hidden" name="quiz[{{$itemQuiz->id}}][is_delete]" id="quizFlagDelete{{$event->id}}" value="0">
 
                         <div class="row">
@@ -104,11 +101,13 @@
                                                 class="form-check-input checkOptionQuiz"
                                                 type="checkbox"
                                                 value="1"
-                                                id="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]"
-                                                name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]" @if($itemQuizAnswer->status == 1) checked @endif>
+                                                id="{{$k+$keyIndex+1}}"
+                                                name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]" @if($itemQuizAnswer->status == 1) checked @endif
+                                                @if($isPreview) redonly @endif
+                                            >
                                             <label
                                                 class="form-check-label"
-                                                for="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]">
+                                                for="{{$k+$keyIndex+1}}">
                                                 Option
                                             </label>
                                         </div>
@@ -117,26 +116,28 @@
                             </div>
                         @endforeach
 
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="mb-3 d-flex flex-row-reverse">
-                                    <label
-                                        for="basicpill-expiration-input"
-                                        class="form-label">&nbsp;</label>
-                                    <button
-                                        type="button"
-                                        data-id="{{$itemQuiz->id}}"
-                                        class="btnDeleteImageQuiz btn btn-danger btn-rounded waves-effect waves-light mb-2 me-2"
-                                        onclick="deleteItemQuiz({{$itemQuiz->id}})">
-                                        <i class="mdi mdi-delete me-1"></i> Delete</button>
+                        @if (!$isPreview)
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="mb-3 d-flex flex-row-reverse">
+                                        <label
+                                            for="basicpill-expiration-input"
+                                            class="form-label">&nbsp;</label>
+                                        <button
+                                            type="button"
+                                            data-id="{{$itemQuiz->id}}"
+                                            class="btnDeleteImageQuiz btn btn-danger btn-rounded waves-effect waves-light mb-2 me-2"
+                                            onclick="deleteItemQuiz({{$itemQuiz->id}})">
+                                            <i class="mdi mdi-delete me-1"></i> Delete</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
 
-            <div class="row mt-3 @if($isPreview) invisible @endif ">
+            <div class="row mt-3 @if($isPreview) invisible @endif">
                 <div class="d-flex flex-row-reverse">
                     <div class="p-2">
                         <button

@@ -50,23 +50,37 @@
                         <th>No</th>
                         <th>Name</th>
                         <th>Description</th>
-                        <th>QR Code</th>
+                        <th>
+                            QR Code
+                            <br>
+                            Download
+                        </th>
+                        <th>Total</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($sessions->detail as $k => $session)
                         <tr>
-                           <td>{{$k+1}}</td> 
-                           <td>{{$session->name}}</td> 
-                           <td>{!!$session->description!!}</td> 
-                           <td>
+                           <td width="5%">{{$k+1}}</td> 
+                           <td width="20%">{{$session->name}}</td> 
+                           <td width="30%">{!!$session->description!!}</td> 
+                           <td width="20%" class="text-center">
                                 @php
                                     $qr = 'https://'.config('plats.event').'/events/code?type=event&id='.$session->code;
                                 @endphp
-                                {!! QrCode::size(200)->generate($qr) !!}
-                           </td> 
-                           <td>
+                                <img
+                                    style="margin: 0 auto;"
+                                    src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(150)->generate($qr)) !!} ">
+                                <a
+                                    href="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(300)->generate($qr)) !!} "
+                                    class="btn btn-primary" download="session_{{$session->code.'_'.($k+1)}}.png">
+                                    Download</a>
+                           </td>
+                           <td width="5%">
+                               {{rand(11, 100)}}
+                           </td>
+                           <td width="20%">
                                 <input
                                         type="checkbox"
                                         id="session_{{ $k+1 }}"

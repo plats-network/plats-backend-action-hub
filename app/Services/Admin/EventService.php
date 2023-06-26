@@ -303,7 +303,7 @@ class EventService extends BaseService
                 }
             }
             TaskGenerateLinks::where('task_id',$id)->delete();
-            $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
+            // $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
             DB::commit();
         } catch (RuntimeException $exception) {
             DB::rollBack();
@@ -413,7 +413,7 @@ class EventService extends BaseService
                 $dataBaseTask->taskEventDiscords()->create($discords);
 
             }
-            $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
+            // $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
 
             DB::commit();
         } catch (RuntimeException $exception) {
@@ -455,13 +455,10 @@ class EventService extends BaseService
         return $dataLinkGenerate;
     }
 
-    public function changeStatus($status,$id)
+    public function changeStatus($status, $id)
     {
-        $data = [
-            'status' => $status
-        ];
         try {
-            $dataBaseTask = $this->taskRepository->update($data,$id);
+            $dataBaseTask = $this->taskRepository->update(['status' => $status], $id);
         } catch (RuntimeException $exception) {
             DB::rollBack();
             throw $exception;

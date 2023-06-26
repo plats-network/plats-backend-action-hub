@@ -1942,6 +1942,12 @@
     border-radius: 50%;
     margin-right: 20px;
 
+    @media only screen and (max-width: 767px) {
+      width: 50px;
+      height: 50px;
+      border: 1px solid #505add;
+    }
+
     img {
       border-radius: 50%;
     }
@@ -2017,15 +2023,6 @@
   }
 }
 
-// .confer-leave-a-reply-form {
-//   position: relative;
-//   z-index: 1;
-//   h4 {
-//     text-transform: uppercase;
-//     letter-spacing: 0.5px;
-//     font-size: 25px;
-//   }
-// }
 .single-widget-area {
   position: relative;
   z-index: 1;

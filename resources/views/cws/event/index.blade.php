@@ -44,8 +44,7 @@
                                     <input class="form-control"
                                            id="end" name="End"
                                            type="text"
-                                           placeholder="End"
-                                           ></div>
+                                           placeholder="End"></div>
                             </div>
                         </div>
                         <div class="mt-3 text-right">
@@ -76,7 +75,7 @@
                                 <th>Img</th>
                                 <th>Name</th>
                                 <th>Star<br>End</th>
-                                <th>Customer Name</th>
+                                <th>View</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -99,7 +98,7 @@
                                         <br>
                                         {{ dateFormat($event->end_at) }}
                                     </td>
-                                    <td>ss</td>
+                                    <td>{{rand(100,1000)}}</td>
                                     <td>
                                         <input
                                             type="checkbox"
@@ -136,18 +135,6 @@
                                                     aria-label="Show">
                                                         <i class="bx bx-show font-size-18"></i>
                                                 </a> --}}
-                                            </li>
-                                            {{-- <li class="list-inline-item">
-                                                <a href="#"
-                                                    data-bs-toggle="tooltip"
-                                                    data-bs-placement="top"
-                                                    class="px-2 text-primary"
-                                                    data-bs-original-title="Users"
-                                                    aria-label="Users">
-                                                        <i class="bx bx-user-plus font-size-18"></i>
-                                                </a>
-                                            </li> --}}
-                                            <li class="list-inline-item">
                                                 <a href="{{ route('cws.eventDelete', $event->id) }}"
                                                     data-bs-toggle="tooltip"
                                                     data-bs-placement="top"
@@ -171,36 +158,6 @@
                                                 </div>
                                             </li> --}}
                                         </ul>
-
-                                        {{-- <div class="dropdown">
-                                            <a class="text-muted dropdown-toggle font-size-18"
-                                                role="button"
-                                                data-bs-toggle="dropdown"
-                                                aria-haspopup="true">
-                                                <i class="mdi mdi-dots-horizontal"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item btn btn-info" href="{{ route('cws.eventCreate', [
-                                                    'id' => $event->id,
-                                                    'tab' => $tab,
-                                                    'copy' => 1
-                                                    ]) }}"
-                                                >Copy</a>
-                                                <a class="dropdown-item btn btn-primary" href="{{ route('cws.eventPreview', [
-                                                    'id' => $event->id,
-                                                    'tab' => $tab,
-                                                    'preview' => 1
-                                                ]) }}"
-                                                >View</a>
-                                                <a
-                                                    class="dropdown-item btn btn-danger btnDeleteRow"
-                                                    data-url="{{ route('cws.eventDelete', $event->id)}}"
-                                                    href="{{ route('cws.eventDelete', $event->id) }}"
-                                                    data-id="{{ $event->id}}"
-                                                >
-                                                Delete</a>
-                                            </div>
-                                        </div> --}}
                                     </td>
                                 </tr>
                             @endforeach
@@ -218,6 +175,7 @@
 {{--Script--}}
 
 @section('scripts')
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         var _token = $('meta[name="csrf-token"]').attr('content');
         var spinText = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ';
@@ -243,23 +201,34 @@
             $('.event').on('click', function (e) {
                 var id = $(this).data('id');
                 var _token = $('meta[name="csrf-token"]').attr('content');
-                if (confirm('Are you sure you change status?')) {
-                    $.ajax({
-                        url: '/event-status/'+ id,
-                        type: 'GET',
-                        dataType: 'json',
-                        data: {_token: _token},
-                        success: function (data) {
-                            if (data.status == 200) {
-                                console.log(data);
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Change status!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/event-status/'+ id,
+                            type: 'GET',
+                            dataType: 'json',
+                            data: {_token: _token},
+                            success: function (data) {
+                                location.reload();
+                            },
+                            error: function (data) {
+                                location.reload();
                             }
-                        },
-                        error: function (data) {
-                            console.log(data);
-                        }
-                    });
-                };
-
+                        });
+                    } else {
+                        location.reload();
+                    }
+                    
+                });
             });
         });
     </script>

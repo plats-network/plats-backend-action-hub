@@ -4,6 +4,7 @@
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Models\{Task, User};
+use App\Models\Event\{EventUserTicket};
 use Carbon\Carbon;
 
 // Task
@@ -24,6 +25,13 @@ if (!function_exists('existCodeTask')) {
 }
 // EndTask
 
+
+if (!function_exists('eventInfo')) {
+    function eventInfo($userId, $taskId) {
+        return EventUserTicket::whereUserId($userId)
+            ->whereTaskId($taskId)->first();
+    }
+}
 
 if (!function_exists('codeCardNumber')) {
     function codeCardNumber() {

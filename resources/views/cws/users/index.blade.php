@@ -26,16 +26,6 @@
                                         id="s_name">
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="mb-3">
-                                    <input type="email" class="form-control" placeholder="Email" id="formrow-email-input">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="mb-3">
-                                    <input type="password" class="form-control" placeholder="Enter Password" id="formrow-password-input">
-                                </div>
-                            </div>
                         </div>
 
                         <div class="row">

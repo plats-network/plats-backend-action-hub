@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
+use App\Services\Admin\{EventService, TaskService};
 
 class Dashboard extends Controller
 {
-    public function __construct()
+    public function __construct(
+        private TaskService  $taskService,
+    )
     {
         // $this->middleware('client_admin');
     }
@@ -15,8 +19,16 @@ class Dashboard extends Controller
     /**
      * @return \Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('cws.home');
+        $limit = $request->get('limit') ?? 10;
+        $events = $this->taskService->search([
+            'limit' => $limit,
+            'type' => EVENT
+        ]);
+
+        return view('cws.home', [
+            'events' => $events
+        ]);
     }
 }

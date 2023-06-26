@@ -232,6 +232,11 @@ class TaskService extends BaseService
         return $dataLinkGenerate;
     }
 
+    public function findEvent($id)
+    {
+        return $this->repository->find($id);
+    }
+
     function initData()
     {
 

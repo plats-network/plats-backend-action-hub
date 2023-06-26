@@ -1,3 +1,10 @@
+@php
+    $path = request()->segment(1);
+    $menuUser = in_array($path, ['users']);
+    $e = 'event-';
+    $menuEvent = in_array($path, [$e.'list', $e.'preview', $e.'users', $e.'edit', $e.'create']);
+@endphp
+
 <div class="vertical-menu">
     <div class="navbar-brand-box">
         <a href="{{url('/')}}" class="logo logo-dark">
@@ -40,51 +47,25 @@
                     </ul>
                 </li> --}}
 
-                <li>
-                    <a href="{{route('cws.users')}}">
+                <li class="{{$menuUser ? 'mm-active' : ''}}">
+                    <a href="{{route('cws.users')}}" class="{{$menuUser ? 'active' : ''}}">
                         <i class="bx bx-calendar-event icon nav-icon"></i>
                         <span class="menu-item" data-key="t-calendar">Users</span>
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{route('cws.eventList')}}">
+                <li class="{{$menuEvent ? 'mm-active' : ''}}">
+                    <a href="{{route('cws.eventList')}}" class="{{$menuEvent ? 'active' : ''}}">
                         <i class="bx bx-check-square icon nav-icon"></i>
                         <span class="menu-item" data-key="t-todo">Events</span>
                         {{-- <span class="badge rounded-pill bg-success" data-key="t-new">New</span> --}}
                     </a>
                 </li>
-
-                {{-- <li>
-                    <a href="apps-file-manager.html">
-                        <i class="bx bx-file-find icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-filemanager">File Manager</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="apps-chat.html">
-                        <i class="bx bx-chat icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-chat">Chat</span>
-                        <span class="badge rounded-pill bg-danger" data-key="t-hot">Hot</span>
-                    </a>
-                </li> --}}
-{{--                 <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i class="bx bx-store icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-ecommerce">Ecommerce</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="ecommerce-products.html" data-key="t-products">Products</a></li>
-                        <li><a href="ecommerce-product-detail.html" data-key="t-product-detail">Product Detail</a></li>
-                        <li><a href="ecommerce-orders.html" data-key="t-orders">Orders</a></li>
-                        <li><a href="ecommerce-customers.html" data-key="t-customers">Customers</a></li>
-                        <li><a href="ecommerce-cart.html" data-key="t-cart">Cart</a></li>
-                        <li><a href="ecommerce-checkout.html" data-key="t-checkout">Checkout</a></li>
-                        <li><a href="ecommerce-shops.html" data-key="t-shops">Shops</a></li>
-                        <li><a href="ecommerce-add-product.html" data-key="t-add-product">Add Product</a></li>
-                    </ul>
-                </li> --}}
             </ul>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    var _token = $('meta[name="csrf-token"]').attr('content');
+</script>

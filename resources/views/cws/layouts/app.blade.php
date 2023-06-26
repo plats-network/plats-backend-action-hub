@@ -5,6 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title>Plats Dashboard</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="csrf-token" content="{{ csrf_token() }}"/>
         <link rel="icon" type="image/x-icon" href="favicon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -53,6 +54,10 @@
         <x-notify::notify />
         @notifyJs
         @yield('scripts')
+
+        <script type="text/javascript">
+            var _token = $('meta[name="csrf-token"]').attr('content');
+        </script>
     </body>
 
 </html>
