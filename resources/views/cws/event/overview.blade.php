@@ -20,6 +20,13 @@
     @endphp
 
     <div class="row">
+        <div class="col-xl-12 mb-3">
+            <a href="{{route('cws.eventPreview', [
+                'id' => $event->id,
+                'tab' => 0,
+                'preview' => 1])}}"
+                class="btn btn-danger btn-sm">Back</a>
+        </div>
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body">
