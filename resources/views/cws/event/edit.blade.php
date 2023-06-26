@@ -246,13 +246,10 @@
                                 'event' => $event
                             ])
 
-                            
-                            
-
                             <div id="tabwizard3" class="wizard-tab">
                                 <div class="text-center mb-4">
                                     <h5>Social</h5>
-                                    {{-- <p class="card-title-desc">Fill all information below</p> --}}
+                                    <p class="card-title-desc">Fill all information below</p>
                                 </div>
                                 <div>
                                     <div class="row">
@@ -307,31 +304,35 @@
                                                             <input type="text"  value="{{$taskEventSocials->text}}" class="form-control" placeholder="Text" id="task_event_socials[text]" name="task_event_socials[text]">
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
+
                                             <div class="card">
-                                                <div class="card-header">
-                                                    Discord
-                                                </div>
+                                                <div class="card-header">Discord</div>
                                                 <div class="card-body">
-                                                    {{--Id--}}
-                                                    <input type="hidden" name="task_event_discords[id]" id="booths[id]" value="{{$taskEventDiscords->id}}">
-                                                    {{--Event Id--}}
-                                                    <input type="hidden" name="task_event_discords[task_id]" id="booths[task_id]" value="{{$event->id}}">
+                                                    <input type="hidden" name="task_event_discords[id]" value="{{$taskEventDiscords->id}}">
+                                                    <input type="hidden" name="task_event_discords[task_id]" value="{{$event->id}}">
                                                     <div class="mb-3">
                                                         <label for="basicpill-cardno-input"
                                                                class="form-label">Bot Token</label>
-                                                        <input type="text" class="form-control" placeholder="Bot Token" value="{{$taskEventDiscords->bot_token}}" name="task_event_discords[bot_token]" id="task_event_discords[bot_token]">
+                                                        <input type="text"
+                                                            class="form-control"
+                                                            placeholder="Bot Token"
+                                                            value="{{$taskEventDiscords->bot_token}}"
+                                                            name="task_event_discords[bot_token]">
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-lg-6">
                                                             <div class="mb-3">
                                                                 <label for="basicpill-cardno-input"
                                                                        class="form-label">Channel Id</label>
-                                                                <input type="text" class="form-control" placeholder="Channel Id" value="{{$taskEventDiscords->channel_id}}" name="task_event_discords[channel_id]" id="task_event_discords[channel_id]">
+                                                                <input type="text"
+                                                                    class="form-control"
+                                                                    placeholder="Channel Id"
+                                                                    value="{{$taskEventDiscords->channel_id}}"
+                                                                    name="task_event_discords[channel_id]">
                                                             </div>
-                                                        </div><!-- end col -->
+                                                        </div>
                                                         <div class="col-lg-6">
                                                             <div class="mb-3">
                                                                 <label for="basicpill-cardno-input"
@@ -352,16 +353,12 @@
                                 'quiz' => $quiz,
                                 'isPreview' => $isPreview
                             ])
-
-                            <!-- wizard-tab -->
-
                             <div class="d-flex align-items-start gap-3 mt-4">
                                 <button
                                     type="button"
                                     class="btn btn-primary w-sm"
                                     id="prevBtn" onclick="nextPrev(-1)">
                                     Previous</button>
-
                                 <button
                                     type="button"
                                     class="btn btn-primary w-sm ms-auto"
@@ -377,8 +374,8 @@
                         </form>
                     </div>
                 </div>
-            </div><!-- end col -->
-        </div><!-- end row -->
+            </div>
+        </div>
     </div>
 
     {{--Modal Loading--}}
@@ -389,7 +386,6 @@
                 <div class="modal-body">
                     <div class="d-flex align-items-center">
                         <strong class="text-white">Uploading...</strong>
-
                         <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                     </div>
                 </div>

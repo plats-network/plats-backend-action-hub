@@ -303,7 +303,7 @@ class EventService extends BaseService
                 }
             }
             TaskGenerateLinks::where('task_id',$id)->delete();
-            // $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
+            $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
             DB::commit();
         } catch (RuntimeException $exception) {
             DB::rollBack();
@@ -413,7 +413,7 @@ class EventService extends BaseService
                 $dataBaseTask->taskEventDiscords()->create($discords);
 
             }
-            // $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
+            $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
 
             DB::commit();
         } catch (RuntimeException $exception) {
