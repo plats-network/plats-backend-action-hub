@@ -21,58 +21,15 @@
                                     <input
                                         type="text"
                                         name="name"
+                                        value="{{request()->input('name') ?? ''}}"
                                         class="form-control"
                                         placeholder="name"
-                                        id="s_name">
+                                        id="name">
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="mb-3">
-                                    <input type="email" class="form-control" placeholder="Email" id="formrow-email-input">
-                                </div>
+                                <button type="submit" class="btn btn-primary w-md">Search</button>
                             </div>
-                            <div class="col-md-3">
-                                <div class="mb-3">
-                                    <input type="password" class="form-control" placeholder="Enter Password" id="formrow-password-input">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="mb-3">
-                                    <label for="formrow-inputCity" class="form-label">City</label>
-                                    <input type="text" class="form-control" placeholder="Enter City" id="formrow-inputCity">
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="mb-3">
-                                    <label for="formrow-inputState" class="form-label">State</label>
-                                    <select id="formrow-inputState" class="form-select">
-                                        <option selected>Choose...</option>
-                                        <option>...</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="col-lg-4">
-                                <div class="mb-3">
-                                    <label for="formrow-inputZip" class="form-label">Zip</label>
-                                    <input type="text" class="form-control" placeholder="Enter Zip" id="formrow-inputZip">
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="gridCheck">
-                                <label class="form-check-label" for="gridCheck">
-                                  Check me out
-                                </label>
-                            </div>
-                        </div> --}}
-                        <div class="text-right">
-                            <button type="submit" class="btn btn-primary w-md">Search</button>
                         </div>
                     </form>
                 </div>
@@ -92,20 +49,32 @@
                         <table class="table table-bordered mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th></th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Status</th>
+                                    <th>Avatar</th>
+                                    <th>
+                                        Name
+                                        <br>
+                                        Email
+                                    </th>
+                                    <th>Checkin</th>
+                                    <th>
+                                        Session
+                                        <br>
+                                        Booth
+                                    </th>
                                     <th>
                                         Created
                                         <br>
                                         Logined
                                     </th>
-                                    <th>Action</th>
+                                    <th>Tạo code</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($users as $user)
+                                    @php
+                                        $userInfo = eventInfo($user->id, $id);
+                                    @endphp
+
                                     <tr>
                                         <td style="width: 5%;">
                                             <div class="avatar">
@@ -114,16 +83,48 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="fw-semibold" style="width: 5%;">{{$user->name}}</td>
-                                        <td>{{$user->email}}</td>
-                                        <td><span class="badge badge-soft-primary font-size-12">Pending</span></td>
+                                        <td class="fw-semibold" style="width: 10%;">
+                                            {{$user->name}}
+                                            <br>
+                                            <p class="text-success" style="font-size: 11px">{{$user->email}}</p>
+                                        </td>
+                                        <td>
+                                            {{$userInfo->is_checkin ? 'Checkin' : 'Not checkin'}}
+                                        </td>
+                                        <td width="15%">
+                                            <p>
+                                                Code: {{$userInfo->sesion_code ?? '__'}}
+                                                @if (!$userInfo->sesion_code)
+                                                    <button
+                                                        class="genCode btn btn-primary btn-sm"
+                                                        style="margin-left: 10px;"
+                                                        data-id="{{$id}}"
+                                                        data-user-id="{{$user->id}}"
+                                                        data-type="session">Tạo mã</button>
+                                                    
+                                                @endif
+                                            </p>
+                                            <p>
+                                                Code: {{$userInfo->booth_code ?? '__'}}
+                                                @if (!$userInfo->booth_code)
+                                                    <button
+                                                        class="genCode btn btn-primary btn-sm"
+                                                        style="margin-left: 10px;"
+                                                        data-id="{{$id}}"
+                                                        data-user-id="{{$user->id}}"
+                                                        data-type="booth">Tạo mã</button>
+                                                @endif
+                                            </p>
+                                        </td>
                                         <td>
                                             {{dateFormat($user->created_at)}}
                                             <br>
                                             {{dateFormat($user->updated_at)}}
                                         </td>
                                         <td>
-                                            <div class="dropdown">
+                                            <a href="#">Session</a> |
+                                            <a href="#">Booth</a>
+                                            {{-- <div class="dropdown">
                                                 <a class="text-muted dropdown-toggle font-size-18" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
                                                     <i class="mdi mdi-dots-horizontal"></i>
                                                 </a>
@@ -132,7 +133,7 @@
                                                     <a class="dropdown-item" href="#">Print</a>
                                                     <a class="dropdown-item" href="#">Delete</a>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -148,4 +149,35 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        $('.genCode').on('click', function(e) {
+            var user_id = $(this).data('user-id'),
+                id = $(this).data('id'),
+                type = $(this).data('type');
+
+            $.ajax({
+                url: '/gen-code/'+id,
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    _token: _token,
+                    user_id: user_id,
+                    type: type
+                },
+                success: function (data) {
+                    if (data.message == 'OK') {
+                        location.reload();
+                    } else {
+                        location.reload();
+                    }
+                },
+                error: function (data) {
+                    location.reload();
+                }
+            })
+        })
+
+    </script>
 @endsection
+

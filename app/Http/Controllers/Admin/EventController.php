@@ -7,10 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Event\{
     EventDiscords, EventSocial,
     TaskEvent, TaskEventDetail,
-    TaskEventReward
+    TaskEventReward, EventUserTicket
 };
 use App\Models\Quiz\Quiz;
-use App\Models\{Task, TaskGallery, TaskGroup};
+use App\Models\{Task, TaskGallery, TaskGroup, TaskGenerateLinks};
 use App\Services\Admin\{EventService, TaskService};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +25,8 @@ class EventController extends Controller
         private TaskService  $taskService,
         private Task $task,
         private TaskEventDetail $taskEventDetail,
+        private EventUserTicket $eventUserTicket,
+        private TaskGenerateLinks $eventShare,
     )
     {
         // code
@@ -37,7 +39,6 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $limit = $request->get('limit') ?? PAGE_SIZE;
-        //$user = Auth::user();
         $events = $this->taskService->search([
             'limit' => $limit,
             'type' => EVENT
@@ -49,6 +50,69 @@ class EventController extends Controller
         ];
 
         return view('cws.event.index', $data);
+    }
+
+    public function overview(Request $request, $id)
+    {
+        try {
+            $event = $this->taskService->findEvent($id);
+            $session = $this->eventModel
+                ->select('code')
+                ->whereType(TASK_SESSION)
+                ->whereTaskId($event->id)
+                ->first();
+            $booth = $this->eventModel
+                ->select('code')
+                ->whereType(TASK_BOOTH)
+                ->whereTaskId($event->id)
+                ->first();
+            $shares = $this->eventShare
+                ->whereTaskId($event->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } catch (\Exception $e) {
+            Log::error('Error');
+        }
+
+        return view('cws.event.overview', [
+            'event' => $event,
+            'session' => $session,
+            'booth' => $booth,
+            'shares' => $shares,
+        ]);
+    }
+
+    public function genLink(Request $request)
+    {
+        try {
+            $id = $request->input('id');
+            $name = $request->input('name');
+            $taskId = $request->input('task_id');
+            if ($id) {
+                $share = $this->eventShare->find($id);
+                $share->update(['name' => $name]);
+
+                notify()->success('Update link successfully');
+            } else {
+                $this->eventShare->create([
+                    'task_id' => $taskId,
+                    'name' => $name,
+                    'type' => 0,
+                    'url' => Str::random(10),
+                ]);
+                notify()->success('Create link successfully');
+            }
+        } catch (\Exception $e) {
+            notify()->error('Error: '. $e->getMessage());
+
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'OK'
+        ], 200);
     }
 
     /*
@@ -281,7 +345,6 @@ class EventController extends Controller
             $booths = new TaskEvent();
             $booths->task_id = $id;
             $booths->type = 1;
-
             $booths->save();
         }
 
@@ -301,13 +364,17 @@ class EventController extends Controller
         $task['booths'] = $booths;
         $task['sessions'] = $sessions;
         $task['quiz'] = $quiz;
-        //dd($task);
 
-        //dd($sessions);
-        //dd($sessions);
         $activeTab = $request->get('tab') ?? '0';
         //Is preview
         $isPreview = $request->get('preview') ?? '0';
+
+        // Gen link share
+        $eventCount = $this->eventShare->whereTaskId($task->id)->count();
+        // dd();
+        if ($eventCount <= 0) {
+            // dd($eventCount);
+        }
 
         $data = [
             'event' => $task,
@@ -323,6 +390,7 @@ class EventController extends Controller
             'is_update' => 1,
             'isPreview' => $isPreview,
         ];
+
         return view('cws.event.edit', $data);
     }
 
@@ -411,6 +479,43 @@ class EventController extends Controller
                 return response()->json([
                     'message' => 'Not Found!'
                 ], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'OK'
+        ], 200);
+    }
+
+    public function genCode(Request $request, $id)
+    {
+        try {
+            $type = $request->get('type');
+            $userId = $request->get('user_id');
+            $info = $this->eventUserTicket
+                ->where('task_id', $id)
+                ->where('user_id', $userId)
+                ->first();
+
+            if($info) {
+                $color = '#' . substr(md5(rand()), 0, 6);
+                if($type == 'session') {
+                    $max = $this->eventUserTicket->max('sesion_code') + 1;
+                    $info->update([
+                        'sesion_code' => $max,
+                        'color_session' => $color
+                    ]);
+                } elseif ($type == 'booth') {
+                    $max = $this->eventUserTicket->max('booth_code') + 1;
+                    $info->update([
+                        'booth_code' => $max,
+                        'color_boot' => $color
+                    ]);
+                }
             }
         } catch (\Exception $e) {
             return response()->json([

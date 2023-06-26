@@ -15,9 +15,8 @@
                                 <a class="post-date" href="#">
                                     <i class="zmdi zmdi-alarm-check"></i> {{dateFormat($event->created_at)}}
                                 </a>
-                                <a class="post-author" href="#"><i class="zmdi zmdi-account"></i> Laura Green</a>
+                                <a class="post-author" href="#"><i class="zmdi zmdi-account"></i> {{optional($event->author)->name}}</a>
                                 <a class="post-author" href="#"><i class="zmdi zmdi-favorite-outline"></i> 8 Likes</a>
-                                {{-- <a class="post-author" href="#"><i class="zmdi zmdi-comment-outline"></i> 12 Comments</a> --}}
                             </div>
                             {!! $event->description !!}
                         </div>
@@ -26,8 +25,8 @@
                             <div class="popular-tags d-flex align-items-center">
                                 <p><i class="zmdi zmdi-label"></i></p>
                                 <ul class="nav">
-                                    <li><a href="#">Conference</a></li>
-                                    <li><a href="#">Workshops</a></li>
+                                    <li><a href="#">Event</a></li>
+                                    {{-- <li><a href="#">Workshops</a></li> --}}
                                 </ul>
                             </div>
                             <div class="author-social-info">
@@ -43,7 +42,7 @@
                         </div>
                         <div class="post-author-area d-flex align-items-center my-5">
                             <div class="author-avatar">
-                                <img src="{{commonImg(optional($event->author)->avatar_path)}}" alt="{{optional($event->author)->name}}">
+                                <img src="{{imgAvatar(optional($event->author)->avatar_path)}}" alt="{{optional($event->author)->name}}">
                             </div>
                             <div class="author-content">
                                 <h5>{{optional($event->author)->name}}</h5>
@@ -73,8 +72,8 @@
                         </div> --}}
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                    <div class="confer-sidebar-area mb-100">
+                <div id="fixed" class="col-12 col-md-6 col-lg-4 col-xl-3">
+                    <div class="confer-sidebar-area mb-100" style="position: fixed;">
                         {{-- <div class="single-widget-area">
                             <div class="search-widget">
                                 <form action="#" method="post">

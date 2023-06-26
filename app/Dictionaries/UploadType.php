@@ -15,9 +15,7 @@ namespace App\Dictionaries;
 class UploadType
 {
     const LOCAL = 1;
-
     const CLOUDINARY = 2;
-
     const S3 = 3;
 
     public static function all()

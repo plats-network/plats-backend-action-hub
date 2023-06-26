@@ -2,7 +2,7 @@
     <div>
         <div class="text-center mb-4">
             <h5>Quiz</h5>
-            <p class="card-title-desc">Fill all information below</p>
+            <p class="card-title-desc">Tạo câu hỏi để tham gia trò chơi.</p>
         </div>
         <div>
             <div class="listQuiz" id="listRowQuiz">

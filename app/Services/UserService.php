@@ -100,6 +100,8 @@ class UserService extends BaseService
             $this->cleanFilterBuilder('userIds');
         }
 
+        $this->builder->orderBy('created_at', 'desc');
+
         return $this->endFilter();
     }
 

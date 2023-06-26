@@ -31,16 +31,17 @@
         <div class="row">
             @if($isPreview)
                 <div class="col-md-12">
-                    <a class="btn btn-primary mb-2 mr-5" style="margin-right: 10px;" href="{{ route('cws.eventEdit', ['id' => $event->id]) }}" >Edit Event</a>
+                    <a class="btn btn-danger mb-2 mr-5" style="margin-right: 10px;" href="{{ route('cws.event.overview', ['id' => $event->id]) }}">Overview</a>
+                    <a class="btn btn-primary mb-2 mr-5" style="margin-right: 10px;" href="{{ route('cws.eventEdit', ['id' => $event->id]) }}">Edit Event</a>
                     <a class="ml-5 btn btn-primary mb-2" href="{{route('cws.event.users', ['id' => $event->id])}}">List User</a>
                 </div>
             @endif
 
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header plats-step">
                         <h4 class="card-title mb-0">Forms Steps</h4>
-                    </div><!-- end card header -->
+                    </div>
                     <div class="card-body">
                         <form method="POST"
                             id="post_form"
@@ -72,6 +73,7 @@
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="mb-3 field-name">
+                                                        {{-- <x-label>Name</x-label> --}}
                                                         <label for="basicpill-firstname-input" class="form-label">Name <span class="text-danger">*</span></label>
                                                         <input type="text" value="{{ $event->name }}" required
                                                                class="form-control" placeholder="[TECH-ED PROGRAM] Cross-chain: Sidechain Solutions & BAS Case Study" id="name" name="name">
@@ -873,7 +875,6 @@
             /*Delete Item Quiz*/
             $(document).on('click', '.btnDeleteImageQuiz', function (event) {
                 event.preventDefault();
-
                 var id = $(this).attr('data-id');
                 //Swal confirm
                 Swal.fire({
@@ -923,7 +924,6 @@
         }
 
         function nextPrev(n) {
-
             //Todo check validate then next
             //Check if n = 1 and validate form before next
             if ( validateForm(n) == false){

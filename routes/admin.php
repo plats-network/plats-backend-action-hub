@@ -56,11 +56,14 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->get('event-preview/{id}', [EventController::class, 'edit'])->name('cws.eventPreview');
     //Event Delete
     $cws->delete('event-delete/{id}', [EventController::class, 'destroy'])->name('cws.eventDelete');
+    $cws->get('overview/{id}', [EventController::class, 'overview'])->name('cws.event.overview');
     //Template form event
     $cws->get('event-template', [EventController::class, 'template'])->name('cws.eventTemplate');
     $cws->get('event-status/{id}', [EventController::class, 'updateStatus'])->name('cws.updateStatus');
     $cws->get('event-job/{id}', [EventController::class, 'updateJob'])->name('cws.updateJob');
     $cws->get('event-users/{id}', [User::class, 'listUsers'])->name('cws.event.users');
+    $cws->get('gen-code/{id}', [EventController::class, 'genCode'])->name('cws.genCode');
+    $cws->get('gen-link-social', [EventController::class, 'genLink'])->name('cws.event.genLink');
 });
 //Upload file
 /*Upload Single*/
@@ -133,7 +136,7 @@ Route::prefix('export')->controller(Export::class)->group(function () {
 
 // Quiz game route
 Route::prefix('quiz-game')->group(function () {
-    Route::get('/questions/{eventId}', [QuizGameController::class, 'index']);
+    Route::get('/questions/{eventId}', [QuizGameController::class, 'index'])->name('cws.quiz.questions');
     Route::get('/scoreboard/{eventId}', [QuizGameController::class, 'getScoreboard']);
     Route::post('/next-question', [QuizGameController::class, 'getQuestionByNumber']);
     Route::get('/summary-results/{eventId}', [QuizGameController::class, 'getSummaryResults']);

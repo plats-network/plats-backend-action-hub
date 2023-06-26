@@ -19,7 +19,11 @@ class Export extends Controller
 
     public function userJoinEvent(Request $request)
     {
-        $rawData = $this->eventUserTicketService->search(['task_id' => $request->input('task_id'),'all' => true]);
+        $rawData = $this->eventUserTicketService->search([
+            'task_id' => $request->input('task_id'),
+            'all' => true
+        ]);
+
         return Excel::download(new UserJoinEvent($rawData), 'user-join-event.xlsx');
     }
 }

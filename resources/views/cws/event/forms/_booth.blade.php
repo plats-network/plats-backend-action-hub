@@ -50,6 +50,7 @@
                             <th>Name</th>
                             <th>Description</th>
                             <th>QR Code</th>
+                            <th>Total</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -59,13 +60,20 @@
                                 $qr = 'https://'.config('plats.event').'/events/code?type=event&id='.$booth->code;
                             @endphp
                             <tr>
-                               <td>{{$k+1}}</td> 
-                               <td>{{$booth->name}}</td> 
-                               <td>{!!$booth->description!!}</td> 
-                               <td data-url="{{$qr}}">
-                                    {!! QrCode::size(200)->generate($qr) !!}
+                               <td width="5%">{{$k+1}}</td> 
+                               <td width="20%">{{$booth->name}}</td> 
+                               <td width="30%">{!!$booth->description!!}</td> 
+                               <td width="20%" data-url="{{$qr}}" class="text-center">
+                                    <img
+                                        style="margin: 0 auto;"
+                                        src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(150)->generate($qr)) !!} ">
+                                    <a
+                                        href="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(300)->generate($qr)) !!} "
+                                        class="btn btn-primary text-center" download="booth_{{$booth->code.'_'.($k+1)}}.png">
+                                        Download</a>
                                </td> 
-                               <td>
+                               <td width="10%">{{rand(10, 100)}}</td>
+                               <td width="20%">
                                     <input
                                         type="checkbox"
                                         id="booth_{{ $k+1 }}"
