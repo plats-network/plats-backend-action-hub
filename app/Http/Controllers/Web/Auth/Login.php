@@ -123,9 +123,10 @@ class Login extends Controller
     {
         try {
             $account = $request->input('account');
+            $userName = $request->input('name');
 
             if (filter_var($account, FILTER_VALIDATE_EMAIL)) {
-                $phone = "0";
+                $phone = "0983232309";
                 $account = $account;
             } else {
                 $phone = $account;
