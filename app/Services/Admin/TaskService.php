@@ -38,9 +38,8 @@ class TaskService extends BaseService
 
         if ($this->filter->has('status')) {
             $this->builder->where(function ($q) {
-                $q->where('status',$this->filter->get('status'));
+                $q->where('status', $this->filter->get('status'));
             });
-            // Remove condition after apply query builder
             $this->cleanFilterBuilder('status');
         }
         if ($this->filter->has('type')) {
@@ -52,11 +51,34 @@ class TaskService extends BaseService
         }
         if ($this->filter->has('creator_id')) {
             $this->builder->where(function ($q) {
-                $q->where('creator_id',$this->filter->get('creator_id'));
+                $q->where('creator_id', $this->filter->get('creator_id'));
             });
             // Remove condition after apply query builder
             $this->cleanFilterBuilder('creator_id');
         }
+
+        if ($this->filter->has('start_at') || $this->filter->has('end_at')) {
+            $start = $this->filter->get('start_at');
+            $end = $this->filter->get('end_at');
+
+            if ($start && empty($end)) {
+                $this->builder->where(function ($q) use ($start) {
+                    $q->where('created_at', '>=', $start);
+                });
+            } elseif(empty($start) && $end) {
+                $this->builder->where(function ($q) use ($end) {
+                    $q->where('created_at', '<=', $end);
+                });
+            } else {
+                $this->builder->where(function ($q) use ($start, $end) {
+                    $q->where('created_at', '>=', $start)
+                        ->where('created_at', '<=', $end);
+                });
+            }
+            $this->cleanFilterBuilder('start_at');
+            $this->cleanFilterBuilder('end_at');
+        }
+
         if ($this->filter->has('name')) {
             $this->builder->where(function ($q) {
                 $q->where('name', 'LIKE', '%' . $this->filter->get('name') . '%');

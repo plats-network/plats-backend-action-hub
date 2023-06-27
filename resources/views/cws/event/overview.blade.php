@@ -200,54 +200,6 @@
                 }
 
             });
-
-            // var modalDelete = $('#modalDelete');
-            // var btnDeleteRow = $('.btnDeleteRow');
-
-            // $(document).on('click', '.btnDeleteRow', function (event) {
-            //     event.preventDefault();
-            //     let urlDelete = $(this).attr('data-url');
-            //     let id = $(this).attr('data-id');
-            //     $('#formDeleteItem').attr('action', urlDelete);
-            //     modalDelete.modal("show");
-            // });
-
-            // $(document).on('click', '#hideModalDelete', function (event) {
-            //     modalDelete.modal("hide");
-            // });
-
-            // $('.event').on('click', function (e) {
-            //     var id = $(this).data('id');
-            //     var _token = $('meta[name="csrf-token"]').attr('content');
-            //     Swal.fire({
-            //         title: 'Are you sure?',
-            //         text: 'Change status!',
-            //         icon: 'warning',
-            //         showCancelButton: true,
-            //         confirmButtonColor: '#3085d6',
-            //         cancelButtonColor: '#d33',
-            //         confirmButtonText: 'Yes',
-            //         cancelButtonText: 'No',
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             $.ajax({
-            //                 url: '/event-status/'+ id,
-            //                 type: 'GET',
-            //                 dataType: 'json',
-            //                 data: {_token: _token},
-            //                 success: function (data) {
-            //                     location.reload();
-            //                 },
-            //                 error: function (data) {
-            //                     location.reload();
-            //                 }
-            //             });
-            //         } else {
-            //             location.reload();
-            //         }
-                    
-            //     });
-            // });
         });
     </script>
 

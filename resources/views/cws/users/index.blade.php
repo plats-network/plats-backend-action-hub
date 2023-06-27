@@ -16,8 +16,8 @@
                 <div class="card-body">
                     <form action="{{route('cws.users')}}">
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="mb-3">
+                            <div class="col-md-2">
+                                <div>
                                     <input
                                         type="text"
                                         name="name"
@@ -26,43 +26,22 @@
                                         id="s_name">
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="mb-3">
-                                    <label for="formrow-inputCity" class="form-label">City</label>
+                            <div class="col-lg-2">
+                                <div>
                                     <input type="text" class="form-control" placeholder="Enter City" id="formrow-inputCity">
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="mb-3">
-                                    <label for="formrow-inputState" class="form-label">State</label>
+                            <div class="col-lg-2">
+                                <div>
                                     <select id="formrow-inputState" class="form-select">
                                         <option selected>Choose...</option>
                                         <option>...</option>
                                     </select>
                                 </div>
                             </div>
-                            
-                            <div class="col-lg-4">
-                                <div class="mb-3">
-                                    <label for="formrow-inputZip" class="form-label">Zip</label>
-                                    <input type="text" class="form-control" placeholder="Enter Zip" id="formrow-inputZip">
-                                </div>
+                            <div class="col-lg-2">
+                                <button type="submit" class="btn btn-primary w-md">Search</button>
                             </div>
-                        </div>
-
-                        {{-- <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="gridCheck">
-                                <label class="form-check-label" for="gridCheck">
-                                  Check me out
-                                </label>
-                            </div>
-                        </div> --}}
-                        <div class="text-right">
-                            <button type="submit" class="btn btn-primary w-md">Search</button>
                         </div>
                     </form>
                 </div>
@@ -76,27 +55,19 @@
                 <div class="card-body">
                     <div class="d-flex flex-wrap align-items-center mb-2">
                         <h5 class="card-title">Lists Users</h5>
-                        {{-- <div class="ms-auto">
-                            <div class="dropdown">
-                                <a class="dropdown-toggle text-reset" href="#" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="text-muted font-size-12">Sort By: </span> <span class="fw-medium"> Monthly<i class="mdi mdi-chevron-down ms-1"></i></span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                                    <a class="dropdown-item" href="#">Weekly</a>
-                                    <a class="dropdown-item" href="#">Monthly</a>
-                                    <a class="dropdown-item" href="#">Yearly</a>
-                                </div>
-                            </div>
-                        </div> --}}
                     </div>
 
                     <div class="table-responsive">
                         <table class="table table-bordered mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th></th>
-                                    <th>Name</th>
-                                    <th>Email</th>
+                                    <th>Img</th>
+                                    <th>
+                                        Name
+                                        <br>
+                                        Email
+                                    </th>
+                                    <th>Events</th>
                                     <th>Status</th>
                                     <th>
                                         Created
@@ -116,8 +87,26 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="fw-semibold" style="width: 5%;">{{$user->name}}</td>
-                                        <td>{{$user->email}}</td>
+                                        <td class="fw-semibold" style="width: 10%;">
+                                            {{$user->name}}
+                                            <p class="text-success" style="font-size: 12px;">{{$user->email}}</p>
+                                        </td>
+                                        <td width="30%">
+                                            @foreach($user->user_events()->get() as $k => $event)
+                                                @if ($k < 2)
+                                                    <p class="mb-0 text-primary">{{optional($event->task)->name}}</p>
+                                                @else
+                                                    <p class="text-primary mb-0 d-none e-{{$user->id}}">{{optional($event->task)->name}}</p>
+                                                @endif
+                                            @endforeach
+
+                                            @if($user->user_events()->count() > 2)
+                                                <p class="text-center showEvent"
+                                                    style="cursor: pointer;"
+                                                    data-count="{{$user->user_events()->count()}}"
+                                                    data-id="{{$user->id}}">Show More</p>
+                                            @endif
+                                        </td>
                                         <td><span class="badge badge-soft-primary font-size-12">Pending</span></td>
                                         <td>
                                             {{dateFormat($user->created_at)}}
@@ -125,7 +114,7 @@
                                             {{dateFormat($user->updated_at)}}
                                         </td>
                                         <td>
-                                            <div class="dropdown">
+                                            {{-- <div class="dropdown">
                                                 <a class="text-muted dropdown-toggle font-size-18" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
                                                     <i class="mdi mdi-dots-horizontal"></i>
                                                 </a>
@@ -134,16 +123,17 @@
                                                     <a class="dropdown-item" href="#">Print</a>
                                                     <a class="dropdown-item" href="#">Delete</a>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-
                         <div class="row">
                             <div class="col-md-12 mt-3">
-                                {!! $users->links() !!}
+                                <div id="paging" class="mb-5">
+                                    {!! $users->links() !!}
+                                </div> 
                             </div>
                         </div>
                     </div>
@@ -151,4 +141,22 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.showEvent').on('click', function (e) {
+                var count = $(this).data('count'),
+                    id = $(this).data('id');
+
+                for(var i=0; i <= count; i++) {
+                    $('.e-'+id).removeClass('d-none');
+                }
+                $(this).addClass('d-none');
+            });
+        });
+    </script>
 @endsection
+
+{{-- @section('js')
+@endsection --}}
+

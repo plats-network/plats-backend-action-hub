@@ -16,40 +16,59 @@
                 <div class="card-body">
                     <form action="{{route('cws.eventList')}}" method="get">
                         <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <div><label for="first_name">Title</label>
-                                    <input class="form-control" id="title"
-                                           type="text" name="title"
-                                           placeholder="Title"
-                                           ></div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input
+                                        class="form-control"
+                                        type="text"
+                                        name="name"
+                                        value="{{request()->get('name') ?? ''}}"
+                                        placeholder="Name event">
+                                </div>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <div><label for="last_name">Address</label>
-                                    <input class="form-control" id="address"
-                                           type="text" name="address"
-                                           placeholder="Address"></div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    @php
+                                        $statuses = [
+                                            '' => 'Selected',
+                                            0 => 'As',
+                                            1 => 'Publick',
+                                            2 => 'Draft',
+                                            99 => 'Deleted'
+                                        ];
+                                    @endphp
+                                    <select name="status" class="form-select">
+                                        @foreach($statuses as $k => $v)
+                                            <option value="{{ $k }}" {{($k == request()->get('status')) ? 'selected' : ''}}>{{$v}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <div class="form-group"><label for="email">Start Date</label>
-                                    <input class="form-control"
-                                           id="start"
-                                           type="text"
-                                           placeholder="Start"
-                                           ></div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <input
+                                        class="form-control flatpickr-input"
+                                        type="text"
+                                        name="start_at"
+                                        value="{{request()->get('start_at') ?? ''}}"
+                                        placeholder="Start At">
+                                </div>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <div class="form-group"><label for="phone">End Date</label>
-                                    <input class="form-control"
-                                           id="end" name="End"
-                                           type="text"
-                                           placeholder="End"></div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <input
+                                        class="form-control flatpickr-input"
+                                        name="end_at"
+                                        type="text"
+                                        value="{{request()->get('end_at') ?? ''}}"
+                                        placeholder="End At">
+                                </div>
                             </div>
-                        </div>
-                        <div class="mt-3 text-right">
-                            <button class="btn btn-primary btn-gray-800 mt-2 animate-up-2" type="submit">Search
-                            </button>
+                            <div class="col-md-2">
+                                <button
+                                    class="btn btn-primary btn-gray-800 animate-up-2"
+                                    type="submit">Search</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -112,7 +131,11 @@
                                         <ul class="list-inline mb-0">
                                             <li class="list-inline-item">
                                                 @include('cws.actions.link', [
-                                                    'url' => route('cws.eventPreview', ['id' => $event->id, 'tab' => $tab, 'preview' => 1]),
+                                                    'url' => route('cws.eventPreview', [
+                                                        'id' => $event->id,
+                                                        'tab' => $tab,
+                                                        'preview' => 1
+                                                    ]),
                                                     'label' => 'Show',
                                                     'icon' => 'show'
                                                 ])
@@ -146,17 +169,6 @@
                                                     <i class="bx bx-trash-alt font-size-18"></i>
                                                 </a>
                                             </li>
-                                            {{-- <li class="list-inline-item dropdown">
-                                                <a class="text-muted dropdown-toggle font-size-18 px-2" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                                </a>
-                                            
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">Action</a>
-                                                    <a class="dropdown-item" href="#">Another action</a>
-                                                    <a class="dropdown-item" href="#">Something else here</a>
-                                                </div>
-                                            </li> --}}
                                         </ul>
                                     </td>
                                 </tr>
@@ -177,15 +189,20 @@
 @section('scripts')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        var _token = $('meta[name="csrf-token"]').attr('content');
         var spinText = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ';
-        var hasPage = {{Request::get('page', 0)}};
+        // var hasPage = {{Request::get('page', 0)}};
 
         jQuery(document).ready(function ($) {
-            // display a modal (small modal)
+            //start_at datepicker
+            var option = {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                time_24hr: true,
+                locale: 'en'
+            };
+            $('.flatpickr-input').flatpickr(option);
             var modalDelete = $('#modalDelete');
             var btnDeleteRow = $('.btnDeleteRow');
-
             $(document).on('click', '.btnDeleteRow', function (event) {
                 event.preventDefault();
                 let urlDelete = $(this).attr('data-url');
@@ -232,6 +249,5 @@
             });
         });
     </script>
-
 @endsection
 

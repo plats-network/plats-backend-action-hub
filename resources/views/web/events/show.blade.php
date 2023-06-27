@@ -32,11 +32,11 @@
                             <div class="author-social-info">
                                 {!!
                                     Share::page(route('web.events.show', $event->id), $event->name)
-                                    ->facebook()
-                                    ->twitter()
-                                    ->linkedin($event->name)
-                                    ->whatsapp()
-                                    ->telegram()
+                                        ->facebook()
+                                        ->twitter()
+                                        ->linkedin($event->name)
+                                        ->whatsapp()
+                                        ->telegram()
                                 !!}
                             </div>
                         </div>
@@ -50,26 +50,6 @@
                                 <p>OK</p>
                             </div>
                         </div>
-                        {{-- <div class="pager-area d-flex align-items-center flex-wrap mb-80">
-                            <div class="pager-single-post d-flex align-items-center">
-                                <div class="post-thumb">
-                                    <a href="#"><img src="img/bg-img/54.jpg" alt=""></a>
-                                </div>
-                                <div class="post-meta">
-                                    <a href="#" class="post-title">Strategic Planning</a>
-                                    <span>Previous Post</span>
-                                </div>
-                            </div>
-                            <div class="pager-single-post d-flex align-items-center">
-                                <div class="post-thumb">
-                                    <a href="#"><img src="img/bg-img/55.jpg" alt=""></a>
-                                </div>
-                                <div class="post-meta">
-                                    <a href="#" class="post-title">Petroleum Refining</a>
-                                    <span>Next Post</span>
-                                </div>
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
                 <div id="fixed" class="col-12 col-md-6 col-lg-4 col-xl-3">
@@ -81,9 +61,10 @@
                                     <button type="submit"><i class="zmdi zmdi-search"></i></button>
                                 </form>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="single-widget-area">
                             <div class="post-author-widget">
+                                <a class="btn btn-info" href="{{route('web.formLogin')}}">Sign Up for Free</a>
                                 <div class="post-author-avatar">
                                     <img src="img/bg-img/50.jpg" alt="">
                                 </div>
@@ -99,8 +80,8 @@
                                     <a href="#"><i class="zmdi zmdi-linkedin"></i></a>
                                 </div>
                             </div>
-                        </div> --}}
-                        <div class="single-widget-area">
+                        </div>
+                        {{-- <div class="single-widget-area">
                             <h5 class="widget-title mb-30">Categories</h5>
                             <ul class="categories-list">
                                 <li><a href="#">Technology <span>(5)</span></a></li>
@@ -110,7 +91,7 @@
                                 <li><a href="#">Event <span>(12)</span></a></li>
                                 <li><a href="#">Progress <span>(4)</span></a></li>
                             </ul>
-                        </div>
+                        </div> --}}
                         {{-- <div class="single-widget-area">
                             <h5 class="widget-title mb-30">Tag Cloud</h5>
                             <ul class="tag-cloud">

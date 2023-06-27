@@ -402,8 +402,9 @@
     <script src="{{asset('plugins/yii2-assets/yii.js')}}"></script>
     <script src="{{asset('plugins/yii2-assets/yii.activeForm.js')}}"></script>
     <script src="{{asset('plugins/yii2-assets/yii.validation.js')}}"></script>
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
+ --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
 
@@ -412,9 +413,7 @@
     @else
         <script src="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.js"></script>
     @endif
-
     <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.js"></script>
-
     <script src="https://uicdn.toast.com/editor/latest/i18n/ja-jp.js"></script>
 
     <script>

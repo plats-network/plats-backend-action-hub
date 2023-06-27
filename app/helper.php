@@ -4,7 +4,7 @@
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Models\{Task, User};
-use App\Models\Event\{EventUserTicket};
+use App\Models\Event\{EventUserTicket, UserJoinEvent};
 use Carbon\Carbon;
 
 // Task
@@ -25,11 +25,16 @@ if (!function_exists('existCodeTask')) {
 }
 // EndTask
 
-
 if (!function_exists('eventInfo')) {
     function eventInfo($userId, $taskId) {
         return EventUserTicket::whereUserId($userId)
             ->whereTaskId($taskId)->first();
+    }
+}
+
+if (!function_exists('totalUserJob')) {
+    function totalUserJob($detailId) {
+        return UserJoinEvent::whereTaskEventDetailId($detailId)->count();
     }
 }
 

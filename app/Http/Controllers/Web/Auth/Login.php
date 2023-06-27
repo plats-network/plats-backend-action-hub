@@ -122,7 +122,6 @@ class Login extends Controller
     public function loginGuest(Request $request)
     {
         try {
-            $code = session()->get('code');
             $account = $request->input('account');
 
             if (filter_var($account, FILTER_VALIDATE_EMAIL)) {
@@ -139,10 +138,38 @@ class Login extends Controller
             }
 
             $user = $this->user->whereEmail($account)->first();
-            if ($user && in_array($user->role, [ADMIN_ROLE, CLIENT_ROLE])) {
-                notify()->error('Account fail!');
 
+            if (!$user) {
+                $userParams = [
+                    'email' => $account,
+                    'phone' => (string) $phone,
+                    'name' => $userName,
+                    'password' => '123456a@',
+                    'confirmation_code' => null,
+                    'role' => GUEST_ROLE,
+                    'email_verified_at' => now()
+                ];
+                $user = $this->user->create($userParams);
+                Auth::login($user, true);
+                notify()->success('Login successfull');
+
+                return redirect()->route('web.home');
+            } else {
+                Auth::login($user, true);
+                notify()->success('Login successfull');
+                return redirect()->route('web.home');
+            }
+
+            if ($user && in_array($user->role, [ADMIN_ROLE, CLIENT_ROLE])) {
+                notify()->error('Tài khoản này là admin');
                 return redirect()->route('web.formLoginGuest');
+            }
+
+            if ($user && empty($code) && empty($type)) {
+                Auth::login($user, true);
+                notify()->success('Login successfull');
+
+                return redirect()->route('web.profile');
             }
 
             if ($user && $code) {
@@ -199,7 +226,7 @@ class Login extends Controller
                 notify()->success('Hoàn thành task');
             }
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            // dd($e->getMessage());
             notify()->error('Có lỗi sảy ra');
             return redirect()->route('web.formLoginGuest');
         }

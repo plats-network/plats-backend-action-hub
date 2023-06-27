@@ -1905,7 +1905,6 @@
             height: 34px;
             border-radius: 50%;
             border: 1px solid #ebebf3;
-            // background-color: red;
             display: inline-block;
 
             span {
@@ -1922,13 +1921,13 @@
               background-color: $primary-color;
               color: $white;
             }
-
           }
         }
       }
     }
   }
 }
+
 .post-author-area {
   position: relative;
   z-index: 1;

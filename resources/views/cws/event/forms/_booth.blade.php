@@ -72,7 +72,7 @@
                                         class="btn btn-primary text-center" download="booth_{{$booth->code.'_'.($k+1)}}.png">
                                         Download</a>
                                </td> 
-                               <td width="10%">{{rand(10, 100)}}</td>
+                               <td width="10%">{{totalUserJob($booth->id)}}</td>
                                <td width="20%">
                                     <input
                                         type="checkbox"

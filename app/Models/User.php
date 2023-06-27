@@ -12,6 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Event\EventUserTicket;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -100,6 +101,11 @@ class User extends Authenticatable implements JWTSubject
     public function providers()
     {
         return $this->hasOne(Provider::class, 'user_id', 'id');
+    }
+
+    public function user_events()
+    {
+        return $this->hasMany(EventUserTicket::class, 'user_id', 'id');
     }
 
     /**

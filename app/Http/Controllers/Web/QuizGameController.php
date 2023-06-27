@@ -51,6 +51,12 @@ class QuizGameController extends Controller
      */
     public function showAnswers(Request $request, $eventId): mixed
     {
+        // if (!Auth::check()) {
+        //     dd(222);
+        //     session()->put('type', 'quiz-game');
+        //     return redirect()->route('');
+        // }
+
         $isUuid = Str::isUuid($eventId);
         // Validate uuid event id
         if (!$isUuid) {

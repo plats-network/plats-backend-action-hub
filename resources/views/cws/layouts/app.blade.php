@@ -9,6 +9,7 @@
         <link rel="icon" type="image/x-icon" href="favicon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         @notifyCss
         @vite([
             'resources/sass/admin.scss',
@@ -17,7 +18,7 @@
 
         @yield('style')
         @livewireStyles
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" referrerpolicy="origin"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.bundle.min.js" ></script>
     </head>
 
@@ -54,10 +55,10 @@
         <x-notify::notify />
         @notifyJs
         @yield('scripts')
-
+        
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script type="text/javascript">
             var _token = $('meta[name="csrf-token"]').attr('content');
         </script>
     </body>
-
 </html>

@@ -69,11 +69,6 @@ class Home extends Controller
                 'type' => 1,
                 'status' => 1
             ]);
-
-            // if ($request->ajax()) {
-            //     $view = view('data',compact('posts'))->render();
-            //     return response()->json(['html'=>$view]);
-            // }
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());
         }
@@ -176,7 +171,7 @@ class Home extends Controller
     {
         $eventTasks= [];
         foreach($data as $key => $value){
-            $eventTasks[$key]= TaskEventDetail::where('task_event_id',$key)->orderBy('id', 'ASC')->pluck('id')->toArray();
+            $eventTasks[$key] = TaskEventDetail::where('task_event_id',$key)->orderBy('id', 'ASC')->pluck('id')->toArray();
         }
         return $eventTasks;
     }
@@ -216,6 +211,7 @@ class Home extends Controller
     private function redirectPath()
     {
         notify()->error('Sự kiện không tồn tại.');
+
         return redirect()->route('web.home');
     }
 

@@ -187,7 +187,6 @@ class EventController extends Controller
         $taskEventDiscords = $task->taskEventDiscords;
         //Check if $taskEventDiscords is null then create new EventDiscords
         if ($taskEventDiscords == null) {
-
             $taskEventDiscords = new EventDiscords();
             //$taskEventDiscords->task_id = $id;
             //$taskEventDiscords->save();
@@ -330,7 +329,6 @@ class EventController extends Controller
             $taskEventSocials->save();
         }
 
-
         //Check if $sessions is null then create new
         if ($sessions == null) {
             $sessions = new TaskEvent();
@@ -371,7 +369,7 @@ class EventController extends Controller
 
         // Gen link share
         $eventCount = $this->eventShare->whereTaskId($task->id)->count();
-        // dd();
+
         if ($eventCount <= 0) {
             // dd($eventCount);
         }

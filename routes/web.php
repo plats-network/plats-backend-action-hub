@@ -11,7 +11,7 @@ use App\Http\Controllers\Web\{
     Home,
     Detail,
     Likes,
-    HistoryJoinEventTask,
+    Job,
     PagesController,
     QuizGameController,
     UserController
@@ -53,8 +53,8 @@ Route::middleware(['guest'])->group(function ($auth) {
 
 Route::get('/', [Home::class, 'index'])->name('web.home');
 Route::get('event-lists', [Home::class, 'events'])->name('web.events');
-Route::get('events/{id}', [Home::class, 'show'])->name('web.events.show');
-Route::get('/events/code', [HistoryJoinEventTask::class, 'index'])->name('web.eventCode');
+Route::get('/event/{id}', [Home::class, 'show'])->name('web.events.show');
+Route::get('/events/code', [Job::class, 'index'])->name('web.eventCode');
 Route::get('solution', [PagesController::class, 'solution'])->name('web.solution');
 Route::get('template', [PagesController::class, 'template'])->name('web.template');
 Route::get('pricing', [PagesController::class, 'pricing'])->name('web.pricing');
@@ -73,9 +73,9 @@ Route::get('/discord', [App\Http\Controllers\Web\Discord::class, 'index'])->name
 Route::get('/telegram', [App\Http\Controllers\Web\Discord::class, 'telegram'])->name('telegram');
 Route::get('logout-discord', [App\Http\Controllers\Web\Discord::class, 'logout']);
 Route::get('/events/list', [Home::class, 'webList']);
-Route::post('/create-user', [HistoryJoinEventTask::class, 'createUser'])->name('web.createUser');
+Route::post('/create-user', [Job::class, 'createUser'])->name('web.createUser');
 
-Route::get('/events/history/list', [HistoryJoinEventTask::class, 'apiList']);
+Route::get('/events/history/list', [Job::class, 'apiList']);
 Route::get('/events/history/user', [Home::class, 'apiList']);
 Route::get('/events/likes', [Likes::class, 'index'])->name('web.like');;
 Route::get('/events/task/{id}', [Detail::class, 'edit'])->whereUuid('id');
