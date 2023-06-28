@@ -63,15 +63,21 @@ class EventController extends Controller
         try {
             $event = $this->taskService->findEvent($id);
             $session = $this->eventModel
-                ->select('code')
                 ->whereType(TASK_SESSION)
                 ->whereTaskId($event->id)
                 ->first();
             $booth = $this->eventModel
-                ->select('code')
                 ->whereType(TASK_BOOTH)
                 ->whereTaskId($event->id)
                 ->first();
+            if ($session && empty($session->code)) {
+                $session->update(['code' => Str::random(20)]);
+            }
+
+            if ($booth && empty($booth->code)) {
+                $booth->update(['code' => Str::random(20)]);
+            }
+
             $shares = $this->eventShare
                 ->whereTaskId($event->id)
                 ->orderBy('created_at', 'desc')
@@ -309,6 +315,7 @@ class EventController extends Controller
 
         /** @var Task $task */
         $task = Task::with('taskSocials', 'taskLocations', 'taskEventSocials', 'taskGenerateLinks', 'taskEventDiscords')->find($id);
+
         $taskGroup = TaskGroup::where('task_id', $id)->pluck('group_id');
         $taskGallery = TaskGallery::where('task_id', $id)->pluck('url_image');
 

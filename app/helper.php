@@ -50,6 +50,12 @@ if (!function_exists('codeCardNumber')) {
     }
 }
 
+if (!function_exists('randColor')) {
+    function randColor() {
+        return '#'.substr(md5(rand()), 0, 6);
+    }
+}
+
 if (!function_exists('qrNumberCode')) {
     // Gen mã code cho mỗi user (uniq)
     function qrNumberCode () {

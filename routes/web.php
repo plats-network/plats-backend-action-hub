@@ -53,14 +53,13 @@ Route::middleware(['guest'])->group(function ($auth) {
 
 Route::get('/', [Home::class, 'index'])->name('web.home');
 Route::get('event-lists', [Home::class, 'events'])->name('web.events');
-Route::get('/event/{id}', [Home::class, 'show'])->name('web.events.show');
-Route::get('/events/code', [Job::class, 'index'])->name('web.eventCode');
+Route::get('event/{id}', [Home::class, 'show'])->name('web.events.show');
+Route::get('events/code', [Job::class, 'index'])->name('web.eventCode');
 Route::get('solution', [PagesController::class, 'solution'])->name('web.solution');
 Route::get('template', [PagesController::class, 'template'])->name('web.template');
 Route::get('pricing', [PagesController::class, 'pricing'])->name('web.pricing');
 Route::get('resource', [PagesController::class, 'resource'])->name('web.resource');
 Route::get('contact', [PagesController::class, 'contact'])->name('web.contact');
-
 
 Route::middleware(['user_event'])->group(function ($r) {
     $r->get('logout', [Login::class, 'logout'])->name('web.logout');

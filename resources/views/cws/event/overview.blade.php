@@ -202,6 +202,4 @@
             });
         });
     </script>
-
 @endsection
-
