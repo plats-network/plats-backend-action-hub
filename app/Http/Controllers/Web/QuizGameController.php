@@ -69,6 +69,12 @@ class QuizGameController extends Controller
 
         $user = $request->user();
         $event = $this->getEventById($eventId);
+
+        if (!$event) {
+            notify()->error('Event not found!');
+            return redirect()->route('web.home');
+        }
+
         $listJoinedUsers = Cache::get('list_joined_users_' . $eventId) ?? [];
         $data = [
             'id' => $user->id,
@@ -196,7 +202,7 @@ class QuizGameController extends Controller
      */
     public function getEventById($eventId)
     {
-        return Task::where('id', $eventId)->where('status', TASK_PUBLIC)->first();
+        return Task::where('id', $eventId)->first();
     }
 
     /**

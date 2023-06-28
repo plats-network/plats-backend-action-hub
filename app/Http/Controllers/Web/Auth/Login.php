@@ -116,7 +116,7 @@ class Login extends Controller
 
     public function formLoginGuest(Request $request)
     {
-        dd(session()->get('guest'));
+        // dd(session()->get('guest'));
         return view('web.auth.login_guest');
     }
 
@@ -169,9 +169,6 @@ class Login extends Controller
             } elseif ($sessionGuest && $sessionGuest['type'] == 'job') {
                 if ($user) {
                     Auth::login($user, true);
-
-                    
-                    return 
                 } else {
                     $user = $this->user->create($userParams);
                     Auth::login($user, true);
@@ -195,8 +192,6 @@ class Login extends Controller
                     ];
                     $this->eventTicket->create($tickerParams);
                     $this->userEvent->create($userEventParams);
-
-                    return;
                 }
 
                 session()->forget('guest');
