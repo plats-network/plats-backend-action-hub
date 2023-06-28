@@ -7,7 +7,7 @@
 
         <x-form::open action="{{ route('web.loginGuest') }}">
           <div class="email-login">
-             <label for="name"> <b>Name</b> <span class="text-danger">*</span></label>
+             <label for="name">Name(<span class="text-danger">*</span>)</label>
              <input
                 type="text"
                 name="name"
@@ -15,7 +15,7 @@
                 value="{{old('name') ?? null}}"
                 id="name"
                 required />
-             <label for="account"><b>Email or Phone</b> <span class="text-danger">*</span></label>
+             <label for="account">Email or Phone(<span class="text-danger">*</span>)</label>
              <input
                 type="text"
                 name="account"
@@ -23,7 +23,7 @@
                 id="account"
                 required />
           </div>
-          <button class="cta-btn" type="submit">Login</button>
+          <button class="cta-btn" type="submit">Submit</button>
         </x-form>
     </div>
 @endsection

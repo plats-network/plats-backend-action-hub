@@ -43,6 +43,12 @@ class EventController extends Controller
             'limit' => $limit,
             'type' => EVENT
         ]);
+        foreach($events as $event) {
+            if ($event->code == null || $event->code == '') {
+                $event->update(['code' => genCodeTask()]);
+            }
+        }
+
         $tab = $request->get('tab') ?? 0;
         $data = [
             'events' => $events,
@@ -264,12 +270,12 @@ class EventController extends Controller
             $inputAll = $request->all();
             $inputAll['type'] = 1;
             $request->validate(['name' => 'required']);
-
+            
             //$company->fill($request->post())->save();
             $this->eventService->store($request);
             notify()->success('Create event successfully');
         } catch (\Exception $e) {
-            notify::error('Create event fail!');
+            notify()->error('Create event fail!' . $e->getMessage());
             Log::error('Create event cws: ' . $e->getMessage());
             return redirect()->route('cws.eventCreate');
         }
@@ -368,11 +374,11 @@ class EventController extends Controller
         $isPreview = $request->get('preview') ?? '0';
 
         // Gen link share
-        $eventCount = $this->eventShare->whereTaskId($task->id)->count();
+        // $eventCount = $this->eventShare->whereTaskId($task->id)->count();
 
-        if ($eventCount <= 0) {
-            // dd($eventCount);
-        }
+        // if ($eventCount <= 0) {
+        //     // dd($eventCount);
+        // }
 
         $data = [
             'event' => $task,

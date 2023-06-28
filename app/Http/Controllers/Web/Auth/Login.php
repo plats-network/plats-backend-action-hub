@@ -116,6 +116,7 @@ class Login extends Controller
 
     public function formLoginGuest(Request $request)
     {
+        dd(session()->get('guest'));
         return view('web.auth.login_guest');
     }
 
@@ -124,6 +125,7 @@ class Login extends Controller
         try {
             $account = $request->input('account');
             $userName = $request->input('name');
+            $sessionGuest = session()->get('guest');
 
             if (filter_var($account, FILTER_VALIDATE_EMAIL)) {
                 $phone = "0983232309";
@@ -139,6 +141,79 @@ class Login extends Controller
             }
 
             $user = $this->user->whereEmail($account)->first();
+
+            if (!$user) {
+                $userParams = [
+                    'email' => $account,
+                    'phone' => (string) $phone,
+                    'name' => $userName,
+                    'password' => '123456a@',
+                    'confirmation_code' => null,
+                    'role' => GUEST_ROLE,
+                    'email_verified_at' => now()
+                ];
+            }
+
+            if ($sessionGuest && $sessionGuest['type'] == 'quiz') {
+                if ($user) {
+                    Auth::login($user, true);
+                } else {
+                    $user = $this->user->create($userParams);
+                    Auth::login($user, true);
+                }
+
+                session()->forget('guest');
+                return redirect()->route('quiz-name.answers', [
+                    'eventId' => $sessionGuest['id']
+                ]);
+            } elseif ($sessionGuest && $sessionGuest['type'] == 'job') {
+                if ($user) {
+                    Auth::login($user, true);
+
+                    
+                    return 
+                } else {
+                    $user = $this->user->create($userParams);
+                    Auth::login($user, true);
+
+                    $eventDetail = $this->eventDetail->whereCode($code)->first();
+                    $taskEvent = $this->taskEvent->whereId(optional($eventDetail)->task_event_id)->first();
+                    $tickerParams = [
+                        'user_id' => $user->id,
+                        'task_id' => optional($taskEvent)->task_id,
+                        'name' => $userName,
+                        'email' => $account,
+                        'phone' => (string) $phone,
+                        'is_checkin' => true,
+                        'type' => 1,
+                    ];
+                    $userEventParams = [
+                        'user_id' => $user->id,
+                        'task_event_detail_id' => $eventDetail->id,
+                        'task_id' => optional($taskEvent)->task_id,
+                        'task_event_id' => optional($taskEvent)->id
+                    ];
+                    $this->eventTicket->create($tickerParams);
+                    $this->userEvent->create($userEventParams);
+
+                    return;
+                }
+
+                session()->forget('guest');
+
+            } else {
+                if ($user) {
+                    Auth::login($user, true);
+                    notify()->success('Login successfull!');
+                } else {
+                    $user = $this->user->create($userParams);
+                    Auth::login($user, true);
+                    notify()->success('Login successfull!');
+                }
+            }
+
+            return redirect()->route('web.home');
+
 
             if (!$user) {
                 $userParams = [
@@ -185,9 +260,7 @@ class Login extends Controller
                 $userName = $request->input('name');
 
                 $eventDetail = $this->eventDetail->whereCode($code)->first();
-                $taskEvent = $this->taskEvent
-                    ->whereId(optional($eventDetail)->task_event_id)
-                    ->first();
+                $taskEvent = $this->taskEvent->whereId(optional($eventDetail)->task_event_id)->first();
 
                 if (!$taskEvent || !$eventDetail) {
                     notify()->error('Vui lòng quest lại QR code');
