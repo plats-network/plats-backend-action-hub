@@ -86,9 +86,12 @@ Route::get('/events/user/ticket', [Detail::class, 'userTicket']);
 Route::post('/events/ticket', [Detail::class, 'addTicket'])->name('web.event.addTicket');
 Route::get('/events/{slug}', [Detail::class, 'index']);
 
+
+// QUIZ
+Route::get('/quiz-game/answers/{eventId}', [QuizGameController::class, 'showAnswers'])->name('quiz-name.answers');
 Route::prefix('quiz-game')->group(function () {
     Route::middleware('user_event')->group(function () {
-        Route::get('/answers/{eventId}', [QuizGameController::class, 'showAnswers'])->name('quiz-name.answers');
+        // Route::get('/answers/{eventId}', [QuizGameController::class, 'showAnswers'])->name('quiz-name.answers');
         Route::post('/send-total-score', [QuizGameController::class, 'sendTotalScore']);
     });
 });

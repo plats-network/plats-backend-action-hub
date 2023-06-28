@@ -10,7 +10,7 @@
                     <div class="mb-3 row itemQuizDetail" id="itemQuiz{{$itemQuiz->id}}">
                         <input type="hidden" name="quiz[{{$itemQuiz->id}}][id]" value="{{$itemQuiz->id}}">
                         <input type="hidden" name="quiz[{{$itemQuiz->id}}][task_id]" value="{{$event->id}}">
-                        <input type="hidden" name="quiz[{{$itemQuiz->id}}][is_delete]" id="quizFlagDelete{{$event->id}}" value="0">
+                        <input type="hidden" name="quiz[{{$itemQuiz->id}}][is_delete]" id="quizFlagDelete{{$itemQuiz->id}}" value="0">
 
                         <div class="row">
                             <div class="col-lg-7">
@@ -73,25 +73,25 @@
                         </div>
                         <br>
                         {{--QuizAnswer--}}
-                        @foreach($itemQuiz->detail as $keyIndex => $itemQuizAnswer)
+                        @foreach($itemQuiz->detail as $key => $itemQuizAnswer)
                             <input
                                 type="hidden"
-                                name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][id]"
+                                name="quiz[{{$itemQuiz->id}}][detail][{{$key}}][id]"
                                 value="{{$itemQuizAnswer->id}}">
                             <input
                                 type="hidden"
-                                name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][quiz_id]"
+                                name="quiz[{{$itemQuiz->id}}][detail][{{$key}}][quiz_id]"
                                 value="{{$itemQuizAnswer->quiz_id}}">
                             <div class="row">
                                 <div class="mb-3 row offset-md-1">
-                                    <label for="inputPassword" class="col-sm-2 col-form-label">Answer {{$keyIndex +1}}</label>
+                                    <label for="inputPassword" class="col-sm-2 col-form-label">Answer {{$key +1}}</label>
                                     <div class="col-sm-7">
                                         <input
                                             type="text"
                                             class="form-control"
-                                            id="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][name]"
-                                            placeholder="Answer {{$keyIndex +1}}"
-                                            name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][name]"
+                                            id="quiz[{{$itemQuiz->id}}][detail][{{$key}}][name]"
+                                            placeholder="Answer {{$key +1}}"
+                                            name="quiz[{{$itemQuiz->id}}][detail][{{$key}}][name]"
                                             value="{{$itemQuizAnswer->name}}">
                                     </div>
 
@@ -101,13 +101,13 @@
                                                 class="form-check-input checkOptionQuiz"
                                                 type="checkbox"
                                                 value="1"
-                                                id="{{$k+$keyIndex+1}}"
-                                                name="quiz[{{$itemQuiz->id}}][detail][{{$keyIndex}}][status]" @if($itemQuizAnswer->status == 1) checked @endif
+                                                id="aws_{{$itemQuiz}}_{{$key}}"
+                                                name="quiz[{{$itemQuiz->id}}][detail][{{$key}}][status]" @if($itemQuizAnswer->status == 1) checked @endif
                                                 @if($isPreview) redonly @endif
                                             >
                                             <label
                                                 class="form-check-label"
-                                                for="{{$k+$keyIndex+1}}">
+                                                for="aws_{{$itemQuiz}}_{{$key}}">
                                                 Option
                                             </label>
                                         </div>

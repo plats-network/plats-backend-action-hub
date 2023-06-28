@@ -30,22 +30,22 @@ class Job extends Controller
             $event = $this->eventDetail->whereCode($code)->first();
             $taskEvent = $this->taskEvent->find($event->task_event_id);
 
-            dd($event, $taskEvent);
-
             if (!$event) {
                 notify()->error('Không tồn tại');;
                 return redirect()->route('web.home');
             }
 
             if(!$user) {
-                session()->put('code', $code);
+                session()->put('guest', [
+                    'id' => $code,
+                    'type' => 'job'
+                ]);
                 notify()->error('Vui lòng login để hoàn thành.');
 
                 return redirect()->route('web.formLoginGuest');
             } else {
                 if ($event && $event->status == false) {
                     notify()->error('Job locked!');
-
                     // return 
                 }
 

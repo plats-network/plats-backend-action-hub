@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Auth;
 
 class QuizGameController extends Controller
 {
@@ -51,11 +52,14 @@ class QuizGameController extends Controller
      */
     public function showAnswers(Request $request, $eventId): mixed
     {
-        // if (!Auth::check()) {
-        //     dd(222);
-        //     session()->put('type', 'quiz-game');
-        //     return redirect()->route('');
-        // }
+        if (!Auth::check()) {
+            session()->put('guest', [
+                'id' => $eventId,
+                'type' => 'quiz'
+            ]);
+
+            return redirect()->route('web.formLoginGuest');
+        }
 
         $isUuid = Str::isUuid($eventId);
         // Validate uuid event id
