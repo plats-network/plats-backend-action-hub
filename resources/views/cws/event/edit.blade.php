@@ -981,7 +981,12 @@
             let isValid = true
             if(step==1){
                 //Check name input is empty
-                if($('#name').val() == '') {
+                //Check empty input, name, lat, lng, address
+
+                if($('#name').val() == '' ||
+                    $('#lat').val() == '' ||
+                    $('#lng').val() == '' ||
+                    $('#address').val() == '') {
                     //alert('Please input name');
                     //Trigger validation
 

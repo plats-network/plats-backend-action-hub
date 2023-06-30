@@ -20,7 +20,7 @@
                                         class="form-label">Question {{$loop->index +1}}</label>
                                     <input
                                         type="text"
-                                        class="form-control"
+                                        class="form-control" required
                                         id="quiz[{{$itemQuiz->id}}][name]"
                                         placeholder="Question {{$loop->index +1}}"
                                         name="quiz[{{$itemQuiz->id}}][name]"
@@ -37,7 +37,7 @@
                                         type="text"
                                         class="form-control"
                                         id="quiz[{{$itemQuiz->id}}][time_quiz]"
-                                        placeholder="Time"
+                                        placeholder="Time" required
                                         name="quiz[{{$itemQuiz->id}}][time_quiz]"
                                         value="{{$itemQuiz->time_quiz}}">
                                 </div>
@@ -51,7 +51,7 @@
                                         type="text"
                                         class="form-control"
                                         id="quiz[{{$itemQuiz->id}}][order]"
-                                        placeholder="Order"
+                                        placeholder="Order" required
                                         name="quiz[{{$itemQuiz->id}}][order]"
                                         value="{{$itemQuiz->order}}">
                                 </div>
@@ -63,7 +63,7 @@
                                 <div class="form-check form-switch">
                                     <input
                                         class="form-check-input"
-                                        type="checkbox"
+                                        type="checkbox" required
                                         role="switch"
                                         id="quiz[{{$itemQuiz->id}}][status]"
                                         name="quiz[{{$itemQuiz->id}}][status]" @if($itemQuiz->status == 1) checked @endif>
