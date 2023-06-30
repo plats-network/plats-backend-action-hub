@@ -27,6 +27,7 @@
         {{-- SELECT ANSWER --}}
         <div class="select-answers body-section" style="display: none">
             <div class="container">
+                <h3 class="question-name text-white">Question number</h3>
                 <div class="row">
                     <div class="col-6">
                         <div class="answer-box polygon" data-id="">

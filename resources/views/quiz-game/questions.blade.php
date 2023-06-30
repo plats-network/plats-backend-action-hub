@@ -24,7 +24,10 @@
                             <button class="btn-plats" onclick="startQuizGame()">Start</button>
                         </div>
                     </div>
-                    <div class="lists d-flex flex-wrap">
+                    <div class="lists">
+                        @foreach ($listJoinedUsers as $user)
+                            <span class='nickname'>{{ $user['name'] }}</span>
+                        @endforeach
                     </div>
                 </div>
             </div>
