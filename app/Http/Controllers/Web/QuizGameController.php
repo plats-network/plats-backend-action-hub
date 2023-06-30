@@ -40,8 +40,9 @@ class QuizGameController extends Controller
         }
         $urlAnswers = route('quiz-name.answers', $eventId);
         $qrCode = QrCode::format('png')->size(300)->generate($urlAnswers);
+        $listJoinedUsers = Cache::get('list_joined_users_' . $eventId) ?? [];
 
-        return view('quiz-game.questions', compact('qrCode', 'event', 'totalQuiz'));
+        return view('quiz-game.questions', compact('qrCode', 'event', 'totalQuiz', 'listJoinedUsers'));
     }
 
     /**

@@ -7,12 +7,16 @@
 <!-- Vendor Styles End -->
 <style>
     @font-face {
-        font-family: Righteous-Regular;
-        src: url("{{ url('static/fonts/Righteous-Regular.ttf') }}");
+        font-family: Quicksand-Regular;
+        src: url("{{ url('static/fonts/quicksand/Quicksand-Regular.ttf') }}");
+    }
+    @font-face {
+        font-family: Quicksand-Bold;
+        src: url("{{ url('static/fonts/quicksand/Quicksand-Bold.ttf') }}");
     }
 
     body {
-        font-family: Righteous-Regular, sans-serif
+        font-family: Quicksand-Bold, sans-serif
     }
 
     .animated {
@@ -226,6 +230,10 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
+    }
+    .select-answers .question-name {
+        color: #212529!important;
+        margin-bottom: 20px;
     }
 
     .polygon {

@@ -37,6 +37,8 @@
         isAnswered: false,
         totalPoint: 0,
         isFinishQuiz: false,
+        timeToAnswer: null,
+        replyExpirationTime: null,
         currentStep: 1,
         currentTime: new Date(),
         timeExpirationStorage: new Date(new Date().getTime() + 60 * 60000), // Save data to localStorage 60 minutes
@@ -76,8 +78,9 @@
         $('.answers .answer-box').click(function() {
             var self = this;
             var selectedAnswer = $(this).data('id');
+            var timeNow = new Date();
             // Check end of reply time or answered
-            if (app.isAnswered || !app.countDownMilliseconds) {
+            if (app.isAnswered || !app.countDownMilliseconds || timeNow > new Date(app.replyExpirationTime)) {
                 showFlashMessage('Answered or time is over!')
                 return;
             }
@@ -123,6 +126,7 @@
         // Show prepare answers screen
         checkScreenStep(PREPARE_ANSWER_STEP);
         PREPARE_ANSWER.find('.question-name').text(question.name)
+        SELECT_ANSWER.find('.question-name').text(question.name)
         setTimeout(() => {
 
             // Show select answer screen
@@ -130,7 +134,7 @@
 
             // Caculate time to answer to milisecond to calculate the point
             app.countDownMilliseconds = parseInt(question.timeToAnswer) * 100;
-
+            var timeNow = new Date();
             // Reset status answer
             app.isAnswered = false;
             app.correctAnswer = question.correctAnswer;
@@ -139,6 +143,7 @@
             app.currentQuestion = question.number;
             app.totalQuestion = question.totalQuestion;
             app.currentStep = SELECT_ANSWER_STEP;
+            app.replyExpirationTime = timeNow.setSeconds(timeNow.getSeconds() + parseInt(question.timeToAnswer));
             app.totalPoint = question.number === 1 ? 0 : app.totalPoint
             // Set data
             HEADER.find('h2').text(app.currentQuestion + ' of ' + app.totalQuestion);
