@@ -6,7 +6,7 @@
                 <label for="quiz[{{$indexImageItem}}][name]" class="form-label">Question {{$getInc}}</label>
                 <input
                     type="text"
-                    class="form-control" required
+                    class="form-control"
                     id="quiz[{{$indexImageItem}}][name]"
                     placeholder="Question {{$getInc}}"
                     name="quiz[{{$indexImageItem}}][name]">
@@ -20,7 +20,7 @@
                     type="number"
                     class="form-control"
                     id="quiz[{{$indexImageItem}}][time_quiz]"
-                    min="0" required
+                    min="0"
                     placeholder="Time"
                     name="quiz[{{$indexImageItem}}][time_quiz]"
                     value="">
@@ -33,7 +33,7 @@
                 <input
                     type="number"
                     class="form-control"
-                    min="0" required
+                    min="0"
                     id="quiz[{{$indexImageItem}}][order]"
                     placeholder="Order" name="quiz[{{$indexImageItem}}][order]"
                     value="">
