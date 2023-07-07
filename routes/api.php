@@ -71,43 +71,45 @@ Route::middleware('auth:api')->group(function ($router) {
     $router->prefix('wallet')->group(function ($router) {
         $router->post('withdraw', [Wallet::class, 'withdraw']);
     });
-});
 
-Route::prefix('tasks')->controller(Task::class)->group(function ($router) {
-   $router->get('/', 'index');
-   $router->get('/doing', 'getTaskDoing');
-   $router->post('/', 'create');
-   $router->get('/{id}', 'detail')->whereUuid('id');
-   $router->post('/{id}/check-in/{location_id}', 'checkIn')->whereUuid('id')->whereUuid('location_id');
-   $router->patch('/{id}/cancel', 'cancel')->whereUuid('id');
-   $router->post('/{id}/social/{social_id}', [Social::class, 'update'])->name('task.social.update');
-   $router->post('like-pin', 'taskAction')->name('task.action');
-   $router->post('start-cancel', 'startTask')->name('task.startTask');
-   $router->get('my-tasks', 'myTasks')->name('task.myTasks');
-   $router->post('start-job', 'startJob')->name('task.startJob');
-
-   $router->prefix('{id}/locations')->controller(TaskLocation::class)->group(function ($router) {
+    Route::prefix('tasks')->controller(Task::class)->group(function ($router) {
+       $router->get('/', 'index');
+       $router->get('/doing', 'getTaskDoing');
        $router->post('/', 'create');
-   });
+       $router->get('/{id}', 'detail')->whereUuid('id');
+       $router->post('/{id}/check-in/{location_id}', 'checkIn')->whereUuid('id')->whereUuid('location_id');
+       $router->patch('/{id}/cancel', 'cancel')->whereUuid('id');
+       $router->post('/{id}/social/{social_id}', [Social::class, 'update'])->name('task.social.update');
+       $router->post('like-pin', 'taskAction')->name('task.action');
+       $router->post('start-cancel', 'startTask')->name('task.startTask');
+       $router->get('my-tasks', 'myTasks')->name('task.myTasks');
+       $router->post('start-job', 'startJob')->name('task.startJob');
+
+       $router->prefix('{id}/locations')->controller(TaskLocation::class)->group(function ($router) {
+           $router->post('/', 'create');
+       });
+    });
+
+    Route::get('event-imprgress', [Event::class, 'index'])->name('event.improgress');
+    Route::get('top-events', [Task::class, 'getEventTaskHots'])->name('task.event.top-events');
+    Route::prefix('qr')->controller(QrCode::class)->group(function($router) {
+        $router->post('qr-event', 'qrEvent')->name('qr.qrEvent');
+    });
+
+    Route::resource('task_notices', TaskNotice::class)->only(['index']);
+    Route::get('get_task', [TaskNotice::class, 'getTask']);
+    Route::resource('twitter', Twitter::class)->only(['index', 'store']);
+    Route::resource('socials', Social::class)->only(['index']);
+    Route::post('social-start/{id}', [Social::class, 'start'])->name('social.start.task');
+
+    Route::prefix('wallet')->controller(Wallet::class)->group(function () {
+        Route::post('/withdraw', 'withdraw');
+    });
+
+    Route::resource('groups', Group::class)->only(['index', 'show']);
+    Route::get('my-groups', [Group::class, 'myGroups'])->name('group.my-groups');
+    Route::post('join-group', [Group::class, 'joinGroup'])->name('group.join-group');
+    Route::resource('user-rewards', UserReward::class)->only(['index']);
 });
 
-Route::get('event-imprgress', [Event::class, 'index'])->name('event.improgress');
-Route::get('top-events', [Task::class, 'getEventTaskHots'])->name('task.event.top-events');
-Route::prefix('qr')->controller(QrCode::class)->group(function($router) {
-    $router->post('qr-event', 'qrEvent')->name('qr.qrEvent');
-});
 
-Route::resource('task_notices', TaskNotice::class)->only(['index']);
-Route::get('get_task', [TaskNotice::class, 'getTask']);
-Route::resource('twitter', Twitter::class)->only(['index', 'store']);
-Route::resource('socials', Social::class)->only(['index']);
-Route::post('social-start/{id}', [Social::class, 'start'])->name('social.start.task');
-
-Route::prefix('wallet')->controller(Wallet::class)->group(function () {
-    Route::post('/withdraw', 'withdraw');
-});
-
-Route::resource('groups', Group::class)->only(['index', 'show']);
-Route::get('my-groups', [Group::class, 'myGroups'])->name('group.my-groups');
-Route::post('join-group', [Group::class, 'joinGroup'])->name('group.join-group');
-Route::resource('user-rewards', UserReward::class)->only(['index']);

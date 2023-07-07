@@ -71,15 +71,16 @@ class Task extends ApiController
     public function index(Request $request)
     {
         try {
-
             $limit = $request->get('limit') ?? PAGE_SIZE;
-            $tasks = $this->modelTask->with(['taskLocations', 'taskSocials']);
-            $type = $request->get('type');
+            $tasks = $this->modelTask
+                ->with(['taskLocations', 'taskSocials'])
+                ->whereType(EVENT);
+            // $type = $request->get('type');
 
-            if ($type != '' && in_array($type, ['event', 'task'])) {
-                $type = $type == 'task' ? 0 : 1;
-                $tasks = $tasks->whereType($type);
-            }
+            // if ($type != '' && in_array($type, ['event', 'task'])) {
+            //     $type = $type == 'task' ? 0 : 1;
+            //     $tasks = $tasks->whereType($type);
+            // }
 
             $tasks = $tasks->whereStatus(ACTIVE_TASK)
                 ->orderBy('created_at', 'desc')
