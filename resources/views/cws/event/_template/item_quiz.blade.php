@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-lg-7">
             <div class="mb-3">
-                <label for="basicpill-expiration-input" class="form-label">Question {{$getInc}}</label>
+                <label for="quiz[{{$indexImageItem}}][name]" class="form-label">Question {{$getInc}}</label>
                 <input
                     type="text"
                     class="form-control"
@@ -14,7 +14,7 @@
         </div>
         <div class="col-lg-2">
             <div class="mb-3">
-                <label for="basicpill-expiration-input" class="form-label">Time</label>
+                <label for="quiz[{{$indexImageItem}}][time_quiz]" class="form-label">Time</label>
                 <input
                     type="number"
                     class="form-control"
@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="col-lg-2">
-            <label for="basicpill-expiration-input"
+            <label for="quiz[{{$indexImageItem}}][status]"
                    class="form-label">&nbsp;</label>
             <div class="form-check form-switch">
                 <input

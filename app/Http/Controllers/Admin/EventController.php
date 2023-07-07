@@ -161,6 +161,7 @@ class EventController extends Controller
             ], 200);
         }
 
+        //quizz
         if ($type == 3) {
             return response()->json([
                 'code' => 200,
@@ -276,7 +277,7 @@ class EventController extends Controller
             $inputAll = $request->all();
             $inputAll['type'] = 1;
             $request->validate(['name' => 'required']);
-            
+
             //$company->fill($request->post())->save();
             $this->eventService->store($request);
             notify()->success('Create event successfully');

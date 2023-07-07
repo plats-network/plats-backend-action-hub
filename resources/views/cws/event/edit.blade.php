@@ -121,7 +121,7 @@
                                                     <div class="mb-3 field-start_at">
                                                         <label for="basicpill-phoneno-input"
                                                             class="form-label">Start At
-                                                            <span style="width: 10px; height: 10px; border-radius: 50%;background-color: red;">i</span>
+                                                            <span style="width: 10px; height: 10px; border-radius: 50%;background-color: red;">*</span>
                                                         </label>
                                                         <input
                                                             type="text"
@@ -924,6 +924,13 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $('#itemQuiz' + id).hide();
+                        //Find all input chrildren and remove required
+
+                        //Remover required input
+                        //Input quiz[8325][name]
+                        $('#quiz[' + id + '][name]').removeAttr('required');
+                        $('#quiz[' + id + '][time_quiz]').removeAttr('name');
+                        $('#quiz[' + id + '][order]').removeAttr('name');
                         $('#quizFlagDelete' + id).val(1);
                     }
                 });
@@ -981,7 +988,12 @@
             let isValid = true
             if(step==1){
                 //Check name input is empty
-                if($('#name').val() == '') {
+                //Check empty input, name, lat, lng, address
+
+                if($('#name').val() == '' ||
+                    $('#lat').val() == '' ||
+                    $('#lng').val() == '' ||
+                    $('#address').val() == '') {
                     //alert('Please input name');
                     //Trigger validation
 
