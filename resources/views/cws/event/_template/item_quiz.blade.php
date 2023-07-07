@@ -10,7 +10,6 @@
                     id="quiz[{{$indexImageItem}}][name]"
                     placeholder="Question {{$getInc}}"
                     name="quiz[{{$indexImageItem}}][name]">
-
             </div>
         </div>
         <div class="col-lg-2">

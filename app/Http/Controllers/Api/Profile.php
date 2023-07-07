@@ -37,9 +37,12 @@ class Profile extends ApiController
      */
     public function index(Request $request)
     {
-        $user = $request->user();
-
-        if (!$user) {
+        try {
+            $user = $request->user();
+            if (!$user) {
+                return $this->respondNotFound();
+            }
+        } catch (\Exception $e) {
             return $this->respondNotFound();
         }
 
