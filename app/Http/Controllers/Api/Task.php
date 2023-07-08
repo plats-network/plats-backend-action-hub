@@ -13,7 +13,8 @@ use App\Http\Resources\{
     TaskResource,
     TaskUserResource,
     TaskDogingResource,
-    SocialResource
+    SocialResource,
+    TaskDetailResource,
 };
 use App\Repositories\{LocationHistoryRepository, TaskRepository, TaskUserRepository};
 use App\Services\TaskService;
@@ -75,13 +76,6 @@ class Task extends ApiController
             $tasks = $this->modelTask
                 ->with(['taskLocations', 'taskSocials'])
                 ->whereType(EVENT);
-            // $type = $request->get('type');
-
-            // if ($type != '' && in_array($type, ['event', 'task'])) {
-            //     $type = $type == 'task' ? 0 : 1;
-            //     $tasks = $tasks->whereType($type);
-            // }
-
             $tasks = $tasks->whereStatus(ACTIVE_TASK)
                 ->orderBy('created_at', 'desc')
                 ->orderBy('end_at', 'asc')
@@ -115,7 +109,7 @@ class Task extends ApiController
             return $this->respondNotFound();
         }
 
-        return $this->respondWithResource(new TaskResource($task));
+        return $this->respondWithResource(new TaskDetailResource($task));
     }
 
     // Task like and pinned
