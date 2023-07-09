@@ -11,7 +11,7 @@ use App\Models\{
     TaskUser, Reward, UserTaskAction,
     TaskGroup, Group, User
 };
-use App\Models\Event\EventUserTicket;
+use App\Models\Event\{EventUserTicket, TaskEvent, TaskEventDetail, UserJoinEvent};
 use Carbon\Carbon;
 
 
@@ -25,18 +25,81 @@ class TaskDetailResource extends JsonResource
      */
     public function toArray($request)
     {
-        $userId = $request->user()->id;
-        $token = $request->user()->token;
+        $userId = optional($request->user())->id;
         $likeCount = UserTaskAction::whereUserId($userId)->whereTaskId($this->id)->whereType(TASK_LIKE)->count();
         $pinCount = UserTaskAction::whereUserId($userId)->whereTaskId($this->id)->whereType(TASK_PIN)->count();
         $checkTaskStart = TaskUser::whereUserId($userId)->whereTaskId($this->id)->whereStatus(0)->count();
         $groups = $this->groupTasks->count() > 0 ? TaskGroupResource::collection($this->groupTasks) : null;
         $creator = User::whereId($this->creator_id)->first();
-        $eventUserTicket = EventUserTicket::whereUserId($userId)
-            ->whereTaskId($this->id)
-            ->first();
+        $ticket = EventUserTicket::whereUserId($userId)->whereTaskId($this->id)->first();
+        $taskSession = TaskEvent::whereTaskId($this->id)->whereType(TASK_SESSION)->first();
+        $taskBooth = TaskEvent::whereTaskId($this->id)->whereType(TASK_BOOTH)->first();
+        $sessionSuccess = UserJoinEvent::whereUserId($userId)
+            ->whereTaskEventId(optional($taskSession)->id)
+            ->count();
+        $boothSuccess = UserJoinEvent::whereUserId($userId)
+            ->whereTaskEventId(optional($taskBooth)->id)
+            ->count();
 
-        $data = [
+        $sessions = [];
+        $booths = [];
+        $dataSession = null;
+        $dataBooth = null;
+
+        if ($taskSession) {
+            $ses = TaskEventDetail::whereTaskEventId($taskSession->id)->get();
+
+            if ($ses) {
+                foreach($ses as $session) {
+                    $doneJob = UserJoinEvent::whereUserId($userId)
+                        ->whereTaskEventDetailId($session->id)
+                        ->exists();
+                    $sessions[] = [
+                        'id' => $session->id,
+                        'name' => $session->name,
+                        'description' => $session->description,
+                        'code' => $session->code,
+                        'status_done' => $doneJob
+                    ];
+                }
+            }
+
+            $dataSession = [
+                'id' => $taskSession->id,
+                'name' => $taskSession->name,
+                'session_success' => $sessionSuccess.'/' . count($sessions),
+                'jobs' => $sessions
+            ];
+        }
+
+        if ($taskBooth) {
+            $booth = TaskEventDetail::whereTaskEventId($taskBooth->id)->get();
+            if ($booth) {
+                foreach($booth as $item) {
+                    $doneJob = UserJoinEvent::whereUserId($userId)
+                        ->whereTaskEventDetailId($item->id)
+                        ->exists();
+                    $booths[] = [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                        'description' => $item->description,
+                        'code' => $item->code,
+                        'status_done' => $doneJob
+                    ];
+                }
+            }
+
+            $dataBooth = [
+                'id' => $taskBooth->id,
+                'name' => $taskBooth->name,
+                'booth_success' => $boothSuccess. '/' . count($booths),
+                'booth_code' => 1,
+                'jobs' => $booths
+            ];
+        }
+
+        $url = 'https://'.config('plats.event').'/event/'.$this->id;
+        return [
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
@@ -50,8 +113,8 @@ class TaskDetailResource extends JsonResource
             'end_at' => DateHelper::getDateTime($this->end_at),
             'task_start' => $checkTaskStart > 0 ? true : false,
             'type' => $this->type == 1 ? 'event' : 'task',
-            'code_session' => optional($eventUserTicket)->sesion_code,
-            'code_booth' => optional($eventUserTicket)->booth_code,
+            'code_session' => optional($ticket)->sesion_code,
+            'code_booth' => optional($ticket)->booth_code,
             'like' => [
                 'is_like' => $likeCount > 0 ? true : false,
                 'type_like' => $likeCount > 0 ? 'like' : 'unlike'
@@ -59,29 +122,18 @@ class TaskDetailResource extends JsonResource
             'pin' => [
                 'is_pin' => $pinCount > 0 ? true : false,
                 'type_pin' => $pinCount > 0 ? 'pin' : 'unpin',
+            ],
+            'session' => $dataSession,
+            'booth' => $dataBooth,
+            'shares' => [
+                'facebook' => $url.'?type=facebook',
+                'twitter' => $url.'?type=twitter',
+                'telegram' => $url.'?type=telegram',
+                'discord' => $url.'?type=discord',
+                'email' => $url.'?type=email',
+                'linkedin' => $url.'?type=linkedin',
+                'whatsapp' => $url.'?type=whatsapp'
             ]
         ];
-
-        $dataTask = [
-            'groups' => $groups,
-            'task_checkin' => $this->taskLocations->count() > 0
-                ? TaskLocationResource::collection($this->taskLocations)
-                : null,
-            'task_socials' => $this->taskSocials->count() > 0
-                ? TaskSocialResource::collection($this->taskSocials)
-                : null
-        ];
-
-        $dataEvent = [
-            'task_events' => $this->taskEvents->count() > 0
-                ? TaskEventResource::collection($this->taskEvents)
-                : null
-        ];
-
-        $dataRes = $this->type == 0
-            ? array_merge($data, $dataTask)
-            : array_merge($data, $dataEvent);
-
-        return $dataRes;
     }
 }
