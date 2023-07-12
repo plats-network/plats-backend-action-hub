@@ -64,7 +64,7 @@ class Home extends Controller
     public function events(Request $request)
     {
         try {
-            $limit = $request->get('limit') ?? 8;
+            $limit = $request->get('limit') ?? 100;
             $events = $this->taskService->search([
                 'limit' => $limit,
                 'type' => 1,
