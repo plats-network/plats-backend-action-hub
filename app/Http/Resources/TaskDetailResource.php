@@ -11,9 +11,9 @@ use App\Models\{
     TaskUser, Reward, UserTaskAction,
     TaskGroup, Group, User
 };
-use App\Models\Event\{EventUserTicket, TaskEvent, TaskEventDetail, UserJoinEvent};
+use App\Models\Event\{EventUserTicket, TaskEvent,
+    TaskEventDetail, UserJoinEvent, EventDiscords, EventSocial};
 use Carbon\Carbon;
-
 
 class TaskDetailResource extends JsonResource
 {
@@ -26,6 +26,7 @@ class TaskDetailResource extends JsonResource
     public function toArray($request)
     {
         $userId = optional($request->user())->id;
+        $url = 'https://'.config('plats.event').'/event/'.$this->id;
         $likeCount = UserTaskAction::whereUserId($userId)->whereTaskId($this->id)->whereType(TASK_LIKE)->count();
         $pinCount = UserTaskAction::whereUserId($userId)->whereTaskId($this->id)->whereType(TASK_PIN)->count();
         $checkTaskStart = TaskUser::whereUserId($userId)->whereTaskId($this->id)->whereStatus(0)->count();
@@ -98,7 +99,30 @@ class TaskDetailResource extends JsonResource
             ];
         }
 
-        $url = 'https://'.config('plats.event').'/event/'.$this->id;
+        $discord = EventDiscords::whereTaskId($this->id)->first();
+        $twitter = EventSocial::whereTaskId($this->id)->first();
+
+        $discordJob = null;
+        $twitterJob = null;
+        if ($discord) {
+            $discordJob = [
+                'id' => $discord->id,
+                'is_join' => false
+            ];
+        }
+
+        if ($twitter) {
+            $twitterJob = [
+                'id' => $twitter->id,
+                'url' => $twitter->url,
+                'text_tweet' => $twitter->text,
+                'is_comment' => false,
+                'is_like' => false,
+                'is_retweet' => false,
+                'is_tweet' => false,
+            ];
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -123,8 +147,11 @@ class TaskDetailResource extends JsonResource
                 'is_pin' => $pinCount > 0 ? true : false,
                 'type_pin' => $pinCount > 0 ? 'pin' : 'unpin',
             ],
+            'link_quiz' => 'https://'.config('plats.event').'/quiz-game/answers/'.$this->id,
             'session' => $dataSession,
             'booth' => $dataBooth,
+            'discord' => $discordJob,
+            'twitter' => $twitterJob,
             'shares' => [
                 'facebook' => $url.'?type=facebook',
                 'twitter' => $url.'?type=twitter',
