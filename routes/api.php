@@ -72,6 +72,8 @@ Route::middleware('auth:api')->group(function ($router) {
         $router->post('withdraw', [Wallet::class, 'withdraw']);
     });
 
+    $router->get('tickets', [Task::class, 'listTicks'])->name('user.listTickets');
+
     Route::prefix('tasks')->controller(Task::class)->group(function ($router) {
        $router->get('/', 'index');
        $router->get('/doing', 'getTaskDoing');

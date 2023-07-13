@@ -231,7 +231,6 @@
                                 </div>
                             </div>
 
-
                             <!-- Sessiom -->
                             @include('cws.event.forms._session', [
                                 'sessions' => $sessions,
@@ -323,51 +322,56 @@
                                                     </div>
 
                                                     <div class="mt-3">
-                                                        <div class="mb-3">
-                                                            <label for="basicpill-cardno-input" class="form-label">Url</label>
-                                                            <input
-                                                                type="text"
-                                                                value="{{$taskEventSocials->url}}"
-                                                                class="form-control"
-                                                                placeholder="https://twitter.com/plats_network/status/1640186830644723712"
-                                                                id="task_event_socials[url]"
-                                                                name="task_event_socials[url]">
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label for="basicpill-cardno-input"
-                                                                   class="form-label">Text</label>
-                                                            <input
-                                                                type="text"
-                                                                value="{{$taskEventSocials->text}}"
-                                                                class="form-control"
-                                                                placeholder="Event #Key #Text..."
-                                                                maxlenght="128"
-                                                                id="task_event_socials[text]"
-                                                                name="task_event_socials[text]">
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <div class="mb-3">
+                                                                    <label for="basicpill-cardno-input" class="form-label">Url</label>
+                                                                    <input
+                                                                        type="text"
+                                                                        value="{{$taskEventSocials->url}}"
+                                                                        class="form-control"
+                                                                        placeholder="https://twitter.com/plats_network/status/1640186830644723712"
+                                                                        id="task_event_socials[url]"
+                                                                        name="task_event_socials[url]">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div id="tweetId" class="mb-3 {{$taskEventSocials->is_tweet ? '' : 'd-none'}}">
+                                                                    <label for="tweet" class="form-label">Text</label>
+                                                                    <input
+                                                                        type="text"
+                                                                        value="{{$taskEventSocials->text}}"
+                                                                        class="form-control"
+                                                                        placeholder="Event #Key #Text..."
+                                                                        maxlenght="128"
+                                                                        id="tweet"
+                                                                        name="task_event_socials[text]">
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
+ 
                                             <div class="card">
                                                 <div class="card-header">Discord</div>
                                                 <div class="card-body">
                                                     <input type="hidden" name="task_event_discords[id]" value="{{$taskEventDiscords->id}}">
                                                     <input type="hidden" name="task_event_discords[task_id]" value="{{$event->id}}">
-                                                    <div class="mb-3">
-                                                        <label for="basicpill-cardno-input"
-                                                               class="form-label">Bot Token</label>
-                                                        <input type="text"
-                                                            class="form-control"
-                                                            placeholder="Bot Token"
-                                                            value="{{$taskEventDiscords->bot_token}}"
-                                                            name="task_event_discords[bot_token]">
-                                                    </div>
                                                     <div class="row">
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-4">
                                                             <div class="mb-3">
-                                                                <label for="basicpill-cardno-input"
-                                                                       class="form-label">Channel Id</label>
+                                                                <label class="form-label">Bot Token</label>
+                                                                <input type="text"
+                                                                    class="form-control"
+                                                                    placeholder="Bot Token"
+                                                                    value="{{$taskEventDiscords->bot_token}}"
+                                                                    name="task_event_discords[bot_token]">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Channel Id</label>
                                                                 <input type="text"
                                                                     class="form-control"
                                                                     placeholder="Channel Id"
@@ -375,10 +379,9 @@
                                                                     name="task_event_discords[channel_id]">
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6">
+                                                        <div class="col-lg-4">
                                                             <div class="mb-3">
-                                                                <label for="basicpill-cardno-input"
-                                                                       class="form-label">Channel Url</label>
+                                                                <label class="form-label">Channel Url</label>
                                                                 <input type="text" class="form-control" placeholder="Channel Url" value="{{$taskEventDiscords->channel_url}}" name="task_event_discords[channel_url]" id="task_event_discords[channel_url]">
                                                             </div>
                                                         </div><!-- end col -->
@@ -743,6 +746,26 @@
             var uploadUrl = '{{config('admin.upload_url')}}';
             var flag_check = 1;
 
+            $('#is_tweet').on('change', function(event) {
+                if (event.currentTarget.checked) {
+                    $('#tweetId').removeClass('d-none');
+                    // alert('checked');
+                } else {
+                    $('#tweetId').addClass('d-none');
+                    // alert('not checked');
+                }
+            });
+
+            $('.checkQ').on('change', function(e) {
+                var id = $(this).data('id');
+                alert(id);
+            });
+
+            // $('.checkQ').on('click', function(e) {
+            //     var id = $(this).data('id');
+            //     alert(id);
+            // });
+
             $(document).on("submit", "#post_form", function (event) {
                 //Get Editor content
                 var content = editor.getHTML();//editor.getHTML(); getMarkdown
@@ -772,6 +795,11 @@
 
             //btnAddItemSession onclick call ajax
             $(document).on('click', '#btnAddItemSession', function (event) {
+                // $('.checkQ').on('change', function(e) {
+                //     var id = $(this).data('id');
+                //     alert(id);
+                // });
+
                 var rowCount = $('.itemSessionDetail').length;
                 if(rowCount >= 20){
                     alert('{{__('Maximum number of Item is')}} 20');
@@ -1033,26 +1061,26 @@
         }
 
         //Check if edit not alow click
-        @if($isPreview)
-        //step-icon onclick show tab
-        $(document).on('click', '.step-icon', function (event) {
-            event.preventDefault();
-            var id = $(this).attr('data-step');
-            //console.log(id);
+        @if($isPreview || $event->id)
+            //step-icon onclick show tab
+            $(document).on('click', '.step-icon', function (event) {
+                event.preventDefault();
+                var id = $(this).attr('data-step');
+                //console.log(id);
 
-            showTab(id);
-            //Display tab with id tabwizard-index
+                showTab(id);
+                //Display tab with id tabwizard-index
 
-            $('#tabwizard0').css('display', 'none');
-            $('#tabwizard' + id).css('display', 'block');
-            //Hide other tab
-            for (var i = 1; i <= 4; i++) {
-                if (i != id) {
-                    $('#tabwizard' + i).css('display', 'none');
+                $('#tabwizard0').css('display', 'none');
+                $('#tabwizard' + id).css('display', 'block');
+                //Hide other tab
+                for (var i = 1; i <= 4; i++) {
+                    if (i != id) {
+                        $('#tabwizard' + i).css('display', 'none');
+                    }
                 }
-            }
-            //fixStepIndicator(id);
-        });
+                //fixStepIndicator(id);
+            });
         @endif
     </script>
 

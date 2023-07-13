@@ -31,20 +31,8 @@ class TaskEventDetail extends Model
         'description',
         'status',
         'code',
+        'is_question',
+        'question_text',
+        'is_answer',
     ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
-    protected $hidden = [
-//        'id',
-    ];
-
-
-//    public function taskEvent(): BelongsTo
-//    {
-//        return $this->belongsTo(TaskEvent::class);
-//    }
 }

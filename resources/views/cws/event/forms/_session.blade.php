@@ -116,7 +116,7 @@
                                 id="sessionsFlagDelete{{$sessionDetail->id}}"
                                 value="0">
 
-                            <label for="inputPassword" class="col-sm-2 col-form-label">Session {{$loop->index+1}}</label>
+                            <label for="inputPassword" class="col-sm-1 col-form-label">Session {{$loop->index+1}}</label>
                             <div class="col-sm-4">
                                 <input
                                     type="text"
@@ -135,7 +135,18 @@
                                     name="sessions[detail][{{$sessionDetail->id}}][description]"
                                     value="{{$sessionDetail->description}}">
                             </div>
-                            <div class="col-sm-2">
+                            {{-- <div class="col-sm-2">
+                                <input
+                                    class="form-check-input checkQ"
+                                    data-id="{{$sessionDetail->id}}"
+                                    type="checkbox" value="1"
+                                    name="sessions[detail][{{$sessionDetail->id}}][is_question]"
+                                    id="q_{{$loop->index+1}}" @if($sessionDetail->is_question)  checked @endif>
+                                <label class="form-check-label" for="q_{{$loop->index+1}}">
+                                    Câu hỏi
+                                </label>
+                            </div> --}}
+                            <div class="col-sm-1">
                                 <div class="col-auto">
                                     <button
                                         type="button"

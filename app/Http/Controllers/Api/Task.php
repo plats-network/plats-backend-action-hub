@@ -24,7 +24,7 @@ use App\Models\{
     UserTaskAction, TaskUser,
     TaskLocationJob, TaskSocial
 };
-
+use App\Models\Event\{EventUserTicket};
 use App\Models\User\{
     UserReward, UserRewardTemp, UserTaskHistory
 };
@@ -62,6 +62,7 @@ class Task extends ApiController
         private UserReward $userReward,
         private UserRewardTemp $userRewardTemp,
         private UserTaskHistory $userTaskHistory,
+        private EventUserTicket $ticket,
     ) {}
 
     /**
@@ -363,6 +364,43 @@ class Task extends ApiController
         $datas = TaskResource::collection($tasks);
 
         return $this->respondWithResource($datas);
+    }
+
+    public function listTicks(Request $request)
+    {
+        try {
+            $userId = $request->user()->id;
+            $tickets = [];
+            $myTickets = $this->ticket
+                ->whereUserId($userId)
+                ->orderBy('created_at', 'desc')
+                ->limit(20)
+                ->get();
+
+            if (empty($myTickets)) {
+                return $this->respondNotFound();
+            }
+
+            foreach($myTickets as $item) {
+                $event = $this->modelTask->find($item->task_id);
+                $tickets[] = [
+                    'id' => $item->id,
+                    'user_id' => $userId,
+                    'event_id' => $item->task_id,
+                    'event_name' => optional($event)->name,
+                    'url_detail' => 'https://'.config('plats.event').'/event/ticket?event_id='.$item->task_id.'&user_id='.$userId,
+                ];
+            }
+        } catch (\Exception $e) {
+            return $this->respondNotFound();
+        }
+
+        return response()->json([
+            'message' => 'List tickets',
+            'code' => 200,
+            'status' => 'success',
+            'data' => $tickets
+        ], 200);
     }
 
     /**
