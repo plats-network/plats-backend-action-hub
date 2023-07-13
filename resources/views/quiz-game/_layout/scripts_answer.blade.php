@@ -80,7 +80,8 @@
             var selectedAnswer = $(this).data('id');
             var timeNow = new Date();
             // Check end of reply time or answered
-            if (app.isAnswered || !app.countDownMilliseconds || timeNow > new Date(app.replyExpirationTime)) {
+            if (app.isAnswered || !app.countDownMilliseconds || timeNow > new Date(app
+                    .replyExpirationTime)) {
                 showFlashMessage('Answered or time is over!')
                 return;
             }
@@ -120,56 +121,86 @@
 
     // Listen event next question to handle on player screen
     function handleNextQuestion(data) {
-        // Assign data from pusher
-        var question = data?.data
+        // Due error can be fail to any version of chrom or phone, it's necessary to send log to server
+        errorLogs([], data)
+        try {
+            // Assign data from pusher
+            var question = data?.data
 
-        // Show prepare answers screen
-        checkScreenStep(PREPARE_ANSWER_STEP);
-        PREPARE_ANSWER.find('.question-name').text(question.name)
-        SELECT_ANSWER.find('.question-name').text(question.name)
-        setTimeout(() => {
+            // Show prepare answers screen
+            checkScreenStep(PREPARE_ANSWER_STEP);
+            PREPARE_ANSWER.find('.question-name').text(question.name)
+            SELECT_ANSWER.find('.question-name').text(question.name)
+            setTimeout(() => {
 
-            // Show select answer screen
-            checkScreenStep(SELECT_ANSWER_STEP);
+                // Show select answer screen
+                checkScreenStep(SELECT_ANSWER_STEP);
 
-            // Caculate time to answer to milisecond to calculate the point
-            app.countDownMilliseconds = parseInt(question.timeToAnswer) * 100;
-            var timeNow = new Date();
-            // Reset status answer
-            app.isAnswered = false;
-            app.correctAnswer = question.correctAnswer;
-            app.answers = question.answers;
-            app.questionId = question.id;
-            app.currentQuestion = question.number;
-            app.totalQuestion = question.totalQuestion;
-            app.currentStep = SELECT_ANSWER_STEP;
-            app.replyExpirationTime = timeNow.setSeconds(timeNow.getSeconds() + parseInt(question.timeToAnswer));
-            app.totalPoint = question.number === 1 ? 0 : app.totalPoint
-            // Set data
-            HEADER.find('h2').text(app.currentQuestion + ' of ' + app.totalQuestion);
-            FOOTER.find('.point').text(app.totalPoint);
-            app.answers.forEach((value, index) => {
-                let boxAnswer = SELECT_ANSWER.find('.answer-box').get(index);
-                $(boxAnswer).data("id", value.id);;
-            });
+                // Caculate time to answer to milisecond to calculate the point
+                app.countDownMilliseconds = parseInt(question.timeToAnswer) * 100;
+                var timeNow = new Date();
+                // Reset status answer
+                app.isAnswered = false;
+                app.correctAnswer = question.correctAnswer;
+                app.answers = question.answers;
+                app.questionId = question.id;
+                app.currentQuestion = question.number;
+                app.totalQuestion = question.totalQuestion;
+                app.currentStep = SELECT_ANSWER_STEP;
+                app.replyExpirationTime = timeNow.setSeconds(timeNow.getSeconds() + parseInt(question
+                    .timeToAnswer));
+                app.totalPoint = question.number === 1 ? 0 : app.totalPoint
+                // Set data
+                HEADER.find('h2').text(app.currentQuestion + ' of ' + app.totalQuestion);
+                FOOTER.find('.point').text(app.totalPoint);
+                app.answers.forEach((value, index) => {
+                    let boxAnswer = SELECT_ANSWER.find('.answer-box').get(index);
+                    $(boxAnswer).data("id", value.id);;
+                });
 
-            // Countdown milisecond to get point
-            countDownMillisecondsTimer();
+                // Countdown milisecond to get point
+                countDownMillisecondsTimer();
 
-            // If current question is the last question set timeout to show screen quiz completed
-            if (question.number >= question.totalQuestion) {
-                app.currentStep = QUIZ_COMPLETED_STEP;
+                // If current question is the last question set timeout to show screen quiz completed
+                if (question.number >= question.totalQuestion) {
+                    app.currentStep = QUIZ_COMPLETED_STEP;
 
-                // Send point to server
-                setTimeout(() => {
-                    sendTotalPoint();
-                }, parseInt(question.timeToAnswer) * 1000);
+                    // Send point to server
+                    setTimeout(() => {
+                        sendTotalPoint();
+                    }, parseInt(question.timeToAnswer) * 1000);
+                }
+
+                // Save variable to storage
+                localStorage.setItem('quizAnswerVariable', JSON.stringify(app));
+
+            }, TIME_PREPARE_ANSWER * 1000);
+        } catch (error) {
+            // Due error can be fail to any version of chrom or phone, it's necessary to send log to server
+            errorLogs(error, data)
+        }
+    }
+
+    // Count down milisecond to caculate the point
+    function errorLogs(error, data) {
+        let dataError = {
+            'error': error,
+            'eventId': EVENT_ID,
+            'userId': USER_ID,
+            'appInfo': app,
+            'dataNextQuestion': data
+        }
+        $.ajax({
+            url: '/quiz-game/error-logs',
+            method: 'POST',
+            data: dataError,
+            success: function() {
+                // Handle successful submission
+            },
+            error: function(error) {
+                // Handle submission error
             }
-
-            // Save variable to storage
-            localStorage.setItem('quizAnswerVariable', JSON.stringify(app));
-
-        }, TIME_PREPARE_ANSWER * 1000);
+        });
     }
 
     // Count down milisecond to caculate the point
