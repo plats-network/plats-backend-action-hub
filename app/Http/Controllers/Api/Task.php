@@ -73,14 +73,37 @@ class Task extends ApiController
     public function index(Request $request)
     {
         try {
+            $type = $request->input('type');
+            $keyword = $request->input('keyword');
             $limit = $request->get('limit') ?? PAGE_SIZE;
             $tasks = $this->modelTask
                 ->with(['taskLocations', 'taskSocials'])
-                ->whereType(EVENT);
-            $tasks = $tasks->whereStatus(ACTIVE_TASK)
-                ->orderBy('created_at', 'desc')
-                ->orderBy('end_at', 'asc')
-                ->paginate($limit);
+                ->whereType(EVENT)
+                ->whereStatus(ACTIVE_TASK);
+
+            if ($keyword && $keyword != '') {
+                $tasks = $tasks->where('name', 'like', '%' . $keyword . '%');
+            }
+
+            if ($type && $type == 'uptrend') {
+                $tasks = $tasks
+                    ->where('end_at', '>=', Carbon::now()->subDays(30))
+                    ->inRandomOrder()
+                    ->orderBy('created_at', 'desc')
+                    ->orderBy('end_at', 'asc')
+                    ->paginate(10);
+            } elseif ($type && $type == 'upcoming') {
+                $tasks = $tasks
+                    ->orderBy('created_at', 'desc')
+                    ->orderBy('end_at', 'asc')
+                    ->paginate(5);
+            } else {
+                $tasks = $tasks
+                    ->orderBy('created_at', 'desc')
+                    ->orderBy('end_at', 'asc')
+                    ->paginate($limit);
+            }
+
         } catch (QueryException $e) {
             return $this->respondNotFound();
         }
@@ -387,8 +410,9 @@ class Task extends ApiController
                     'id' => $item->id,
                     'user_id' => $userId,
                     'event_id' => $item->task_id,
+                    'img' => commonImg($event->banner_url),
                     'event_name' => optional($event)->name,
-                    'url_detail' => 'https://'.config('plats.event').'/event/ticket?event_id='.$item->task_id.'&user_id='.$userId,
+                    'qr_content' => 'https://'.config('plats.cws').'/checkin?type=checkin'.'&id='.$item->hash_code
                 ];
             }
         } catch (\Exception $e) {
