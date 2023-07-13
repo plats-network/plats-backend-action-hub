@@ -35,7 +35,7 @@
                     min="0"
                     id="quiz[{{$indexImageItem}}][order]"
                     placeholder="Order" name="quiz[{{$indexImageItem}}][order]"
-                    value="">
+                    value="{{$getInc + 1}}">
             </div>
         </div>
         <div class="col-lg-2">
