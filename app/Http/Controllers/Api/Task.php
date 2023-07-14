@@ -412,6 +412,12 @@ class Task extends ApiController
                     'event_id' => $item->task_id,
                     'img' => commonImg($event->banner_url),
                     'event_name' => optional($event)->name,
+                    'address' => optional($event)->address,
+                    'start_at' => dateFormat(optional($event)->start_at),
+                    'end_at' => dateFormat(optional($event)->end_at),
+                    'type' => 1,
+                    'user_name' => optional($request->user())->name,
+                    'type_name' => 'Basic',
                     'qr_content' => 'https://'.config('plats.cws').'/checkin?type=checkin'.'&id='.$item->hash_code
                 ];
             }

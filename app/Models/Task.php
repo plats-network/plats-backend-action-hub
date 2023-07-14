@@ -54,7 +54,6 @@ class Task extends Model
         'lng',
         'status', // 0: Draft , 1: Public, 99: Delete
         'slug',
-        'address',
         'type', // 0: task, 1: event
         'creator_id',
         'is_paid', // 0: Free, 1: Paid
