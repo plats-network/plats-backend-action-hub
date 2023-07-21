@@ -41,6 +41,7 @@ class TaskDetailResource extends JsonResource
         $boothSuccess = UserJoinEvent::whereUserId($userId)
             ->whereTaskEventId(optional($taskBooth)->id)
             ->count();
+        $taskIds = EventUserTicket::select('task_id')->whereUserId($userId)->pluck('task_id')->toArray();
 
         $sessions = [];
         $booths = [];
@@ -147,6 +148,7 @@ class TaskDetailResource extends JsonResource
                 'is_pin' => $pinCount > 0 ? true : false,
                 'type_pin' => $pinCount > 0 ? 'pin' : 'unpin',
             ],
+            'flag_ticket' => in_array($this->id, $taskIds),
             'link_quiz' => 'https://'.config('plats.event').'/quiz-game/answers/'.$this->id,
             'session' => $dataSession,
             'booth' => $dataBooth,

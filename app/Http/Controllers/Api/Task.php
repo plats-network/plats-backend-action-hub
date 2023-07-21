@@ -75,6 +75,7 @@ class Task extends ApiController
         try {
             $type = $request->input('type');
             $keyword = $request->input('keyword');
+            $userId = optional($request->user())->id;
             $limit = $request->get('limit') ?? PAGE_SIZE;
             $tasks = $this->modelTask
                 ->with(['taskLocations', 'taskSocials'])
@@ -82,27 +83,39 @@ class Task extends ApiController
                 ->whereStatus(ACTIVE_TASK);
 
             if ($keyword && $keyword != '') {
-                $tasks = $tasks->where('name', 'like', '%' . $keyword . '%');
+                $tasks = $tasks->where('name', 'like', '%' . $keyword . '%')
+                    ->orWhere('address', 'like', '%' . $keyword . '%')
+                    ->orWhere('description', 'like', '%' . $keyword . '%');
+            }
+
+            if ($type && $type == 'regised') {
+                $taskIds = $this->ticket
+                    ->select('task_id')
+                    ->whereUserId($userId)
+                    ->pluck('task_id')
+                    ->toArray();
+                $limit = 10;
+                $tasks = $tasks
+                    ->whereIn('id', $taskIds)
+                    ->where('end_at', '>=', Carbon::now()->subDays(30));
             }
 
             if ($type && $type == 'uptrend') {
-                $tasks = $tasks
-                    ->where('end_at', '>=', Carbon::now()->subDays(30))
-                    ->inRandomOrder()
-                    ->orderBy('created_at', 'desc')
-                    ->orderBy('end_at', 'asc')
-                    ->paginate(10);
+                $tasks = $tasks->where('end_at', '>=', Carbon::now()->subDays(30))->inRandomOrder();
+                $limit = 10;
             } elseif ($type && $type == 'upcoming') {
-                $tasks = $tasks
-                    ->orderBy('created_at', 'desc')
-                    ->orderBy('end_at', 'asc')
-                    ->paginate(5);
+                $limit = 10;
             } else {
-                $tasks = $tasks
-                    ->orderBy('created_at', 'desc')
+                $tasks = $tasks;
+            }
+
+            if ($tasks->count() <= 0) {
+                return $this->respondNotFound();
+            }
+
+            $tasks = $tasks->orderBy('created_at', 'desc')
                     ->orderBy('end_at', 'asc')
                     ->paginate($limit);
-            }
 
         } catch (QueryException $e) {
             return $this->respondNotFound();
