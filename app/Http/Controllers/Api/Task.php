@@ -104,18 +104,19 @@ class Task extends ApiController
                 $tasks = $tasks->where('end_at', '>=', Carbon::now()->subDays(30))->inRandomOrder();
                 $limit = 10;
             } elseif ($type && $type == 'upcoming') {
+                $tasks = $tasks;
                 $limit = 10;
             } else {
                 $tasks = $tasks;
             }
 
-            if ($tasks->count() <= 0) {
-                return $this->respondNotFound();
-            }
+            // if ($tasks->count() <= 0) {
+            //     return $this->respondNotFound();
+            // }
 
             $tasks = $tasks->orderBy('created_at', 'desc')
-                    ->orderBy('end_at', 'asc')
-                    ->paginate($limit);
+                ->orderBy('end_at', 'asc')
+                ->paginate($limit);
 
         } catch (QueryException $e) {
             return $this->respondNotFound();
