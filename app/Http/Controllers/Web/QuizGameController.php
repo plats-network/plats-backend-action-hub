@@ -15,6 +15,7 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Auth;
+use Illuminate\Support\Facades\Log;
 
 class QuizGameController extends Controller
 {
@@ -225,5 +226,15 @@ class QuizGameController extends Controller
             'summaryAnswer' => $quizAnswerResults,
             'totalAnswered' => $totalQuizResultsCount
         ]);
+    }
+
+    /**
+     * Log errors user quiz game
+     *
+     * @param Request $request The request object.
+     */
+    public function errorLogs(Request $request)
+    {
+        Log::debug("Quiz-error", $request->all());
     }
 }
