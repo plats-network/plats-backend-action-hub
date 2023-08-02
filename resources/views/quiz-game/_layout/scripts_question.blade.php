@@ -474,7 +474,7 @@
         // Mid rank
         var rankItem = SCOREBOARD_FINAL.find('.mid-rank .rank-item').get(0);
         var midRank = '';
-        for (let rank = 4; rank <= 10; rank++) {
+        for (let rank = 4; rank <= 50; rank++) {
             let element = data[rank - 1] ?? null;
             let nickname = element ? element.user.name : '_';
             let point = element ? element.point : 0;

@@ -135,7 +135,7 @@ Route::prefix('export')->controller(Export::class)->group(function () {
 // });
 
 // Quiz game route
-Route::prefix('quiz-game')->group(function () {
+Route::prefix('quiz-game')->middleware(['client_admin'])->group(function () {
     Route::get('/questions/{eventId}', [QuizGameController::class, 'index'])->name('cws.quiz.questions');
     Route::get('/scoreboard/{eventId}', [QuizGameController::class, 'getScoreboard']);
     Route::post('/next-question', [QuizGameController::class, 'getQuestionByNumber']);

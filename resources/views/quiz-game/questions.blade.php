@@ -283,7 +283,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mid-rank col-md-6 col-12">
+                    <div class="mid-rank col-md-6 col-12 final-rank">
                         <div class="rank-item d-flex items-center">
                             <div class="rank"></div>
                             <div class="wrap-point d-flex">
@@ -349,12 +349,12 @@
 
     {{-- SOUND AFFECT --}}
     <div class="wrap-sound-affect" style="display: none">
-        <audio id="startGameSound">
+        {{-- <audio id="startGameSound" controls loop>
             <source src="{{ url('static/sound/quiz-game/start_game.mp3') }}" type="audio/mpeg">
-        </audio>
-        <audio id="start5SecondsSound">
+        </audio> --}}
+        {{-- <audio id="start5SecondsSound" controls loop>
             <source src="{{ url('static/sound/quiz-game/5_seconds.mp3') }}" type="audio/mpeg">
-        </audio>
+        </audio> --}}
     </div>
     {{-- END SOUND AFFECT --}}
 @endsection

@@ -219,6 +219,7 @@
         switch (step) {
 
             case WELCOME_STEP:
+                FINAL_RANK.hide("slow");
                 // Show welcome screen
                 WELCOME_USER.show();
                 break;
@@ -228,6 +229,9 @@
                 CORRECT_ANSWER.hide("slow");
                 INCORRECT_ANSWER.hide("slow");
                 SELECT_ANSWER.hide("slow");
+                FINAL_RANK.hide("slow");
+                HEADER.show("slow");
+                FOOTER.show("slow");
 
                 // Show welcome screen
                 PREPARE_ANSWER.show("slow");
@@ -319,17 +323,19 @@
         $.each(scoreboard, function(index, element) {
             if (element.user_id === USER_ID) {
                 let rank = index + 1;
+
+                // Top rank
                 FINAL_RANK.find('.point').text(element.point);
-                if (rank <= 10) {
-                    FINAL_RANK.find('.rank').text(rank);
-                    FINAL_RANK.find('.top-high-rank').show();
-                    FINAL_RANK.find('.other-rank').hide();
-                } else {
-                    FINAL_RANK.find('.other-rank').show();
-                    FINAL_RANK.find('.top-high-rank').hide();
-                    FINAL_RANK.find('.rank').text(rank + 'th');
-                    FINAL_RANK.css('background', '#3B3494');
-                }
+                FINAL_RANK.find('.rank').text(rank);
+                FINAL_RANK.find('.top-high-rank').show();
+                FINAL_RANK.find('.other-rank').hide();
+                
+                // Other rank
+                // FINAL_RANK.find('.other-rank').show();
+                // FINAL_RANK.find('.top-high-rank').hide();
+                // FINAL_RANK.find('.rank').text(rank + 'th');
+                // FINAL_RANK.css('background', '#3B3494');
+
                 return false;
             }
         });
@@ -337,7 +343,7 @@
 
         // Move to the quiz complete screen and remove localStorage after delay 5 seconds
         setTimeout(() => {
-            checkScreenStep(QUIZ_COMPLETED_STEP);
+            // checkScreenStep(QUIZ_COMPLETED_STEP);
 
             // Remove localstorage
             localStorage.removeItem('quizAnswerVariable')

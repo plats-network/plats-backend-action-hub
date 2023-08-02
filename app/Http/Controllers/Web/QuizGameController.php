@@ -178,7 +178,7 @@ class QuizGameController extends Controller
      */
     public function getScoreboard(Request $request, $eventId)
     {
-        define('TOP_HIGHEST_SCORE', 10);
+        define('TOP_HIGHEST_SCORE', 50);
         $scoreboard = QuizResult::with('user:name,id')
             ->select('id', 'user_id', 'point')
             ->where('task_id', $eventId)

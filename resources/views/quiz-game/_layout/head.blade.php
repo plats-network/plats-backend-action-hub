@@ -10,6 +10,7 @@
         font-family: Quicksand-Regular;
         src: url("{{ url('static/fonts/quicksand/Quicksand-Regular.ttf') }}");
     }
+
     @font-face {
         font-family: Quicksand-Bold;
         src: url("{{ url('static/fonts/quicksand/Quicksand-Bold.ttf') }}");
@@ -231,8 +232,9 @@
         justify-content: center;
         cursor: pointer;
     }
+
     .select-answers .question-name {
-        color: #212529!important;
+        color: #212529 !important;
         margin-bottom: 20px;
     }
 
@@ -724,9 +726,34 @@
     .wrap-scoreboard .top-rank {
         padding-right: 50px;
     }
-
     .wrap-scoreboard .mid-rank {
         padding-left: 50px;
+    }
+
+    .wrap-scoreboard .mid-rank.final-rank {
+        max-height: 541px;
+        overflow-y: scroll;
+        padding-right: 10px;
+    }
+
+    /* width */
+    .wrap-scoreboard .mid-rank.final-rank::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    /* Track */
+    .wrap-scoreboard .mid-rank.final-rank::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    .wrap-scoreboard .mid-rank.final-rank::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+    /* Handle on hover */
+    .wrap-scoreboard .mid-rank.final-rank::-webkit-scrollbar-thumb:hover {
+        background: #555;
     }
 
     /* END SCOREBOARD */
@@ -780,12 +807,7 @@
         margin-bottom: 30px;
     }
 
-    .final-rank {
-        text-align: center;
-        background: #5299ED;
-    }
-
-    .final-rank {
+    .final-rank.body-section {
         text-align: center;
         background: #5299ED;
     }
@@ -939,5 +961,57 @@
     }
 
     /* End loader */
+    .audio-container {
+        position: relative;
+        width: 200px;
+    }
+
+    .controls {
+        text-align: left;
+    }
+
+    .volume {
+        width: 100%;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .audio-container:hover .play,
+    .audio-container:hover .pause {
+        display: inline-block;
+    }
+
+    audio::-webkit-media-controls-timeline,
+    video::-webkit-media-controls-timeline {
+        display: none;
+    }
+
+    audio::-webkit-media-controls-current-time-display,
+    audio::-webkit-media-controls-time-remaining-display {
+        display: none;
+    }
+
+    audio::-webkit-media-controls-play-button,
+    audio::-webkit-media-controls-panel {
+        background-color: #f1f3f4;
+        color: #000;
+    }
+
+    audio::-webkit-media-controls-panel {
+        background-color: #f1f3f4;
+        border-radius: 100% !important;
+    }
+
+    /* Hide three-dot menu */
+    audio::-webkit-media-controls-overflow-button {
+        display: none !important;
+    }
+
+    .wrap-header-audio audio {
+        background-color: #f1f3f4;
+        height: 25px;
+        width: 115px;
+        border-radius: 4px;
+    }
 </style>
 </head>
