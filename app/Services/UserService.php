@@ -116,7 +116,9 @@ class UserService extends BaseService
         try {
             $data = $request->all();
             $data['role'] = USER_ROLE;
+            $data['status'] = USER_ACTIVE;
             $data['confirmation_code'] = rand(100000, 999999);
+            $data['email_verified_at'] = now();
             $user = $this->repository->create($data);
         } catch (\Exception $e) {
             return false;

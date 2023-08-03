@@ -89,12 +89,12 @@ class Task extends ApiController
             }
 
             if ($type && $type == 'regised') {
+                $limit = 10;
                 $taskIds = $this->ticket
                     ->select('task_id')
                     ->whereUserId($userId)
                     ->pluck('task_id')
                     ->toArray();
-                $limit = 10;
                 $tasks = $tasks
                     ->whereIn('id', $taskIds)
                     ->where('end_at', '>=', Carbon::now()->subDays(30));
@@ -109,10 +109,6 @@ class Task extends ApiController
             } else {
                 $tasks = $tasks;
             }
-
-            // if ($tasks->count() <= 0) {
-            //     return $this->respondNotFound();
-            // }
 
             $tasks = $tasks->orderBy('created_at', 'desc')
                 ->orderBy('end_at', 'asc')

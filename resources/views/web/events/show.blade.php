@@ -26,7 +26,6 @@
                                 <p><i class="zmdi zmdi-label"></i></p>
                                 <ul class="nav">
                                     <li><a href="#">Event</a></li>
-                                    {{-- <li><a href="#">Workshops</a></li> --}}
                                 </ul>
                             </div>
                             <div class="author-social-info">
@@ -53,59 +52,53 @@
                     </div>
                 </div>
                 <div id="fixed" class="col-12 col-md-6 col-lg-4 col-xl-3">
-                    <div class="confer-sidebar-area mb-100" style="position: fixed;">
-                        {{-- <div class="single-widget-area">
-                            <div class="search-widget">
-                                <form action="#" method="post">
-                                    <input type="search" name="search-form" id="searchForm" placeholder="Search">
-                                    <button type="submit"><i class="zmdi zmdi-search"></i></button>
-                                </form>
-                            </div>
-                        </div> --}}
+                    <div class="confer-sidebar-area mb-100" style="position: fixed; z-index: 10;">
                         <div class="single-widget-area">
                             <div class="post-author-widget">
-                                <a class="btn btn-info" href="{{route('web.formLogin')}}">Sign Up for Free</a>
-                                <div class="post-author-avatar">
-                                    <img src="img/bg-img/50.jpg" alt="">
-                                </div>
-                                <div class="post-author-content">
-                                    <h5>Crystal Perkins</h5>
-                                    <span>Photographer</span>
-                                    <p>On the other hand, de-nounce with righteous</p>
-                                </div>
-                                <div class="author-social-info">
-                                    <a href="#"><i class="zmdi zmdi-facebook"></i></a>
-                                    <a href="#"><i class="zmdi zmdi-instagram"></i></a>
-                                    <a href="#"><i class="zmdi zmdi-twitter"></i></a>
-                                    <a href="#"><i class="zmdi zmdi-linkedin"></i></a>
-                                </div>
+                                <a id="showModal" class="btn btn-info" href="#">Get Ticket</a>
                             </div>
                         </div>
-                        {{-- <div class="single-widget-area">
-                            <h5 class="widget-title mb-30">Categories</h5>
-                            <ul class="categories-list">
-                                <li><a href="#">Technology <span>(5)</span></a></li>
-                                <li><a href="#">Medical <span>(7)</span></a></li>
-                                <li><a href="#">Conference <span>(3)</span></a></li>
-                                <li><a href="#">Workshops <span>(10)</span></a></li>
-                                <li><a href="#">Event <span>(12)</span></a></li>
-                                <li><a href="#">Progress <span>(4)</span></a></li>
-                            </ul>
-                        </div> --}}
-                        {{-- <div class="single-widget-area">
-                            <h5 class="widget-title mb-30">Tag Cloud</h5>
-                            <ul class="tag-cloud">
-                                <li><a href="#">Speakears</a></li>
-                                <li><a href="#">Business</a></li>
-                                <li><a href="#">Conference</a></li>
-                                <li><a href="#">Digital</a></li>
-                            </ul>
-                        </div> --}}
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <div id="myModal" class="modal fade" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal Title</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="#">
+                        <input type="hidden" name="task_id" value="{{$event->id}}">
+                      <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Fullname">
+                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1">
+                      </div>
+                      <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                      </div>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @include('web.layouts.subscribe')
+
+    <a href="#" class="btn btn-primary ticket--sp">Get ticket</a>
 @endsection

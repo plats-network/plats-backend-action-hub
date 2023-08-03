@@ -56,9 +56,9 @@ class Register extends Controller
 
             $userCreated = new UserResource($this->userService->createOrUpdate($request));
 
-            if ($userCreated) {
-                dispatch(new SendRegisterEmail($userCreated));
-            }
+            // if ($userCreated) {
+            //     dispatch(new SendRegisterEmail($userCreated));
+            // }
         } catch (\Exception $e) {
             return $this->respondError('Error server', 500);
         }

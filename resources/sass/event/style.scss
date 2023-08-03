@@ -1745,6 +1745,11 @@
     position: relative;
     z-index: 1;
     margin-bottom: 30px;
+
+    @media only screen and (max-width: 767px) {
+      margin-top: 60px;
+    }
+
     img {
       // border-radius: 20px;
     }
@@ -2153,60 +2158,11 @@
     border-radius: 10px;
     box-shadow: 0px 8px 27px 0px rgba(90, 111, 120, 0.15);
     text-align: center;
-    .post-author-avatar {
-      position: relative;
-      z-index: 1;
-      width: 115px;
-      height: 115px;
-      border-radius: 50%;
-      background: $primary-color;
-      background-image: -webkit-linear-gradient(120deg, #505add 0%, $primary-color 100%);
-      background-image: -ms-linear-gradient(120deg, #505add 0%, $primary-color 100%);
-      padding: 4px;
-      margin: 0 auto 20px;
-      img {
-        border-radius: 50%;
-      }
-    }
-    .post-author-content {
-      h5 {
-        font-size: 18px;
-        margin-bottom: 5px;
-        color: #111343;
-      }
-      span {
-        font-size: 14px;
-        margin-bottom: 15px;
-        display: block;
-        color: $primary-color;
-      }
-      p {
-        font-size: 16px;
-        font-weight: 400;
-        color: #5d5e8d;
-      }
-    }
-    .author-social-info {
-      a {
-        display: inline-block;
-        width: 34px;
-        height: 34px;
-        border: 1px solid #ebebf3;
-        border-radius: 50%;
-        line-height: 32px;
-        font-size: 14px;
-        margin: 0 5px;
-        &:hover {
-          background-color: #505add;
-          border-color: #505add;
-          color: $white;
-        }
-        &:focus {
-          background-color: #505add;
-          border-color: #505add;
-          color: $white;
-        }
-      }
+
+    a {
+      padding: 10px 30px;
+      background-color: red;
+      color: #fff;
     }
   }
 }
@@ -3060,6 +3016,21 @@
     padding-left: 6px;
     padding-right: 6px;
   }
+}
+
+.ticket--sp {
+    display: none;
+
+    @media only screen and (max-width: 767px) {
+      display: block;
+      position: fixed;
+      right: 5%;
+      top: 77%;
+      background: red;
+      color: #fff;
+      z-index: 10;
+      padding: 10px 30px;
+    }
 }
 
 @media only screen and (max-width: 767px) {

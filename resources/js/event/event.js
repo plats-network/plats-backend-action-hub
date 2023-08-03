@@ -10,6 +10,17 @@ $(document).ready(function() {
     $('#e-menu').toggle('show');
   });
 
+
+  if ($('#showModal').length > 0) {
+    $('#showModal').on('click', function() {
+      $('#myModal').modal();
+    });
+
+    // $('.ticket--sp').on('click', function() {
+    //   $('#myModal').modal();
+    // });
+  }
+
   // var page = 1;
   // $(window).scroll(function() {
   //     if($(window).scrollTop() + $(window).height() >= $(document).height()) {

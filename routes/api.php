@@ -38,13 +38,13 @@ use App\Http\Controllers\Api\{
 |
 */
 // NEW
-// Route::post('register_admin', [RegisterAdmin::class, 'store']);
-// Route::post('register', [Register::class, 'register']);
-// Route::post('register/confirm-email', [Register::class, 'confirmEmail']);
-// Route::post('register/resend-confirm-email', [Register::class, 'resendOtp']);
-Route::get('/', function() {
-    abort(403);
-});
+Route::post('register_admin', [RegisterAdmin::class, 'store']);
+Route::post('register', [Register::class, 'register']);
+Route::post('register/confirm-email', [Register::class, 'confirmEmail']);
+Route::post('register/resend-confirm-email', [Register::class, 'resendOtp']);
+// Route::get('/', function() {
+//     abort(403);
+// });
 // Login
 Route::post('login', [Login::class, 'login'])->name('api.login');
 Route::post('login/social', [Login::class, 'socialLogin'])->name('api.socialLogin');
