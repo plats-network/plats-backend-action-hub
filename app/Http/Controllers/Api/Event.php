@@ -8,6 +8,7 @@ use App\Http\Requests\Api\QrCode\EventRequest;
 use App\Http\Resources\QrCodeResource;
 // Model
 use App\Models\Task;
+use App\Models\Event\{UserEvent};
 use App\Http\Resources\{
     TaskResource
 };
@@ -16,34 +17,37 @@ use Carbon\Carbon;
 class Event extends ApiController
 {
     public function __construct(
-        private Task $task
+        private Task $task,
+        private UserEvent $userEvent,
     ) {}
 
     public function index(Request $request)
     {
-        $limit = $request->get('limit') ?? PAGE_SIZE;
-        try {
-            $userId = $request->user()->id;
+        $datas = [];
+        $userId = $request->user()->id;
 
-            $events = $this->task
-                ->with('userGetTickets')
-                ->whereHas('userGetTickets', function($query) use ($userId) {
-                    return $query->where('user_id', $userId);
-                })
-                ->where('end_at', '>=', Carbon::now()->format('Y-m-d H:i:s'))
-                ->paginate($limit);
-        } catch (\Exception $e) {
-            return $this->respondNotFound();
+        $userEvents = $this->userEvent
+            ->with(['user', 'task'])
+            ->whereUserId($userId)
+            ->whereStatus(0)
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        foreach($userEvents as $item) {
+            $datas[] = [
+                'id' => $item->id,
+                'user_id' => $item->user_id,
+                'event_id' => $item->task_id,
+                'name' => optional($item->task)->name,
+                'image_path' => optional($item->task)->banner_url
+            ];
         }
 
-        $datas = TaskResource::collection($events);
-        $pages = [
-            'current_page' => (int)$request->get('page'),
-            'last_page' => $events->lastPage(),
-            'per_page'  => (int)$limit,
-            'total' => $events->lastPage()
-        ];
-
-        return $this->respondWithIndex($datas, $pages);
+        return response()->json([
+            'message' => 'List event improgress',
+            'status' => 'success',
+            'data' => $datas
+        ], 200);
     }
 }

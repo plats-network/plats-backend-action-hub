@@ -8,8 +8,6 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    {{-- {!!$events->links()!!} --}}
-
                     <div
                         class="more-schedule-btn text-center mb-80"
                         data-page="2"

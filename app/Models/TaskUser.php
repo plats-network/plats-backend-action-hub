@@ -1,4 +1,6 @@
 <?php
+// Không dùng nữa
+
 
 namespace App\Models;
 

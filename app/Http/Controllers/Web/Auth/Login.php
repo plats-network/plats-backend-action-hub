@@ -116,7 +116,11 @@ class Login extends Controller
 
     public function formLoginGuest(Request $request)
     {
-        // dd(session()->get('guest'));
+        $sessionGuest = session()->get('guest');
+        $code = $sessionGuest['id'];
+        $eventDetail = $this->eventDetail->whereCode($code)->first();
+        $taskEvent = $this->taskEvent->whereId(optional($eventDetail)->task_event_id)->first();
+        dd($sessionGuest, $taskEvent);
         return view('web.auth.login_guest');
     }
 
@@ -141,7 +145,6 @@ class Login extends Controller
             }
 
             $user = $this->user->whereEmail($account)->first();
-
             if (!$user) {
                 $userParams = [
                     'email' => $account,
@@ -167,11 +170,25 @@ class Login extends Controller
                     'eventId' => $sessionGuest['id']
                 ]);
             } elseif ($sessionGuest && $sessionGuest['type'] == 'job') {
+                $code = $sessionGuest['id'];
+                $eventDetail = $this->eventDetail->whereCode($code)->first();
+                $taskEvent = $this->taskEvent->whereId(optional($eventDetail)->task_event_id)->first();
+
+                if (!$eventDetail || !$taskEvent) {
+                    return redirect()->route('web.home');
+                }
+                
                 if ($user) {
+                    if ($user->name != $userName) {
+                        $user->update(['name' => $userName]);
+                    }
                     Auth::login($user, true);
+                    
+
                 } else {
                     $user = $this->user->create($userParams);
                     Auth::login($user, true);
+                    $code = $sessionGuest['id'];
 
                     $eventDetail = $this->eventDetail->whereCode($code)->first();
                     $taskEvent = $this->taskEvent->whereId(optional($eventDetail)->task_event_id)->first();
@@ -193,9 +210,7 @@ class Login extends Controller
                     $this->eventTicket->create($tickerParams);
                     $this->userEvent->create($userEventParams);
                 }
-
                 session()->forget('guest');
-
             } else {
                 if ($user) {
                     Auth::login($user, true);
@@ -208,94 +223,7 @@ class Login extends Controller
             }
 
             return redirect()->route('web.home');
-
-
-            if (!$user) {
-                $userParams = [
-                    'email' => $account,
-                    'phone' => (string) $phone,
-                    'name' => $userName,
-                    'password' => '123456a@',
-                    'confirmation_code' => null,
-                    'role' => GUEST_ROLE,
-                    'email_verified_at' => now()
-                ];
-                $user = $this->user->create($userParams);
-                Auth::login($user, true);
-                notify()->success('Login successfull');
-
-                return redirect()->route('web.home');
-            } else {
-                Auth::login($user, true);
-                notify()->success('Login successfull');
-                return redirect()->route('web.home');
-            }
-
-            if ($user && in_array($user->role, [ADMIN_ROLE, CLIENT_ROLE])) {
-                notify()->error('Tài khoản này là admin');
-                return redirect()->route('web.formLoginGuest');
-            }
-
-            if ($user && empty($code) && empty($type)) {
-                Auth::login($user, true);
-                notify()->success('Login successfull');
-
-                return redirect()->route('web.profile');
-            }
-
-            if ($user && $code) {
-                Auth::login($user, true);
-                notify()->success('Hoàn thành task');
-            } elseif ($user && !$code) {
-                Auth::login($user, true);
-                notify()->success('Login successfull');
-
-                return $this->authenticated($request, $user);
-            } else {
-                $userName = $request->input('name');
-
-                $eventDetail = $this->eventDetail->whereCode($code)->first();
-                $taskEvent = $this->taskEvent->whereId(optional($eventDetail)->task_event_id)->first();
-
-                if (!$taskEvent || !$eventDetail) {
-                    notify()->error('Vui lòng quest lại QR code');
-                    return redirect()->route('web.formLoginGuest');
-                }
-
-                $userParams = [
-                    'email' => $account,
-                    'phone' => (string) $phone,
-                    'name' => $userName,
-                    'password' => '123456a@',
-                    'confirmation_code' => null,
-                    'role' => GUEST_ROLE,
-                    'email_verified_at' => now()
-                ];
-                $user = $this->user->create($userParams);
-
-                $tickerParams = [
-                    'user_id' => $user->id,
-                    'task_id' => optional($taskEvent)->task_id,
-                    'name' => $userName,
-                    'email' => $account,
-                    'phone' => (string) $phone,
-                    'is_checkin' => true,
-                    'type' => 1,
-                ];
-                $userEventParams = [
-                    'user_id' => $user->id,
-                    'task_event_detail_id' => $eventDetail->id,
-                    'task_id' => optional($taskEvent)->task_id,
-                    'task_event_id' => optional($taskEvent)->id
-                ];
-                $this->eventTicket->create($tickerParams);
-                $this->userEvent->create($userEventParams);
-                Auth::login($user, true);
-
-                notify()->success('Hoàn thành task');
-            }
         } catch (\Exception $e) {
-            // dd($e->getMessage());
             notify()->error('Có lỗi sảy ra');
             return redirect()->route('web.formLoginGuest');
         }

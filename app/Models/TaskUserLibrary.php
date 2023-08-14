@@ -1,5 +1,5 @@
 <?php
-
+// Không dùng nữa
 namespace App\Models;
 
 use App\Models\Traits\Uuid;

@@ -1,7 +1,11 @@
 <div id="tabwizard1" class="wizard-tab">
     <div class="text-center mb-4">
         <h5>Sessions</h5>
-        <p class="card-title-desc">Fill all information below</p>
+        <p class="card-title-desc text-danger">
+            - Trong sự kiện bạn tổ chức nếu có session thì vui lòng tạo sesion
+            <br>
+            - Nếu không có session bạn ấn "Next" để bỏ qua bước tạo session
+        </p>
     </div>
     <div>
         <input type="hidden" name="sessions[id]" id="sessions[id]" value="{{$sessions->id}}">
@@ -37,7 +41,11 @@
                 <div class="mb-3">
                     <label for="basicpill-cstno-input" class="form-label">Mô tả session</label>
                     <div id="editor2"></div>
-                    <input type="hidden" class="form-control" id="sessions-description" name="sessions[description]" value="{{$sessions->description}}"  />
+                    <input type="hidden"
+                        class="form-control"
+                        id="sessions-description"
+                        name="sessions[description]"
+                        value="{{$sessions->description}}" />
 
                 </div>
             </div>
@@ -50,9 +58,8 @@
                         <th>No</th>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>QR</th>
                         <th>
-                            QR Code
-                            <br>
                             Download
                         </th>
                         <th>Total</th>
@@ -67,14 +74,14 @@
                         <tr>
                            <td width="5%">{{$k+1}}</td> 
                            <td width="20%">{{$session->name}}</td> 
-                           <td width="30%">{!!$session->description!!}</td> 
+                           <td width="30%">{!!$session->description!!}</td>
                            <td width="20%" class="text-center" data-url="{{$qr}}">
-                                <img
-                                    style="margin: 0 auto;"
-                                    src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(150)->generate($qr)) !!} ">
-                                <a
-                                    href="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(300)->generate($qr)) !!} "
-                                    class="btn btn-primary" download="session_{{$session->code.'_'.($k+1)}}.png">
+                               <img style="margin: 0 auto;"
+                                    src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qr)) !!}">
+                           </td>
+                           <td width="20%" class="text-center" data-url="{{$qr}}">
+                                <a href="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(300)->generate($qr)) !!}"
+                                    download="session_{{$session->code.'_'.($k+1)}}.png">
                                     Download</a>
                            </td>
                            <td width="5%">{{totalUserJob($session->id)}}</td>
@@ -100,24 +107,35 @@
         @else
             <div class="row mt-3">
                 <div class="listRowSession" id="listRowSession">
-                    @foreach($sessions->detail as $sessionDetail)
+                    @foreach($sessions->detail as $a => $sessionDetail)
+                        <hr>
                         <div class="mb-3 row itemSessionDetail" id="itemImage{{$sessionDetail->id}}">
-                            {{--Id--}}
                             <input
                                 type="hidden"
                                 name="sessions[detail][{{$sessionDetail->id}}][id]"
                                 id="sessions[detail][{{$sessionDetail->id}}][id]"
                                 value="{{$sessionDetail->id}}">
-                            {{--Session Id--}}
-                            {{--Is delete--}}
                             <input
                                 type="hidden"
                                 name="sessions[detail][{{$sessionDetail->id}}][is_delete]"
                                 id="sessionsFlagDelete{{$sessionDetail->id}}"
                                 value="0">
 
-                            <label for="inputPassword" class="col-sm-1 col-form-label">Session {{$loop->index+1}}</label>
+                            <label class="col-sm-12 col-form-label">
+                                Session {{$loop->index+1}}<span class="text-danger" style="font-size: 11px;"> (Chú ý: Những trường có dấu * bắt buộc phải nhập)</span>
+                            </label>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <label class="col-form-label">Chọn travel game</label>
+                                    <select class="form-select" name="sessions[detail][{{$sessionDetail->id}}][travel_game_id]">
+                                        @foreach($travelGames as $game)
+                                            <option value="{{$game->id}}" @if($sessionDetail->travel_game_id == $game->id) selected @endif>{{$game->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-sm-4">
+                                <label class="col-form-label">Tên session <span class="text-danger" style="font-size: 11px;">(*)</span></label>
                                 <input
                                     type="text"
                                     placeholder="Name"
@@ -127,6 +145,7 @@
                                     value="{{$sessionDetail->name}}">
                             </div>
                             <div class="col-sm-4">
+                                <label class="col-form-label">Mô tả <span class="text-danger" style="font-size: 11px;">(nếu có)</label>
                                 <input
                                     type="text"
                                     placeholder="Description"
@@ -135,18 +154,138 @@
                                     name="sessions[detail][{{$sessionDetail->id}}][description]"
                                     value="{{$sessionDetail->description}}">
                             </div>
-                            {{-- <div class="col-sm-2">
+                            <div class="col-sm-2 mt-5 mt-5">
                                 <input
-                                    class="form-check-input checkQ"
+                                    class="form-check-input"
+                                    data-id="{{$sessionDetail->id}}"
+                                    type="checkbox" value="1"
+                                    name="sessions[detail][{{$sessionDetail->id}}][is_required]"
+                                    @if ($sessionDetail->is_required) checked @endif
+                                    id="r_{{$sessionDetail->id}}">
+                                <label class="form-check-label" for="r_{{$sessionDetail->id}}">
+                                    Bắt buộc <span class="text-danger" style="font-size: 11px;">(Có/Không)</span>
+                                </label>
+                            </div>
+                            <div class="col-sm-2 mt-5 mt-5">
+                                <input
+                                    class="form-check-input sCheck"
                                     data-id="{{$sessionDetail->id}}"
                                     type="checkbox" value="1"
                                     name="sessions[detail][{{$sessionDetail->id}}][is_question]"
-                                    id="q_{{$loop->index+1}}" @if($sessionDetail->is_question)  checked @endif>
-                                <label class="form-check-label" for="q_{{$loop->index+1}}">
-                                    Câu hỏi
+                                    @if ($sessionDetail->is_required) is_question @endif
+                                    id="q_{{$sessionDetail->id}}">
+                                <label class="form-check-label" for="q_{{$sessionDetail->id}}">
+                                    Câu hỏi <span class="text-danger" style="font-size: 11px;">(Có/Không)</span>
                                 </label>
-                            </div> --}}
-                            <div class="col-sm-1">
+                            </div>
+
+                            <div id="s-{{$sessionDetail->id}}" class="{{$sessionDetail->is_question ? '' : 'd-none'}}">
+                                <div class="row mt-1">
+                                    <div class="col-sm-12">
+                                        <label class="form-check-label">Câu hỏi</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="sessions[detail][{{$sessionDetail->id}}][question]"
+                                            name="sessions[detail][{{$sessionDetail->id}}][question]"
+                                            placeholder="Câu hỏi"
+                                            value="{{$sessionDetail->question}}">
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-sm-4">
+                                        <label class="form-check-label">Đáp án 1</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="sessions[detail][{{$sessionDetail->id}}][a1]"
+                                            name="sessions[detail][{{$sessionDetail->id}}][a1]"
+                                            placeholder="Nội dung"
+                                            value="{{$sessionDetail->a1}}">
+                                    </div>
+                                    <div class="col-sm-2 mt-4">
+                                        <input
+                                            class="form-check-input checkQ"
+                                            data-id="{{$sessionDetail->id}}"
+                                            type="checkbox" value="1"
+                                            name="sessions[detail][{{$sessionDetail->id}}][is_a1]"
+                                            @if ($sessionDetail->is_a1) checked @endif
+                                            id="is_a1_{{$sessionDetail->id}}">
+                                        <label class="form-check-label" for="is_a1_{{$sessionDetail->id}}">
+                                            Chọn đúng
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="form-check-label">Đáp án 3</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="sessions[detail][{{$sessionDetail->id}}][a2]"
+                                            name="sessions[detail][{{$sessionDetail->id}}][a2]"
+                                            placeholder="Nội dung"
+                                            value="{{$sessionDetail->a2}}">
+                                    </div>
+                                    <div class="col-sm-2 mt-4">
+                                        <input
+                                            class="form-check-input checkQ"
+                                            data-id="{{$sessionDetail->id}}"
+                                            type="checkbox" value="1"
+                                            name="sessions[detail][{{$sessionDetail->id}}][is_a2]"
+                                            @if ($sessionDetail->is_a2) checked @endif
+                                            id="is_a2_{{$sessionDetail->id}}">
+                                        <label class="form-check-label" for="is_a2_{{$sessionDetail->id}}">
+                                            Chọn đúng
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-sm-4">
+                                        <label class="form-check-label">Đáp án 3</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            name="sessions[detail][{{$sessionDetail->id}}][a3]"
+                                            placeholder="Nội dung"
+                                            value="{{$sessionDetail->a3}}">
+                                    </div>
+                                    <div class="col-sm-2 mt-4">
+                                        <input
+                                            class="form-check-input checkQ"
+                                            data-id="{{$sessionDetail->id}}"
+                                            type="checkbox" value="1"
+                                            name="sessions[detail][{{$sessionDetail->id}}][is_a3]"
+                                            @if ($sessionDetail->is_a3) checked @endif
+                                            id="is_a3_{{$sessionDetail->id}}">
+                                        <label class="form-check-label" for="is_a3_{{$sessionDetail->id}}">
+                                            Chọn đúng
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="form-check-label">Đáp án 4</label>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="sessions[detail][{{$sessionDetail->id}}][a4]"
+                                            name="sessions[detail][{{$sessionDetail->id}}][a4]"
+                                            placeholder="Nội dung"
+                                            value="{{$sessionDetail->a4}}">
+                                    </div>
+                                    <div class="col-sm-2 mt-4">
+                                        <input
+                                            class="form-check-input checkQ"
+                                            data-id="{{$sessionDetail->id}}"
+                                            type="checkbox" value="1"
+                                            name="sessions[detail][{{$sessionDetail->id}}][is_a4]"
+                                            @if ($sessionDetail->is_a4) checked @endif
+                                            id="is_a4_{{$sessionDetail->id}}">
+                                        <label class="form-check-label" for="is_a4_{{$sessionDetail->id}}">
+                                            Chọn đúng
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 text-right">
                                 <div class="col-auto">
                                     <button
                                         type="button"

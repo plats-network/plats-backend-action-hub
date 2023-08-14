@@ -4,10 +4,10 @@ namespace App\Models\Event;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Task;
 use App\Models\Traits\Uuid;
+use App\Models\{User, Task};
 
-class EventUserTicket extends Model
+class UserEvent extends Model
 {
     use HasFactory, Uuid;
 
@@ -16,7 +16,7 @@ class EventUserTicket extends Model
      *
      * @var string
      */
-    protected $table = 'event_user_tickets';
+    protected $table = 'user_events';
 
     /**
      * The attributes that are mass assignable.
@@ -25,14 +25,15 @@ class EventUserTicket extends Model
      */
     protected $fillable = [
         'id',
-        'name',
-        'phone',
-        'email',
-        'task_id',
         'user_id',
-        'is_checkin',
-        'hash_code'
+        'task_id',
+        'status', // 0: Improgress, 1: Finish
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function task()
     {

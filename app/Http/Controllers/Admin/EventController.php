@@ -10,7 +10,7 @@ use App\Models\Event\{
     TaskEventReward, EventUserTicket
 };
 use App\Models\Quiz\Quiz;
-use App\Models\{Task, TaskGallery, TaskGroup, TaskGenerateLinks};
+use App\Models\{Task, TaskGallery, TaskGroup, TaskGenerateLinks, TravelGame};
 use App\Services\Admin\{EventService, TaskService};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +24,7 @@ class EventController extends Controller
         private EventService $eventService,
         private TaskService  $taskService,
         private Task $task,
+        private TravelGame $travelGame,
         private TaskEventDetail $taskEventDetail,
         private EventUserTicket $eventUserTicket,
         private TaskGenerateLinks $eventShare,
@@ -143,6 +144,7 @@ class EventController extends Controller
         $dataView['type'] = $type;
         $dataView['indexImageItem'] = $id;
         $dataView['getInc'] = $getInc + 1;
+        $dataView['travelGames'] = $this->travelGame->whereStatus(true)->get();
 
         if ($type == 1) {
             return response()->json([
@@ -195,49 +197,25 @@ class EventController extends Controller
         $taskGallery = TaskGallery::where('task_id', $id)->pluck('url_image');
         $booths = TaskEvent::where('task_id', $id)->with('detail')->where('type', 1)->first();
         $sessions = TaskEvent::where('task_id', $id)->with('detail')->where('type', 0)->first();
-        //taskEventDiscords EventDiscords
-        /** @var EventDiscords $taskEventDiscords */
         $taskEventDiscords = $task->taskEventDiscords;
-        //Check if $taskEventDiscords is null then create new EventDiscords
         if ($taskEventDiscords == null) {
             $taskEventDiscords = new EventDiscords();
-            //$taskEventDiscords->task_id = $id;
-            //$taskEventDiscords->save();
         }
-        //taskEventSocials EventSocial
-        /** @var EventSocial $taskEventSocials */
         $taskEventSocials = $task->taskEventSocials;
-        //Check if $taskEventSocials is null then create new EventSocial
         if ($taskEventSocials == null) {
             $taskEventSocials = new EventSocial();
-            //$taskEventSocials->task_id = $id;
-            //$taskEventSocials->save();
         }
-
-
-        //Check if $sessions is null then create new
         if ($sessions == null) {
             $sessions = new TaskEvent();
             $sessions->type = 0;
         }
-
-        //Check if $booths is null then create new
         if ($booths == null) {
             $booths = new TaskEvent();
             $booths->type = 1;
         }
 
         $quiz = [];
-
-        /*foreach ($quiz as $value) {
-            foreach ($value['detail'] as $key => $value) {
-                $value['key'] = $key;
-            }
-        }*/
         $image = [];
-        /*foreach ($taskGallery as $item) {
-            $image[]['url'] = $item;
-        }*/
         $task['group_tasks'] = $taskGroup;
         $task['task_galleries'] = $image;
         $task['booths'] = $booths;
@@ -247,6 +225,8 @@ class EventController extends Controller
         $activeTab = $request->get('tab') ?? '0';
         //Is preview
         $isPreview = $request->get('preview') ?? '0';
+        $travelGames = $this->travelGame->whereStatus(true)->get();
+
         $data = [
             'event' => $task,
             'sessions' => $sessions,
@@ -260,6 +240,7 @@ class EventController extends Controller
             'activeTab' => $activeTab,
             'is_update' => 0,
             'isPreview' => $isPreview,
+            'travelGames' => $travelGames,
         ];
 
         return view('cws.event.edit', $data);
@@ -380,6 +361,7 @@ class EventController extends Controller
         $activeTab = $request->get('tab') ?? '0';
         //Is preview
         $isPreview = $request->get('preview') ?? '0';
+        $travelGames = $this->travelGame->whereStatus(true)->get();
 
         // Gen link share
         // $eventCount = $this->eventShare->whereTaskId($task->id)->count();
@@ -401,6 +383,7 @@ class EventController extends Controller
             'activeTab' => $activeTab,
             'is_update' => 1,
             'isPreview' => $isPreview,
+            'travelGames' => $travelGames
         ];
 
         return view('cws.event.edit', $data);

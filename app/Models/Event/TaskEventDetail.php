@@ -27,12 +27,15 @@ class TaskEventDetail extends Model
     protected $fillable = [
         'id',
         'task_event_id',
+        'travel_game_id',
         'name',
         'description',
         'status',
         'code',
         'is_question',
-        'question_text',
-        'is_answer',
+        'is_required',
+        'question',
+        'a1', 'a2', 'a3', 'a4',
+        'is_a1', 'is_a2', 'is_a3', 'is_a4',
     ];
 }

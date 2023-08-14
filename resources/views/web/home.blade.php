@@ -77,7 +77,7 @@
                                                         <i class="zmdi zmdi-alarm-check"></i> {{ dateFormat($event->created_at)}}
                                                     </a>
                                                 </div>
-                                                <p>{!! Str::limit($event->description, 100) !!}</p>
+                                                <p>{!! Str::limit($event->description, 50) !!}</p>
                                             </div>
                                         </div>
                                     </div>

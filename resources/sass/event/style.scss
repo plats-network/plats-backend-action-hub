@@ -306,6 +306,163 @@
   }
 }
 
+.text-danger {
+  color: red;
+}
+
+//Quiz
+.quiz {
+  padding: 75px 0 30px 0px;
+  width: 600px;
+  margin: 0 auto;
+
+  @media only screen and (max-width: 767px) {
+    width: 100%;
+  }
+
+  .item {
+    margin: 10px 20px;
+    border-radius: 10px;
+    padding: 30px 10px;
+
+    p {
+      &.note {
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: 1px solid #ff6600;
+        background-color: #ffc299;
+      }
+    }
+
+    h3 {
+      text-align: center;
+      font-size: 25px;
+      color: #3EA2FF;
+      margin-bottom: 30px;
+    }
+
+    .aws {
+      background: #3EA2FF;
+      padding: 20px 15px;
+      border-radius: 15px;
+      margin: 25px 0px;
+
+      p {
+        color: #fff;
+        line-height: 20px;
+
+        span {
+          font-size: 25px;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+}
+
+
+// Travel
+.travel {
+  padding: 100px 0px;
+  width: 600px;
+  margin: 0 auto;
+
+  @media only screen and (max-width: 767px) {
+    width: 100%;
+  }
+
+  .travel-content {
+    table {
+      margin-bottom: 0px;
+    }
+
+    ul {
+      li {
+        padding: 7px 0;
+        a {
+          padding: 10px 30px;
+          border-radius: 10px 10px 0 0;
+          &.active {
+            background-color: #3EA2FF;
+            color: #fff;
+          }
+        }
+      }
+    }
+
+    .tab-content {
+      padding: 10px 0;
+
+      .item {
+        h4 {
+          font-size: 18px;
+        }
+      }
+    }
+
+    .event-info {
+      border-top: 1px solid #dee2e6;
+
+      h3 {
+        font-size: 20px;
+        color: $primary-color;
+        text-align: center;
+        padding-bottom: 20px;
+        padding-top: 10px;
+      }
+
+      h4 {
+        font-size: 23px;
+        line-height: 40px;
+        padding-top: 20px;
+
+      }
+
+      .content {
+        padding: 10px 20px;
+        height: 200px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        background-color: #fff8ea;
+        color: #000!important;
+
+        p {
+          line-height: 25px;
+          color: #333;
+        } 
+      }
+    }
+
+    .item {
+      border-bottom: 1px solid #dee2e6;
+      padding: 10px;
+
+      p {
+        color: #000;
+        font-size: 17px;
+        line-height: 27px;
+
+        a {
+          color: red;
+        }
+
+        strong {
+          font-weight: bold!important;
+        }
+      }
+
+      h3 {
+        font-size: 25px;
+        padding: 20px 0;
+        padding-top: 0px;
+      }
+    }
+  }
+}
+// EndTravel
+
 .section-heading-2 {
   position: relative;
   z-index: 1;
@@ -2160,8 +2317,8 @@
     text-align: center;
 
     a {
-      padding: 10px 30px;
-      background-color: red;
+      padding: 10px 50px;
+      background-color: #187fe2;
       color: #fff;
     }
   }
@@ -2434,6 +2591,15 @@
     position: relative;
     z-index: 1;
     margin-bottom: 45px;
+
+    &.list-job {
+      width: 600px;
+      margin: 0 auto;
+
+      @media only screen and (max-width: 767px) {
+        width: 100%;
+      }
+    }
 
     .nav-tabs {
       -webkit-box-pack: center;
@@ -3006,6 +3172,10 @@
   }
 }
 
+.modal-dialog {
+  margin-top: 20%;
+}
+
 // Responsive
 @media all and (max-width: 900px) {
   .mfp-arrow {
@@ -3026,7 +3196,7 @@
       position: fixed;
       right: 5%;
       top: 77%;
-      background: red;
+      background: #3EA2FF;
       color: #fff;
       z-index: 10;
       padding: 10px 30px;

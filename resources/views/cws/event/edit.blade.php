@@ -65,7 +65,7 @@
                             <div  id="tabwizard0" class="wizard-tab">
                                 <div class="text-center mb-4">
                                     <h5>Event Details</h5>
-                                    <p class="card-title-desc">Detail Event</p>
+                                    <p class="card-title-desc text-danger">(Vui lòng nhập tất cả các ô có dấu *)</p>
                                 </div>
                                 <div>
                                     <div class="row">
@@ -91,28 +91,20 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                            <div class="row d-none">
                                                 <div class="col-lg-4">
                                                     <div class="mb-3 field-lat">
-                                                        <label for="basicpill-firstname-input" class="form-label">Latitude</label>
-                                                        <input type="text" class="form-control" value="{{ $event->lat }}"
-                                                               placeholder="21.027763" id="lat" name="lat">
-                                                        <div class="valid-feedback"></div>
+                                                        <input type="text" class="form-control" value="1" name="lat">
                                                     </div>
                                                 </div><!-- end col -->
                                                 <div class="col-lg-4">
                                                     <div class="mb-3 field-lng">
-                                                        <label for="basicpill-lastname-input" class="form-label">Longitude</label>
-                                                        <input type="text" class="form-control" value="{{ $event->lng }}"
-                                                               placeholder="105.834160" name="lng" id="lng">
-                                                        <div class="valid-feedback"></div>
+                                                        <input type="text" class="form-control" value="1" name="lng">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="mb-3 field-order">
-                                                        <label for="basicpill-address-input" class="form-label">Order</label>
-                                                        <input type="text" class="form-control" placeholder="2" value="{{ $event->order }}" id="order" name="order">
-                                                        <div class="valid-feedback"></div>
+                                                        <input type="text" class="form-control" value="10" id="order">
                                                     </div>
                                                 </div>
                                             </div>
@@ -120,8 +112,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="mb-3 field-start_at">
                                                         <label for="basicpill-phoneno-input"
-                                                            class="form-label">Start At
-                                                            <span style="width: 10px; height: 10px; border-radius: 50%;background-color: red;">*</span>
+                                                            class="form-label">Start At <span class="text-danger">*</span>
                                                         </label>
                                                         <input
                                                             type="text"
@@ -136,7 +127,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="mb-3 field-end_at">
                                                         <label for="basicpill-email-input"
-                                                               class="form-label">End At</label>
+                                                               class="form-label">End At <span class="text-danger">*</span></label>
                                                         <input
                                                             type="text"
                                                             class="form-control"
@@ -162,18 +153,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                {{-- <div class="col-lg-6">
-                                                    <div class="col-sm-12 mb-3">
-                                                        <label class="form-label" for="ap-category">Ảnh Slide <span
-                                                                class="text-danger">*</span>
-                                                        </label>
-                                                        <div><input type="hidden" id="article-attachments" class="empty-value"
-                                                                    name="Article[attachments]">
-                                                            <input type="file" id="w1" name="_fileinput_w1" multiple>
-                                                        </div>
-                                                        <div class="invalid-feedback"></div>
-                                                    </div>
-                                                </div> --}}
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -187,46 +166,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            {{-- <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label for="basicpill-address-input"
-                                                               class="form-label">&nbsp;</label>
-                                                        <div class="form-check mt-1">
-                                                            <input class="form-check-input" type="checkbox" value="1" name="is_paid" id="is_paid" @if($event->is_paid)  checked @endif>
-                                                            <label class="form-check-label" for="flexCheckPaid">
-                                                                Paid
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> --}}
                                         </div>
-                                        {{-- <div class="col-md-12">
-                                            <div class="row" id="row_paid">
-                                                <div class="col-lg-6">
-                                                </div><!-- end col -->
-                                                <div class="col-lg-3">
-                                                    <div class="mb-3">
-                                                        <div class="mb-3">
-                                                            <input type="text" class="form-control" placeholder="reward" id="reward" name="reward" value="{{$event->reward}}">
-                                                            <div class="valid-feedback"></div>
-                                                        </div>
-                                                    </div>
-
-                                                </div><!-- end col -->
-                                                <div class="col-lg-3">
-                                                    <div class="mb-3">
-                                                        <div class="mb-3">
-                                                            <select class="form-select" name="reward_type" id="reward_type" aria-label="Default select example">
-                                                                <option value="0" {{ ( $event->reward_type == 0) ? 'selected' : '' }} >Web</option>
-                                                                <option value="1" {{ ( $event->reward_type == 1) ? 'selected' : '' }}>User</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -245,153 +185,12 @@
                                 'event' => $event
                             ])
 
-                            <div id="tabwizard3" class="wizard-tab">
-                                <div class="text-center mb-4">
-                                    <h5>Social</h5>
-                                    <p class="card-title-desc">Fill all information below</p>
-                                </div>
-                                <div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    Social
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        {{--Id--}}
-                                                        <input
-                                                            type="hidden"
-                                                            name="task_event_socials[id]"
-                                                            id="booths[id]"
-                                                            value="{{$taskEventSocials->id}}">
-                                                        {{--Event Id--}}
-                                                        <input
-                                                            type="hidden"
-                                                            name="task_event_socials[task_id]"
-                                                            id="booths[task_id]"
-                                                            value="{{$event->id}}">
-                                                        <div class="col-md-2">
-                                                            <div class="form-check form-check-inline">
-                                                                <input
-                                                                    class="form-check-input"
-                                                                    @if( $taskEventSocials->is_comment) checked @endif
-                                                                    type="checkbox"
-                                                                    id="cmt"
-                                                                    name="task_event_socials[is_comment]"
-                                                                    value="1">
-                                                                <label class="form-check-label" for="cmt">Comment</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <div class="form-check form-check-inline">
-                                                                <input
-                                                                    class="form-check-input"
-                                                                    @if( $taskEventSocials->is_like) checked @endif
-                                                                    type="checkbox"
-                                                                    id="is_like"
-                                                                    name="task_event_socials[is_like]"
-                                                                    value="1">
-                                                                <label class="form-check-label" for="is_like">like</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <div class="form-check form-check-inline">
-                                                                <input
-                                                                    class="form-check-input"
-                                                                    @if( $taskEventSocials->is_retweet) checked @endif
-                                                                    type="checkbox"
-                                                                    id="retweet"
-                                                                    name="task_event_socials[is_retweet]"
-                                                                    value="1">
-                                                                <label class="form-check-label" for="retweet">Retweet</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <div class="form-check form-check-inline">
-                                                                <input
-                                                                    class="form-check-input"
-                                                                    @if( $taskEventSocials->is_tweet) checked @endif
-                                                                    type="checkbox"
-                                                                    id="is_tweet"
-                                                                    name="task_event_socials[is_tweet]"
-                                                                    value="1">
-                                                                <label class="form-check-label" for="is_tweet">Tweet</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="mt-3">
-                                                        <div class="row">
-                                                            <div class="col-lg-6">
-                                                                <div class="mb-3">
-                                                                    <label for="basicpill-cardno-input" class="form-label">Url</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        value="{{$taskEventSocials->url}}"
-                                                                        class="form-control"
-                                                                        placeholder="https://twitter.com/plats_network/status/1640186830644723712"
-                                                                        id="task_event_socials[url]"
-                                                                        name="task_event_socials[url]">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-6">
-                                                                <div id="tweetId" class="mb-3 {{$taskEventSocials->is_tweet ? '' : 'd-none'}}">
-                                                                    <label for="tweet" class="form-label">Text</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        value="{{$taskEventSocials->text}}"
-                                                                        class="form-control"
-                                                                        placeholder="Event #Key #Text..."
-                                                                        maxlenght="128"
-                                                                        id="tweet"
-                                                                        name="task_event_socials[text]">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
- 
-                                            <div class="card">
-                                                <div class="card-header">Discord</div>
-                                                <div class="card-body">
-                                                    <input type="hidden" name="task_event_discords[id]" value="{{$taskEventDiscords->id}}">
-                                                    <input type="hidden" name="task_event_discords[task_id]" value="{{$event->id}}">
-                                                    <div class="row">
-                                                        <div class="col-lg-4">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Bot Token</label>
-                                                                <input type="text"
-                                                                    class="form-control"
-                                                                    placeholder="Bot Token"
-                                                                    value="{{$taskEventDiscords->bot_token}}"
-                                                                    name="task_event_discords[bot_token]">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-4">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Channel Id</label>
-                                                                <input type="text"
-                                                                    class="form-control"
-                                                                    placeholder="Channel Id"
-                                                                    value="{{$taskEventDiscords->channel_id}}"
-                                                                    name="task_event_discords[channel_id]">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-4">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Channel Url</label>
-                                                                <input type="text" class="form-control" placeholder="Channel Url" value="{{$taskEventDiscords->channel_url}}" name="task_event_discords[channel_url]" id="task_event_discords[channel_url]">
-                                                            </div>
-                                                        </div><!-- end col -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {{-- Social --}}
+                            @include('cws.event.forms._social', [
+                                'taskEventSocials' => $taskEventSocials,
+                                'taskEventDiscords' => $taskEventDiscords,
+                                'event' => $event
+                            ])
 
                             {{-- Quiz --}}
                             @include('cws.event.forms._quiz', [
@@ -585,7 +384,7 @@
         $('.job').on('click', function(e) {
             var id = $(this).data('id'),
                 event_id = $(this).data('detail-id'),
-                _token = $('meta[name="csrf-token"]').attr('content');;
+                _token = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
                 url: '/event-job/'+ id,
                 type: 'GET',
@@ -595,7 +394,6 @@
                     event_id: event_id,
                 },
                 success: function (data) {
-                    // console.log(data.message);
                     if (data.message == 'OK') {
                         $.notify("Chuyển trạng thái thành công.", "success");
                     } else {
@@ -749,22 +547,10 @@
             $('#is_tweet').on('change', function(event) {
                 if (event.currentTarget.checked) {
                     $('#tweetId').removeClass('d-none');
-                    // alert('checked');
                 } else {
                     $('#tweetId').addClass('d-none');
-                    // alert('not checked');
                 }
             });
-
-            $('.checkQ').on('change', function(e) {
-                var id = $(this).data('id');
-                alert(id);
-            });
-
-            // $('.checkQ').on('click', function(e) {
-            //     var id = $(this).data('id');
-            //     alert(id);
-            // });
 
             $(document).on("submit", "#post_form", function (event) {
                 //Get Editor content
@@ -795,18 +581,14 @@
 
             //btnAddItemSession onclick call ajax
             $(document).on('click', '#btnAddItemSession', function (event) {
-                // $('.checkQ').on('change', function(e) {
-                //     var id = $(this).data('id');
-                //     alert(id);
-                // });
-
                 var rowCount = $('.itemSessionDetail').length;
-                if(rowCount >= 20){
+                if(rowCount >= 30){
                     alert('{{__('Maximum number of Item is')}} 20');
                     return false;
                 }
                 //initImageWidge(1);
                 flag_check = Math.floor(Math.random() * 10000);
+                
                 /*Ajax call get template*/
                 $.ajax({
                     url: '{{route('cws.eventTemplate')}}' + '?from_reform=1&flag_check=' + flag_check + '&inc=' + rowCount,
@@ -819,6 +601,7 @@
                     success: function (data) {
                         if (data.status == 200) {
                             $('#listRowSession').append(data.html);
+                            $('#q_'+(rowCount+1)).addClass('sCheck');
                             flag_check++;
                         }
                     },
@@ -852,6 +635,16 @@
 
             });
 
+            $(document).on('change', '.sCheck', function (event) {
+                var id = $(this).data('id');
+
+                if (event.currentTarget.checked) {
+                    $('#s-'+id).removeClass('d-none');
+                } else {
+                    $('#s-'+id).addClass('d-none');
+                }
+            });
+
             /*Booth*/
             $(document).on('click', '#btnAddItemBooth', function (event) {
                 var rowCount = $('.itemBoothDetail').length;
@@ -873,6 +666,7 @@
                     success: function (data) {
                         if (data.status == 200) {
                             $('#listRowBooth').append(data.html);
+                            $('#b_'+(rowCount+1)).addClass('bCheck');
                             flag_check++;
                         }
                     },
@@ -880,6 +674,16 @@
                         console.log(data);
                     }
                 });
+            });
+
+            $(document).on('change', '.bCheck', function (event) {
+                var id = $(this).data('id');
+
+                if (event.currentTarget.checked) {
+                    $('#b-'+id).removeClass('d-none');
+                } else {
+                    $('#b-'+id).addClass('d-none');
+                }
             });
 
             /*Delete Image Row*/

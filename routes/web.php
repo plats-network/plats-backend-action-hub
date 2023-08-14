@@ -65,25 +65,29 @@ Route::middleware(['user_event'])->group(function ($r) {
     $r->get('logout', [Login::class, 'logout'])->name('web.logout');
     $r->get('event-job/{id}', [Home::class, 'jobEvent'])->name('web.jobEvent');
     $r->get('profile', [UserController::class, 'profile'])->name('web.profile');
+
+    // Travel
+    $r->get('info/{task_id}', [Job::class, 'getTravelGame'])->name('job.getTravelGame');
+    $r->get('quiz/{code}', [Job::class, 'getJob'])->name('job.getJob');
 });
 
 Route::get('/discord/login', [App\Http\Controllers\Web\Discord::class, 'getUserDiscord']);
 Route::get('/discord', [App\Http\Controllers\Web\Discord::class, 'index'])->name('discord');
 Route::get('/telegram', [App\Http\Controllers\Web\Discord::class, 'telegram'])->name('telegram');
 Route::get('logout-discord', [App\Http\Controllers\Web\Discord::class, 'logout']);
-Route::get('/events/list', [Home::class, 'webList']);
-Route::post('/create-user', [Job::class, 'createUser'])->name('web.createUser');
+Route::get('events/list', [Home::class, 'webList'])->name('list.Events');
+Route::post('create-user', [Job::class, 'createUser'])->name('web.createUser');
 
-Route::get('/events/history/list', [Job::class, 'apiList']);
-Route::get('/events/history/user', [Home::class, 'apiList']);
-Route::get('/events/likes', [Likes::class, 'index'])->name('web.like');;
-Route::get('/events/task/{id}', [Detail::class, 'edit'])->whereUuid('id');
-Route::post('/events/likes', [Detail::class, 'like']);
-Route::get('/events/download-ticket/{id}', [Detail::class, 'downloadTicket']);
-Route::get('/events/likes/list', [Detail::class, 'listLike']);
-Route::get('/events/user/ticket', [Detail::class, 'userTicket']);
-Route::post('/events/ticket', [Detail::class, 'addTicket'])->name('web.event.addTicket');
-Route::get('/events/{slug}', [Detail::class, 'index']);
+// Route::get('/events/history/list', [Job::class, 'apiList']);
+// Route::get('/events/history/user', [Home::class, 'apiList']);
+// Route::get('/events/likes', [Likes::class, 'index'])->name('web.like');;
+// Route::get('/events/task/{id}', [Detail::class, 'edit'])->whereUuid('id');
+// Route::post('/events/likes', [Detail::class, 'like']);
+// Route::get('/events/download-ticket/{id}', [Detail::class, 'downloadTicket']);
+// Route::get('/events/likes/list', [Detail::class, 'listLike']);
+// Route::get('/events/user/ticket', [Detail::class, 'userTicket']);
+// Route::post('/events/ticket', [Detail::class, 'addTicket'])->name('web.event.addTicket');
+// Route::get('/events/{slug}', [Detail::class, 'index']);
 
 
 // QUIZ

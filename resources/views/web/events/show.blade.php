@@ -65,35 +65,50 @@
     </section>
 
     <div id="myModal" class="modal fade" data-backdrop="static" data-keyboard="false">
+        <style type="text/css">
+            .text-danger {
+                color: red;
+            }
+        </style>
+
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modal Title</h5>
+                    <h5 class="modal-title">Contact information</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <form method="POST" action="#">
                         <input type="hidden" name="task_id" value="{{$event->id}}">
-                      <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Name</label>
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Fullname">
-                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                      </div>
-                      <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1">
-                      </div>
-                      <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                      </div>
-                      <button type="submit" class="btn btn-primary">Submit</button>
+
+                        <div class="row my-3">
+                            <div class="col-md-6">
+                                <label class="form-label">First Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="first" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="last" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Email <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="first" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Phone <span class="text-danger">(optional)</span></label>
+                                <input type="text" class="form-control" name="last">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
-                <div class="modal-footer">
+                {{-- <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary">Save</button>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

@@ -2,7 +2,11 @@
     <div>
         <div class="text-center mb-4">
             <h5>Quiz</h5>
-            <p class="card-title-desc">Tạo câu hỏi để tham gia trò chơi.</p>
+            <p class="card-title-desc text-danger">
+                - Trong sự kiện bạn tổ chức nếu có quiz thì vui lòng tạo quiz
+                <br>
+                - Nếu không có quiz bạn ấn "Save" để bỏ qua bước tạo quiz
+            </p>
         </div>
         <div>
             <div class="listQuiz" id="listRowQuiz">

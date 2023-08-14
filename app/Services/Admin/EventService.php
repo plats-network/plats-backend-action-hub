@@ -184,14 +184,38 @@ class EventService extends BaseService
                     } elseif(isset($item['id']) && $item['id']) {
                         TaskEventDetail::where('id', $item['id'])->update([
                             'name' => $item['name'],
-                            'description' => $item['description']
+                            'description' => $item['description'],
+                            'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
+                            'is_question' => isset($item['is_question']) && $item['is_question'] == '1' ? true : false,
+                            'is_required' => isset($item['is_required']) && $item['is_required'] == '1' ? true : false,
+                            'question' => isset($item['question']) ? $item['question'] : null,
+                            'a1' => isset($item['a1']) ? $item['a1'] : null,
+                            'a2' => isset($item['a2']) ? $item['a2'] : null,
+                            'a3' => isset($item['a3']) ? $item['a3'] : null,
+                            'a4' => isset($item['a4']) ? $item['a4'] : null,
+                            'is_a1' => isset($item['is_a1']) && $item['is_a1'] == '1' ? true : false,
+                            'is_a2' => isset($item['is_a2']) && $item['is_a2'] == '1' ? true : false,
+                            'is_a3' => isset($item['is_a3']) && $item['is_a3'] == '1' ? true : false,
+                            'is_a4' => isset($item['is_a4']) && $item['is_a4'] == '1' ? true : false,
                         ]);
                     } else {
                         TaskEventDetail::create([
                             'task_event_id' => $event->id,
                             'name' => $item['name'],
                             'description' => $item['description'],
-                            'code' => Str::random(35)
+                            'code' => Str::random(35),
+                            'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
+                            'is_question' => isset($item['is_question']) && $item['is_question'] == '1' ? true : false,
+                            'is_required' => isset($item['is_required']) && $item['is_required'] == '1' ? true : false,
+                            'question' => isset($item['question']) ? $item['question'] : null,
+                            'a1' => isset($item['a1']) ? $item['a1'] : null,
+                            'a2' => isset($item['a2']) ? $item['a2'] : null,
+                            'a3' => isset($item['a3']) ? $item['a3'] : null,
+                            'a4' => isset($item['a4']) ? $item['a4'] : null,
+                            'is_a1' => isset($item['is_a1']) && $item['is_a1'] == '1' ? true : false,
+                            'is_a2' => isset($item['is_a2']) && $item['is_a2'] == '1' ? true : false,
+                            'is_a3' => isset($item['is_a3']) && $item['is_a3'] == '1' ? true : false,
+                            'is_a4' => isset($item['is_a4']) && $item['is_a4'] == '1' ? true : false,
                         ]);
                     }
                 }
@@ -217,7 +241,19 @@ class EventService extends BaseService
                             'task_event_id' => $event->id,
                             'name' => $item['name'],
                             'description' => $item['description'],
-                            'code' => Str::random(35)
+                            'code' => Str::random(35),
+                            'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
+                            'is_question' => isset($item['is_question']) && $item['is_question'] == '1' ? true : false,
+                            'is_required' => isset($item['is_required']) && $item['is_required'] == '1' ? true : false,
+                            'question' => isset($item['question']) ? $item['question'] : null,
+                            'a1' => isset($item['a1']) ? $item['a1'] : null,
+                            'a2' => isset($item['a2']) ? $item['a2'] : null,
+                            'a3' => isset($item['a3']) ? $item['a3'] : null,
+                            'a4' => isset($item['a4']) ? $item['a4'] : null,
+                            'is_a1' => isset($item['is_a1']) && $item['is_a1'] == '1' ? true : false,
+                            'is_a2' => isset($item['is_a2']) && $item['is_a2'] == '1' ? true : false,
+                            'is_a3' => isset($item['is_a3']) && $item['is_a3'] == '1' ? true : false,
+                            'is_a4' => isset($item['is_a4']) && $item['is_a4'] == '1' ? true : false,
                         ]);
                     }
                 }
@@ -251,14 +287,38 @@ class EventService extends BaseService
                     } elseif(isset($item['id']) && $item['id']) {
                         TaskEventDetail::where('id', $item['id'])->update([
                             'name' => $item['name'],
-                            'description' => $item['description']
+                            'description' => $item['description'],
+                            'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
+                            'is_question' => isset($item['is_question']) && $item['is_question'] == '1' ? true : false,
+                            'is_required' => isset($item['is_required']) && $item['is_required'] == '1' ? true : false,
+                            'question' => isset($item['question']) ? $item['question'] : null,
+                            'a1' => isset($item['a1']) ? $item['a1'] : null,
+                            'a2' => isset($item['a2']) ? $item['a2'] : null,
+                            'a3' => isset($item['a3']) ? $item['a3'] : null,
+                            'a4' => isset($item['a4']) ? $item['a4'] : null,
+                            'is_a1' => isset($item['is_a1']) && $item['is_a1'] == '1' ? true : false,
+                            'is_a2' => isset($item['is_a2']) && $item['is_a2'] == '1' ? true : false,
+                            'is_a3' => isset($item['is_a3']) && $item['is_a3'] == '1' ? true : false,
+                            'is_a4' => isset($item['is_a4']) && $item['is_a4'] == '1' ? true : false,
                         ]);
                     } else {
                         TaskEventDetail::create([
                             'task_event_id' => $event->id,
                             'name' => $item['name'],
                             'description' => $item['description'],
-                            'code' => Str::random(35)
+                            'code' => Str::random(35),
+                            'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
+                            'is_question' => isset($item['is_question']) && $item['is_question'] == '1' ? true : false,
+                            'is_required' => isset($item['is_required']) && $item['is_required'] == '1' ? true : false,
+                            'question' => isset($item['question']) ? $item['question'] : null,
+                            'a1' => isset($item['a1']) ? $item['a1'] : null,
+                            'a2' => isset($item['a2']) ? $item['a2'] : null,
+                            'a3' => isset($item['a3']) ? $item['a3'] : null,
+                            'a4' => isset($item['a4']) ? $item['a4'] : null,
+                            'is_a1' => isset($item['is_a1']) && $item['is_a1'] == '1' ? true : false,
+                            'is_a2' => isset($item['is_a2']) && $item['is_a2'] == '1' ? true : false,
+                            'is_a3' => isset($item['is_a3']) && $item['is_a3'] == '1' ? true : false,
+                            'is_a4' => isset($item['is_a4']) && $item['is_a4'] == '1' ? true : false,
                         ]);
                     }
                 }
@@ -284,7 +344,19 @@ class EventService extends BaseService
                             'task_event_id' => $event->id,
                             'name' => $item['name'],
                             'description' => $item['description'],
-                            'code' => Str::random(35)
+                            'code' => Str::random(35),
+                            'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
+                            'is_question' => isset($item['is_question']) && $item['is_question'] == '1' ? true : false,
+                            'is_required' => isset($item['is_required']) && $item['is_required'] == '1' ? true : false,
+                            'question' => isset($item['question']) ? $item['question'] : null,
+                            'a1' => isset($item['a1']) ? $item['a1'] : null,
+                            'a2' => isset($item['a2']) ? $item['a2'] : null,
+                            'a3' => isset($item['a3']) ? $item['a3'] : null,
+                            'a4' => isset($item['a4']) ? $item['a4'] : null,
+                            'is_a1' => isset($item['is_a1']) && $item['is_a1'] == '1' ? true : false,
+                            'is_a2' => isset($item['is_a2']) && $item['is_a2'] == '1' ? true : false,
+                            'is_a3' => isset($item['is_a3']) && $item['is_a3'] == '1' ? true : false,
+                            'is_a4' => isset($item['is_a4']) && $item['is_a4'] == '1' ? true : false,
                         ]);
                     }
                 }

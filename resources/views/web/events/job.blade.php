@@ -6,49 +6,85 @@
         <div class="container" style="margin-top: 85px;">
             <div class="row">
                 <div class="col-12">
-                    <div class="schedule-tab">
+                    <div class="schedule-tab list-job">
                         <ul class="nav nav-tabs" id="conferScheduleTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="monday-tab" data-toggle="tab" href="#step-one" role="tab" aria-controls="step-one" aria-expanded="true">Session</a>
+                                <a class="nav-link active" id="session-tab" data-toggle="tab" href="#step-one" role="tab" aria-controls="step-one" aria-expanded="true">Session</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="tuesday-tab" data-toggle="tab" href="#step-two" role="tab" aria-controls="step-two" aria-expanded="true">Booth</a>
+                                <a class="nav-link" id="booth-tab" data-toggle="tab" href="#step-two" role="tab" aria-controls="step-two" aria-expanded="true">Booth</a>
                             </li>
                         </ul>
+                        <p class="text-center" style="padding-top: 10px;line-height: 20px;">
+                            Chú ý: Những nhiệm vụ nào có dấu <span class="text-danger">(*)</span> thì bắt buộc phải qua khu vực đó quét QR mới nhận được mã số quay thưởng.
+                        </p>
+                        <p class="text-center" style="padding-top: 10px;">
+                            <a class="text-danger" href="{{route('job.getTravelGame', ['task_id' => $task_id])}}">Back here!</a>
+                        </p>
                     </div>
-
-                    <div class="contact-form">
+                    {{-- <div class="contact-form">
                         <p>Name: {{auth()->user()->name}}</p>
-                    </div>
-
+                    </div> --}}
                     <div class="tab-content" id="conferScheduleTabContent">
-                        <div class="tab-pane fade show active" id="step-one" role="tabpanel" aria-labelledby="monday-tab">
-                            <div class="contact-form">
-                                <div class="widget-wrap">
-                                    <div class="vtl">
-                                        @foreach($sessions as $item)
-                                            {{-- active --}}
-                                            <div class="event {{$item['flag'] ? 'active alert-success' : ''}}">
-                                                <p class="date">{{$item['flag']}}</p>
-                                                <p class="txt">{{$item['name']}}</p>
-                                            </div>
+                        <div class="tab-pane fade show" id="step-one" role="tabpanel" aria-labelledby="session-tab">
+                            <div class="timeline-container">
+                                @foreach($groupSessions as $itemDatas)
+                                    <hr style="margin-bottom: 20px;">
+                                    <h3 class="step">{{$itemDatas && $itemDatas[0] ? $itemDatas[0]['travel_game_name'] : ''}}</h3>
+                                    <ul class="tl">
+                                        @foreach($itemDatas as $item)
+                                            <li class="tl-item {{ $item['flag'] ? '' : 'dashed'}}">
+                                                <div class="item-icon {{ $item['flag'] ? '' : 'not__active'}}"></div>
+                                                <div class="item-text">
+                                                    <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">
+                                                        {{$item['name']}}
+                                                        @if ($item['required'])
+                                                            <span class="text-danger" style="font-size: 11px;position: absolute;">(*)</span>
+                                                        @endif
+                                                    </div>
+                                                    <div class="item-detail">{{$item['desc']}}</div>
+                                                </div>
+                                                @if ($item['date'])
+                                                    <div class="item-timestamp">
+                                                        {{$item['date']}}<br> {{$item['time']}}
+                                                    </div>
+                                                @endif
+                                            </li>
                                         @endforeach
-                                    </div>
-                                </div>
+                                    </ul>
+                                @endforeach
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="step-two" role="tabpanel" aria-labelledby="tuesday-tab">
-                            <div class="contact-form">
-                                <div class="widget-wrap">
-                                    <div class="vtl">
-                                        @foreach($booths as $item)
-                                            <div class="event {{$item['flag'] ? 'active alert-success' : ''}}">
-                                                <p class="date">{{$item['flag']}}</p>
-                                                <p class="txt">{{$item['name']}}</p>
-                                            </div>
+
+                        <div class="tab-pane" id="step-two" role="tabpanel" aria-labelledby="booth-tab">
+                            <div class="timeline-container">
+                                @foreach($groupBooths as $itemDatas)
+                                    <hr style="margin-bottom: 20px;">
+                                    <h3 class="step">
+                                        {{$itemDatas && $itemDatas[0] ? $itemDatas[0]['travel_game_name'] : ''}}
+                                    </h3>
+                                    <ul class="tl">
+                                        @foreach($itemDatas as $item)
+                                            <li class="tl-item {{ $item['flag'] ? '' : 'dashed'}}">
+                                                <div class="item-icon {{ $item['flag'] ? '' : 'not__active'}}"></div>
+                                                <div class="item-text">
+                                                    <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">
+                                                        {{$item['name']}}
+                                                        @if ($item['required'])
+                                                            <span class="text-danger" style="font-size: 11px;position: absolute;">(*)</span>
+                                                        @endif
+                                                    </div>
+                                                    <div class="item-detail">{{$item['desc']}}</div>
+                                                </div>
+                                                @if ($item['date'])
+                                                    <div class="item-timestamp">
+                                                        {{$item['date']}}<br> {{$item['time']}}
+                                                    </div>
+                                                @endif
+                                            </li>
                                         @endforeach
-                                    </div>
-                                </div>
+                                    </ul>
+                                @endforeach
                             </div>
                         </div>
                     </div>

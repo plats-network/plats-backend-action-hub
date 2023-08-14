@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Models\{Task};
+use App\Models\{Task, TravelGame};
 use App\Models\Event\{
     EventUserTicket,
     TaskEvent,
@@ -17,6 +17,7 @@ use App\Services\Admin\{
     EventService,
     TaskService
 };
+use Carbon\Carbon;
 
 class Home extends Controller
 {
@@ -27,7 +28,8 @@ class Home extends Controller
         private TaskEventDetail $eventDetail,
         private EventUserTicket $eventUserTicket,
         private EventService $eventService,
-        private TaskService $taskService
+        private TaskService $taskService,
+        private TravelGame $travelGame,
     ) {}
 
     public function index(Request $request)
@@ -80,6 +82,8 @@ class Home extends Controller
     }
 
     // User work job session, booth
+    // method: GET
+    // url: http://event.plats.test/info/99dc826f-5c60-4ebd-af48-d709d761a8ff
     public function jobEvent(Request $request, $id)
     {
         try {
@@ -94,144 +98,68 @@ class Home extends Controller
 
             $eventSession = $this->eventModel->whereTaskId($task->id)->whereType(TASK_SESSION)->first();
             $eventBooth = $this->eventModel->whereTaskId($task->id)->whereType(TASK_BOOTH)->first();
-            $countSession = $this->taskDone->whereTaskEventId($eventSession->id)->whereUserId($user->id)->count();
-            $countBooth = $this->taskDone->whereTaskEventId($eventBooth->id)->whereUserId($user->id)->count();
-            $genCode = $this->eventUserTicket->whereTaskId($task->id)->whereUserId($user->id)->first();
-            if ($countSession >= $eventSession->max_job && $genCode && empty($genCode->sesion_code)) {
-                if ($genCode) {
-                    $maxSession = $this->eventUserTicket->whereTaskId($task->id)->whereUserId($user->id)->max('sesion_code') + 1;
-                    $genCode->update([
-                        'sesion_code' => $maxSession,
-                        'color_session' => randColor()
-                    ]);
-                }
-            }
-
-            if ($countBooth >= $eventBooth->max_job && $genCode && empty($genCode->booth_code)) {
-                if ($genCode) {
-                    $maxBooth = $this->eventUserTicket->whereTaskId($task->id)->whereUserId($user->id)->max('booth_code') + 1;
-                    $genCode->update([
-                        'booth_code' => $maxBooth,
-                        'color_boot' => randColor()
-                    ]);
-                }
-            }
-
             $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)->get();
             $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)->get();
 
             foreach($sessions as $session) {
+                $travel = $this->travelGame->find($session->travel_game_id);
+                $job = $this->taskDone
+                    ->whereUserId($user->id)
+                    ->whereTaskEventDetailId($session->id)
+                    ->first();
                 $sessionDatas[] = [
                     'id' => $session->id,
+                    'travel_game_id' => $session->travel_game_id,
+                    'travel_game_name' => $travel->name,
                     'user_id' => $request->user()->id,
                     'name' => $session->name,
+                    'desc' => $session->description,
+                    'date' => $job ? Carbon::parse($job->created_at)->format('Y-m-d') : '',
+                    'time' => $job ? Carbon::parse($job->created_at)->format('H:i') : '',
+                    'required' => $session->is_required,
                     'flag' => $this->checkDoneJob($session->id),
                 ];
             }
 
             foreach($booths as $booth) {
+                $travel = $this->travelGame->find($booth->travel_game_id);
+                $job = $this->taskDone
+                    ->whereUserId($user->id)
+                    ->whereTaskEventDetailId($booth->id)
+                    ->first();
+
                 $boothDatas[] = [
                     'id' => $booth->id,
+                    'travel_game_id' => $booth->travel_game_id,
+                    'travel_game_name' => $travel->name,
                     'user_id' => $request->user()->id,
                     'name' => $booth->name,
+                    'desc' => $session->description,
+                    'date' => $job ? Carbon::parse($job->created_at)->format('Y-m-d') : '',
+                    'time' => $job ? Carbon::parse($job->created_at)->format('H:i') : '',
+                    'required' => $booth->is_required,
                     'flag' => $this->checkDoneJob($booth->id),
                 ];
+            }
+
+            $groupSessions = [];
+            $groupBooths = [];
+            foreach($sessionDatas as $item) {
+                $groupSessions[$item['travel_game_id']][] = $item;
+            }
+            foreach($boothDatas as $item) {
+                $groupBooths[$item['travel_game_id']][] = $item;
             }
         } catch (\Exception $e) {
             $this->redirectPath();
         }
 
         return view('web.events.job', [
-            'sessions' => $sessionDatas,
-            'booths' => $boothDatas,
+            'groupBooths' => $groupBooths,
+            'groupSessions' => $groupSessions,
+            'task_id' => $task->id,
         ]);
     }
-
-
-    // public function webList(Request $request)
-    // {
-    //     try {
-    //         $limit = $request->get('limit') ?? 8;
-    //         if (empty(Auth::user())) {
-    //             $event = $this->taskService->search(['limit' => $limit,'type' => 1,'status' => 1]);
-    //         } else {
-    //             $event = $this->taskService->search(['limit' => $limit,'type' => 1,'status' => 1]);
-    //             foreach ($event as &$item){
-    //                 $data = UserEventLike::where('task_id',$item->id)->where('user_id',Auth::user()->id)->first();
-    //                 if ($data){
-    //                     $item['like_active'] = 1;
-    //                 }else{
-    //                     $item['like_active'] = 0;
-    //                 }
-    //             }
-    //         }
-    //         return response()->json($event);
-    //     } catch (\Exception $e) {
-    //         return $this->respondError($e->getMessage());
-    //     }
-    // }
-
-    // public function apiList()
-    // {
-    //     $user = Auth::user();
-    //     if (empty($user)){
-    //     }
-    //     $eventDetails = UserJoinEvent::where('user_id',$user->id)->get();
-    //     $eventTaskJoins= $this->getEventTaskJoin($eventDetails);
-    //     $eventTasks= $this->getEventTask($eventTaskJoins);
-    //     $rawData = $this->mergeArray($eventTasks,$eventTaskJoins);
-    //     return $this->respondSuccess($rawData);
-    // }
-
-    // public function getEventTaskJoin($data)
-    // {
-    //     $eventTaskJoins= [];
-    //     foreach($data as $k => $v) {
-    //         $eventTaskJoins[$v['task_event_id']][]=$v->task_event_detail_id;
-    //     }
-    //     return $eventTaskJoins;
-    // }
-
-    // public function getEventTask($data)
-    // {
-    //     $eventTasks= [];
-    //     foreach($data as $key => $value){
-    //         $eventTasks[$key] = TaskEventDetail::where('task_event_id',$key)->orderBy('id', 'ASC')->pluck('id')->toArray();
-    //     }
-    //     return $eventTasks;
-    // }
-
-    // public function mergeArray($eventTaskJoins,$eventTasks)
-    // {
-    //     $arr = array_values($eventTasks);
-    //     if (count($arr) > 0){
-    //         $code = TaskEventDetail::where('id',$arr[0][0])->first();
-    //     }
-    //     $c = array_merge_recursive($eventTaskJoins,$eventTasks);
-    //     $a=[];
-    //     foreach ($c as $key => $item){
-    //         $taskEventId = TaskEvent::where('id',$key)->first();
-    //         $taskName = Task::where('id',$taskEventId->task_id)->first();
-    //         $a[] = [
-    //             'taskEventName' => $taskEventId->name,
-    //             'type' => $taskEventId->type == 0 ? 'Session' : 'Booth' ,
-    //             'taskName' => $taskName->name,
-    //             'code' => $code ? $code->code : '',
-    //             'banner' => $taskName->banner_url,
-    //             'taskId' => $taskName->id,
-    //             'created_at' => $taskName->created_at,
-    //         ];
-    //     }
-    //     usort($a, function ($a, $b) {
-    //         return strtotime($a['created_at']) < strtotime($b['created_at']);
-    //     });
-    //     if (count($a) > 0){
-    //         $maxTime = $a[0];
-    //     }else{
-    //         $maxTime = 1;
-    //     }
-    //     return $maxTime;
-    // }
 
     private function redirectPath()
     {
@@ -243,12 +171,6 @@ class Home extends Controller
     private function checkDoneJob($eventDetailId)
     {
         $userId = Auth::user()->id;
-
-        // $a = $this->taskDone
-        //     ->whereUserId($userId)
-        //     ->whereTaskEventDetailId($eventDetailId)
-        //     ->toSql();
-        // dd($a, $eventDetailId);
 
         return $this->taskDone
             ->whereUserId($userId)
