@@ -93,6 +93,8 @@ Route::middleware('auth:api')->group(function ($router) {
     });
 
     Route::get('event-imprgress', [Event::class, 'index'])->name('event.improgress');
+    Route::get('jobs/{id}', [Event::class, 'show'])->name('event.show.jobs');
+
     Route::get('top-events', [Task::class, 'getEventTaskHots'])->name('task.event.top-events');
     Route::prefix('qr')->controller(QrCode::class)->group(function($router) {
         $router->post('qr-event', 'qrEvent')->name('qr.qrEvent');
