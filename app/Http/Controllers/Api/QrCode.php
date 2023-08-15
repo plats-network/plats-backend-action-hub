@@ -13,6 +13,7 @@ use App\Models\Event\{
     UserJoinEvent,
     TaskEventDetail,
     TaskEvent,
+    UserEvent,
     EventUserTicket
 };
 use DB;
@@ -23,6 +24,7 @@ class QrCode extends ApiController
         private UserJoinEvent $userJoinEvent,
         private TaskEventDetail $taskEventDetail,
         private TaskEvent $taskEvent,
+        private UserEvent $userEvent,
         private EventUserTicket $eventUserTicket,
         private CodeHashService $codeHashService
     ) {}
@@ -39,19 +41,22 @@ class QrCode extends ApiController
 
             if ($type == 'event') {
                 $eventDetail = $this->taskEventDetail->whereCode($code)->first();
-                $taskEvent = $this->taskEvent->findOrFail($eventDetail->task_event_id);
-                $userJoinEvent = $this->userJoinEvent
-                    ->whereUserId($userId)
-                    ->whereTaskEventDetailId(optional($eventDetail)->id)
-                    ->first();
-
-                $eventUserTicket = $this->eventUserTicket
-                    ->whereUserId($userId)
-                    ->whereTaskId($taskEvent->task_id)
-                    ->first();
+                $taskEvent = $this->taskEvent->find($eventDetail->task_event_id);
+                $userJoinEvent = $this->userJoinEvent->whereUserId($userId)->whereTaskEventDetailId($eventDetail->id)->exists();
 
                 if (!$eventDetail) {
                     return $this->respondError('Job no found!', 404);
+                }
+
+                $checkUserEvent = $this->userEvent
+                    ->whereUserId($userId)
+                    ->whereTaskId($taskEvent->task_id)
+                    ->exists();
+                if (!$checkUserEvent) {
+                    $this->userEvent->create([
+                        'user_id' => $userId,
+                        'task_id' => $taskEvent->task_id
+                    ]);
                 }
 
                 if (!$userJoinEvent) {
@@ -66,17 +71,8 @@ class QrCode extends ApiController
                 }
 
                 $data = [
-                    'task_id' => $taskEvent->task_id
-                ];
-
-                // Make Code & Color
-                $this->codeHashService->makeCode($taskEvent->task_id, $userId);
-
-                $dataStatusess = [
-                    'flag_session' => optional($eventUserTicket)->sesion_code ? true : false,
-                    'num_session' => optional($eventUserTicket)->sesion_code ?? '',
-                    'flag_booth' => optional($eventUserTicket)->booth_code ? true : false,
-                    'num_booth' => optional($eventUserTicket)->booth_code ?? ''
+                    'task_id' => $taskEvent->task_id,
+                    'message' => 'success'
                 ];
             } elseif ($type == 'checkin') {
                 $ticket = $this->eventUserTicket->whereHashCode($code)->first();
@@ -88,13 +84,13 @@ class QrCode extends ApiController
                 if ($ticket->is_checkin == true) {
                     $data = [
                         'task_id' => $ticket->task_id,
-                        'status_message' => 'Ticket checkined!'
+                        'message' => 'Ticket checkined!'
                     ];
                 } else {
                     $ticket->update(['is_checkin' => true]);
                     $data = [
                         'task_id' => $ticket->task_id,
-                        'status_message' => 'Checkin done!'
+                        'message' => 'Checkin done!'
                     ];
                 }
             }
@@ -102,6 +98,6 @@ class QrCode extends ApiController
             return $this->respondError("QR không đúng, vui lòng kiểm tra lại!", 500);
         }
 
-        return $this->respondWithData(array_merge($data, $dataStatusess), 'Done');
+        return $this->respondWithData($data, 'Done');
     }
 }
