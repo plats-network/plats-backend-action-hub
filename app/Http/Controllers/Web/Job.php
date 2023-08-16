@@ -145,6 +145,10 @@ class Job extends Controller
                 return redirect()->route('web.jobEvent', [
                     'id' => $task->code
                 ]);
+            } else {
+                return redirect()->route('web.jobEvent', [
+                    'id' => $task->code
+                ]);
             }
         } catch (\Exception $e) {
             notify()->error('Có lỗi xảy ra');
