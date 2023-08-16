@@ -15,6 +15,7 @@ use App\Models\Event\{
     TaskEventDetail,
     UserJoinEvent
 };
+use Illuminate\Support\Str;
 
 class Login extends Controller
 {
@@ -119,13 +120,14 @@ class Login extends Controller
         $sessionGuest = session()->get('guest');
         $code = $sessionGuest['id'];
         $eventDetail = $this->eventDetail->whereCode($code)->first();
-        $taskEvent = $this->taskEvent->whereId(optional($eventDetail)->task_event_id)->first();
-        dd($sessionGuest, $taskEvent);
         return view('web.auth.login_guest');
     }
 
     public function loginGuest(Request $request)
     {
+        //http://event.plats.test/events/code?type=event&id=tuiLOSvRxDUZk2cNTMu5LoA8s4VXxoO4fXe
+        //http://event.plats.test/events/code?type=event&id=UzMZlR9OcSLSDFs3I13h5A8jGzAu52ENGCJ
+
         try {
             $account = $request->input('account');
             $userName = $request->input('name');
@@ -172,45 +174,23 @@ class Login extends Controller
             } elseif ($sessionGuest && $sessionGuest['type'] == 'job') {
                 $code = $sessionGuest['id'];
                 $eventDetail = $this->eventDetail->whereCode($code)->first();
-                $taskEvent = $this->taskEvent->whereId(optional($eventDetail)->task_event_id)->first();
 
-                if (!$eventDetail || !$taskEvent) {
+                if (!$eventDetail) {
+                    notify()->error('Đường dẫn không đúng');
                     return redirect()->route('web.home');
                 }
                 
                 if ($user) {
-                    if ($user->name != $userName) {
-                        $user->update(['name' => $userName]);
-                    }
-                    Auth::login($user, true);
-                    
-
+                    $user->update(['name' => $userName]);
                 } else {
                     $user = $this->user->create($userParams);
-                    Auth::login($user, true);
-                    $code = $sessionGuest['id'];
-
-                    $eventDetail = $this->eventDetail->whereCode($code)->first();
-                    $taskEvent = $this->taskEvent->whereId(optional($eventDetail)->task_event_id)->first();
-                    $tickerParams = [
-                        'user_id' => $user->id,
-                        'task_id' => optional($taskEvent)->task_id,
-                        'name' => $userName,
-                        'email' => $account,
-                        'phone' => (string) $phone,
-                        'is_checkin' => true,
-                        'type' => 1,
-                    ];
-                    $userEventParams = [
-                        'user_id' => $user->id,
-                        'task_event_detail_id' => $eventDetail->id,
-                        'task_id' => optional($taskEvent)->task_id,
-                        'task_event_id' => optional($taskEvent)->id
-                    ];
-                    $this->eventTicket->create($tickerParams);
-                    $this->userEvent->create($userEventParams);
                 }
+                Auth::login($user, true);
                 session()->forget('guest');
+
+                return redirect()->route('job.getJob', [
+                    'code' => $code
+                ]);
             } else {
                 if ($user) {
                     Auth::login($user, true);

@@ -60,11 +60,13 @@ Route::get('template', [PagesController::class, 'template'])->name('web.template
 Route::get('pricing', [PagesController::class, 'pricing'])->name('web.pricing');
 Route::get('resource', [PagesController::class, 'resource'])->name('web.resource');
 Route::get('contact', [PagesController::class, 'contact'])->name('web.contact');
+Route::post('order/ticket', [Home::class, 'orderTicket'])->name('order.ticket');
 
 Route::middleware(['user_event'])->group(function ($r) {
     $r->get('logout', [Login::class, 'logout'])->name('web.logout');
     $r->get('event-job/{id}', [Home::class, 'jobEvent'])->name('web.jobEvent');
     $r->get('profile', [UserController::class, 'profile'])->name('web.profile');
+    $r->post('editEmail', [UserController::class, 'editEmail'])->name('web.editEmail');
 
     // Travel
     $r->get('info/{task_id}', [Job::class, 'getTravelGame'])->name('job.getTravelGame');

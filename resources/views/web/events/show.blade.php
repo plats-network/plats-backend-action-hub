@@ -69,16 +69,26 @@
             .text-danger {
                 color: red;
             }
+
+            .btn--order {
+                padding: 10px 30px;
+                background: #3EA2FF;
+                color: #fff;
+                text-align: right;
+            }
         </style>
 
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Contact information</h5>
+                    <h5 class="modal-title" style="font-size: 30px; text-align: center;">Contact information</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="#">
+                    <form method="POST" action="{{route('order.ticket')}}">
+                        @csrf
+                        <p class="text-danger text-center" style="padding-bottom: 20px;">Vui lòng nhập đúng thông tin email or số điện thoại để nhận đc những phần quà hấp dẫn từ sự kiện.</p>
+
                         <input type="hidden" name="task_id" value="{{$event->id}}">
 
                         <div class="row my-3">
@@ -95,25 +105,28 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="form-label">Email <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="first" required>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="email"
+                                    value="{{$user ? $user->email : ''}}"
+                                    @if ($user) disabled @endif
+                                    required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Phone <span class="text-danger">(optional)</span></label>
-                                <input type="text" class="form-control" name="last">
+                                <input type="text" class="form-control" value="{{$user ? $user->phone : ''}}" name="phone">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="text-center" style="margin-top: 20px;">
+                            <button type="submit" class="btn btn-primary btn--order">Submit</button>
+                        </div>
                     </form>
                 </div>
-                {{-- <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Save</button>
-                </div> --}}
             </div>
         </div>
     </div>
 
     @include('web.layouts.subscribe')
-
     <a href="#" class="btn btn-primary ticket--sp">Get ticket</a>
 @endsection

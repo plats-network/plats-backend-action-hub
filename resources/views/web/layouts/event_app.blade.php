@@ -13,7 +13,7 @@
         @vite(['resources/sass/event.scss', 'resources/js/event.js'])
         @notifyCss
     </head>
-    <body>
+    <body id="event-page" data-env="{{env('APP_ENV') == 'local' ? false : true}}">
         @include('web.layouts.header')
         @yield('content')
         @include('web.layouts.footer')
@@ -28,5 +28,31 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/1.1.0/jquery.parallax.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollup/2.4.1/jquery.scrollUp.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
+
+        <script type="text/javascript">
+            if ($('#event-page').data('env') == true) {
+                document.addEventListener('keydown', function() {
+                    if (event.keyCode == 123) {
+                      return false;
+                    } else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) {
+                      return false;
+                    } else if (event.ctrlKey && event.keyCode == 85) {
+                      return false;
+                    }
+                  }, false);
+                  
+                  if (document.addEventListener) {
+                    document.addEventListener('contextmenu', function(e) {
+                      e.preventDefault();
+                    }, false);
+                  } else {
+                    document.attachEvent('oncontextmenu', function() {
+                      window.event.returnValue = false;
+                    });
+                  }
+            }
+
+        </script>
     </body>
 </html>

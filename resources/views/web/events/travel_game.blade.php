@@ -1,6 +1,12 @@
 @extends('web.layouts.event_app')
 
 @section('content')
+    <style type="text/css">
+        #laravel-notify {
+            z-index: 1000;
+            position: absolute;
+        }
+    </style>
     <section class="travel">
         <div class="container">
             <div class="travel-content">
@@ -9,7 +15,7 @@
                         <tr>
                             <td>{{auth()->user()->email}}</td>
                             <td class="text-center">
-                                <a href="#">Edit</a>
+                                <a id="editInfo" href="#" style="color: red;">Edit</a>
                             </td>
                         </tr>
                     </table>
@@ -42,8 +48,6 @@
                                 <p>Phân thưởng:</strong> {{$session->note}}</p>
                             </div>
                         @endforeach
-
-                    
                     </div>
                     <div id="booth" class="tab-pane fade">
                         @foreach($travelBooths as $booth)
@@ -63,4 +67,47 @@
             </div>
         </div>
     </section>
+
+    <div id="infoEditEmail" class="modal fade" data-backdrop="static" data-keyboard="false">
+        <style type="text/css">
+            .text-danger, .error {
+                color: red;
+            }
+
+            .btn--order {
+                padding: 10px 30px;
+                background: #3EA2FF;
+                color: #fff;
+                text-align: right;
+            }
+        </style>
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="font-size: 25px; text-align: center;">Cập nhật email</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="infoForm" method="POST" action="{{route('web.editEmail')}}">
+                        @csrf
+                        <input type="hidden" name="task_id" value="{{$event->id}}">
+                        <div class="row" style="display: block;">
+                            <div class="col-md-12">
+                                <label class="form-label">Email <span class="text-danger">*</span></label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="email"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="text-center" style="margin-top: 20px;">
+                            <button type="submit" class="btn btn-primary btn--order">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

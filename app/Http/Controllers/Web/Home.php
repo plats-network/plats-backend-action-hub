@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Web;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Models\{Task, TravelGame};
+use App\Models\{Task, User, TravelGame};
+use Illuminate\Support\Str;
 use App\Models\Event\{
     EventUserTicket,
     TaskEvent,
@@ -18,12 +19,14 @@ use App\Services\Admin\{
     TaskService
 };
 use Carbon\Carbon;
+use DB;
 
 class Home extends Controller
 {
     public function __construct(
         private TaskEvent $eventModel,
         private Task $task,
+        private User $user,
         private UserJoinEvent $taskDone,
         private TaskEventDetail $eventDetail,
         private EventUserTicket $eventUserTicket,
@@ -53,13 +56,73 @@ class Home extends Controller
     public function show(Request $request, $id)
     {
         try {
+            $user = Auth::user();
             $event = $this->taskService->find($id);
         } catch (\Exception $e) {
-            
+            notify()->error('Error show event');
         }
 
         return view('web.events.show', [
-            'event' => $event
+            'event' => $event,
+            'user' => $user
+        ]);
+    }
+
+    // Get ticket
+    public function orderTicket(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $user = Auth::user();
+            $name = $request->input('first').' '.$request->input('last');
+            $taskId = $request->input('task_id');
+            $email = $request->input('email');
+
+            if (!$user) {
+                $user = $this->user->whereEmail($email)->first();
+                if (!$user) {
+                    $user = $this->user->create([
+                        'name' => $name,
+                        'email' => $request->input('email'),
+                        'password' => '123456a@',
+                        'phone' => $request->input('phone'),
+                        'role' => GUEST_ROLE,
+                        'email_verified_at' => now(),
+                        'confirm_at' => now(),
+                        'status' => USER_CONFIRM
+                    ]);
+                }
+
+                Auth::login($user);
+            }
+
+            $check = $this->eventUserTicket
+                ->whereUserId($user->id)
+                ->whereTaskId($taskId)
+                ->exists();
+
+            if (!$check) {
+                $this->eventUserTicket->create([
+                    'name' => $name,
+                    'phone' => $request->input('phone'),
+                    'email' => $request->input('email'),
+                    'task_id' => $taskId,
+                    'user_id' => $user->id,
+                    'hash_code' => Str::random(35)
+                ]);
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            notify()->error('Error submit ticket');
+            return redirect()->route('web.home');
+        }
+
+        notify()->success('Get ticket success');
+        return redirect()->route('web.events.show', [
+            'id' => $taskId
         ]);
     }
 

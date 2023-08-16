@@ -15,7 +15,18 @@
                                 <a class="nav-link" id="booth-tab" data-toggle="tab" href="#step-two" role="tab" aria-controls="step-two" aria-expanded="true">Booth</a>
                             </li>
                         </ul>
-                        <p class="text-center" style="padding-top: 10px;line-height: 20px;">
+
+                        <style type="text/css">
+                            .desc {
+                                line-height: 20px;
+                                background: antiquewhite;
+                                color: #000;
+                                border-radius: 10px;
+                                padding: 10px;
+                                margin-top: 20px;
+                            }
+                        </style>
+                        <p class="text-center desc">
                             Chú ý: Những nhiệm vụ nào có dấu <span class="text-danger">(*)</span> thì bắt buộc phải qua khu vực đó quét QR mới nhận được mã số quay thưởng.
                         </p>
                         <p class="text-center" style="padding-top: 10px;">

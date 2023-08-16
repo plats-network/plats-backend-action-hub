@@ -21,11 +21,36 @@ $(document).ready(function() {
     });
   }
 
+  if ($('#editInfo').length > 0) {
+    $('#editInfo').on('click', function() {
+      $('#infoEditEmail').modal();
+    })
+  }
+
   $('.aws').on('click', function(e) {
     var id = $(this).data('id'),
       result = $(this).data('result');
 
       // alert(result);
+  });
+
+
+  $("#infoForm").validate({
+    onfocusout: false,
+    onkeyup: false,
+    onclick: false,
+    rules: {
+      "email": {
+        required: true,
+        email: true
+      }
+    },
+    messages: {
+      "email": {
+        required: "Vui lòng nhập email",
+        email: 'Email không đúng định dạng'
+      },
+    }
   });
 
 
@@ -36,7 +61,7 @@ $(document).ready(function() {
   $('.nav-tabs a[href="#home"]').tab('show')
   $('.nav-tabs a:first').tab('show')
   $('.nav-tabs a:last').tab('show')
-  $('.nav-tabs li:eq(3) a').tab('show')
+  $('.nav-tabs li:eq(0) a').tab('show')
 
   // var page = 1;
   // $(window).scroll(function() {
