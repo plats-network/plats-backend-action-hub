@@ -74,50 +74,14 @@ class Job extends Controller
 
                 if ($event && $event->status == false) {
                     notify()->error('Job locked!');
-
-                    return redirect()->route('web.jobEvent', [
-                        'id' => optional($task)->code
-                    ]);
                 } else {
                     return redirect()->route('job.getJob', [
                         'code' => $event->code
                     ]);
-
-                    // $checkJoin = $this->eventUserTicket
-                    //     ->whereUserId($user->id)
-                    //     ->whereTaskId($taskEvent->task_id)
-                    //     ->exists();
-
-                    // if (!$checkJoin) {
-                    //     $this->eventUserTicket->create([
-                    //         'user_id' => $user->id,
-                    //         'task_id' => $taskEvent->task_id,
-                    //         'name' => $user->name ?? 'No name',
-                    //         'phone' => $user->phone ?? '098423'.rand(1000, 9999),
-                    //         'email' => $user->email,
-                    //         'is_checkin' => true
-                    //     ]);
-                    // }
-
-                    // $check = $this->joinEvent
-                    //     ->whereUserId($user->id)
-                    //     ->whereTaskEventDetailId($event->id)
-                    //     ->exists();
-
-                    // if (!$check) {
-                    //     $this->joinEvent->create([
-                    //         'user_id' => $user->id,
-                    //         'task_event_detail_id' => $event->id,
-                    //         'agent' => request()->userAgent(),
-                    //         'ip_address' => $request->ip(),
-                    //         'task_id' => optional($taskEvent)->task_id,
-                    //         'task_event_id' => optional($taskEvent)->id
-                    //     ]);
-                    // }
                 }
 
                 return redirect()->route('web.jobEvent', [
-                    'id' => optional($task)->code
+                    'id' => $task->code
                 ]);
             }
         } catch (\Exception $e) {
@@ -175,7 +139,7 @@ class Job extends Controller
                     'task_event_id' => $detail->task_event_id,
                 ]);
             }
-            if ($detail->is_question == true) {
+            if ($detail->is_question == false) {
                 notify()->success('Quét QR code success');
 
                 return redirect()->route('web.jobEvent', [
