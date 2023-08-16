@@ -33,9 +33,6 @@
                             <a class="text-danger" href="{{route('job.getTravelGame', ['task_id' => $task_id])}}">Back here!</a>
                         </p>
                     </div>
-                    {{-- <div class="contact-form">
-                        <p>Name: {{auth()->user()->name}}</p>
-                    </div> --}}
                     <div class="tab-content" id="conferScheduleTabContent">
                         <div class="tab-pane fade show" id="step-one" role="tabpanel" aria-labelledby="session-tab">
                             <div class="timeline-container">

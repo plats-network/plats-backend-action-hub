@@ -58,10 +58,10 @@ $(document).ready(function() {
     $(this).tab('show');
   })
 
-  $('.nav-tabs a[href="#home"]').tab('show')
+  $('.nav-tabs a[href="#session"]').tab('show')
   $('.nav-tabs a:first').tab('show')
-  $('.nav-tabs a:last').tab('show')
   $('.nav-tabs li:eq(0) a').tab('show')
+  // $('.nav-tabs a:last').tab('show')
 
   // var page = 1;
   // $(window).scroll(function() {
