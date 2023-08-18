@@ -55,7 +55,7 @@
                    >
                 </el-table-column>
                 <el-table-column
-                    label="Status" width="180"
+                    label="Event Status" width="180"
                 >
                     <template slot-scope="scope">
                         <el-tag type="info" v-if="new Date(scope.row.end_at) < new Date()" effect="dark">
@@ -91,7 +91,7 @@
                             </el-button>
                         </el-tooltip>
 
-                        <el-tooltip class="item" effect="dark" content="Lấy mã QR" placement="top">
+                        <el-tooltip class="item" effect="dark" content="View QRcode" placement="top">
                             <el-button
                                 size="mini" type="warning"
                                 @click="handleQrCode(scope.$index, scope.row)">
@@ -107,7 +107,7 @@
                             <i class="el-icon-paperclip"></i>
                         </el-button>
                         </el-tooltip>
-                        <el-tooltip v-if="scope.row.user_get_tickets.length != 0" class="item" effect="dark" content="Danh sách tham gia event" placement="top">
+                        <el-tooltip v-if="scope.row.user_get_tickets.length != 0" class="item" effect="dark" content="User join event" placement="top">
                                 <el-button
                                     size="mini" plain  type="success"
                                     @click="handleJoinEvent(scope.$index, scope.row)">
