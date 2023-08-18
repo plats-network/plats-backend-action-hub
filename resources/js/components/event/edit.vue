@@ -574,7 +574,7 @@ export default {
             const isLt10M = file.size / 1024 / 1024 < 10;
 
             if (!isJPEG && !isPNG && !isJPG) {
-                this.$message.error('Chọn ảnh định dạng JPG,PNG,JPEG!');
+                this.$message.error('Choise image JPG,PNG,JPEG!');
                 return false
             }
             if (!isLt10M) {
