@@ -7,16 +7,6 @@
         <el-row :gutter="20">
             <el-col :span="10"  >
                 <div  class="p-2" style="border: 1px solid #EBEEF5">
-<!--                    <div v-show="form.task_galleries.length > 0">-->
-<!--                        <span>Slider</span>-->
-<!--                        <el-carousel indicator-position="outside">-->
-<!--                            <el-carousel-item  v-for="(event, index) in form.task_galleries" >-->
-<!--                                <div>-->
-<!--                                    <el-image :src="event.url" class=""></el-image>-->
-<!--                                </div>-->
-<!--                            </el-carousel-item>-->
-<!--                        </el-carousel>-->
-<!--                    </div>-->
                     <div class="demo-image">
                         <span>Image</span>
                         <div class="block">

@@ -600,8 +600,8 @@ export default {
                     }
                     axios.post(this.link_cws+'/api/events', this.form).then(e => {
                         Notification.success({
-                            title: ' Thành công',
-                            message: ' Thành công',
+                            title: 'Success',
+                            message: 'Success',
                             type: 'success',
                         });
                         loading.close();

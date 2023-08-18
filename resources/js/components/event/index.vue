@@ -55,14 +55,14 @@
                    >
                 </el-table-column>
                 <el-table-column
-                    label="Thời gian" width="180"
+                    label="Status" width="180"
                 >
                     <template slot-scope="scope">
                         <el-tag type="info" v-if="new Date(scope.row.end_at) < new Date()" effect="dark">
-                            Hết Hạn
+                            Expired
                         </el-tag>
                         <el-tag type="danger" v-else effect="dark">
-                            Còn Hạn
+                            Enable
                         </el-tag>
                     </template>
                 </el-table-column>
@@ -114,14 +114,6 @@
                                     {{ scope.row.user_get_tickets.length}}&nbsp;<i class="el-icon-s-custom"></i>
                                 </el-button>
                         </el-tooltip>
-<!--                            <el-tooltip class="item" effect="dark" content="Lấy mã QR" placement="top">-->
-<!--                        <el-button-->
-<!--                            size="mini"-->
-<!--                            type="danger"-->
-<!--                            @click="handleDelete(scope.$index, scope.row)">-->
-<!--                            <i class="el-icon-lock"></i>-->
-<!--                        </el-button>-->
-<!--                            </el-tooltip>-->
                     </template>
                 </el-table-column>
             </el-table>
@@ -307,7 +299,7 @@ export default {
             rules: {
                 banner_url: [{
                     required: true,
-                    message: 'Hãy upload ảnh',
+                    message: 'Image',
                     trigger: ['change']
                 }],
                 name: [{
@@ -355,8 +347,8 @@ export default {
                 }
             axios.post(this.link_cws+'/api/events/change-status-detail', rawData).then(e => {
                 Notification.success({
-                    title: ' Thành công',
-                    message: ' Thành công',
+                    title: 'Success',
+                    message: 'Success',
                     type: 'success',
                 });
                 this.list_data()
@@ -515,8 +507,8 @@ export default {
                 }
             axios.post(this.link_cws+'/api/events/change-status', rawData).then(e => {
                 Notification.success({
-                    title: ' Thành công',
-                    message: ' Thành công',
+                    title: 'Success',
+                    message: 'Success',
                     type: 'success',
                 });
                 this.list_data()
@@ -533,16 +525,16 @@ export default {
             });
         },
         handleDelete(scope, row){
-            this.$confirm('Bạn có muốn xóa không ?', 'Warning', {
+            this.$confirm('Not delete?', 'Warning', {
                 confirmButtonText: 'OK',
-                cancelButtonText: 'Hủy',
+                cancelButtonText: 'Cancel',
                 type: 'warning'
             }).then(() => {
                 axios.delete(this.link_cws+'/api/events/'+row.id, ).then(e => {
                     this.list_data()
                     Notification.success({
-                        title: ' Thành công',
-                        message: ' Block Thành công',
+                        title: 'Success',
+                        message: ' Block Success',
                         type: 'success',
                     });
                 }).catch((_) => {

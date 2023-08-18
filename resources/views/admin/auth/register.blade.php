@@ -30,18 +30,15 @@
                         <div>
                             <div class="mb-5">
                                 <h1 class="display-3 text-white">
-                                    PLATS NETWORK
+                                    Plats
                                 </h1>
                                 <h1 class="display-3 text-white">
-                                    Action-hub for Business
+                                    Cardano Event Platform
                                 </h1>
                             </div>
                             <p class="h6 text-white lh-1-5 mb-5">
-                                A decentralized Action Hub for business, which provides all necessary tools and libraries for Clients to create their marketing campaigns with specific tasks
+                                A comprehensive event platform that facilitates seamless ADA rewards and sponsorships within the Cardano Ecosystem
                             </p>
-                            <div class="mb-5">
-                                <a class="btn btn-lg btn-outline-white" href="#">Learn More</a>
-                            </div>
                         </div>
                     </div>
                 </div>
