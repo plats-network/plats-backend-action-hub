@@ -1,4 +1,4 @@
-<div id="tabwizard4" class="wizard-tab">
+<div id="tabwizard5" class="wizard-tab">
     <div>
         <div class="text-center mb-4">
             <h5>Quiz</h5>
@@ -132,7 +132,7 @@
                                             data-id="{{$itemQuiz->id}}"
                                             class="btnDeleteImageQuiz btn btn-danger btn-rounded waves-effect waves-light mb-2 me-2"
                                             onclick="deleteItemQuiz({{$itemQuiz->id}})">
-                                            <i class="mdi mdi-delete me-1"></i> Delete</button>
+                                            <i class="mdi mdi-delete me-1"></i> Remove</button>
                                     </div>
                                 </div>
                             </div>
@@ -148,7 +148,7 @@
                             id="btnAddItemQuiz"
                             type="button"
                             class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2">
-                            <i class="mdi mdi-plus me-1"></i> Thêm câu hỏi</button>
+                            <i class="mdi mdi-plus me-1"></i> Add More</button>
                     </div>
                 </div>
                 <hr>

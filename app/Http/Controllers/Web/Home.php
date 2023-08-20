@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Models\{Task, User, TravelGame};
+use App\Models\{Task, User, TravelGame, Sponsor};
 use Illuminate\Support\Str;
 use App\Models\Event\{
     EventUserTicket,
@@ -27,6 +27,7 @@ class Home extends Controller
         private TaskEvent $eventModel,
         private Task $task,
         private User $user,
+        private Sponsor $sponsor,
         private UserJoinEvent $taskDone,
         private TaskEventDetail $eventDetail,
         private EventUserTicket $eventUserTicket,
@@ -58,13 +59,16 @@ class Home extends Controller
         try {
             $user = Auth::user();
             $event = $this->taskService->find($id);
+            $sponsor = $this->sponsor->whereTaskId($id)->first();
+            // dd($sponsor);
         } catch (\Exception $e) {
             notify()->error('Error show event');
         }
 
         return view('web.events.show', [
             'event' => $event,
-            'user' => $user
+            'user' => $user,
+            'sponsor' => $sponsor
         ]);
     }
 

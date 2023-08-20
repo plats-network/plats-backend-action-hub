@@ -1,4 +1,4 @@
-<div id="tabwizard2" class="wizard-tab">
+<div id="tabwizard3" class="wizard-tab">
     <div class="text-center mb-4">
         <h5>Booths</h5>
         <p class="card-title-desc text-danger">
@@ -14,8 +14,8 @@
             <input type="hidden" name="booths[task_id]" id="booths[task_id]" value="{{$event->id}}">
             <div class="col-lg-9">
                 <div class="mb-3">
-                    <label for="booths[name]" class="form-label">Name Booth</label>
-                    <input type="text" class="form-control" value="{{$booths->name}}" placeholder="Booth Name" id="booths[name]" name="booths[name]" />
+                    <label for="booths[name]" class="form-label">Name</label>
+                    <input type="text" class="form-control" value="{{$booths->name}}" placeholder="Name" id="booths[name]" name="booths[name]" />
                     <div class="valid-feedback"></div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="mb-3">
-                    <label for="booths[description]" class="form-label">Mô tả Booth</label>
+                    <label for="booths[description]" class="form-label">Description</label>
                     <div id="editor3"></div>
                     <input type="hidden" class="form-control" id="booths-description" name="booths[description]" value="{{$booths->description}}" />
 
@@ -97,10 +97,10 @@
                     </tbody>
                 </table>
             @else
-                <div class="listRowBooth" id="listRowBooth">
+                <div class="listRowBooth" id="listRowBooth" style="padding-left: 150px;">
                     @foreach($booths->detail as $k => $boothDetail)
-                        <hr>
                         <div class="mb-3 row itemBoothDetail" id="itemBooth{{$boothDetail->id}}">
+                            <hr>
                             <input
                                 type="hidden"
                                 name="booths[detail][{{$boothDetail->id}}][id]"
@@ -114,7 +114,7 @@
                             <label class="col-sm-12 col-form-label">Booth {{$k+1}} <span class="text-danger" style="font-size: 11px;">(Chú ý: Những trường có dấu * bắt buộc phải nhập)</span></label>
                             <div class="row">
                                 <div class="col-lg-4">
-                                    <label class="col-form-label">Chọn travel game</label>
+                                    <label class="col-form-label">Travel game</label>
                                     <select class="form-select" name="booths[detail][{{$boothDetail->id}}][travel_game_id]">
                                         @foreach($travelGames as $game)
                                             <option value="{{$game->id}}" @if($boothDetail->travel_game_id == $game->id) selected @endif>{{$game->name}}</option>
@@ -123,7 +123,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-4">
-                                <label class="col-form-label">Tên <span class="text-danger">(*)</span></label>
+                                <label class="col-form-label">Name <span class="text-danger">(*)</span></label>
                                 <input
                                     type="text"
                                     placeholder="Name"
@@ -133,7 +133,7 @@
                                     value="{{$boothDetail->name}}">
                             </div>
                             <div class="col-sm-4">
-                                <label class="col-form-label">Mô tả <span class="text-danger">(*)</span></label>
+                                <label class="col-form-label">Description <span class="text-danger">(*)</span></label>
                                 <input
                                     type="text"
                                     placeholder="Description"
@@ -152,7 +152,7 @@
                                     @if($boothDetail->is_required) checked @endif
                                     id="br_{{$boothDetail->id}}">
                                 <label class="form-check-label" for="br_{{$boothDetail->id}}">
-                                    Câu hỏi <span class="text-danger" style="font-size: 11px;">(Có/Không)</span>
+                                    Required <span class="text-danger" style="font-size: 11px;">(Yes/No)</span>
                                 </label>
                             </div>
                             <div class="col-sm-2 mt-5 mt-5">
@@ -164,26 +164,26 @@
                                     @if($boothDetail->is_question) checked @endif
                                     id="bq_{{$boothDetail->id}}">
                                 <label class="form-check-label" for="bq_{{$boothDetail->id}}">
-                                    Câu hỏi <span class="text-danger" style="font-size: 11px;">(Có/Không)</span>
+                                    Is quesion <span class="text-danger" style="font-size: 11px;">(Yes/No)</span>
                                 </label>
                             </div>
 
                             <div id="b-{{$boothDetail->id}}" class="{{$boothDetail->is_question ? '' : 'd-none'}}">
                                 <div class="row mt-1">
                                     <div class="col-sm-12">
-                                        <label class="form-check-label">Câu hỏi</label>
+                                        <label class="form-check-label">Quesion</label>
                                         <input
                                             type="text"
                                             class="form-control"
                                             id="booths[detail][{{$boothDetail->id}}][question]"
                                             name="booths[detail][{{$boothDetail->id}}][question]"
-                                            placeholder="Câu hỏi"
+                                            placeholder="Quesion"
                                             value="{{$boothDetail->is_question}}">
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-sm-4">
-                                        <label class="form-check-label">Đáp án 1</label>
+                                        <label class="form-check-label">Answer 1</label>
                                         <input
                                             type="text"
                                             class="form-control"
@@ -205,7 +205,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-4">
-                                        <label class="form-check-label">Đáp án 2</label>
+                                        <label class="form-check-label">Answer 2</label>
                                         <input
                                             type="text"
                                             class="form-control"
@@ -229,7 +229,7 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-sm-4">
-                                        <label class="form-check-label">Đáp án 3</label>
+                                        <label class="form-check-label">Answer 3</label>
                                         <input
                                             type="text"
                                             class="form-control"
@@ -250,7 +250,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-4">
-                                        <label class="form-check-label">Đáp án 4</label>
+                                        <label class="form-check-label">Answer 4</label>
                                         <input
                                             type="text"
                                             class="form-control"
@@ -268,7 +268,7 @@
                                             @if($boothDetail->is_a4) checked @endif
                                             id="bis_a4_{{$boothDetail->id}}">
                                         <label class="form-check-label" for="bis_a4_{{$boothDetail->id}}">
-                                            Chọn đúng
+                                            Yes/No
                                         </label>
                                     </div>
                                 </div>
@@ -276,11 +276,7 @@
 
                             <div class="col-sm-12 text-right">
                                 <div class="col-auto">
-                                    <button
-                                        type="button"
-                                        data-id="{{$boothDetail->id}}"
-                                        onclick="deleteImageReform({{$boothDetail->id}})"
-                                        class="btn btn-danger mb-3 btnDeleteImageBooth">Xoá</button>
+                                    <button type="button" data-id="{{$boothDetail->id}}" class="btn btn-danger mb-3 bRemove">Remove</button>
                                 </div>
                             </div>
                         </div>
@@ -290,7 +286,7 @@
                 <div class="row mt-3">
                     <div class="d-flex flex-row-reverse">
                         <div class="p-2">
-                            <button id="btnAddItemBooth" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Thêm</button>
+                            <button id="btnAddItemBooth" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add More</button>
                         </div>
                     </div>
                     <hr>

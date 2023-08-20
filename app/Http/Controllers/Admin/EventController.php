@@ -10,7 +10,7 @@ use App\Models\Event\{
     TaskEventReward, EventUserTicket
 };
 use App\Models\Quiz\Quiz;
-use App\Models\{Task, TaskGallery, TaskGroup, TaskGenerateLinks, TravelGame};
+use App\Models\{Task, TaskGallery, TaskGroup, TaskGenerateLinks, TravelGame, Sponsor, SponsorDetail};
 use App\Services\Admin\{EventService, TaskService};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +24,8 @@ class EventController extends Controller
         private EventService $eventService,
         private TaskService  $taskService,
         private Task $task,
+        private Sponsor $sponsor,
+        private SponsorDetail $sponsorDetail,
         private TravelGame $travelGame,
         private TaskEventDetail $taskEventDetail,
         private EventUserTicket $eventUserTicket,
@@ -172,6 +174,15 @@ class EventController extends Controller
                 'message' => 'success',
             ], 200);
         }
+
+        if ($type == 4) {
+            return response()->json([
+                'code' => 200,
+                'status' => 200,
+                'html' => view('cws.event._template.item_sponsor', $dataView)->render(),
+                'message' => 'success',
+            ], 200);
+        }
     }
 
     /**
@@ -197,7 +208,10 @@ class EventController extends Controller
         $taskGallery = TaskGallery::where('task_id', $id)->pluck('url_image');
         $booths = TaskEvent::where('task_id', $id)->with('detail')->where('type', 1)->first();
         $sessions = TaskEvent::where('task_id', $id)->with('detail')->where('type', 0)->first();
+        $sponsor = $this->sponsor->whereTaskId($id)->first();
+
         $taskEventDiscords = $task->taskEventDiscords;
+
         if ($taskEventDiscords == null) {
             $taskEventDiscords = new EventDiscords();
         }
@@ -214,6 +228,10 @@ class EventController extends Controller
             $booths->type = 1;
         }
 
+        if (!$sponsor) {
+            $sponsor = $this->sponsor;
+        }
+
         $quiz = [];
         $image = [];
         $task['group_tasks'] = $taskGroup;
@@ -221,6 +239,7 @@ class EventController extends Controller
         $task['booths'] = $booths;
         $task['sessions'] = $sessions;
         $task['quiz'] = $quiz;
+        $task['sponsor'] = $sponsor;
 
         $activeTab = $request->get('tab') ?? '0';
         //Is preview
@@ -232,6 +251,7 @@ class EventController extends Controller
             'sessions' => $sessions,
             'booths' => $booths,
             'quiz' => $quiz,
+            'sponsor' => $sponsor,
             'taskEventSocials' => $taskEventSocials,
             'taskEventDiscords' => $taskEventDiscords,
             'group_tasks' => $taskGroup,
@@ -254,6 +274,7 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+
         try {
             $inputAll = $request->all();
             $inputAll['type'] = 1;
@@ -300,31 +321,24 @@ class EventController extends Controller
 
         $taskGroup = TaskGroup::where('task_id', $id)->pluck('group_id');
         $taskGallery = TaskGallery::where('task_id', $id)->pluck('url_image');
-
         $booths = TaskEvent::where('task_id', $id)->with('detail')->where('type', 1)->first();
-
         $sessions = TaskEvent::where('task_id', $id)->with('detail')->where('type', 0)->first();
-        //taskEventDiscords EventDiscords
-        /** @var EventDiscords $taskEventDiscords */
-        $taskEventDiscords = $task->taskEventDiscords;
-        //Check if $taskEventDiscords is null then create new EventDiscords
-        if ($taskEventDiscords == null) {
+        $sponsor = $this->sponsor->whereTaskId($id)->first();
+        // dd($sponsor);
 
+        $taskEventDiscords = $task->taskEventDiscords;
+        if ($taskEventDiscords == null) {
             $taskEventDiscords = new EventDiscords();
             $taskEventDiscords->task_id = $id;
             $taskEventDiscords->save();
         }
-        //taskEventSocials EventSocial
-        /** @var EventSocial $taskEventSocials */
         $taskEventSocials = $task->taskEventSocials;
-        //Check if $taskEventSocials is null then create new EventSocial
         if ($taskEventSocials == null) {
             $taskEventSocials = new EventSocial();
             $taskEventSocials->task_id = $id;
             $taskEventSocials->save();
         }
 
-        //Check if $sessions is null then create new
         if ($sessions == null) {
             $sessions = new TaskEvent();
             $sessions->task_id = $id;
@@ -332,13 +346,17 @@ class EventController extends Controller
             $sessions->save();
         }
 
-
-        //Check if $booths is null then create new
         if ($booths == null) {
             $booths = new TaskEvent();
             $booths->task_id = $id;
             $booths->type = 1;
             $booths->save();
+        }
+
+        if (!$sponsor) {
+            $sponsor = new Sponsor();
+            $sponsor->task_id = $id;
+            $sponsor->save();
         }
 
         $quiz = Quiz::where('task_id', $id)->with('detail')->get();
@@ -357,24 +375,19 @@ class EventController extends Controller
         $task['booths'] = $booths;
         $task['sessions'] = $sessions;
         $task['quiz'] = $quiz;
+        $task['sponsor'] = $sponsor;
 
         $activeTab = $request->get('tab') ?? '0';
         //Is preview
         $isPreview = $request->get('preview') ?? '0';
         $travelGames = $this->travelGame->whereStatus(true)->get();
 
-        // Gen link share
-        // $eventCount = $this->eventShare->whereTaskId($task->id)->count();
-
-        // if ($eventCount <= 0) {
-        //     // dd($eventCount);
-        // }
-
         $data = [
             'event' => $task,
             'sessions' => $sessions,
             'booths' => $booths,
             'quiz' => $quiz,
+            'sponsor' => $sponsor,
             'taskEventSocials' => $taskEventSocials,
             'taskEventDiscords' => $taskEventDiscords,
             'group_tasks' => $taskGroup,

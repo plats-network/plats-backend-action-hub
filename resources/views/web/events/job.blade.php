@@ -25,6 +25,9 @@
                                 padding: 10px;
                                 margin-top: 20px;
                             }
+                            .swal2-title {
+                                margin: -32px 13px;
+                            }
                         </style>
                         <p class="text-center desc">
                             Chú ý: Những nhiệm vụ nào có dấu <span class="text-danger">(*)</span> thì bắt buộc phải qua khu vực đó quét QR mới nhận được mã số quay thưởng.
@@ -34,7 +37,7 @@
                         </p>
                     </div>
                     <div class="tab-content" id="conferScheduleTabContent">
-                        <div class="tab-pane fade show" id="step-one" role="tabpanel" aria-labelledby="session-tab">
+                        <div class="tab-pane fade show in active" id="step-one" role="tabpanel" aria-labelledby="session-tab">
                             <div class="timeline-container">
                                 @foreach($groupSessions as $itemDatas)
                                     <hr style="margin-bottom: 20px;">

@@ -3,7 +3,7 @@
 @section('content')
     <section class="quiz">
         <div class="item">
-            <h3>
+            <h3 id="taskQ" data-url="{{route('web.jobEvent', ['id' => $task_code])}}">
                 {{$detail->question}}
                 <p class="text-danger">Vui lòng chọn 1 đáp án.</p>
             </h3>

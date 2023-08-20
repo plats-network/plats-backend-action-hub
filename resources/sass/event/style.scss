@@ -5,6 +5,17 @@
 @import "menu";
 @import "timeline";
 
+.swal2-popup.swal2-toast .swal2-title {
+  margin: -35px 10px!important;
+}
+
+body.swal2-toast-shown .swal2-container.swal2-top-end,
+body.swal2-toast-shown .swal2-container.swal2-top-right {
+  inset: 0;
+  margin: 0 auto;
+  display: block;
+}
+
 .icon-classy-nav-down-arrow {
   font-family: "classyfonts";
   speak: none;
@@ -2321,7 +2332,7 @@
   .post-author-widget {
     position: relative;
     z-index: 1;
-    padding: 45px 30px;
+    padding: 20px 30px;
     border-radius: 10px;
     box-shadow: 0px 8px 27px 0px rgba(90, 111, 120, 0.15);
     text-align: center;
@@ -2331,8 +2342,127 @@
       background-color: #187fe2;
       color: #fff;
     }
+
+
+    .sponsor {
+      // width: 200px;
+      display: block;
+
+      .note {
+        padding: 10px;
+        background-color: #ffe0f6;
+        border-radius: 10px;
+      }
+
+      h3 {
+        font-size: 20px;
+        padding-top: 20px;
+        text-align: left;
+
+        &.title {
+          font-size: 17px;
+          font-weight: bold;
+          padding-top: 20px;
+        }
+      }
+
+      p {
+        text-align: left;
+        line-height: 20px;
+        padding-top: 5px;
+        color: #333;
+
+        &.descs {
+          min-height: 100px;
+          max-height: 150px;
+          overflow: auto;
+          padding-bottom: 5px;
+        }
+      }
+
+      .buget {
+        height: 185px;
+        margin-top: 10px;
+        border-radius: 5px;
+        border: 1px solid #D1D1D1;
+
+        h3 {
+          font-size: 17px;
+          text-align: center;
+        }
+
+        button {
+          padding: 5px 10px;
+          background-color: #187fe2;
+          color: #fff;
+          border-radius: 10px;
+          margin-top: 15px;
+        }
+
+        .row {
+          margin-left: 10px;
+          margin-right: 10px;
+
+          .col-md-4 {
+            width: 20px;
+          }
+          .col-md-8 {
+            width: 80%;
+          }
+        }
+      }
+
+      .package-item {
+        margin-top: 20px;
+        padding-top: 20px;
+        height: 300px;
+        border-radius: 10px;
+        border: 1px solid #D1D1D1;
+        font-size: 15px;
+        overflow: auto;
+
+        .item {
+          padding: 5px 20px;
+          background-color: #fff;
+          cursor: pointer;
+
+          p {
+            padding-bottom: 10px;
+            span {
+              &.price {
+                padding-left: 20px;
+                color: red;
+                font-size: 20px;
+              }
+            }
+
+            &.desc {
+              padding-top: 5px;
+              font-size: 12px;
+              color: #555;
+            }
+          }
+
+          h3 {
+            font-size: 14px;
+            padding-top: 5px;
+
+          }
+        }
+      }
+    }
   }
 }
+
+#showModal {
+  margin-bottom: 20px;
+
+  @media only screen and (max-width: 767px) {
+    display: none;
+  }
+}
+
+
 .single-recent-post-area {
   position: relative;
   z-index: 1;

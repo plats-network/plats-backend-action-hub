@@ -57,14 +57,13 @@
                                     </ul>
                                 </div>
                             @endif
-
                             {{-- Step --}}
                             @include('cws.event._step')
 
                             <!-- wizard-nav -->
-                            <div  id="tabwizard0" class="wizard-tab">
+                            <div id="tabwizard0" class="wizard-tab">
                                 <div class="text-center mb-4">
-                                    <h5>Event Details</h5>
+                                    <h5>Overview</h5>
                                     <p class="card-title-desc text-danger">(Vui lòng nhập tất cả các ô có dấu *)</p>
                                 </div>
                                 <div>
@@ -170,6 +169,12 @@
                                     </div>
                                 </div>
                             </div>
+
+                            @include('cws.event.forms._sponsor', [
+                                'sessions' => $sessions,
+                                'isPreview' => $isPreview,
+                                'event' => $event
+                            ])
 
                             <!-- Sessiom -->
                             @include('cws.event.forms._session', [
@@ -435,6 +440,10 @@
                 $('#end_at').flatpickr(option);
             }
 
+            if($('.date').length > 0) {
+                $('.date').flatpickr(option);
+            }
+
             var fileAvatarInit = null;
             var fileSlideInit = null;
             @if($event->banner_url)
@@ -612,7 +621,7 @@
             });
 
             /*Delete Image Row*/
-            $(document).on('click', '.btnDeleteImage', function (event) {
+            $(document).on('click', '.sRemove', function (event) {
                 event.preventDefault();
                 var id = $(this).attr('data-id');
                 //Swal confirm
@@ -627,8 +636,7 @@
                     cancelButtonText: '{{__('Cancel')}}',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#itemImage' + id).hide();
-                        //sessionsFlagDelete ID set value 1
+                        $('#itemSession' + id).hide();
                         $('#sessionsFlagDelete' + id).val(1);
                     }
                 });
@@ -644,8 +652,9 @@
                     $('#s-'+id).addClass('d-none');
                 }
             });
+            // End Session
 
-            /*Booth*/
+            /*Start Booth*/
             $(document).on('click', '#btnAddItemBooth', function (event) {
                 var rowCount = $('.itemBoothDetail').length;
                 if(rowCount >= 20){
@@ -676,18 +685,8 @@
                 });
             });
 
-            $(document).on('change', '.bCheck', function (event) {
-                var id = $(this).data('id');
-
-                if (event.currentTarget.checked) {
-                    $('#b-'+id).removeClass('d-none');
-                } else {
-                    $('#b-'+id).addClass('d-none');
-                }
-            });
-
             /*Delete Image Row*/
-            $(document).on('click', '.btnDeleteImageBooth', function (event) {
+            $(document).on('click', '.bRemove', function (event) {
                 event.preventDefault();
                 var id = $(this).attr('data-id');
                 //Swal confirm
@@ -708,6 +707,66 @@
                 });
 
             });
+
+            $(document).on('change', '.bCheck', function (event) {
+                var id = $(this).data('id');
+
+                if (event.currentTarget.checked) {
+                    $('#b-'+id).removeClass('d-none');
+                } else {
+                    $('#b-'+id).addClass('d-none');
+                }
+            });
+            // End Booth
+
+            // Sponsor
+            $(document).on('click', '#btnAddSponsor', function (event) {
+                var flag_check = Math.floor(Math.random() * 10000);
+                var rowCount = $('.itemSponsorDetail').length;
+                $.ajax({
+                    url: '{{route('cws.eventTemplate')}}' + '?type=4&flag_check=' + flag_check + '&inc=' + rowCount,
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        _token: _token,
+                        id: flag_check
+                    },
+                    success: function (data) {
+                        console.log(data.html);
+                        if (data.status == 200) {
+                            $('#listSponsor').append(data.html);
+                            flag_check++;
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+
+            /*Delete Image Row*/
+            $(document).on('click', '.spRemove', function (event) {
+                event.preventDefault();
+                var id = $(this).attr('data-id');
+                //Swal confirm
+                Swal.fire({
+                    title: '{{__('Are you sure?')}}',
+                    text: '{{__('You will not be able to recover this imaginary file!')}}',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '{{__('Yes, delete it!')}}',
+                    cancelButtonText: '{{__('Cancel')}}',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#itemSponsor' + id).hide();
+                        $('#sponsorFlagDelete' + id).val(1);
+                    }
+                });
+
+            });
+            // End sponsor
 
             /*Quiz*/
             $(document).on('click', '#btnAddItemQuiz', function (event) {
@@ -841,12 +900,8 @@
                     });
                     isValid = false;
                 }
-                //Check address input is empty
+
                 if($('#address').val() == '') {
-                    //alert('Please input address');
-                    //Force focus input
-                    //$('#address').focus();
-                    //isValid = false;
                 }
 
             }
@@ -866,24 +921,19 @@
 
         //Check if edit not alow click
         @if($isPreview || $event->id)
-            //step-icon onclick show tab
             $(document).on('click', '.step-icon', function (event) {
                 event.preventDefault();
                 var id = $(this).attr('data-step');
-                //console.log(id);
-
+                // alert(id);
                 showTab(id);
-                //Display tab with id tabwizard-index
-
                 $('#tabwizard0').css('display', 'none');
                 $('#tabwizard' + id).css('display', 'block');
-                //Hide other tab
-                for (var i = 1; i <= 4; i++) {
+
+                for (var i = 1; i <= 5; i++) {
                     if (i != id) {
                         $('#tabwizard' + i).css('display', 'none');
                     }
                 }
-                //fixStepIndicator(id);
             });
         @endif
     </script>

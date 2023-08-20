@@ -19,6 +19,7 @@ class HomeController extends Controller
 
     public function gameSession(Request $request, $code)
     {
+        dd(2323);
         try {
             $taskEvent = $this->taskEvent
                 ->whereCode($code)
@@ -47,6 +48,7 @@ class HomeController extends Controller
             $taskEvent = $this->taskEvent
                 ->whereCode($code)
                 ->firstOrFail();
+            // dd($taskEvent);
 
             $events = $this->eventUserTicket
                 ->whereTaskId($taskEvent->task_id)

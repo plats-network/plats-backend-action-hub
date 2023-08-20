@@ -29,11 +29,43 @@ $(document).ready(function() {
 
   $('.aws').on('click', function(e) {
     var id = $(this).data('id'),
-      result = $(this).data('result');
+      result = $(this).data('result'),
+      url = $('#taskQ').data('url');
 
-      // alert(result);
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    });
+
+    if (result == 1) {
+      Toast.fire({
+        icon: 'success',
+        title: 'Chính xác 😀'
+      })
+    } else {
+      Toast.fire({
+        icon: 'error',
+        title: 'Sai rồi 😥'
+      })
+    }
+
+    setTimeout(function(e) {
+      window.location.replace(url);
+    }, 1500);
   });
 
+  $('.price-package').on('click', function(e) {
+    var price = $(this).data('price');
+    $('#amount').val(price);
+    $('#amount').focus();
+  });
 
   $("#infoForm").validate({
     onfocusout: false,

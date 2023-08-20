@@ -41,6 +41,10 @@ body[data-layout-mode="dark"] h6 {
   }
 }
 
+.fs-11 {
+  font-size: 11px!important;
+}
+
 .navbar-header {
   display: -webkit-box;
   display: -ms-flexbox;

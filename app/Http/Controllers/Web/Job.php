@@ -145,10 +145,6 @@ class Job extends Controller
                 return redirect()->route('web.jobEvent', [
                     'id' => $task->code
                 ]);
-            } else {
-                return redirect()->route('web.jobEvent', [
-                    'id' => $task->code
-                ]);
             }
         } catch (\Exception $e) {
             notify()->error('Có lỗi xảy ra');
@@ -156,7 +152,8 @@ class Job extends Controller
         }
 
         return view('web.events.quiz', [
-            'detail' => $detail
+            'detail' => $detail,
+            'task_code' => $task->code
         ]);
     }
 
