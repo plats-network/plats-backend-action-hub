@@ -95,9 +95,6 @@ class EventService extends BaseService
                     $dataBaseTask->taskEventDiscords()->update($discordsUn, $discords['id']);
                 }
             }
-
-            // TaskGenerateLinks::where('task_id',$id)->delete();
-            // $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -119,7 +116,7 @@ class EventService extends BaseService
 
             $data['banner_url'] =  isset($data['thumbnail']) ? $data['thumbnail']['path'] : '';
             $data['creator_id'] = Auth::user()->id;
-            $data['status'] = 2;
+            $data['status'] = 0;
             $data['slug'] = $request->input('name');
             $data['max_job'] = 0;
             $data['type'] = EVENT;
@@ -172,7 +169,7 @@ class EventService extends BaseService
             $sponsor = Sponsor::find($sponsors['id']);
 
             if (!$sponsor) {
-                return;
+                return true;
             }
 
             $sponsor->update([
@@ -188,40 +185,57 @@ class EventService extends BaseService
                     if (isset($item['is_delete']) && $item['is_delete']) {
                         SponsorDetail::where('id', $item['id'])->delete();
                     } else {
-                        $detail = SponsorDetail::where('id', $item['id'])->update([
+                        if (empty($item['name'])) {
+                            SponsorDetail::where('id', $item['id'])->delete();
+                        } else {
+                            SponsorDetail::where('id', $item['id'])->update([
+                                'name' => $item['name'],
+                                'price' => (int)$item['price'],
+                                'description' => $item['description']
+                            ]);
+                        }
+                    }
+                } else {
+                    if (empty($item['name'])) {
+                        continue;
+                    } else {
+                        SponsorDetail::create([
+                            'sponsor_id' => $sponsors['id'],
                             'name' => $item['name'],
                             'price' => (int)$item['price'],
                             'description' => $item['description']
                         ]);
                     }
-                } else {
-                    SponsorDetail::create([
-                        'sponsor_id' => $sponsors['id'],
-                        'name' => $item['name'],
-                        'price' => (int)$item['price'],
-                        'description' => $item['description']
-                    ]);
+                }
+            }
+        } else {
+            if (empty($sponsors['name'])) {
+                return true;
+            } else {
+                $sponsor = Sponsor::create([
+                    'task_id' => $task->id,
+                    'name' => $sponsors['name'],
+                    'price_type' => (int)$sponsors['price_type'],
+                    'price' => (int)$sponsors['price'],
+                    'description' => $sponsors['description'],
+                    'end_at' => isset($sponsors['end_at']) ? $sponsors['end_at'] : null,
+                ]);
+
+                foreach($sponsors['detail'] as $item) {
+                    if (empty($item['name'])) {
+                        continue;
+                    } else {
+                        SponsorDetail::create([
+                            'sponsor_id' => $sponsor->id,
+                            'name' => $item['name'],
+                            'price' => (int)$item['price'],
+                            'description' => $item['description']
+                        ]);
+                    }
+
                 }
             }
 
-        } else {
-            $sponsor = Sponsor::create([
-                'task_id' => $task->id,
-                'name' => $sponsors['name'],
-                'price_type' => (int)$sponsors['price_type'],
-                'price' => (int)$sponsors['price'],
-                'description' => $sponsors['description'],
-                'end_at' => isset($sponsors['end_at']) ? $sponsors['end_at'] : null,
-            ]);
-
-            foreach($sponsors['detail'] as $item) {
-                SponsorDetail::create([
-                    'sponsor_id' => $sponsor->id,
-                    'name' => $item['name'],
-                    'price' => (int)$item['price'],
-                    'description' => $item['description']
-                ]);
-            }
         }
     }
 

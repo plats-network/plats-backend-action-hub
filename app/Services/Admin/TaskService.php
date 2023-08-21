@@ -94,7 +94,7 @@ class TaskService extends BaseService
             });
         }
 
-        $this->builder->with('taskLocations','taskSocials','taskGalleries','taskGenerateLinks','taskEvents','userGetTickets')->orderBy('end_at', 'desc');
+        $this->builder->with('taskLocations','taskSocials','taskGalleries','taskGenerateLinks','taskEvents','userGetTickets')->orderBy('created_at', 'desc');
         return $this->endFilter();
     }
 

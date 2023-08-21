@@ -46,6 +46,7 @@ class EventController extends Controller
             'limit' => $limit,
             'type' => EVENT
         ]);
+
         foreach($events as $event) {
             if ($event->code == null || $event->code == '') {
                 $event->update(['code' => genCodeTask()]);

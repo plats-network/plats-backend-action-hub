@@ -31,10 +31,10 @@
                                     @php
                                         $statuses = [
                                             '' => 'Selected',
-                                            0 => 'Default',
-                                            1 => 'Public',
-                                            2 => 'Draft',
-                                            99 => 'Deleted'
+                                            '0' => 'Default',
+                                            '1' => 'Public',
+                                            '2' => 'Draft',
+                                            '99' => 'Deleted'
                                         ];
                                     @endphp
                                     <select name="status" class="form-select">
