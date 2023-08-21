@@ -4,7 +4,7 @@
         <h3 class="title mb-3">Sign Up</h3>
         <p class="subtitle">Already have an account? <a href="{{route('web.formLogin')}}">Sign In</a></p>
 
-        @include('web.auth._social')
+        {{-- @include('web.auth._social') --}}
         <x-form::open action="{{ route('web.signUp') }}" method="POST">
             @include('layouts.flash')
 
@@ -18,7 +18,6 @@
                     id="name"
                     required />
                 <label for="email"> <b>Email</b> <span class="text-danger">*</span></label>
-
                 <input
                     type="email"
                     name="email"
@@ -33,17 +32,17 @@
                             type="password"
                             name="password"
                             placeholder="********"
-                            id="password"
+                            id="psw"
                             class="w-100"
                             required />
                     </div>
                     <div class="col-md-6">
-                        <label for="psw"><b>Password Confirmation</b> <span class="text-danger">*</span></label>
+                        <label for="re-psw"><b>Password Confirmation</b> <span class="text-danger">*</span></label>
                         <input
                             type="password"
                             name="password_confirmation"
                             placeholder="********"
-                            id="password_confirmation"
+                            id="re-psw"
                             class="w-100"
                             required />
                     </div>

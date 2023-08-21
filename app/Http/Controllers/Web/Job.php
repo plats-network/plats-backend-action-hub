@@ -14,7 +14,7 @@ use App\Models\Event\{
     UserJoinEvent,
     UserEvent,
 };
-use App\Models\{Task, User, TravelGame};
+use App\Models\{Task, User, TravelGame, Sponsor, SponsorDetail};
 use App\Services\CodeHashService;
 use Illuminate\Support\Str;
 
@@ -26,6 +26,8 @@ class Job extends Controller
         private TaskEvent $taskEvent,
         private UserJoinEvent $joinEvent,
         private Task $task,
+        private Sponsor $sponsor,
+        private SponsorDetail $sponsorDetail,
         private UserEvent $userEvent,
         private TravelGame $travelGame,
         private EventUserTicket $eventUserTicket,
@@ -187,6 +189,37 @@ class Job extends Controller
             'event' => $event,
             'travelSessions' => $travelSessions,
             'travelBooths' => $travelBooths
+        ]);
+    }
+
+    public function newSponsor(Request $request)
+    {
+        try {
+            $userId = Auth::user()->id;
+            $infoParams = $request->session()->get('sponsor-'.$userId);
+            if (!$request->session()->has('sponsor-'.$userId)) {
+                $request->session()->put('sponsor-'.$userId, [
+                    'task_id' => $request->input('event_id'),
+                    'type' => $request->input('type'),
+                    'amount' => $request->input('amount'),
+                    'detail_id' => $request->input('detail_id')
+                ]);
+                $infoParams = $request->session()->get('sponsor-'.$userId);
+            }
+
+            $event = $this->task->find($infoParams['task_id']);
+            if (!$event) { abort(404); }
+
+            $sponsor = $this->sponsor->whereTaskId($event->id)->first();
+            $detail = $this->sponsorDetail->find($infoParams['detail_id']);
+            // dd($detail);
+        } catch (\Exception $e) {
+            // dd(121);
+        }
+
+        return view('web.events.new_sponsor', [
+            'event' => $event,
+            'sponsor' => $sponsor,
         ]);
     }
 }

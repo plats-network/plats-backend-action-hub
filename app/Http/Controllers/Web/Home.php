@@ -60,7 +60,11 @@ class Home extends Controller
             $user = Auth::user();
             $event = $this->taskService->find($id);
             $sponsor = $this->sponsor->whereTaskId($id)->first();
-            // dd($sponsor);
+            $checkSponsor = session()->get('sponsor-'.optional($user)->id);
+
+            if ($request->session()->has('sponsor-' . optional($user)->id)) {
+               $request->session()->forget('sponsor-' . optional($user)->id);
+            }
         } catch (\Exception $e) {
             notify()->error('Error show event');
         }

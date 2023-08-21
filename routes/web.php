@@ -71,6 +71,9 @@ Route::middleware(['user_event'])->group(function ($r) {
     // Travel
     $r->get('info/{task_id}', [Job::class, 'getTravelGame'])->name('job.getTravelGame');
     $r->get('quiz/{code}', [Job::class, 'getJob'])->name('job.getJob');
+
+    // New sponsor
+    $r->get('sponsor/new', [Job::class, 'newSponsor'])->name('new.sponsor');
 });
 
 Route::get('/discord/login', [App\Http\Controllers\Web\Discord::class, 'getUserDiscord']);

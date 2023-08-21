@@ -4,7 +4,7 @@
           <h3 class="title mb-3"> Log in</h3>
           <p class="subtitle">Don't have an account? <a href="{{route('web.formSignup')}}"> Sign Up</a></p>
 
-          @include('web.auth._social')
+          {{-- @include('web.auth._social') --}}
 
             <x-form::open action="{{ route('web.login') }}">
               <div class="email-login">
@@ -21,7 +21,7 @@
                     type="password"
                     name="password"
                     placeholder="********"
-                    id="password"
+                    id="psw"
                     required />
               </div>
               <button class="cta-btn" type="submit">Sign In</button>

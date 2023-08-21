@@ -2391,12 +2391,16 @@ body.swal2-toast-shown .swal2-container.swal2-top-right {
           text-align: center;
         }
 
-        button {
+        button, a {
           padding: 5px 10px;
           background-color: #187fe2;
           color: #fff;
           border-radius: 10px;
           margin-top: 15px;
+
+          &.guest {
+            display: inline-block;
+          }
         }
 
         .row {

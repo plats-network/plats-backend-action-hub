@@ -62,9 +62,23 @@ $(document).ready(function() {
   });
 
   $('.price-package').on('click', function(e) {
-    var price = $(this).data('price');
+    var price = $(this).data('price'),
+      id = $(this).data('id');
     $('#amount').val(price);
+    $('#sponsorId').val(id);
     $('#amount').focus();
+  });
+
+  $(document).on('click', '#cSponsor', function (event) {
+      var type = $(this).data('type'),
+      amount = $('#amount').val(),
+      url = $(this).data('url'),
+      sponsor_id = $('#sponsorId').val(),
+      id = $(this).data('id');
+
+      setTimeout(function(e) {
+        window.location.replace(url + "?type="+type+"&amount="+amount+'&event_id='+id+'&detail_id='+sponsor_id);
+      }, 1000);
   });
 
   $("#infoForm").validate({

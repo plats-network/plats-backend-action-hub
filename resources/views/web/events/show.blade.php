@@ -46,7 +46,7 @@
                             <div class="author-content">
                                 <h5>{{optional($event->author)->name}}</h5>
                                 <span>Client Service</span>
-                                <p>OK</p>
+                                {{-- <p>OK</p> --}}
                             </div>
                         </div>
                     </div>
@@ -80,18 +80,28 @@
                                                 <div class="col-md-4">$</div>
                                                 <div class="col-md-8">
                                                     <input id="amount" class="form-control" type="text" name="price">
+                                                    <input id="sponsorId" type="hidden">
                                                 </div>
                                             </div>
-                                            <button type="submit">Continue</button>
+                                            @if (auth()->guest())
+                                                <a class="guest" href="{{route('web.formLogin', ['type' => 'sponsor', 'id' => $event->id])}}">Continue</a>
+                                            @else
+                                                <button
+                                                    type="submit"
+                                                    id="cSponsor"
+                                                    data-type="sponsor"
+                                                    data-id="{{$event->id}}"
+                                                    data-url="{{route('new.sponsor')}}">Continue</button>
+                                            @endif
                                         </div>
 
                                         <h3>Package</h3>
                                         <div class="package-item">
                                             @foreach($sponsor->sponsorDetails as $item)
-                                                <div class="item price-package" data-price="{{$item->price}}">
-                                                    <hr>
+                                                <div class="item price-package" data-price="{{$item->price}}" data-id="{{$item->id}}">
                                                     <p>{{$item->name}} <span class="price">${{$item->price}}</span></p>
                                                     <p class="desc">{{$item->description}}</p>
+                                                    <hr>
                                                 </div>
                                             @endforeach
                                         </div>
