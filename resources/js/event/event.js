@@ -1,5 +1,23 @@
 $(document).ready(function() {
   var confer_window = $(window);
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  });
+
+  $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });   
+
   confer_window.on('load', function() {
     $('#preloader').fadeOut('1000', function() {
       $(this).remove();
@@ -67,19 +85,62 @@ $(document).ready(function() {
     $('#amount').val(price);
     $('#sponsorId').val(id);
     $('#amount').focus();
+    $('#cSponsor').removeAttr('disabled');
+    $('#cSponsor').removeClass('disabled');
   });
 
   $(document).on('click', '#cSponsor', function (event) {
-      var type = $(this).data('type'),
-      amount = $('#amount').val(),
-      url = $(this).data('url'),
-      sponsor_id = $('#sponsorId').val(),
-      id = $(this).data('id');
+    var type = $(this).data('type'),
+    amount = $('#amount').val(),
+    url = $(this).data('url'),
+    sponsor_id = $('#sponsorId').val(),
+    id = $(this).data('id');
 
-      setTimeout(function(e) {
-        window.location.replace(url + "?type="+type+"&amount="+amount+'&event_id='+id+'&detail_id='+sponsor_id);
-      }, 1000);
+    setTimeout(function(e) {
+      window.location.replace(url + "?type="+type+"&amount="+amount+'&event_id='+id+'&detail_id='+sponsor_id);
+    }, 1000);
   });
+
+  $(document).on('click', '#subSponsor', function (event) {
+    $(this).attr('disabled', true);
+
+    var id = $(this).data('id'),
+      sponsor_id = $(this).data('sponsor-id'),
+      detail_id = $(this).data('detail-id'),
+      amount = $(this).data('amount'),
+      url = $(this).data('url'),
+      redir = $(this).data('redir'),
+      note = $(this).data('note');
+
+      $.ajax({
+          url :  url,
+          type: 'POST',
+          data: {
+            task_id: id, 
+            sponsor_id: sponsor_id, 
+            sponsor_detail_id: detail_id, 
+            amount: amount, 
+            note: note
+          },
+          success: function(data) {
+              Toast.fire({
+                icon: 'success',
+                title: 'Submit success 😀'
+              })
+
+              setTimeout(function(e) {
+                window.location.replace(redir);
+              }, 1500);
+          },
+          error: function() {
+            Toast.fire({
+              icon: 'error',
+              title: 'Errors 😥'
+            })
+          }
+      });
+  });
+  
 
   $("#infoForm").validate({
     onfocusout: false,

@@ -63,7 +63,7 @@
                                         <h3 class="title" title="{{$sponsor->name}}">{{$sponsor->name}}</h3>
                                         <p class="descs"  title="{{$sponsor->description}}">{{$sponsor->description}}</p>
                                         <div class="note">
-                                            <p class="price">Total Price: ${{$sponsor->price}}</p>
+                                            <p class="price">Total Price: ${{number_format($sponsor->price)}}</p>
                                             <p>Backers: 10+</p>
                                             <p>Est delivery: {{dateFormat($sponsor->end_at)}}</p>
                                         </div>
@@ -72,12 +72,12 @@
                                         <div class="buget">
                                             <h3>Make a pledge without a reward</h3>
                                             <div class="row text-left">
-                                                <div class="col-12">
+                                                <div class="col-12 text-left">
                                                     <label class="text-left" style="width: 100%; font-size: 12px;">Pledge amount</label>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4">$</div>
+                                                <div class="col-md-4" style="padding-top: 8px; padding-right: 20px;">$</div>
                                                 <div class="col-md-8">
                                                     <input id="amount" class="form-control" type="text" name="price">
                                                     <input id="sponsorId" type="hidden">
@@ -87,7 +87,9 @@
                                                 <a class="guest" href="{{route('web.formLogin', ['type' => 'sponsor', 'id' => $event->id])}}">Continue</a>
                                             @else
                                                 <button
+                                                    class="disabled"
                                                     type="submit"
+                                                    disabled
                                                     id="cSponsor"
                                                     data-type="sponsor"
                                                     data-id="{{$event->id}}"
@@ -98,7 +100,7 @@
                                         <h3>Package</h3>
                                         <div class="package-item">
                                             @foreach($sponsor->sponsorDetails as $item)
-                                                <div class="item price-package" data-price="{{$item->price}}" data-id="{{$item->id}}">
+                                                <div class="item price-package" data-price="{{number_format($item->price)}}" data-id="{{$item->id}}">
                                                     <p>{{$item->name}} <span class="price">${{$item->price}}</span></p>
                                                     <p class="desc">{{$item->description}}</p>
                                                     <hr>

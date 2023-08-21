@@ -400,13 +400,13 @@
                 },
                 success: function (data) {
                     if (data.message == 'OK') {
-                        $.notify("Chuyển trạng thái thành công.", "success");
+                        $.notify("Success.", "success");
                     } else {
-                        $.notify("Không thể thay đổi trạng thái.", "error");
+                        $.notify("Success", "error");
                     }
                 },
                 error: function (data) {
-                    // $.notify("Không thể thay đổi trạng thái.", "error");
+                    $.notify("Errors.", "error");
                 }
             });
         })

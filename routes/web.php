@@ -74,6 +74,7 @@ Route::middleware(['user_event'])->group(function ($r) {
 
     // New sponsor
     $r->get('sponsor/new', [Job::class, 'newSponsor'])->name('new.sponsor');
+    $r->post('sponsor/pay', [Job::class, 'saveSponsor'])->name('new.saveSponsor');
 });
 
 Route::get('/discord/login', [App\Http\Controllers\Web\Discord::class, 'getUserDiscord']);

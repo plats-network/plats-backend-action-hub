@@ -14,7 +14,7 @@ use App\Models\Event\{
     UserJoinEvent,
     UserEvent,
 };
-use App\Models\{Task, User, TravelGame, Sponsor, SponsorDetail};
+use App\Models\{Task, User, TravelGame, Sponsor, SponsorDetail, UserSponsor};
 use App\Services\CodeHashService;
 use Illuminate\Support\Str;
 
@@ -28,6 +28,7 @@ class Job extends Controller
         private Task $task,
         private Sponsor $sponsor,
         private SponsorDetail $sponsorDetail,
+        private UserSponsor $userSponsor,
         private UserEvent $userEvent,
         private TravelGame $travelGame,
         private EventUserTicket $eventUserTicket,
@@ -212,14 +213,40 @@ class Job extends Controller
 
             $sponsor = $this->sponsor->whereTaskId($event->id)->first();
             $detail = $this->sponsorDetail->find($infoParams['detail_id']);
-            // dd($detail);
+
+            if (!$sponsor || !$detail) { abort(404); }
         } catch (\Exception $e) {
-            // dd(121);
+            abort(404);
         }
 
         return view('web.events.new_sponsor', [
             'event' => $event,
             'sponsor' => $sponsor,
+            'detail' => $detail
         ]);
+    }
+
+    public function saveSponsor(Request $request)
+    {
+        try {
+            // $taskId = $request->input('task_id');
+            // $userId = Auth::user()->id;
+            // $this->userSponsor->create([
+            //     'user_id' => $userId,
+            //     'task_id' => $taskId,
+            //     'sponsor_id' => $request->input('sponsor_id'),
+            //     'sponsor_detail_id' => $request->input('sponsor_detail_id'),
+            //     'amount' => (int) $request->input('amount'),
+            //     'note' => $request->input('note'),
+            // ]);
+        } catch (\Exception $e) {
+            abort(404);
+        }
+
+        return response()->json([
+            'data' => [
+                'message' => 'Successful'
+            ]
+        ], 200);
     }
 }
