@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\Uuid;
+use App\Models\{SponsorDetail, Sponsor, Task, User};
 
 class UserSponsor extends Model
 {
@@ -31,4 +32,24 @@ class UserSponsor extends Model
         'amount',
         'note',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
+
+    public function sponsor()
+    {
+        return $this->belongsTo(Sponsor::class);
+    }
+
+    public function sponsorDetail()
+    {
+        return $this->belongsTo(SponsorDetail::class);
+    }
 }

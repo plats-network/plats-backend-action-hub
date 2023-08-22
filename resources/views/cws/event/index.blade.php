@@ -145,6 +145,14 @@
                                                     'icon' => 'user-plus'
                                                 ])
 
+                                                @if (isSponsor($event->id))
+                                                    @include('cws.actions.link', [
+                                                        'url' => route('cws.event.sponsor', ['id' => $event->id]),
+                                                        'label' => 'Sponsor',
+                                                        'icon' => 'stats'
+                                                    ])
+                                                @endif
+
                                                 {{-- <a
                                                     href="{{ route('cws.eventPreview', [
                                                             'id' => $event->id,

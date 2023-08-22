@@ -3,7 +3,7 @@
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-use App\Models\{Task, User};
+use App\Models\{Task, User, Sponsor};
 use App\Models\Event\{EventUserTicket, UserJoinEvent};
 use Carbon\Carbon;
 
@@ -164,5 +164,15 @@ if (!function_exists('dateFormat')) {
         }
 
         return Carbon::parse($dateTime)->format('Y-m-d H:i');
+    }
+}
+
+if (!function_exists('isSponsor')) {
+    function isSponsor($eventID) {
+        if (is_null($eventID) || $eventID == '') {
+            return false;
+        }
+
+        return Sponsor::whereTaskId($eventID)->exists();
     }
 }

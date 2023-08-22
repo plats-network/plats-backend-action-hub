@@ -10,7 +10,7 @@ use App\Models\Event\{
     TaskEventReward, EventUserTicket
 };
 use App\Models\Quiz\Quiz;
-use App\Models\{Task, TaskGallery, TaskGroup, TaskGenerateLinks, TravelGame, Sponsor, SponsorDetail};
+use App\Models\{Task, TaskGallery, TaskGroup, TaskGenerateLinks, TravelGame, Sponsor, SponsorDetail, UserSponsor};
 use App\Services\Admin\{EventService, TaskService};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +26,7 @@ class EventController extends Controller
         private Task $task,
         private Sponsor $sponsor,
         private SponsorDetail $sponsorDetail,
+        private UserSponsor $userSponsor,
         private TravelGame $travelGame,
         private TaskEventDetail $taskEventDetail,
         private EventUserTicket $eventUserTicket,
@@ -95,6 +96,32 @@ class EventController extends Controller
             'session' => $session,
             'booth' => $booth,
             'shares' => $shares,
+        ]);
+    }
+
+    public function sponsor(Request $request, $id)
+    {
+        try {
+            $sponsor = $this->sponsor
+                ->with(['sponsorDetails', 'userSponsors', 'task'])
+                ->whereTaskId($id)
+                ->first();
+            if (!$sponsor) {
+                abort(404);
+            }
+
+            $userSponsors = $this->userSponsor
+                ->with('user', 'sponsor', 'task', 'sponsorDetail')
+                ->where('sponsor_id', $sponsor->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } catch (\Exception $e) {
+            abort(404);
+        }
+
+        return view('cws.event.sponsor', [
+            'sponsor' => $sponsor,
+            'userSponsors' => $userSponsors
         ]);
     }
 

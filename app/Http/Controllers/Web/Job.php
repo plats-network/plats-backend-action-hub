@@ -193,6 +193,9 @@ class Job extends Controller
         ]);
     }
 
+    // New sponsor
+    // method: GET
+    // URL: /sponsor/new
     public function newSponsor(Request $request)
     {
         try {
@@ -226,21 +229,28 @@ class Job extends Controller
         ]);
     }
 
+    // Save sponsor
+    // method: POST
+    // URL: /sponsor/pay
     public function saveSponsor(Request $request)
     {
         try {
-            // $taskId = $request->input('task_id');
-            // $userId = Auth::user()->id;
-            // $this->userSponsor->create([
-            //     'user_id' => $userId,
-            //     'task_id' => $taskId,
-            //     'sponsor_id' => $request->input('sponsor_id'),
-            //     'sponsor_detail_id' => $request->input('sponsor_detail_id'),
-            //     'amount' => (int) $request->input('amount'),
-            //     'note' => $request->input('note'),
-            // ]);
+            $taskId = $request->input('task_id');
+            $userId = Auth::user()->id;
+            $this->userSponsor->create([
+                'user_id' => $userId,
+                'task_id' => $taskId,
+                'sponsor_id' => $request->input('sponsor_id'),
+                'sponsor_detail_id' => $request->input('sponsor_detail_id'),
+                'amount' => (int) $request->input('amount'),
+                'note' => $request->input('note'),
+            ]);
         } catch (\Exception $e) {
-            abort(404);
+            return response()->json([
+                'data' => [
+                    'message' => 'Error: ' . $e->getMessage()
+                ]
+            ], 500);
         }
 
         return response()->json([

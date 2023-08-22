@@ -64,6 +64,8 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->get('event-users/{id}', [User::class, 'listUsers'])->name('cws.event.users');
     $cws->get('gen-code/{id}', [EventController::class, 'genCode'])->name('cws.genCode');
     $cws->get('gen-link-social', [EventController::class, 'genLink'])->name('cws.event.genLink');
+    // Sponser
+    $cws->get('sponsor/{id}', [EventController::class, 'sponsor'])->name('cws.event.sponsor');
 });
 //Upload file
 /*Upload Single*/
