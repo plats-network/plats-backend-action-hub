@@ -10,6 +10,8 @@ use App\Models\Event\{
     TaskEventReward, EventUserTicket
 };
 use App\Models\Quiz\Quiz;
+use App\Models\Game\{MiniGame, SetupGame};
+
 use App\Models\{Task, TaskGallery, TaskGroup, TaskGenerateLinks, TravelGame, Sponsor, SponsorDetail, UserSponsor};
 use App\Services\Admin\{EventService, TaskService};
 use Illuminate\Http\Request;
@@ -31,6 +33,8 @@ class EventController extends Controller
         private TaskEventDetail $taskEventDetail,
         private EventUserTicket $eventUserTicket,
         private TaskGenerateLinks $eventShare,
+        private MiniGame $miniGame,
+        private SetupGame $setupGame,
     )
     {
         // code
@@ -96,6 +100,72 @@ class EventController extends Controller
             'session' => $session,
             'booth' => $booth,
             'shares' => $shares,
+        ]);
+    }
+
+    public function miniGame(Request $request, $id)
+    {
+        try {
+            // $event = $this->taskService->findEvent($id);
+            $session = $this->eventModel
+                ->whereType(TASK_SESSION)
+                ->whereTaskId($id)
+                ->first();
+            $booth = $this->eventModel
+                ->whereType(TASK_BOOTH)
+                ->whereTaskId($id)
+                ->first();
+
+            $travelSessionIds = $this->taskEventDetail
+                ->select('travel_game_id')
+                ->distinct()
+                ->where('task_event_id', $session->id)
+                ->pluck('travel_game_id')
+                ->toArray();
+
+            $travelBoothIds = $this->taskEventDetail
+                ->select('travel_game_id')
+                ->distinct()
+                ->where('task_event_id', $booth->id)
+                ->pluck('travel_game_id')
+                ->toArray();
+
+            foreach($travelSessionIds as $travelId) {
+                $checkExists = $this->miniGame
+                    ->where('task_event_id', $session->id)
+                    ->where('travel_game_id', $id)->exists();
+                if (!$checkExists) {
+                    $this->miniGame->create([
+                        'task_event_id' => $session->id,
+                        'travel_game_id' => $travelId,
+                        'code' => Str::random(100)
+                    ]);
+                }
+            }
+
+            foreach($travelBoothIds as $tBoothid) {
+                $checkExists = $this->miniGame
+                    ->where('task_event_id', $booth->id)
+                    ->where('travel_game_id', $id)->exists();
+                if (!$checkExists) {
+                    $this->miniGame->create([
+                        'task_event_id' => $booth->id,
+                        'travel_game_id' => $tBoothid,
+                        'code' => Str::random(100)
+                    ]);
+                }
+            }
+
+            $miniGameSessions = $this->miniGame->where('task_event_id', $session->id)->get();
+            $miniGameBooths = $this->miniGame->where('task_event_id', $booth->id)->get();
+        } catch (\Exception $e) {
+            abort(404);
+        }
+
+        return view('cws.event.minigame', [
+            'miniGameSessions' => $miniGameSessions,
+            'miniGameBooths' => $miniGameBooths,
+            'event_id' => $id,
         ]);
     }
 
@@ -562,5 +632,39 @@ class EventController extends Controller
         return response()->json([
             'message' => 'OK'
         ], 200);
+    }
+
+    // Api
+    public function updMiniGame(Request $request, $id)
+    {
+        try {
+            if (Auth::guest()) {
+                return resError();
+            } else {
+                $miniGame = $this->miniGame->find($id);
+
+                if (!$miniGame) {
+                    return resError();
+                } else {
+                    $miniGame->update([
+                        'status' => $miniGame->status ? false : true
+                    ]);
+                }
+            }
+
+        } catch (\Exception $e) {
+            return resError();
+        }
+
+        return response()->json([
+            'message' => 'Ok'
+        ], 200);
+    }
+
+    public function resError(Request $request)
+    {
+        return response()->json([
+            'message' => 'Errors'
+        ], 400);
     }
 }

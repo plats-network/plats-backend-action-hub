@@ -57,6 +57,9 @@ Route::middleware(['client_admin'])->group(function($cws) {
     //Event Delete
     $cws->delete('event-delete/{id}', [EventController::class, 'destroy'])->name('cws.eventDelete');
     $cws->get('overview/{id}', [EventController::class, 'overview'])->name('cws.event.overview');
+    $cws->get('minigame/{id}', [EventController::class, 'miniGame'])->name('cws.event.miniGame');
+    $cws->get('mini/upd/{id}', [EventController::class, 'updMiniGame'])->name('cws.event.updMiniGame');
+
     //Template form event
     $cws->get('event-template', [EventController::class, 'template'])->name('cws.eventTemplate');
     $cws->get('event-status/{id}', [EventController::class, 'updateStatus'])->name('cws.updateStatus');

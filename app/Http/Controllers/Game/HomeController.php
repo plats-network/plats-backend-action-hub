@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Game;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Event\{TaskEvent, EventUserTicket};
+use App\Models\Event\{TaskEvent, EventUserTicket, UserCode};
+use App\Models\Game\{MiniGame, SetupGame};
 use Log;
 
 class HomeController extends Controller
@@ -12,34 +13,82 @@ class HomeController extends Controller
     public function __construct(
         private TaskEvent $taskEvent,
         private EventUserTicket $eventUserTicket,
+        private UserCode $userCode,
+        private MiniGame $miniGame,
+        private SetupGame $setupGame,
     )
     {
         // code
     }
 
+    public function demo(Request $request)
+    {
+        $code = $request->input('code');
+
+        if ($code != 'r65n4wIfrcrv3ngktcNyxj3vO') {
+            abort(404);
+        }
+
+        $numbers = [];
+        for($i = 0; $i <= 1000; $i++) {
+            $numbers[] = $i+1;
+        }
+
+        return view('game.demo', [
+            'numbers' => $numbers
+        ]);
+    }
+
+
+
     public function gameSession(Request $request, $code)
     {
-        dd(2323);
         try {
-            $taskEvent = $this->taskEvent
-                ->whereCode($code)
-                ->firstOrFail();
+            $miniGame = $this->miniGame->whereCode($code)->first();
 
-            $events = $this->eventUserTicket
-                ->whereTaskId($taskEvent->task_id)
-                ->whereNotNull('sesion_code')
-                ->whereIsSession(false)
+            if (!$miniGame) {
+                abort(404);
+            }
+
+            $codes = $this->userCode
+                ->where('task_event_id', $miniGame->task_event_id)
+                ->where('travel_game_id', $miniGame->travel_game_id)
+                ->whereIsPrize(false)
                 ->inRandomOrder()
-                ->get();
+                ->pluck('number_code')
+                ->toArray();
+
+            // dd($codes);
+            // $numbers = [];
+            // for($i = 0; $i <= 1000; $i++) {
+            //     $numbers[] = $i+1;
+            // }
+            // dd($numbers);
+
+            // $taskEvent = $this->taskEvent
+            //     ->whereCode($code)
+            //     ->firstOrFail();
+
+            // $events = $this->eventUserTicket
+            //     ->whereTaskId($taskEvent->task_id)
+            //     ->whereNotNull('sesion_code')
+            //     ->whereIsSession(false)
+            //     ->inRandomOrder()
+            //     ->get();
             // dd($events);
         } catch (\Exception $e) {
             abort(404);
         }
 
-        return view('game.session', [
-            'events' => $events,
-            'task_id' => $taskEvent->task_id
+        // dd($numbers);
+
+        return view('game.demo', [
+            'numbers' => $codes
         ]);
+        // return view('game.session', [
+        //     'events' => $events,
+        //     'task_id' => $taskEvent->task_id
+        // ]);
     }
 
     public function gameBooth(Request $request, $code)

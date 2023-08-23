@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Models\Event;
+namespace App\Models\Game;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\Uuid;
+use App\Models\Event\TaskEvent;
+use App\Models\TravelGame;
 
-class UserCode extends Model
+class MiniGame extends Model
 {
     use HasFactory, Uuid;
 
@@ -15,7 +17,7 @@ class UserCode extends Model
      *
      * @var string
      */
-    protected $table = 'user_codes';
+    protected $table = 'mini_games';
 
     /**
      * The attributes that are mass assignable.
@@ -24,14 +26,19 @@ class UserCode extends Model
      */
     protected $fillable = [
         'id',
-        'user_id',
         'task_event_id',
-        'travel_game_id', // Travel game
-        'number_code', // Mã nhận thưởng
-        'color_code', // Mã màu,
-        'status', // 0: unlock, 1: lock
-        'is_prize', // 0: chưa đc giải, 1: đc giải
-        'name_prize', // Tên giải
-        'is_vip', // 0: normal, 1: vip
+        'travel_game_id',
+        'code',
+        'status',
     ];
+
+    public function taskEvent()
+    {
+        return $this->belongsTo(TaskEvent::class);
+    }
+
+    public function travelGame()
+    {
+        return $this->belongsTo(TravelGame::class);
+    }
 }

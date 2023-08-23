@@ -13,9 +13,7 @@
 @section('content')
     @php
         $datas = [
-            ['link' => route('cws.quiz.questions', ['eventId' => $event->id]), 'type' => 'Quiz', 'flag' => true],
-            ['link' => 'https://'.config('plats.minigame').'/session/' .$session->code, 'type' => 'Session', 'flag' => true],
-            ['link' => 'https://'.config('plats.minigame').'/booth/' .$session->code, 'type' => 'Booth', 'flag' => true],
+            ['link' => route('cws.quiz.questions', ['eventId' => $event->id]), 'type' => 'Quiz', 'flag' => true]
         ];
     @endphp
 
@@ -50,7 +48,7 @@
                                         <td width="5%">{{$data['type']}}</td>
                                         <td>
                                             <a href="{{$data['link']}}" target="_blank">
-                                                {{$data['link']}}
+                                                Click Here!
                                             </a>
                                        </td>
                                        <td>

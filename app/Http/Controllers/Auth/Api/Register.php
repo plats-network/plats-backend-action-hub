@@ -39,31 +39,34 @@ class Register extends Controller
             $user = $this->userService->findByEmail($request->input('email'));
 
             if($user) {
-                if(!is_null($user->email_verified_at)) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Email is exists!'
-                    ], 400);
-                } else {
-                    if (!$this->isExpired($user)) {
-                        return response()->json([
-                            'status' => false,
-                            'message' => 'Please check confirmation code!'
-                        ], 400);
-                    }
-                }
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Email is exists!'
+                ], 400);
+                // if(!is_null($user->email_verified_at)) {
+                //     return response()->json([
+                //         'status' => false,
+                //         'message' => 'Email is exists!'
+                //     ], 400);
+                // } else {
+                //     if (!$this->isExpired($user)) {
+                //         return response()->json([
+                //             'status' => false,
+                //             'message' => 'Please check confirmation code!'
+                //         ], 400);
+                //     }
+                // }
             }
 
             $userCreated = new UserResource($this->userService->createOrUpdate($request));
-
-            if ($userCreated) {
-                dispatch(new SendRegisterEmail($userCreated));
-            }
+            // if ($userCreated) {
+            //     dispatch(new SendRegisterEmail($userCreated));
+            // }
         } catch (\Exception $e) {
             return $this->respondError('Error server', 500);
         }
 
-        return $this->respondSuccess('Please check email confirm ' . $userCreated->email);
+        return $this->respondSuccess('Register success ' . $userCreated->email);
     }
 
     /**

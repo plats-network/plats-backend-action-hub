@@ -24,6 +24,7 @@ class TravelGame extends Model
      */
     protected $fillable = [
         'id',
+        'user_id',
         'type',
         'name',
         'prize_at',
