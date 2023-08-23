@@ -11,6 +11,30 @@
 @endsection
 
 @section('content')
+    @php
+        $imgs = [
+            'bg_game_1.png' => 'Banner 1',
+            'bg_game_2.png' => 'Banner 2',
+            'bg_game_3.png' => 'Banner 3',
+            'bg_game_4.png' => 'Banner 4'
+        ];
+
+        $prizes = [
+            0 => "Đặc biệt",
+            1 => "Giải Nhất",
+            2 => "Giải Nhì",
+            3 => "Giải Ba",
+            4 => "Giải Bốn",
+            5 => "Giải Năm",
+            6 => "Giải Sáu",
+        ];
+
+        $types = [
+            0 => 'Vòng',
+            1 => 'Ô vuông'
+        ];
+    @endphp
+
     <div class="row">
         <div class="col-xl-12 mb-3">
             <a href="{{route('cws.eventPreview', [
@@ -60,6 +84,48 @@
                                         <label class="mini" data-id="{{$id}}" for="s_{{$id}}" data-on-label="On" data-off-label="Off"></label>
                                    </td>
                                 </tr>
+                                <tr style="background-color: #f2f2f2">
+                                    <td colspan="4">
+                                        <div class="row">
+                                            <h5 style="font-size: 14px;">Setup for <span style="color: red;">{{optional($session->travelGame)->name}}</span></h5>
+                                            <div class="col-xl-3">
+                                                <label class="col-form-label">Banner</label>
+                                                <select name="banner_url" class="form-select" id="a-{{$id}}" disabled>
+                                                    @foreach($imgs as $k => $v)
+                                                        <option value="{{ $k }}" {{($k == $session->banner_url) ? 'selected' : ''}}>{{$v}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-xl-3">
+                                                <label class="col-form-label ">Prize</label>
+                                                <select name="type_prize" class="form-select" id="b-{{$id}}" disabled>
+                                                    @foreach($prizes as $k => $v)
+                                                        <option value="{{ $k }}" {{($k == $session->type_prize) ? 'selected' : ''}}>{{$v}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-xl-3">
+                                                <label class="col-form-label">Number</label>
+                                                <input class="form-control" type="number" value="{{$session->num}}" name="num" min="1" max="30" id="c-{{$id}}" disabled>
+                                            </div>
+                                            <div class="col-xl-3">
+                                                <label class="col-form-label">Type Game</label>
+                                                <select name="is_game" class="form-select" id="d-{{$id}}" disabled>
+                                                    @foreach($types as $k => $v)
+                                                        <option value="{{ $k }}" {{($k == $session->is_game) ? 'selected' : ''}}>{{$v}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-xl-12 text-right" style="padding-top: 5px;">
+                                                <button
+                                                    class="btn btn-primary btn-sm edit"
+                                                    data-edit-id="{{$id}}"
+                                                    id="tbn-{{$id}}"
+                                                    data-url-game="{{route('cws.setupMiniGame')}}">Edit</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -108,6 +174,53 @@
                                         <label class="mini" data-id="{{$id}}" for="b_{{$id}}" data-on-label="On" data-off-label="Off"></label>
                                    </td>
                                 </tr>
+                                <tr style="background-color: #f2f2f2">
+                                    <td colspan="4">
+                                        <div class="row">
+                                            <h5 style="font-size: 14px;">Setup for <span style="color: red;">{{optional($booth->travelGame)->name}}</span></h5>
+                                            <div class="col-xl-3">
+                                                <label class="col-form-label">Banner</label>
+                                                <select name="banner_url" class="form-select" id="a-{{$id}}" disabled>
+                                                    @foreach($imgs as $k => $v)
+                                                        <option value="{{ $k }}" {{($k == $booth->banner_url) ? 'selected' : ''}}>{{$v}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-xl-3">
+                                                <label class="col-form-label ">Prize</label>
+                                                <select name="type_prize" class="form-select" id="b-{{$id}}" disabled>
+                                                    @foreach($prizes as $k => $v)
+                                                        <option value="{{ $k }}" {{($k == $booth->type_prize) ? 'selected' : ''}}>{{$v}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-xl-3">
+                                                <label class="col-form-label">Number</label>
+                                                <input class="form-control"
+                                                    type="number"
+                                                    name="num"
+                                                    value="{{$booth->num}}"
+                                                    min="1" max="30" id="c-{{$id}}" disabled>
+                                            </div>
+                                            <div class="col-xl-3">
+                                                <label class="col-form-label">Type Game</label>
+                                                <select name="is_game" class="form-select" id="d-{{$id}}" disabled>
+                                                    @foreach($types as $k => $v)
+                                                        <option value="{{ $k }}" {{($k == $booth->is_game) ? 'selected' : ''}}>{{$v}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-xl-12 text-right" style="padding-top: 5px;">
+                                                <button
+                                                    class="btn btn-primary btn-sm edit"
+                                                    data-edit-id="{{$id}}"
+                                                    id="tbn-{{$id}}"
+                                                    data-url-game="{{route('cws.setupMiniGame')}}"
+                                                >Edit</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -141,6 +254,49 @@
                     },
                     error: function (data) {
                         $.notify('Errors', 'error');
+                    }
+                });
+            });
+
+            $(document).on('click', '.edit', function (e) {
+                var id = $(this).data('edit-id');
+                $('#tbn-'+id).removeClass('edit').addClass('save').html('Save');
+                $('#a-'+id).attr('disabled', false);
+                $('#b-'+id).attr('disabled', false);
+                $('#c-'+id).attr('disabled', false);
+                $('#d-'+id).attr('disabled', false);
+
+            });
+
+            $(document).on('click', '.save', function (e) {
+                var id = $(this).data('edit-id');
+                var urlGame = $(this).data('url-game');
+                var a = $('#a-'+id).val();
+                var b = $('#b-'+id).val();
+                var c = $('#c-'+id).val();
+                var d = $('#d-'+id).val();
+                $.ajax({
+                    url: urlGame,
+                    type: 'POST',
+                    data: {
+                        _token: _token,
+                        id: id,
+                        banner_url: a,
+                        type_prize: b,
+                        num: c,
+                        is_game: d
+                    },
+                    success: function (data) {
+                        $.notify('Success', 'success');
+                        setTimeout(function(e) {
+                            location.reload();
+                        }, 1500);
+                    },
+                    error: function (data) {
+                        $.notify('Errors', 'error');
+                        setTimeout(function(e) {
+                            location.reload();
+                        }, 1500);
                     }
                 });
             });

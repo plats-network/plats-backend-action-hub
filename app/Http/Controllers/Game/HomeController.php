@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Game;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Event\{TaskEvent, EventUserTicket, UserCode};
-use App\Models\Game\{MiniGame, SetupGame};
+use App\Models\Game\{MiniGame};
 use Log;
 
 class HomeController extends Controller
@@ -15,7 +15,6 @@ class HomeController extends Controller
         private EventUserTicket $eventUserTicket,
         private UserCode $userCode,
         private MiniGame $miniGame,
-        private SetupGame $setupGame,
     )
     {
         // code
@@ -43,6 +42,7 @@ class HomeController extends Controller
     {
         try {
             $miniGame = $this->miniGame->whereCode($code)->first();
+            dd(11);
             if (!$miniGame) {
                 abort(404);
             }
@@ -132,12 +132,11 @@ class HomeController extends Controller
         // dd($numbers);
 
         return view('game.demo', [
-            'numbers' => $numbers
+            'numbers' => $numbers,
+            'num' => $miniGame->num,
+            'type_name' => $miniGame->is_game,
+            'img' => $miniGame->banner_url ?? 'bg_game_4.png',
         ]);
-        // return view('game.session', [
-        //     'events' => $events,
-        //     'task_id' => $taskEvent->task_id
-        // ]);
     }
 
     public function gameBooth(Request $request, $code)

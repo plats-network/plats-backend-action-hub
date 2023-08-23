@@ -30,6 +30,10 @@ class MiniGame extends Model
         'travel_game_id',
         'code',
         'status',
+        'banner_url', // Banner
+        'type_prize', // Loại giải
+        'num', // Số lượng giải
+        'is_game', // Loại vòng quay
     ];
 
     public function taskEvent()

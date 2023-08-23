@@ -69,6 +69,7 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->get('gen-link-social', [EventController::class, 'genLink'])->name('cws.event.genLink');
     // Sponser
     $cws->get('sponsor/{id}', [EventController::class, 'sponsor'])->name('cws.event.sponsor');
+    $cws->post('setup/minigame', [EventController::class, 'setupMiniGame'])->name('cws.setupMiniGame');
 
     // Travel Games
     $cws->get('travel-game', [TravelGame::class, 'index'])->name('cws.travelGames');

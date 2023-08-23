@@ -10,7 +10,7 @@ use App\Models\Event\{
     TaskEventReward, EventUserTicket
 };
 use App\Models\Quiz\Quiz;
-use App\Models\Game\{MiniGame, SetupGame};
+use App\Models\Game\{MiniGame};
 
 use App\Models\{Task, TaskGallery, TaskGroup, TaskGenerateLinks, TravelGame, Sponsor, SponsorDetail, UserSponsor};
 use App\Services\Admin\{EventService, TaskService};
@@ -34,7 +34,6 @@ class EventController extends Controller
         private EventUserTicket $eventUserTicket,
         private TaskGenerateLinks $eventShare,
         private MiniGame $miniGame,
-        private SetupGame $setupGame,
     )
     {
         // code
@@ -169,6 +168,36 @@ class EventController extends Controller
             'event_id' => $id,
         ]);
     }
+
+    public function setupMiniGame(Request $request)
+    {
+        try {
+            $id = $request->input('id');
+            $miniGame = $this->miniGame->find($id);
+
+            if (!$miniGame) {
+                return $this->resError();
+            } else {
+                $num = $request->input('num');
+                $is_game = $request->input('is_game');
+                $type_prize = $request->input('type_prize');
+
+                $miniGame->update([
+                    'banner_url' => $request->input('banner_url'),
+                    'type_prize' => (int)$is_game,
+                    'num' => (int)$num  == 0 ? 2 : $num,
+                    'is_game' => (int)$is_game == 0 ? 1 : $is_game
+                ]);
+            }
+        } catch (\Exception $e) {
+            return $this->resError();
+        }
+
+        return response()->json([
+            'message' => 'Ok'
+        ], 200);
+    }
+
 
     public function sponsor(Request $request, $id)
     {

@@ -62,7 +62,11 @@
       @vite(['resources/sass/game.scss'])
     </head>
 
-    <body id="t" data-numbers="{{json_encode($numbers)}}">
+    <body
+        {{-- style="background-image: url({{url('/')}})/game/{{$img}}" --}}
+        id="t"
+        data-numbers="{{json_encode($numbers)}}"
+        data-env="{{env('APP_ENV') == 'local' ? false : true}}">
         <div class="container">
             <div class="logo">
                 <a href="#">
@@ -82,6 +86,33 @@
         </div>
 
         <script type="text/javascript">
+            // Lock
+            var env = $('#t').data('env');
+
+            if (env) {
+                document.addEventListener('keydown', function() {
+                if (event.keyCode == 123) {
+                  return false;
+                } else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) {
+                  return false;
+                } else if (event.ctrlKey && event.keyCode == 85) {
+                  return false;
+                }
+              }, false);
+              
+              if (document.addEventListener) {
+                document.addEventListener('contextmenu', function(e) {
+                  e.preventDefault();
+                }, false);
+              } else {
+                document.attachEvent('oncontextmenu', function() {
+                  window.event.returnValue = false;
+                });
+              }
+            }
+            // End Lock
+
+
             let audio = new Audio('https://d37c8ertxcodlq.cloudfront.net/others/soxo.mp3');
             let audio2 = new Audio('https://d37c8ertxcodlq.cloudfront.net/others/Tieng-vo-tay-www_tiengdong_com.mp3');
             var numbers = $('#t').data('numbers');
