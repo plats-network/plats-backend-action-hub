@@ -133,7 +133,7 @@ class EventController extends Controller
             foreach($travelSessionIds as $travelId) {
                 $checkExists = $this->miniGame
                     ->where('task_event_id', $session->id)
-                    ->where('travel_game_id', $id)->exists();
+                    ->where('travel_game_id', $travelId)->exists();
                 if (!$checkExists) {
                     $this->miniGame->create([
                         'task_event_id' => $session->id,
@@ -146,7 +146,7 @@ class EventController extends Controller
             foreach($travelBoothIds as $tBoothid) {
                 $checkExists = $this->miniGame
                     ->where('task_event_id', $booth->id)
-                    ->where('travel_game_id', $id)->exists();
+                    ->where('travel_game_id', $tBoothid)->exists();
                 if (!$checkExists) {
                     $this->miniGame->create([
                         'task_event_id' => $booth->id,
