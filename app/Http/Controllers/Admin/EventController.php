@@ -103,10 +103,11 @@ class EventController extends Controller
         ]);
     }
 
+    // method: GET
+    // url:
     public function miniGame(Request $request, $id)
     {
         try {
-            // $event = $this->taskService->findEvent($id);
             $session = $this->eventModel
                 ->whereType(TASK_SESSION)
                 ->whereTaskId($id)
@@ -292,6 +293,7 @@ class EventController extends Controller
     {
         /** @var Task $task */
         $task =  new TaskEvent();
+        $userId = Auth::user()->id;
         $isCopyModel = $request->get('copy', null);
         if ($isCopyModel) {
             $post_id = $request->get('id', 0);
@@ -342,7 +344,7 @@ class EventController extends Controller
         $activeTab = $request->get('tab') ?? '0';
         //Is preview
         $isPreview = $request->get('preview') ?? '0';
-        $travelGames = $this->travelGame->whereStatus(true)->get();
+        $travelGames = $this->travelGame->whereUserId($userId)->whereStatus(true)->get();
 
         $data = [
             'event' => $task,
@@ -407,6 +409,7 @@ class EventController extends Controller
      */
     public function edit(Request $request, $id)
     {
+        $userId = Auth::user()->id;
         if (Str::contains($request->path(), 'event-preview')) {
             if (!$request->get('preview') == 1) {
                 notify()->error('Không thể truy cập');
@@ -478,7 +481,7 @@ class EventController extends Controller
         $activeTab = $request->get('tab') ?? '0';
         //Is preview
         $isPreview = $request->get('preview') ?? '0';
-        $travelGames = $this->travelGame->whereStatus(true)->get();
+        $travelGames = $this->travelGame->whereUserId($userId)->whereStatus(true)->get();
 
         $data = [
             'event' => $task,
@@ -639,12 +642,12 @@ class EventController extends Controller
     {
         try {
             if (Auth::guest()) {
-                return resError();
+                return $this->resError();
             } else {
                 $miniGame = $this->miniGame->find($id);
 
                 if (!$miniGame) {
-                    return resError();
+                    return $this->resError();
                 } else {
                     $miniGame->update([
                         'status' => $miniGame->status ? false : true
@@ -653,7 +656,7 @@ class EventController extends Controller
             }
 
         } catch (\Exception $e) {
-            return resError();
+            return $this->resError();
         }
 
         return response()->json([
@@ -661,7 +664,7 @@ class EventController extends Controller
         ], 200);
     }
 
-    public function resError(Request $request)
+    private function resError(Request $request)
     {
         return response()->json([
             'message' => 'Errors'

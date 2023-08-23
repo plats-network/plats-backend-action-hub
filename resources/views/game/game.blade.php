@@ -1,16 +1,22 @@
 <html>
     <head>
-      <title>Event | Vòng quay may mắn</title>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-      <script type="text/javascript" src="{{url('/')}}/js/Winwheel.min.js"></script>
-      <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+        <title>Event | Mini game</title>
+        {{-- Favicon --}}
+        <link rel="apple-touch-icon" sizes="180x180" href="{{url('/')}}/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{url('/')}}/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{url('/')}}/favicon-16x16.png">
+        <link rel="manifest" href="{{url('/')}}/site.webmanifest">
+        {{-- End Favicon --}}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{{url('/')}}/js/Winwheel.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-      <style type="text/css">
+        <style type="text/css">
           .output {
             margin: 20px;
             padding: 20px;
@@ -35,27 +41,6 @@
 
         .item {
             width: 25%;
-            background-color: #187fe2;
-            color: #fff;
-            font-size: 40px;
-        }
-        .btn-stop {
-            background-color: red;
-            color: #fff;
-        }
-
-        .btn:hover {color: #fff!important;}
-
-        .btn-start {
-            background-color: #187fe2;
-            color: #fff;
-            border: 2px solid red;
-            box-shadow: 0 0 60px rgba(0, 255, 203, 0.64);
-        } 
-
-        .logo {
-            text-align: center;
-            padding-top: 24px;
         }
       </style>
 
@@ -64,29 +49,30 @@
 
     <body id="t" data-numbers="{{json_encode($numbers)}}">
         <div class="container">
-            <div class="logo">
-                <a href="#">
-                    <img class="logo-img" src="{{url('/')}}/game/logo-game.svg">
-                </a>
-            </div>
-            <div style="margin: 20% 0 50px; display: block;">
+            <div style="margin: 40% 0 50px; display: block;">
                 <div class="row text-center">
-                    @for($a = 0; $a <= 5; $a++)
+                    @for($a = 0; $a <= 2; $a++)
                         <div class="item output" id="output{{$a}}">--</div>
                     @endfor
                 </div>
             </div>
             <div style="margin: 0 auto;" class="text-center">
-                <button class="btn btn-start start" id="a">Start</button>
+                <button class="btn btn-primary start" id="a">Start</button>
             </div>
         </div>
 
+        {{-- @for($a = 0; $a <= 4; $a++)
+            <div class="output" id="output{{$a}}">--</div>
+        @endfor --}}
+
+        {{-- <a id="a" href="#">Click</a> --}}
+        
         <script type="text/javascript">
             let audio = new Audio('https://d37c8ertxcodlq.cloudfront.net/others/soxo.mp3');
             let audio2 = new Audio('https://d37c8ertxcodlq.cloudfront.net/others/Tieng-vo-tay-www_tiengdong_com.mp3');
             var numbers = $('#t').data('numbers');
             var a = [];
-            var l = 6;
+            var l = 5;
             function playSound() {
                 audio.currentTime = 0;
                 audio.play();
@@ -124,7 +110,6 @@
 
             function generateNumber(index) {
                 if(index >= l) {
-                    $('#a').removeClass('btn-danger').addClass('btn-stop b').attr('disabled', false).attr('id', 'stop').html('Reset');
                     stropSound();
                     votay();
                     phaohoa();
@@ -135,6 +120,7 @@
 
                   var output = $('#output' + index); // Start ID with letter
                   var started = new Date().getTime();
+                  var b = [];
 
                   animationTimer = setInterval(function() {
                     if (output.text().trim() === desired || new Date().getTime() - started > duration) {
@@ -159,14 +145,9 @@
                 return items[Math.floor(Math.random()*items.length)];
             }
 
-            $(document).on('click', '#a', function (e) {
-                $(this).removeClass('btn-start').addClass('btn-danger').attr('disabled', true).html('Running');
+            $('#a').on('click', function(e) {
                 generateNumber(0);
                 playSound();
-            });
-
-            $(document).on('click', '.b', function (e) {
-                location.reload();
             });
       </script>
     </body>

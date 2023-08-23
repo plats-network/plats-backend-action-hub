@@ -3,6 +3,7 @@
     $menuUser = in_array($path, ['users']);
     $e = 'event-';
     $menuEvent = in_array($path, [$e.'list', $e.'preview', $e.'users', $e.'edit', $e.'create']);
+    $travelGame = in_array($path, ['travel-games']);
 @endphp
 
 <div class="vertical-menu">
@@ -59,6 +60,13 @@
                         <i class="bx bx-check-square icon nav-icon"></i>
                         <span class="menu-item" data-key="t-todo">Events</span>
                         {{-- <span class="badge rounded-pill bg-success" data-key="t-new">New</span> --}}
+                    </a>
+                </li>
+
+                <li class="{{$travelGame ? 'mm-active' : ''}}">
+                    <a href="{{route('cws.travelGames')}}" class="{{$travelGame ? 'active' : ''}}">
+                        <i class="bx bx-check-square icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-todo">Travel Games</span>
                     </a>
                 </li>
             </ul>

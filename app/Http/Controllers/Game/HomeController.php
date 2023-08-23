@@ -30,7 +30,7 @@ class HomeController extends Controller
         }
 
         $numbers = [];
-        for($i = 0; $i <= 1000; $i++) {
+        for($i = 0; $i <= 100; $i++) {
             $numbers[] = $i+1;
         }
 
@@ -39,13 +39,10 @@ class HomeController extends Controller
         ]);
     }
 
-
-
-    public function gameSession(Request $request, $code)
+    public function miniGame(Request $request, $code)
     {
         try {
             $miniGame = $this->miniGame->whereCode($code)->first();
-
             if (!$miniGame) {
                 abort(404);
             }
@@ -57,13 +54,65 @@ class HomeController extends Controller
                 ->inRandomOrder()
                 ->pluck('number_code')
                 ->toArray();
+        } catch (\Exception $e) {
+            abort(404);
+        }
+
+        return view('game.demo', [
+            'numbers' => $codes,
+            'code' => $code,
+            'event_id' => $miniGame->task_event_id,
+            'travel_id' => $miniGame->travel_game_id,
+        ]);
+    }
+
+    public function updateResult(Request $request)
+    {
+        try {
+            
+        } catch (\Exception $e) {
+            return $this->resError();
+        }
+
+        return $this->resOk();
+    }
+
+    private function resError(Request $request)
+    {
+        return response()->json([
+            'message' => 'Error'
+        ], 500);
+    }
+
+    private function resOk(Request $request)
+    {
+        return response()->json([
+            'message' => 'Ok'
+        ], 200);
+    }
+
+    public function gameSession(Request $request, $code)
+    {
+        try {
+            $miniGame = $this->miniGame->whereCode($code)->first();
+
+            if (!$miniGame) {
+                abort(404);
+            }
+
+            // $codes = $this->userCode
+            //     ->where('task_event_id', $miniGame->task_event_id)
+            //     ->where('travel_game_id', $miniGame->travel_game_id)
+            //     ->whereIsPrize(false)
+            //     ->inRandomOrder()
+            //     ->pluck('number_code')
+            //     ->toArray();
 
             // dd($codes);
-            // $numbers = [];
-            // for($i = 0; $i <= 1000; $i++) {
-            //     $numbers[] = $i+1;
-            // }
-            // dd($numbers);
+            $numbers = [];
+            for($i = 0; $i <= 1000; $i++) {
+                $numbers[] = $i+1;
+            }
 
             // $taskEvent = $this->taskEvent
             //     ->whereCode($code)
@@ -83,7 +132,7 @@ class HomeController extends Controller
         // dd($numbers);
 
         return view('game.demo', [
-            'numbers' => $codes
+            'numbers' => $numbers
         ]);
         // return view('game.session', [
         //     'events' => $events,

@@ -19,7 +19,7 @@
                 'preview' => 1])}}"
                 class="btn btn-danger btn-sm">Back</a>
         </div>
-        <div class="col-xl-12">
+        <div class="col-xl-6">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex flex-wrap align-items-center mb-2">
@@ -32,26 +32,25 @@
                                 <th>Link</th>
                                 <th>Copy</th>
                                 <th>Status</th>
-                                <th>Result</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($miniGameSessions as $k => $session)
                                 @php
-                                    $link = 'https://'.config('plats.minigame').'/session/' .$session->code;
+                                    $link = 'https://'.config('plats.minigame').'/game/' .$session->code;
                                     $id = $session->id;
                                 @endphp
                                 <tr>
-                                    <td width="20%">{{optional($session->travelGame)->name}}</td>
-                                    <td width="10%">
+                                    <td width="50%">{{optional($session->travelGame)->name}}</td>
+                                    <td width="20%">
                                         <a href="{{$link}}" target="_blank">Click Here!</a>
                                    </td>
-                                   <td>
+                                   <td width="20%">
                                         <button type="button"
                                             class="btn btn-secondary btn-sm"
                                             data-clipboard-text="{{$link}}">Copy Link</button>
                                    </td>
-                                   <td>
+                                   <td width="10%">
                                        <input
                                             type="checkbox"
                                             id="s_{{$id}}"
@@ -60,7 +59,6 @@
                                         >
                                         <label class="mini" data-id="{{$id}}" for="s_{{$id}}" data-on-label="On" data-off-label="Off"></label>
                                    </td>
-                                   <td>link</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -69,7 +67,7 @@
             </div>
         </div>
 
-        <div class="col-xl-12">
+        <div class="col-xl-6">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex flex-wrap align-items-center mb-2">
@@ -82,26 +80,25 @@
                                 <th>Link</th>
                                 <th>Copy</th>
                                 <th>Status</th>
-                                <th>Result</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($miniGameBooths as $k => $booth)
                                 @php
-                                    $link = 'https://'.config('plats.minigame').'/booth/' .$booth->code;
+                                    $link = 'https://'.config('plats.minigame').'/game/' .$booth->code;
                                     $id = $booth->id;
                                 @endphp
                                 <tr>
-                                    <td width="20%">{{optional($booth->travelGame)->name}}</td>
-                                    <td width="10%">
+                                    <td width="50%">{{optional($booth->travelGame)->name}}</td>
+                                    <td width="20%">
                                         <a href="{{$link}}" target="_blank">Click Here!</a>
                                    </td>
-                                   <td>
+                                   <td width="20%">
                                         <button type="button"
                                             class="btn btn-secondary btn-sm"
                                             data-clipboard-text="{{$link}}">Copy Link</button>
                                    </td>
-                                   <td>
+                                   <td width="10%">
                                        <input
                                             type="checkbox"
                                             id="b_{{$id}}"
@@ -110,7 +107,6 @@
                                         >
                                         <label class="mini" data-id="{{$id}}" for="b_{{$id}}" data-on-label="On" data-off-label="Off"></label>
                                    </td>
-                                   <td>link</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -119,81 +115,12 @@
             </div>
         </div>
     </div>
-
-    {{-- <div class="row">
-        <div class="col-xl-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex flex-wrap align-items-center mb-2">
-                        <h5 class="card-title">Link Share</h5>
-                    </div>
-                    <table class="table table-bordered mb-0 table-responsive">
-                        <thead class="table-light">
-                            <tr>
-                                <th>No</th>
-                                <th>Name</th>
-                                <th>Link</th>
-                                <th>Total</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td width="5%">#</td>
-                                <td width="35%">
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        class="form-control"
-                                        id="frmName"
-                                        placeholder="Name"
-                                        required>
-                                    <input type="hidden" name="id" id="frmId">
-                                    <input type="hidden" name="task_id" id="frmTaskId" value="{{$event->id}}">
-                                </td>
-                                <td width="40%">
-                                    <p id="frmUrl"></p>
-                                </td>
-                                <td width="5%">__</td>
-                                <td width="15%">
-                                   <button type="button" id="genLink" class="btn btn-primary btn-sm">Save</button>
-                                   <button type="button" id="frmReset" class="btn btn-secondary btn-sm">Reset</button>
-                                </td>
-                            </tr>
-                            @foreach($shares as $k => $share)
-                                <tr>
-                                    <td width="5%">{{$k+1}}</td>
-                                    <td width="5%">{{$share->name}}</td>
-                                    <td>
-                                        <a href="{{$share->url}}" target="_blank">Link share</a>
-                                    </td>
-                                    <td>{{rand(100,1000)}}</td>
-                                    <td>
-                                        <button
-                                            type="button"
-                                            class="btn btn-danger btn-sm editLink"
-                                            data-name="{{$share->name}}"
-                                            data-link="{{$share->url}}"
-                                            data-id="{{$share->id}}">Edit</button>
-                                        <button
-                                            type="button"
-                                            class="btn btn-secondary btn-sm"
-                                            data-clipboard-text="{{$share->url}}">Copy Link</button>
-                                    </td>
-                                </tr>
-                            @endforeach 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 @endsection
 
 {{--Script--}}
 @section('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script> --}}
     <script>
         jQuery(document).ready(function ($) {
             var clipboard = new ClipboardJS('.btn');
@@ -217,60 +144,6 @@
                     }
                 });
             });
-
-
-
-
-            // $('.editLink').on('click', function(e) {
-            //     var name = $(this).data('name'),
-            //         id = $(this).data('id'),
-            //         link = $(this).data('link');
-            //     $('#frmUrl').html(link);
-            //     $('#frmName').val(name);
-            //     $('#frmId').val(id);
-            // });
-
-            // $('#frmReset').on('click', function(e) {
-            //     $('#frmUrl').html('');
-            //     $('#frmName').val('');
-            //     $('#frmId').val('');
-            // });
-
-            // $('#genLink').on('click', function(e) {
-            //     var name = $('#frmName').val(),
-            //         task_id = $('#frmTaskId').val(),
-            //         id = $('#frmId').val();
-            //     if (name == "") {
-            //         $('#frmName').focus();
-            //     } else {
-            //         $(this).attr('disabled', true);
-            //         $.ajax({
-            //             url: '/gen-link-social',
-            //             type: 'get',
-            //             dataType: 'json',
-            //             data: {
-            //                 _token: _token,
-            //                 id: id,
-            //                 task_id: task_id,
-            //                 name: name
-            //             },
-            //             success: function (data) {
-            //                 $(this).attr('disabled', false);
-            //                 setTimeout(function(e) {
-            //                     location.reload();
-            //                 }, 500);
-            //             },
-            //             error: function (data) {
-            //                 $(this).attr('disabled', false);
-            //                 setTimeout(function(e) {
-            //                     location.reload();
-            //                 }, 500);
-            //                 // location.reload();
-            //             }
-            //         });
-            //     }
-
-            // });
         });
     </script>
 @endsection

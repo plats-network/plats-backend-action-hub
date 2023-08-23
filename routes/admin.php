@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     Dashboard, Reward, Event, TaskBeta,
     Group, User, Export, AuthController,
-    ConfirmController
+    ConfirmController, TravelGame
 };
 use App\Http\Controllers\Auth\Admin\{
     Register
@@ -69,6 +69,11 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->get('gen-link-social', [EventController::class, 'genLink'])->name('cws.event.genLink');
     // Sponser
     $cws->get('sponsor/{id}', [EventController::class, 'sponsor'])->name('cws.event.sponsor');
+
+    // Travel Games
+    $cws->get('travel-game', [TravelGame::class, 'index'])->name('cws.travelGames');
+    $cws->get('travel/upd/{id}', [TravelGame::class, 'updStatus'])->name('cws.travel.updStatus');
+    $cws->post('travel/create', [TravelGame::class, 'create'])->name('cws.travel.create');
 });
 //Upload file
 /*Upload Single*/

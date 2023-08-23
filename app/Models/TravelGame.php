@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\Uuid;
+use App\Models\User;
 
 class TravelGame extends Model
 {
@@ -31,4 +32,9 @@ class TravelGame extends Model
         'note',
         'status',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
