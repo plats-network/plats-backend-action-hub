@@ -37,9 +37,9 @@
             height: 200px;
             background-color: #187fe2;
             color: #fff;
-            font-size: 40px;
+            font-size: 50px;
             border-radius: 50%;
-            padding-top: 70px;
+            padding-top: 62px;
         }
         .btn-stop {
             background-color: red;
@@ -63,8 +63,14 @@
         .btn-prize {
             background-color: #1fd1f9;
             background-image: linear-gradient(315deg, #1fd1f9 0%, #b621fe 74%);
-            transition: all 0.3s ease;
             transform: scale(1.2) rotate(0);
+            padding-top: 40px;
+            font-size: 80px;
+            -webkit-transition: all 1s ease;
+            -moz-transition: all 1s ease;
+            -o-transition: all 1s ease;
+            -ms-transition: all 1s ease;
+            transition: all 1s ease;
         }
       </style>
 
