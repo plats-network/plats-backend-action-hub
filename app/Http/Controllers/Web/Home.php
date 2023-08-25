@@ -154,13 +154,12 @@ class Home extends Controller
 
     // User work job session, booth
     // method: GET
-    // url: http://event.plats.test/info/99dc826f-5c60-4ebd-af48-d709d761a8ff
+    // url: http://event.plats.test/event-job/fOtjr347cL9nHwWTox1J
     public function jobEvent(Request $request, $id)
     {
         try {
             $sessionDatas = [];
             $boothDatas = [];
-
             $user = Auth::user();
             $task = $this->task->whereCode($id)->first();
             if (!$task) {
@@ -178,6 +177,15 @@ class Home extends Controller
                     ->whereUserId($user->id)
                     ->whereTaskEventDetailId($session->id)
                     ->first();
+
+                // $requiredIds = $this->eventDetail
+                //     ->where('task_event_id', $session->task_event_id)
+                //     ->where('travel_game_id', $session->travel_game_id)
+                //     ->whereIsRequired(true)
+                //     ->pluck('id')
+                //     ->toArray();
+                // dump($requiredIds);
+
                 $sessionDatas[] = [
                     'id' => $session->id,
                     'travel_game_id' => $session->travel_game_id,

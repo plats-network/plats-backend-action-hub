@@ -51,6 +51,21 @@ Route::middleware(['guest'])->group(function ($auth) {
     $auth->post('sign-up', [SignUp::class, 'store'])->name('web.signUp');
 });
 
+Route::middleware(['user_event'])->group(function ($r) {
+    $r->get('logout', [Login::class, 'logout'])->name('web.logout');
+    $r->get('profile', [UserController::class, 'profile'])->name('web.profile');
+    $r->post('editEmail', [UserController::class, 'editEmail'])->name('web.editEmail');
+
+    // Travel
+    $r->get('event-job/{id}', [Home::class, 'jobEvent'])->name('web.jobEvent');
+    $r->get('info/{task_id}', [Job::class, 'getTravelGame'])->name('job.getTravelGame');
+    $r->get('quiz/{code}', [Job::class, 'getJob'])->name('job.getJob');
+
+    // New sponsor
+    $r->get('sponsor/new', [Job::class, 'newSponsor'])->name('new.sponsor');
+    $r->post('sponsor/pay', [Job::class, 'saveSponsor'])->name('new.saveSponsor');
+});
+
 Route::get('/', [Home::class, 'index'])->name('web.home');
 Route::get('event-lists', [Home::class, 'events'])->name('web.events');
 Route::get('event/{id}', [Home::class, 'show'])->name('web.events.show');
@@ -61,21 +76,6 @@ Route::get('pricing', [PagesController::class, 'pricing'])->name('web.pricing');
 Route::get('resource', [PagesController::class, 'resource'])->name('web.resource');
 Route::get('contact', [PagesController::class, 'contact'])->name('web.contact');
 Route::post('order/ticket', [Home::class, 'orderTicket'])->name('order.ticket');
-
-Route::middleware(['user_event'])->group(function ($r) {
-    $r->get('logout', [Login::class, 'logout'])->name('web.logout');
-    $r->get('event-job/{id}', [Home::class, 'jobEvent'])->name('web.jobEvent');
-    $r->get('profile', [UserController::class, 'profile'])->name('web.profile');
-    $r->post('editEmail', [UserController::class, 'editEmail'])->name('web.editEmail');
-
-    // Travel
-    $r->get('info/{task_id}', [Job::class, 'getTravelGame'])->name('job.getTravelGame');
-    $r->get('quiz/{code}', [Job::class, 'getJob'])->name('job.getJob');
-
-    // New sponsor
-    $r->get('sponsor/new', [Job::class, 'newSponsor'])->name('new.sponsor');
-    $r->post('sponsor/pay', [Job::class, 'saveSponsor'])->name('new.saveSponsor');
-});
 
 Route::get('/discord/login', [App\Http\Controllers\Web\Discord::class, 'getUserDiscord']);
 Route::get('/discord', [App\Http\Controllers\Web\Discord::class, 'index'])->name('discord');

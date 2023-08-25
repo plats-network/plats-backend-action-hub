@@ -49,16 +49,16 @@
             @if ($isPreview)
                 <table class="table table-bordered mb-0">
                     <thead class="table-light">
-                        <tr>
+                        <tr class="text-center">
                             <th>No</th>
                             <th>Name</th>
                             <th>Description</th>
                             <th>QR Code</th>
                             <th>Total</th>
-                            <th>Status</th>
+                            <th>QR <span class="text-danger">(ON/OFF)</span></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="list-booth-id" data-b-ids="{{json_encode($booths->detail->pluck('id')->toArray())}}">
                         @foreach($booths->detail as $k => $booth)
                             @php
                                 $qr = 'https://'.config('plats.event').'/events/code?type=event&id='.$booth->code;
@@ -68,13 +68,9 @@
                                <td width="20%">{{$booth->name}}</td> 
                                <td width="30%">{!!$booth->description!!}</td> 
                                <td width="20%" data-url="{{$qr}}" class="text-center">
-                                    <img
-                                        style="margin: 0 auto;"
-                                        src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(50)->generate($qr)) !!} ">
-                                    <a
-                                        href="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(300)->generate($qr)) !!} "
-                                        class="btn btn-primary text-center" download="booth_{{$booth->code.'_'.($k+1)}}.png">
-                                        Download</a>
+                                    <p class="qr" id="bo-{{$booth->id}}" data-bo-url="{{$qr}}"></p>
+                                    <div class="d-none" style="width: 300px; height: 300px;" id="dbo-{{$booth->id}}" data-bo-url="{{$qr}}"></div>
+                                    <a class="bo-donw" data-id="{{$booth->id}}" data-num="{{$k+1}}" data-name="booth">Download</a>
                                </td> 
                                <td width="10%">{{totalUserJob($booth->id)}}</td>
                                <td width="20%">

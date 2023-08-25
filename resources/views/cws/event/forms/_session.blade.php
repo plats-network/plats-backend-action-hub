@@ -52,19 +52,16 @@
         @if ($isPreview)
             <table class="table table-bordered mb-0">
                 <thead class="table-light">
-                    <tr>
+                    <tr class="text-center">
                         <th>No</th>
                         <th>Name</th>
                         <th>Description</th>
                         <th>QR</th>
-                        <th>
-                            Download
-                        </th>
                         <th>Total</th>
-                        <th>Status</th>
+                        <th>QR <span class="text-danger">(ON/OFF)</span></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="list-session-id" data-s-ids="{{json_encode($sessions->detail->pluck('id')->toArray())}}">
                     @foreach($sessions->detail as $k => $session)
                         @php
                             $qr = 'https://'.config('plats.event').'/events/code?type=event&id='.$session->code;
@@ -74,14 +71,18 @@
                            <td width="20%">{{$session->name}}</td> 
                            <td width="30%">{!!$session->description!!}</td>
                            <td width="20%" class="text-center" data-url="{{$qr}}">
-                               <img style="margin: 0 auto;"
-                                    src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qr)) !!}">
+                                <p class="qr" id="se-{{$session->id}}" data-se-url="{{$qr}}"></p>
+                                <div class="d-none" style="width: 300px; height: 300px;" id="dse-{{$session->id}}" data-se-url="{{$qr}}"></div>
+                                <a class="se-donw" data-id="{{$session->id}}" data-num="{{$k+1}}" data-name="session">Download</a>
+                                {{-- <img style="margin: 0 auto;"
+                                    src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qr)) !!}"> --}}
                            </td>
-                           <td width="20%" class="text-center" data-url="{{$qr}}">
-                                <a href="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(300)->generate($qr)) !!}"
+                           {{-- <td width="20%" class="text-center" data-url="{{$qr}}"> --}}
+                                {{-- <a href="#" class="se-donw" data-id="{{$session->id}}" data-num="{{$k+1}}">Download</a> --}}
+                                {{-- <a href="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(300)->generate($qr)) !!}"
                                     download="session_{{$session->code.'_'.($k+1)}}.png">
-                                    Download</a>
-                           </td>
+                                    Download</a> --}}
+                           {{-- </td> --}}
                            <td width="5%">{{totalUserJob($session->id)}}</td>
                            <td width="20%">
                                 <input

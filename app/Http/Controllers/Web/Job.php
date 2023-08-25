@@ -77,6 +77,10 @@ class Job extends Controller
 
                 if ($event && $event->status == false) {
                     notify()->error('Job locked!');
+
+                    return redirect()->route('job.getJob', [
+                        'code' => $event->code
+                    ])->with('error', "Job locked!");
                 } else {
                     return redirect()->route('job.getJob', [
                         'code' => $event->code

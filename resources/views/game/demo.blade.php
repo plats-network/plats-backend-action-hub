@@ -23,7 +23,6 @@
         }
 
         body {
-            background-image: url("https://cdn.dribbble.com/userupload/3369133/file/original-d568dabe73b516a4d787a229a0d0ab24.png");
             background-size: cover;
         }
         .start {
@@ -34,10 +33,13 @@
         }
 
         .item {
-            width: 25%;
+            width: 200px;
+            height: 200px;
             background-color: #187fe2;
             color: #fff;
             font-size: 40px;
+            border-radius: 50%;
+            padding-top: 70px;
         }
         .btn-stop {
             background-color: red;
@@ -57,27 +59,50 @@
             text-align: center;
             padding-top: 24px;
         }
+
+        .btn-prize {
+            background-color: #1fd1f9;
+            background-image: linear-gradient(315deg, #1fd1f9 0%, #b621fe 74%);
+            transition: all 0.3s ease;
+            transform: scale(1.2) rotate(0);
+        }
       </style>
 
       @vite(['resources/sass/game.scss'])
     </head>
 
     <body
-        {{-- style="background-image: url({{url('/')}})/game/{{$img}}" --}}
+        style="background-image: url({{url('/')}}/game/{{$img}})"
         id="t"
         data-numbers="{{json_encode($numbers)}}"
+        data-soxo="{{url('/')}}/game/soxo.mp3"
+        data-votay="{{url('/')}}/game/votay.mp3"
         data-env="{{env('APP_ENV') == 'local' ? false : true}}">
-        <div class="container">
+        @php
+            $num = 5;
+        @endphp
+        <div class="container-fluid">
             <div class="logo">
                 <a href="#">
                     <img class="logo-img" src="{{url('/')}}/game/logo-game.svg">
                 </a>
             </div>
-            <div style="margin: 20% 0 50px; display: block;">
+
+            <div style="margin: 10% 0 50px; display: block;">
                 <div class="row text-center">
-                    @for($a = 0; $a <= 5; $a++)
-                        <div class="item output" id="output{{$a}}">--</div>
-                    @endfor
+                    @if ($num == 5)
+                        <div class="col-1">&nbsp;</div>
+                        @for($a = 0; $a < $num; $a++)
+                            <div class="col-2">
+                                <div class="item output" id="output{{$a}}">--</div>
+                            </div>
+                        @endfor
+                        <div class="col-1">&nbsp;</div>
+                    @elseif($num == 7)
+
+                    @endif
+
+
                 </div>
             </div>
             <div style="margin: 0 auto;" class="text-center">
@@ -87,7 +112,14 @@
 
         <script type="text/javascript">
             // Lock
-            var env = $('#t').data('env');
+            var env = $('#t').data('env'),
+                numbers = $('#t').data('numbers'),
+                soxo = $('#t').data('soxo'),
+                votaymp3 = $('#t').data('votay');
+            let audio = new Audio(soxo);  // 'https://d37c8ertxcodlq.cloudfront.net/others/soxo.mp3'
+            let audio2 = new Audio(votaymp3); // 'https://d37c8ertxcodlq.cloudfront.net/others/Tieng-vo-tay-www_tiengdong_com.mp3'
+            var a = [];
+            var l = 5;
 
             if (env) {
                 document.addEventListener('keydown', function() {
@@ -112,12 +144,6 @@
             }
             // End Lock
 
-
-            let audio = new Audio('https://d37c8ertxcodlq.cloudfront.net/others/soxo.mp3');
-            let audio2 = new Audio('https://d37c8ertxcodlq.cloudfront.net/others/Tieng-vo-tay-www_tiengdong_com.mp3');
-            var numbers = $('#t').data('numbers');
-            var a = [];
-            var l = 6;
             function playSound() {
                 audio.currentTime = 0;
                 audio.play();
@@ -162,27 +188,22 @@
                     return;
                 } else {
                   var desired = numbers[index];
-                  var duration = 5000;
-
+                  var duration = 10000;
                   var output = $('#output' + index); // Start ID with letter
                   var started = new Date().getTime();
-
                   animationTimer = setInterval(function() {
                     if (output.text().trim() === desired || new Date().getTime() - started > duration) {
                       clearInterval(animationTimer); // Stop the loop
                       var rnd = random_item(numbers);
                       a.push(rnd);
-                      output.text(rnd); // Print desired number in case it stopped at a different one due to duration expiration
+                      output.addClass('btn-prize').text(rnd); // Print desired number in case it stopped at a different one due to duration expiration
                       generateNumber(index + 1);
+
                       numbers = numbers.filter(item => !a.includes(item))
                     } else {
-                      output.text(
-                        '' +
-                        Math.floor(Math.random() * 10) +
-                        Math.floor(Math.random() * 10)
-                      );
+                      output.text(random_item(numbers));
                     }
-                  }, 40);
+                  }, 200);
                 }
             }
 

@@ -27,6 +27,10 @@
 @endsection
 
 @section('content')
+    <style type="text/css">
+        .qr {margin: 0 auto; display: block; width: 50px; height: 50px;}
+        .se-donw, .bo-donw {cursor: pointer;}
+    </style>
     <div class="container-fluid">
         <div class="row">
             @if($isPreview)
@@ -37,7 +41,6 @@
                     <a class="ml-5 btn btn-primary btn-sm mb-2" href="{{route('cws.event.users', ['id' => $event->id])}}">List User</a>
                 </div>
             @endif
-
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header plats-step">
@@ -265,8 +268,63 @@
     @endif
     <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.js"></script>
     <script src="https://uicdn.toast.com/editor/latest/i18n/ja-jp.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <script>
+        var sessionIds = $('#list-session-id').data('s-ids'),
+            boothIds = $('#list-booth-id').data('b-ids');
+
+        if (sessionIds.length > 0) {
+            sessionIds.forEach(function(item) {
+                var url = $("#se-"+item).data('se-url');
+                new QRCode(document.getElementById("se-"+item), url);
+                new QRCode("dse-"+item, {
+                    text: url,
+                    width: 300,
+                    height: 300
+                });
+            });
+        }
+
+        if (boothIds.length > 0) {
+            boothIds.forEach(function(item) {
+                var url = $("#bo-"+item).data('bo-url');
+                new QRCode(document.getElementById("bo-"+item), url);
+                new QRCode("dbo-"+item, {
+                    text: url,
+                    width: 300,
+                    height: 300
+                });
+            });
+        }
+
+
+        $('.se-donw').on('click', function(e) {
+            var id = $(this).data('id')
+                num = $(this).data('num'),
+                name = $(this).data('name');
+            let dataUrl = document.querySelector('#dse-'+id).querySelector('img').src;
+            downloadURI(dataUrl, name+'-'+num+'.png');
+        })
+
+        $('.bo-donw').on('click', function(e) {
+            var id = $(this).data('id')
+                num = $(this).data('num'),
+                name = $(this).data('name');
+            let dataUrl = document.querySelector('#dbo-'+id).querySelector('img').src;
+            downloadURI(dataUrl, name+'-'+num+'.png');
+        });
+
+        function downloadURI(uri, name) {
+          var link = document.createElement("a");
+          link.download = name;
+          link.href = uri;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          delete link;
+        };
+
         var _token = $('meta[name="csrf-token"]').attr('content');
         var spinText = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ';
         var fileAvatarInit = null;
