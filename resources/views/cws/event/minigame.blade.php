@@ -13,25 +13,23 @@
 @section('content')
     @php
         $imgs = [
-            'bg_game_1.png' => 'Banner 1',
-            'bg_game_2.png' => 'Banner 2',
-            'bg_game_3.png' => 'Banner 3',
-            'bg_game_4.png' => 'Banner 4'
+            'bg_game_1.png' => 'Backgroud 1',
+            'bg_game_2.png' => 'Backgroud 2',
+            'bg_game_3.png' => 'Backgroud 3',
+            'bg_game_4.png' => 'Backgroud 4'
         ];
 
         $prizes = [
-            0 => "Đặc biệt",
-            1 => "Giải Nhất",
-            2 => "Giải Nhì",
-            3 => "Giải Ba",
-            4 => "Giải Bốn",
-            5 => "Giải Năm",
-            6 => "Giải Sáu",
+            0 => "Prize 1",
+            1 => "Prize 2",
+            2 => "Prize 3",
+            3 => "Prize 4",
+            4 => "Prize 5"
         ];
 
         $types = [
-            0 => 'Vòng',
-            1 => 'Ô vuông'
+            0 => 'Circle',
+            1 => 'Square'
         ];
     @endphp
 
@@ -52,9 +50,9 @@
                     <table class="table table-bordered mb-0 table-responsive">
                         <thead class="table-light">
                             <tr>
-                                <th>Travel Game</th>
-                                <th>Link</th>
-                                <th>Copy</th>
+                                <th>Travel Game<br>Link</th>
+                                <th>VIP(ON/OFF)</th>
+                                <th>Prize List</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -65,14 +63,28 @@
                                     $id = $session->id;
                                 @endphp
                                 <tr>
-                                    <td width="50%">{{optional($session->travelGame)->name}}</td>
-                                    <td width="20%">
+                                    <td width="50%">
+                                        {{optional($session->travelGame)->name}}
+                                        <br>
                                         <a href="{{$link}}" target="_blank">Click Here!</a>
+                                        <button type="button" class="btn btn-secondary btn-sm" data-clipboard-text="{{$link}}">Copy</button>
+                                    </td>
+                                    <td width="20%">
+                                        <input
+                                            type="checkbox"
+                                            id="v_{{$id}}"
+                                            switch="none"
+                                            @if($session->is_vip) checked @endif>
+                                        <label
+                                            class="vip"
+                                            data-id="{{$id}}"
+                                            for="v_{{$id}}"
+                                            data-on-label="On"
+                                            data-off-label="Off"
+                                            data-url="{{route('cws.setupVip', ['id' => $id])}}"></label>
                                    </td>
                                    <td width="20%">
-                                        <button type="button"
-                                            class="btn btn-secondary btn-sm"
-                                            data-clipboard-text="{{$link}}">Copy Link</button>
+                                        <a href="{{route('cws.getPrizeList', ['id' => $id])}}">Click here!</a>
                                    </td>
                                    <td width="10%">
                                        <input
@@ -89,7 +101,7 @@
                                         <div class="row">
                                             <h5 style="font-size: 14px;">Setup for <span style="color: red;">{{optional($session->travelGame)->name}}</span></h5>
                                             <div class="col-xl-3">
-                                                <label class="col-form-label">Banner</label>
+                                                <label class="col-form-label">Backgroud</label>
                                                 <select name="banner_url" class="form-select" id="a-{{$id}}" disabled>
                                                     @foreach($imgs as $k => $v)
                                                         <option value="{{ $k }}" {{($k == $session->banner_url) ? 'selected' : ''}}>{{$v}}</option>
@@ -107,6 +119,7 @@
                                             <div class="col-xl-3">
                                                 <label class="col-form-label">Number</label>
                                                 <input class="form-control" type="number" value="{{$session->num}}" name="num" min="1" max="30" id="c-{{$id}}" disabled>
+                                                <label id="err-{{$id}}" class="text-danger d-none" style="padding-left: 10px;"></label>
                                             </div>
                                             <div class="col-xl-3">
                                                 <label class="col-form-label">Type Game</label>
@@ -142,9 +155,9 @@
                     <table class="table table-bordered mb-0 table-responsive">
                         <thead class="table-light">
                             <tr>
-                                <th>Travel Game</th>
-                                <th>Link</th>
-                                <th>Copy</th>
+                                <th>Travel Game<br>Link</th>
+                                <th>VIP(ON/OFF)</th>
+                                <th>Prize List</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -155,14 +168,30 @@
                                     $id = $booth->id;
                                 @endphp
                                 <tr>
-                                    <td width="50%">{{optional($booth->travelGame)->name}}</td>
-                                    <td width="20%">
+                                    <td width="50%">
+                                        {{optional($booth->travelGame)->name}}
+                                        <br>
                                         <a href="{{$link}}" target="_blank">Click Here!</a>
-                                   </td>
-                                   <td width="20%">
                                         <button type="button"
                                             class="btn btn-secondary btn-sm"
-                                            data-clipboard-text="{{$link}}">Copy Link</button>
+                                            data-clipboard-text="{{$link}}">Copy</button>
+                                    </td>
+                                    <td width="20%">
+                                        <input
+                                            type="checkbox"
+                                            id="v_{{$id}}"
+                                            switch="none"
+                                            @if($booth->is_vip) checked @endif>
+                                        <label
+                                            class="vip"
+                                            data-id="{{$id}}"
+                                            for="v_{{$id}}"
+                                            data-on-label="On"
+                                            data-url="{{route('cws.setupVip', ['id' => $id])}}"
+                                            data-off-label="Off"></label>
+                                   </td>
+                                   <td width="20%">
+                                        <a href="{{route('cws.getPrizeList', ['id' => $id])}}">Click here!</a>
                                    </td>
                                    <td width="10%">
                                        <input
@@ -179,7 +208,7 @@
                                         <div class="row">
                                             <h5 style="font-size: 14px;">Setup for <span style="color: red;">{{optional($booth->travelGame)->name}}</span></h5>
                                             <div class="col-xl-3">
-                                                <label class="col-form-label">Banner</label>
+                                                <label class="col-form-label">Backgroud</label>
                                                 <select name="banner_url" class="form-select" id="a-{{$id}}" disabled>
                                                     @foreach($imgs as $k => $v)
                                                         <option value="{{ $k }}" {{($k == $booth->banner_url) ? 'selected' : ''}}>{{$v}}</option>
@@ -201,6 +230,7 @@
                                                     name="num"
                                                     value="{{$booth->num}}"
                                                     min="1" max="30" id="c-{{$id}}" disabled>
+                                                <label id="err-{{$id}}" class="text-danger d-none" style="padding-left: 10px;"></label>
                                             </div>
                                             <div class="col-xl-3">
                                                 <label class="col-form-label">Type Game</label>
@@ -233,7 +263,7 @@
 {{--Script--}}
 @section('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script> --}}
+
     <script>
         jQuery(document).ready(function ($) {
             var clipboard = new ClipboardJS('.btn');
@@ -247,6 +277,22 @@
 
                 $.ajax({
                     url: '/mini/upd/'+id,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (data) {
+                        $.notify('Success', 'success');
+                    },
+                    error: function (data) {
+                        $.notify('Errors', 'error');
+                    }
+                });
+            });
+
+            
+            $(document).on('click', '.vip', function (e) {
+                var url = $(this).data('url');
+                $.ajax({
+                    url: url,
                     type: 'get',
                     dataType: 'json',
                     success: function (data) {
@@ -275,30 +321,38 @@
                 var b = $('#b-'+id).val();
                 var c = $('#c-'+id).val();
                 var d = $('#d-'+id).val();
-                $.ajax({
-                    url: urlGame,
-                    type: 'POST',
-                    data: {
-                        _token: _token,
-                        id: id,
-                        banner_url: a,
-                        type_prize: b,
-                        num: c,
-                        is_game: d
-                    },
-                    success: function (data) {
-                        $.notify('Success', 'success');
-                        setTimeout(function(e) {
-                            location.reload();
-                        }, 1500);
-                    },
-                    error: function (data) {
-                        $.notify('Errors', 'error');
-                        setTimeout(function(e) {
-                            location.reload();
-                        }, 1500);
-                    }
-                });
+
+                if (c <= 0 || c >= 6) {
+                    $('#err-'+id).removeClass('d-none').html('Input 1~5');
+                } else {
+                    $('#err-'+id).addClass('d-none');
+
+                    $.ajax({
+                        url: urlGame,
+                        type: 'POST',
+                        data: {
+                            _token: _token,
+                            id: id,
+                            banner_url: a,
+                            type_prize: b,
+                            num: c,
+                            is_game: d
+                        },
+                        success: function (data) {
+                            $.notify('Success', 'success');
+                            setTimeout(function(e) {
+                                location.reload();
+                            }, 1500);
+                        },
+                        error: function (data) {
+                            $.notify('Errors', 'error');
+                            setTimeout(function(e) {
+                                location.reload();
+                            }, 1500);
+                        }
+                    });
+                }
+
             });
         });
     </script>

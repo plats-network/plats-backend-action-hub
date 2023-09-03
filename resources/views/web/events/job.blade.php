@@ -36,8 +36,13 @@
                             <a class="text-danger" href="{{route('job.getTravelGame', ['task_id' => $task_id])}}">Back here!</a>
                         </p>
                     </div>
+
+                    @php
+                        $type = request()->get('type'); 
+                    @endphp
+
                     <div class="tab-content" id="conferScheduleTabContent">
-                        <div class="tab-pane fade show in active" id="step-one" role="tabpanel" aria-labelledby="session-tab">
+                        <div class="tab-pane {{$type == '0' ? 'fade show in active' : ''}}" id="step-one" role="tabpanel" aria-labelledby="session-tab">
                             <div class="timeline-container">
                                 @foreach($groupSessions as $itemDatas)
                                     <hr style="margin-bottom: 20px;">
@@ -67,7 +72,7 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane" id="step-two" role="tabpanel" aria-labelledby="booth-tab">
+                        <div class="tab-pane {{$type == '1' ? 'fade show in active' : ''}}" id="step-two" role="tabpanel" aria-labelledby="booth-tab">
                             <div class="timeline-container">
                                 @foreach($groupBooths as $itemDatas)
                                     <hr style="margin-bottom: 20px;">

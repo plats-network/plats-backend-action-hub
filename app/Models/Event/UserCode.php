@@ -5,6 +5,8 @@ namespace App\Models\Event;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\Uuid;
+use App\Models\{User, TravelGame};
+use App\Models\Event\{TaskEvent};
 
 class UserCode extends Model
 {
@@ -33,5 +35,22 @@ class UserCode extends Model
         'is_prize', // 0: chưa đc giải, 1: đc giải
         'name_prize', // Tên giải
         'is_vip', // 0: normal, 1: vip
+        'type', // 0: session, 1: booth
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function taskEvent()
+    {
+        return $this->belongsTo(TaskEvent::class);
+    }
+
+    public function travelGame()
+    {
+        return $this->belongsTo(TravelGame::class);
+    }
 }

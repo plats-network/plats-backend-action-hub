@@ -22,6 +22,7 @@ class HomeController extends Controller
 
     public function demo(Request $request)
     {
+        dd(232);
         $code = $request->input('code');
 
         if ($code != 'r65n4wIfrcrv3ngktcNyxj3vO') {
@@ -42,14 +43,12 @@ class HomeController extends Controller
     {
         try {
             $miniGame = $this->miniGame->whereCode($code)->first();
-            dd(11);
-            if (!$miniGame) {
-                abort(404);
-            }
+            if (!$miniGame) { abort(404); }
 
             $codes = $this->userCode
                 ->where('task_event_id', $miniGame->task_event_id)
                 ->where('travel_game_id', $miniGame->travel_game_id)
+                ->whereType($miniGame->type)
                 ->whereIsPrize(false)
                 ->inRandomOrder()
                 ->pluck('number_code')
@@ -61,6 +60,9 @@ class HomeController extends Controller
         return view('game.demo', [
             'numbers' => $codes,
             'code' => $code,
+            'img' => $miniGame->banner_url ?? 'bg_game_4.png',
+            'num' => $miniGame->num,
+            'is_locked' => $miniGame->status,
             'event_id' => $miniGame->task_event_id,
             'travel_id' => $miniGame->travel_game_id,
         ]);
@@ -69,12 +71,28 @@ class HomeController extends Controller
     public function updateResult(Request $request)
     {
         try {
-            
+            $code = $request->input('code');
+            $codeIds = $request->input('ids');
+            $miniGame = $this->miniGame->whereCode($code)->first();
+
+            $datas = $this->userCode
+                ->where('task_event_id', $miniGame->task_event_id)
+                ->where('travel_game_id', $miniGame->travel_game_id)
+                ->whereType($miniGame->type)
+                ->whereIn('number_code', $codeIds)
+                ->update([
+                    'is_prize' => true,
+                    'name_prize' => $miniGame->type_prize
+                ]);
         } catch (\Exception $e) {
-            return $this->resError();
+            return response()->json([
+                'message' => 'Error'
+            ], 500);
         }
 
-        return $this->resOk();
+        return response()->json([
+            'message' => 'Ok'
+        ], 200);
     }
 
     private function resError(Request $request)
@@ -99,37 +117,13 @@ class HomeController extends Controller
             if (!$miniGame) {
                 abort(404);
             }
-
-            // $codes = $this->userCode
-            //     ->where('task_event_id', $miniGame->task_event_id)
-            //     ->where('travel_game_id', $miniGame->travel_game_id)
-            //     ->whereIsPrize(false)
-            //     ->inRandomOrder()
-            //     ->pluck('number_code')
-            //     ->toArray();
-
-            // dd($codes);
             $numbers = [];
             for($i = 0; $i <= 1000; $i++) {
                 $numbers[] = $i+1;
             }
-
-            // $taskEvent = $this->taskEvent
-            //     ->whereCode($code)
-            //     ->firstOrFail();
-
-            // $events = $this->eventUserTicket
-            //     ->whereTaskId($taskEvent->task_id)
-            //     ->whereNotNull('sesion_code')
-            //     ->whereIsSession(false)
-            //     ->inRandomOrder()
-            //     ->get();
-            // dd($events);
         } catch (\Exception $e) {
             abort(404);
         }
-
-        // dd($numbers);
 
         return view('game.demo', [
             'numbers' => $numbers,
@@ -145,7 +139,6 @@ class HomeController extends Controller
             $taskEvent = $this->taskEvent
                 ->whereCode($code)
                 ->firstOrFail();
-            // dd($taskEvent);
 
             $events = $this->eventUserTicket
                 ->whereTaskId($taskEvent->task_id)

@@ -13,9 +13,10 @@ use App\Models\Event\{
     TaskEventDetail,
     UserJoinEvent,
     UserEvent,
+    UserCode,
 };
 use App\Models\{Task, User, TravelGame, Sponsor, SponsorDetail, UserSponsor};
-use App\Services\CodeHashService;
+use App\Services\{CodeHashService, TaskService};
 use Illuminate\Support\Str;
 
 class Job extends Controller
@@ -26,12 +27,14 @@ class Job extends Controller
         private TaskEvent $taskEvent,
         private UserJoinEvent $joinEvent,
         private Task $task,
+        private UserCode $userCode,
         private Sponsor $sponsor,
         private SponsorDetail $sponsorDetail,
         private UserSponsor $userSponsor,
         private UserEvent $userEvent,
         private TravelGame $travelGame,
         private EventUserTicket $eventUserTicket,
+        private TaskService $taskService,
     ) {
         // Code
     }
@@ -110,7 +113,7 @@ class Job extends Controller
             $taskEvent = $this->taskEvent->find($detail->task_event_id);
             $taskId = $taskEvent->task_id;
             $task = $this->task->find($taskId);
-            $user = $request->user();
+            $user = Auth::user();
 
             if (!$detail) {
                 notify()->error('Có lỗi xảy ra');
@@ -121,6 +124,7 @@ class Job extends Controller
                 ->whereTaskId($taskId)
                 ->whereUserId($user->id)
                 ->exists();
+
             if (!$checkJoin) {
                 $this->eventUserTicket->create([
                     'name' => $user->name,
@@ -137,20 +141,37 @@ class Job extends Controller
                 ->where('task_event_detail_id', $detail->id)
                 ->whereUserId($user->id)
                 ->exists();
+            $taskEvent = $this->taskEvent->find($detail->task_event_id);
 
             if (!$checkEventJob) {
-                $this->joinEvent->create([
-                    'task_event_detail_id' => $detail->id,
-                    'user_id' => $user->id,
-                    'task_id' => $taskId,
-                    'task_event_id' => $detail->task_event_id,
-                ]);
+                if (!$detail->status) {
+                    notify()->error('QR code locked');
+                    return redirect()->route('web.jobEvent', [
+                        'id' => $task->code,
+                        'type' => $taskEvent->type
+                    ]);
+                } else {
+                    // $taskEvent = $this->taskEvent->find($detail->task_event_id);
+                    $isImportant = $taskEvent->type == 0 ? $detail->is_question : $detail->is_required;
+
+                    $this->joinEvent->create([
+                        'task_event_detail_id' => $detail->id,
+                        'travel_game_id' => $detail->travel_game_id,
+                        'user_id' => $user->id,
+                        'task_id' => $taskId,
+                        'task_event_id' => $detail->task_event_id,
+                        'type' => $taskEvent->type,
+                        'is_important' => $isImportant
+                    ]);
+                }
+
             }
             if ($detail->is_question == false) {
                 notify()->success('Quét QR code success');
 
                 return redirect()->route('web.jobEvent', [
-                    'id' => $task->code
+                    'id' => $task->code,
+                    'type' => $taskEvent->type
                 ]);
             }
         } catch (\Exception $e) {
@@ -174,19 +195,37 @@ class Job extends Controller
     public function getTravelGame(Request $request, $taskId)
     {
         try {
-            $travelBoots = [];
-            $travelSessions = [];
-
             $event = $this->task->find($taskId);
-            $session = $this->taskEvent->whereTaskId($taskId)->whereType(TASK_SESSION)->first();
-            $booth = $this->taskEvent->whereTaskId($taskId)->whereType(TASK_BOOTH)->first();
 
-            $travelSessionIds = $this->eventDetail->select('travel_game_id')->distinct()->whereTaskEventId($session->id)->pluck('travel_game_id')->toArray();
-            $travelBootsIds = $this->eventDetail->select('travel_game_id')->distinct()->whereTaskEventId($session->id)->pluck('travel_game_id')->toArray();
+            $travelSessions = [];
+            $session = $this->taskEvent->whereTaskId($taskId)->whereType(TASK_SESSION)->first();
+            $travelSessionIds = $this->eventDetail
+                ->select('travel_game_id')
+                ->distinct()
+                ->whereTaskEventId($session->id)
+                ->pluck('travel_game_id')
+                ->toArray();
+
+            $travelBoots = [];
+            $booth = $this->taskEvent->whereTaskId($taskId)->whereType(TASK_BOOTH)->first();
+            $travelBootsIds = $this->eventDetail
+                ->select('travel_game_id')
+                ->distinct()
+                ->whereTaskEventId($booth->id)
+                ->pluck('travel_game_id')
+                ->toArray();
 
             $travelSessions = $this->travelGame->whereIn('id', $travelSessionIds)->get();
-            $travelBooths = $this->travelGame->whereIn('id', $travelSessionIds)->get();
+            $travelBooths = $this->travelGame->whereIn('id', $travelBootsIds)->get();
+
+            // dd($travelBooths->pluck('id')->toArray(), $travelSessions->pluck('id')->toArray());
+
+
+            // Start
+            $userId = Auth::user()->id;
+            $this->taskService->genCodeByUser($userId, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
         } catch (\Exception $e) {
+            dd($e->getMessage());
             abort(404);
         }
 

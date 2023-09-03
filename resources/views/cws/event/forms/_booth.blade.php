@@ -55,13 +55,14 @@
                             <th>Description</th>
                             <th>QR Code</th>
                             <th>Total</th>
+                            <th>C</th>
                             <th>QR <span class="text-danger">(ON/OFF)</span></th>
                         </tr>
                     </thead>
                     <tbody id="list-booth-id" data-b-ids="{{json_encode($booths->detail->pluck('id')->toArray())}}">
                         @foreach($booths->detail as $k => $booth)
                             @php
-                                $qr = 'https://'.config('plats.event').'/events/code?type=event&id='.$booth->code;
+                                $qr = 'http://'.config('plats.event').'/events/code?type=event&id='.$booth->code;
                             @endphp
                             <tr>
                                <td width="5%">{{$k+1}}</td> 
@@ -73,6 +74,7 @@
                                     <a class="bo-donw" data-id="{{$booth->id}}" data-num="{{$k+1}}" data-name="booth">Download</a>
                                </td> 
                                <td width="10%">{{totalUserJob($booth->id)}}</td>
+                               <td width="10%"><a href="{{$qr}}" target="_blank">cc</a></td>
                                <td width="20%">
                                     <input
                                         type="checkbox"
@@ -139,7 +141,8 @@
                                     value="{{$boothDetail->description}}">
                             </div>
 
-                            <div class="col-sm-2 mt-5 mt-5">
+                            <div class="col-sm-4 mt-5 mt-5">
+                                <input type="hidden" name="booths[detail][{{$boothDetail->id}}][is_question]" value="{{$boothDetail->is_question}}">
                                 <input
                                     class="form-check-input"
                                     data-id="{{$boothDetail->id}}"
@@ -151,7 +154,9 @@
                                     Required <span class="text-danger" style="font-size: 11px;">(Yes/No)</span>
                                 </label>
                             </div>
-                            <div class="col-sm-2 mt-5 mt-5">
+
+                            {{-- Question --}}
+                            {{-- <div class="col-sm-2 mt-5 mt-5">
                                 <input
                                     class="form-check-input bCheck"
                                     data-id="{{$boothDetail->id}}"
@@ -162,9 +167,9 @@
                                 <label class="form-check-label" for="bq_{{$boothDetail->id}}">
                                     Is quesion <span class="text-danger" style="font-size: 11px;">(Yes/No)</span>
                                 </label>
-                            </div>
+                            </div> --}}
 
-                            <div id="b-{{$boothDetail->id}}" class="{{$boothDetail->is_question ? '' : 'd-none'}}">
+                            {{-- <div id="b-{{$boothDetail->id}}" class="{{$boothDetail->is_question ? '' : 'd-none'}}">
                                 <div class="row mt-1">
                                     <div class="col-sm-12">
                                         <label class="form-check-label">Quesion</label>
@@ -268,7 +273,7 @@
                                         </label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="col-sm-12 text-right">
                                 <div class="col-auto">

@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Carbon as SupportCarbon;
+use App\Models\Event\{UserJoinEvent, UserCode};
 
 class TaskService extends BaseService
 {
@@ -33,11 +34,110 @@ class TaskService extends BaseService
     public function __construct(
         TaskRepository $repository,
         LocationHistoryRepository $locationHistoryRepository,
-        TaskUserRepository $taskUserRepository
+        TaskUserRepository $taskUserRepository,
+        private UserJoinEvent $joinEvent,
+        private UserCode $userCode,
     ) {
         $this->repository = $repository;
         $this->locationHistoryRepository = $locationHistoryRepository;
         $this->taskUserRepository = $taskUserRepository;
+    }
+
+
+    // Gen Code
+    public function genCodeByUser(
+        $userId,
+        $taskId,
+        $travelSessionIds,
+        $travelBootsIds,
+        $sEventId,
+        $bEventId
+    )
+    {
+        $importants = $this->joinEvent
+            ->whereUserId($userId)
+            ->whereTaskId($taskId)
+            ->where('is_code', false)
+            ->where('is_important', true)
+            ->get();
+
+        foreach($importants as $item) {
+            $max = $this->userCode
+                ->whereTaskEventId($item->task_event_id)
+                ->where('travel_game_id', $item->travel_game_id)
+                ->max('number_code');
+
+            $this->userCode->create([
+                'user_id' => $userId,
+                'task_event_id' => $item->task_event_id,
+                'travel_game_id' => $item->travel_game_id,
+                'type' => $item->type,
+                'number_code' => $max + 1,
+                'color_code' => randColor()
+            ]);
+
+            $item->update(['is_code' => true]);
+        }
+
+        foreach($travelSessionIds as $tId) {
+            $maxSession = $this->userCode
+                ->where('task_event_id', $sEventId)
+                ->where('travel_game_id', $tId)
+                ->where('type', 0)
+                ->max('number_code');
+
+            $codeSessions = $this->joinEvent
+                ->select('id')
+                ->whereUserId($userId)
+                ->where('task_event_id', $sEventId)
+                ->where('travel_game_id', $tId)
+                ->where('is_code', false)
+                ->where('is_important', false)
+                ->limit(2);
+
+            if (count($codeSessions->pluck('id')->toArray()) == 2) {
+                $this->userCode->create([
+                    'user_id' => $userId,
+                    'task_event_id' => $sEventId,
+                    'travel_game_id' => $tId,
+                    'type' => 0,
+                    'number_code' => $maxSession + 1,
+                    'color_code' => randColor()
+                ]);
+
+                $codeSessions->update(['is_code' => true]);
+            }
+        }
+
+        foreach($travelBootsIds as $travelId) {
+            $maxBooth = $this->userCode
+                ->whereTaskEventId($bEventId)
+                ->where('travel_game_id', $travelId)
+                ->where('type', 1)
+                ->max('number_code');
+
+            $codeBooths = $this->joinEvent
+                ->select('id')
+                ->whereUserId($userId)
+                ->where('task_event_id', $bEventId)
+                ->where('travel_game_id', $travelId)
+                ->where('is_code', false)
+                ->where('is_important', false)
+                ->limit(2);
+
+            if (count($codeBooths->pluck('id')->toArray()) == 2) {
+                $this->userCode->create([
+                    'user_id' => $userId,
+                    'task_event_id' => $bEventId,
+                    'travel_game_id' => $travelId,
+                    'type' => 1,
+                    'number_code' => $maxBooth + 1,
+                    'color_code' => randColor()
+                ]);
+
+                $codeBooths->update(['is_code' => true]);
+            }
+        }
     }
 
     /**

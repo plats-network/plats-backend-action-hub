@@ -28,10 +28,14 @@ class UserJoinEvent extends Model
         'id',
         'user_id',
         'task_event_detail_id',
+        'travel_game_id',
+        'task_event_id',
+        'task_id',
         'agent',
         'ip_address',
-        'task_id',
-        'task_event_id',
+        'type', // 0: Session, 1: Booth
+        'is_code', // false: chưa gen code, 1: gen code
+        'is_important', // false or true
     ];
 
     /**

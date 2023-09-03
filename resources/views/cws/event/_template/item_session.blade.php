@@ -19,7 +19,7 @@
             class="form-control"
             id="sessions[detail][{{$indexImageItem}}][name]"
             name="sessions[detail][{{$indexImageItem}}][name]"
-            placeholder="Tên session {{$getInc}}"
+            placeholder="Name session"
             value="">
     </div>
 
@@ -29,27 +29,17 @@
             class="form-control"
             id="sessions[detail][{{$indexImageItem}}][description]"
             name="sessions[detail][{{$indexImageItem}}][description]"
-            placeholder="Mô tả {{$getInc}}"
+            placeholder="Description"
             value="">
     </div>
- 
-    <div class="col-sm-2 mt-2">
-        <input
-            class="form-check-input"
-            data-id="{{$indexImageItem}}"
-            type="checkbox" value="1"
-            name="sessions[detail][{{$indexImageItem}}][is_required]"
-            id="r_{{$getInc}}">
-        <label class="form-check-label" for="r_{{$getInc}}">
-            Required <span class="text-danger fs-11">(Yes/No)</span>
-        </label>
-    </div>
 
-    <div class="col-sm-2 mt-2">
+    <div class="col-sm-4 mt-2">
+        <input type="hidden" name="sessions[detail][{{$indexImageItem}}][is_required]" value="0">
         <input
             class="form-check-input sCheck"
             data-id="{{$indexImageItem}}"
-            type="checkbox" value="1"
+            type="checkbox"
+            value="1"
             name="sessions[detail][{{$indexImageItem}}][is_question]"
             id="q_{{$getInc}}">
         <label class="form-check-label" for="q_{{$getInc}}">

@@ -58,13 +58,14 @@
                         <th>Description</th>
                         <th>QR</th>
                         <th>Total</th>
+                        <th>Click</th>
                         <th>QR <span class="text-danger">(ON/OFF)</span></th>
                     </tr>
                 </thead>
                 <tbody id="list-session-id" data-s-ids="{{json_encode($sessions->detail->pluck('id')->toArray())}}">
                     @foreach($sessions->detail as $k => $session)
                         @php
-                            $qr = 'https://'.config('plats.event').'/events/code?type=event&id='.$session->code;
+                            $qr = 'http://'.config('plats.event').'/events/code?type=event&id='.$session->code;
                         @endphp
                         <tr>
                            <td width="5%">{{$k+1}}</td> 
@@ -84,6 +85,7 @@
                                     Download</a> --}}
                            {{-- </td> --}}
                            <td width="5%">{{totalUserJob($session->id)}}</td>
+                           <td width="5%"><a href="{{$qr}}" target="_blank">click</a></td>
                            <td width="20%">
                                 <input
                                         type="checkbox"
@@ -153,25 +155,15 @@
                                     name="sessions[detail][{{$sessionDetail->id}}][description]"
                                     value="{{$sessionDetail->description}}">
                             </div>
-                            <div class="col-sm-2 mt-5 mt-5">
-                                <input
-                                    class="form-check-input"
-                                    data-id="{{$sessionDetail->id}}"
-                                    type="checkbox" value="1"
-                                    name="sessions[detail][{{$sessionDetail->id}}][is_required]"
-                                    @if ($sessionDetail->is_required) checked @endif
-                                    id="r_{{$sessionDetail->id}}">
-                                <label class="form-check-label" for="r_{{$sessionDetail->id}}">
-                                    Required <span class="text-danger" style="font-size: 11px;">(Yes/No)</span>
-                                </label>
-                            </div>
-                            <div class="col-sm-2 mt-5 mt-5">
+                            <div class="col-sm-4 mt-5 mt-5">
+                                <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][is_required]" value="{{$sessionDetail->is_required}}">
                                 <input
                                     class="form-check-input sCheck"
                                     data-id="{{$sessionDetail->id}}"
-                                    type="checkbox" value="1"
+                                    type="checkbox"
+                                    value="{{$sessionDetail->is_question}}"
                                     name="sessions[detail][{{$sessionDetail->id}}][is_question]"
-                                    @if ($sessionDetail->is_required) is_question @endif
+                                    @if ($sessionDetail->is_question) checked @endif
                                     id="q_{{$sessionDetail->id}}">
                                 <label class="form-check-label" for="q_{{$sessionDetail->id}}">
                                     Is question <span class="text-danger" style="font-size: 11px;">(Yes/No)</span>

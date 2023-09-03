@@ -34,7 +34,8 @@
             value="">
     </div>
 
-    <div class="col-sm-2 mt-5">
+    <div class="col-sm-4 mt-5">
+        <input type="hidden" name="booths[detail][{{$indexImageItem}}][is_question]" value="0">
         <input
             class="form-check-input"
             data-id="{{$indexImageItem}}"
@@ -46,7 +47,7 @@
         </label>
     </div>
 
-    <div class="col-sm-2 mt-5">
+    {{-- <div class="col-sm-2 mt-5">
         <input
             class="form-check-input bCheck"
             data-id="{{$indexImageItem}}"
@@ -56,9 +57,9 @@
         <label class="form-check-label" for="bq_{{$getInc}}">
             Is question <span class="text-danger fs-11">(Yes/No)</span>
         </label>
-    </div>
+    </div> --}}
 
-    <div id="b-{{$indexImageItem}}" class="d-none">
+    {{-- <div id="b-{{$indexImageItem}}" class="d-none">
         <div class="row mt-1">
             <div class="col-sm-12">
                 <label class="form-check-label">Question</label>
@@ -158,7 +159,7 @@
                 </label>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="col-sm-12 text-right">
         <label class="col-form-label">&nbsp;</label>

@@ -68,6 +68,24 @@ if (!function_exists('qrNumberCode')) {
     }
 }
 
+if (!function_exists('codePrize')) {
+    function codePrize($code) {
+        $code = (int)$code;
+
+        if ($code == 0) {
+            return 'Prize 1';
+        } elseif ($code == 1) {
+            return 'Prize 1';
+        } elseif ($code == 2) {
+            return 'Prize 3';
+        } elseif ($code == 3) {
+            return 'Prize 4';
+        } else {
+            return 'Prize 5';
+        }
+    }
+}
+
 if (!function_exists('affiliateCode')) {
     // Gen mã giới thiệu
     function affiliateCode () {

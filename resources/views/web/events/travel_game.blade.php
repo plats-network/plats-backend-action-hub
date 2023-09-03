@@ -1,10 +1,20 @@
 @extends('web.layouts.event_app')
 
 @section('content')
+    @php
+        $userId = auth()->user()->id;
+        $email = auth()->user()->email;
+        $userCode = new App\Models\Event\UserCode();
+    @endphp
+
     <style type="text/css">
         #laravel-notify {
             z-index: 1000;
             position: absolute;
+        }
+        .fs-25 {
+            font-size: 25px;
+            color: #228b22;
         }
     </style>
     <section class="travel">
@@ -13,7 +23,7 @@
                 <div class="info">
                     <table class="table">
                         <tr>
-                            <td>{{auth()->user()->email}}</td>
+                            <td>{{$email}}</td>
                             <td class="text-center">
                                 <a id="editInfo" href="#" style="color: red;">Edit</a>
                             </td>
@@ -37,9 +47,17 @@
                 <div class="tab-content">
                     <div id="sesion" class="tab-pane fade in active">
                         @foreach($travelSessions as $session)
+                            @php
+                                $codes = $userCode->where('user_id', $userId)
+                                    ->where('travel_game_id', $session->id)
+                                    ->where('type', 0)
+                                    ->pluck('number_code')
+                                    ->implode(',');
+                            @endphp
+
                             <div class="item">
                                 <h3 class="text-center">{{$session->name}}</h3>
-                                <p><strong>Mã số quay thưởng:</strong> ___</p>
+                                <p><strong>Mã số quay thưởng:</strong> <span class="fs-25">{{$codes ? $codes : '___'}}</span></p>
                                 <p>
                                     <strong>Nhiệm vụ phải làm:</strong>
                                     <a href="{{route('web.jobEvent', ['id' => $event->code])}}">Click Here!</a>
@@ -49,11 +67,19 @@
                             </div>
                         @endforeach
                     </div>
+
                     <div id="booth" class="tab-pane fade">
                         @foreach($travelBooths as $booth)
+                            @php
+                                $codeBooths = $userCode->where('user_id', $userId)
+                                    ->where('travel_game_id', $booth->id)
+                                    ->where('type', 1)
+                                    ->pluck('number_code')
+                                    ->implode(',');
+                            @endphp
                             <div class="item">
                                 <h3 class="text-center">{{$booth->name}}</h3>
-                                <p><strong>Mã số quay thưởng:</strong> ___</p>
+                                <p><strong>Mã số quay thưởng:</strong> <span class="fs-25">{{$codeBooths ? $codeBooths : '___'}}</span></p>
                                 <p>
                                     <strong>Nhiệm vụ phải làm:</strong>
                                     <a href="{{route('web.jobEvent', ['id' => $event->code])}}">Click Here!</a>

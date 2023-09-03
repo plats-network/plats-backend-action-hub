@@ -178,14 +178,6 @@ class Home extends Controller
                     ->whereTaskEventDetailId($session->id)
                     ->first();
 
-                // $requiredIds = $this->eventDetail
-                //     ->where('task_event_id', $session->task_event_id)
-                //     ->where('travel_game_id', $session->travel_game_id)
-                //     ->whereIsRequired(true)
-                //     ->pluck('id')
-                //     ->toArray();
-                // dump($requiredIds);
-
                 $sessionDatas[] = [
                     'id' => $session->id,
                     'travel_game_id' => $session->travel_game_id,

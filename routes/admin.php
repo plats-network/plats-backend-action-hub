@@ -70,6 +70,8 @@ Route::middleware(['client_admin'])->group(function($cws) {
     // Sponser
     $cws->get('sponsor/{id}', [EventController::class, 'sponsor'])->name('cws.event.sponsor');
     $cws->post('setup/minigame', [EventController::class, 'setupMiniGame'])->name('cws.setupMiniGame');
+    $cws->get('vip/{id}', [EventController::class, 'setupVip'])->name('cws.setupVip');
+    $cws->get('prizeList/{id}', [EventController::class, 'getPrizeList'])->name('cws.getPrizeList');
 
     // Travel Games
     $cws->get('travel-game', [TravelGame::class, 'index'])->name('cws.travelGames');

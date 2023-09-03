@@ -52,15 +52,6 @@
                             action="{{$is_update ? route('cws.eventUpdate', ['id' => $event->id]) : route('cws.eventStore')}}">
                             @csrf
                             <input type="hidden" name="id" value="{{ $event->id }}">
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul class="list-unstyled">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
                             {{-- Step --}}
                             @include('cws.event._step')
 
@@ -450,7 +441,7 @@
             }
 
             var fileAvatarInit = null;
-            var fileSlideInit = null;
+            // var fileSlideInit = null;
             @if($event->banner_url)
                 fileAvatarInit = [{
                     "path": "{{$event->banner_url}}",
@@ -462,18 +453,18 @@
                 }];
             @endif
 
-            fileSlideInit = [
-                @foreach($task_galleries as $key=> $fileItem)
-                {
-                    "path": "{{$fileItem['url']}}",
-                    "base_url": "",
-                    "type": null,
-                    "size": null,
-                    "name": null,
-                    "order": null
-                } @if($key < $total_file-1), @endif
-                @endforeach
-            ];
+            // fileSlideInit = [
+            //     @foreach($task_galleries as $key=> $fileItem)
+            //     {
+            //         "path": "{{$fileItem['url']}}",
+            //         "base_url": "",
+            //         "type": null,
+            //         "size": null,
+            //         "name": null,
+            //         "order": null
+            //     } @if($key < $total_file-1), @endif
+            //     @endforeach
+            // ];
 
             //Update init image
             jQuery('#w0').yiiUploadKit({
@@ -551,27 +542,36 @@
             // });
         });
 
-        if ($('#list-session-id').length > 0) {
-            var sessionIds = $('#list-session-id').data('s-ids'),
-                boothIds = $('#list-booth-id').data('b-ids');
-
-            if (sessionIds.length > 0) {
-                sessionIds.forEach(function(item) {
-                    var url = $("#se-"+item).data('se-url');
-                    new QRCode(document.getElementById("se-"+item), url);
-                    new QRCode("dse-"+item, {
-                        text: url,
-                        width: 300,
-                        height: 300
-                    });
-                });
-            }
+        if ($('#list-booth-id').length > 0) {
+            var boothIds = $('#list-booth-id').data('b-ids');
 
             if (boothIds.length > 0) {
                 boothIds.forEach(function(item) {
                     var url = $("#bo-"+item).data('bo-url');
                     new QRCode(document.getElementById("bo-"+item), url);
                     new QRCode("dbo-"+item, {
+                        text: url,
+                        width: 300,
+                        height: 300
+                    });
+                });
+            }
+            $('.bo-donw').on('click', function(e) {
+                var id = $(this).data('id')
+                    num = $(this).data('num'),
+                    name = $(this).data('name');
+                let dataUrl = document.querySelector('#dbo-'+id).querySelector('img').src;
+                downloadURI(dataUrl, name+'-'+num+'.png');
+            });
+        }
+
+        if ($('#list-session-id').length > 0) {
+            var sessionIds = $('#list-session-id').data('s-ids');
+            if (sessionIds.length > 0) {
+                sessionIds.forEach(function(item) {
+                    var url = $("#se-"+item).data('se-url');
+                    new QRCode(document.getElementById("se-"+item), url);
+                    new QRCode("dse-"+item, {
                         text: url,
                         width: 300,
                         height: 300
@@ -586,25 +586,17 @@
                 let dataUrl = document.querySelector('#dse-'+id).querySelector('img').src;
                 downloadURI(dataUrl, name+'-'+num+'.png');
             })
-
-            $('.bo-donw').on('click', function(e) {
-                var id = $(this).data('id')
-                    num = $(this).data('num'),
-                    name = $(this).data('name');
-                let dataUrl = document.querySelector('#dbo-'+id).querySelector('img').src;
-                downloadURI(dataUrl, name+'-'+num+'.png');
-            });
-
-            function downloadURI(uri, name) {
-              var link = document.createElement("a");
-              link.download = name;
-              link.href = uri;
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-              delete link;
-            };
         }
+
+        function downloadURI(uri, name) {
+          var link = document.createElement("a");
+          link.download = name;
+          link.href = uri;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          delete link;
+        };
     </script>
 
     <script>

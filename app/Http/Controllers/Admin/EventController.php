@@ -7,7 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Event\{
     EventDiscords, EventSocial,
     TaskEvent, TaskEventDetail,
-    TaskEventReward, EventUserTicket
+    TaskEventReward, EventUserTicket,
+    UserCode
 };
 use App\Models\Quiz\Quiz;
 use App\Models\Game\{MiniGame};
@@ -34,6 +35,7 @@ class EventController extends Controller
         private EventUserTicket $eventUserTicket,
         private TaskGenerateLinks $eventShare,
         private MiniGame $miniGame,
+        private UserCode $userCode,
     )
     {
         // code
@@ -66,6 +68,8 @@ class EventController extends Controller
         return view('cws.event.index', $data);
     }
 
+    // method: GET
+    // url: http://cws.plats.test/overview/{id}
     public function overview(Request $request, $id)
     {
         try {
@@ -78,12 +82,13 @@ class EventController extends Controller
                 ->whereType(TASK_BOOTH)
                 ->whereTaskId($event->id)
                 ->first();
+
             if ($session && empty($session->code)) {
-                $session->update(['code' => Str::random(20)]);
+                $session->update(['code' => Str::random(35)]);
             }
 
             if ($booth && empty($booth->code)) {
-                $booth->update(['code' => Str::random(20)]);
+                $booth->update(['code' => Str::random(35)]);
             }
 
             $shares = $this->eventShare
@@ -103,7 +108,7 @@ class EventController extends Controller
     }
 
     // method: GET
-    // url:
+    // url: http://cws.plats.test/minigame/{id}
     public function miniGame(Request $request, $id)
     {
         try {
@@ -138,7 +143,9 @@ class EventController extends Controller
                     $this->miniGame->create([
                         'task_event_id' => $session->id,
                         'travel_game_id' => $travelId,
-                        'code' => Str::random(100)
+                        'code' => Str::random(100),
+                        'type' => 0,
+                        'num' => 1
                     ]);
                 }
             }
@@ -151,13 +158,15 @@ class EventController extends Controller
                     $this->miniGame->create([
                         'task_event_id' => $booth->id,
                         'travel_game_id' => $tBoothid,
-                        'code' => Str::random(100)
+                        'code' => Str::random(100),
+                        'type' => 1,
+                        'num' => 1
                     ]);
                 }
             }
 
-            $miniGameSessions = $this->miniGame->where('task_event_id', $session->id)->get();
-            $miniGameBooths = $this->miniGame->where('task_event_id', $booth->id)->get();
+            $miniGameSessions = $this->miniGame->where('task_event_id', $session->id)->orderBy('id', 'asc')->get();
+            $miniGameBooths = $this->miniGame->where('task_event_id', $booth->id)->orderBy('id', 'asc')->get();
         } catch (\Exception $e) {
             abort(404);
         }
@@ -185,7 +194,7 @@ class EventController extends Controller
                 $miniGame->update([
                     'banner_url' => $request->input('banner_url'),
                     'type_prize' => (int)$is_game,
-                    'num' => (int)$num  == 0 ? 2 : $num,
+                    'num' => $num,
                     'is_game' => (int)$is_game == 0 ? 1 : $is_game
                 ]);
             }
@@ -197,7 +206,6 @@ class EventController extends Controller
             'message' => 'Ok'
         ], 200);
     }
-
 
     public function sponsor(Request $request, $id)
     {
@@ -403,7 +411,6 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-
         try {
             $inputAll = $request->all();
             $inputAll['type'] = 1;
@@ -600,6 +607,7 @@ class EventController extends Controller
         ], 200);
     }
 
+    // Update status job
     public function updateJob(Request $request, $id)
     {
         try {
@@ -666,6 +674,30 @@ class EventController extends Controller
         ], 200);
     }
 
+    public function getPrizeList(Request $request, $id)
+    {
+        try {
+
+            $miniGame = $this->miniGame->find($id);
+            $eventTask = $this->eventModel->find($miniGame->task_event_id);
+
+            $prizeLists = $this->userCode
+                ->with(['user', 'taskEvent', 'travelGame'])
+                ->where('task_event_id', $miniGame->task_event_id)
+                ->where('travel_game_id', $miniGame->travel_game_id)
+                ->where('type', $miniGame->type)
+                ->where('is_prize', true)
+                ->get();
+        } catch (\Exception $e) {
+            abort(404);
+        }
+
+        return view('cws.event.prizeList', [
+            'prizeLists' => $prizeLists,
+            'id' => $eventTask->task_id
+        ]);
+    }
+
     // Api
     public function updMiniGame(Request $request, $id)
     {
@@ -678,12 +710,34 @@ class EventController extends Controller
                 if (!$miniGame) {
                     return $this->resError();
                 } else {
-                    $miniGame->update([
-                        'status' => $miniGame->status ? false : true
-                    ]);
+                    $miniGame->update(['status' => $miniGame->status ? false : true]);
                 }
             }
 
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Errors'
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'Ok'
+        ], 200);
+    }
+
+    public function setupVip(Request $request, $id)
+    {
+        try {
+            if (Auth::guest()) {
+                return $this->resError();
+            } else {
+                $miniGame = $this->miniGame->find($id);
+                if (!$miniGame) {
+                    return $this->resError();
+                } else {
+                    $miniGame->update(['is_vip' => $miniGame->is_vip ? false : true]);
+                }
+            }
         } catch (\Exception $e) {
             return $this->resError();
         }

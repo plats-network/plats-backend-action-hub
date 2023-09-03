@@ -29,7 +29,9 @@ class MiniGame extends Model
         'task_event_id',
         'travel_game_id',
         'code',
-        'status',
+        'type', // 0: session, 1: booth
+        'is_vip', // Quay vip or normal
+        'status', // Locked / Unlocked
         'banner_url', // Banner
         'type_prize', // Loại giải
         'num', // Số lượng giải
