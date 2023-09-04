@@ -75,6 +75,7 @@ class User extends Controller
                 $user = $this->user->create([
                     'name' => $name,
                     'email' => $email,
+                    'password' => '123456a@',
                     'phone' => '0932842323',
                     'role' => GUEST_ROLE,
                     'confirm_at' => now(),
