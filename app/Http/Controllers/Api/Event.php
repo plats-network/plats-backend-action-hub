@@ -8,7 +8,7 @@ use App\Http\Requests\Api\QrCode\EventRequest;
 use App\Http\Resources\QrCodeResource;
 // Model
 use App\Models\{Task, TravelGame};
-use App\Models\Event\{UserEvent, TaskEvent, TaskEventDetail, UserJoinEvent};
+use App\Models\Event\{UserEvent, TaskEvent, TaskEventDetail, UserJoinEvent, UserCode};
 use App\Http\Resources\{
     TaskResource
 };
@@ -23,6 +23,7 @@ class Event extends ApiController
         private TaskEvent $taskEvent,
         private TaskEventDetail $eventDetail,
         private UserJoinEvent $taskDone,
+        private UserCode $userCode,
     ) {}
 
     public function index(Request $request)
@@ -63,7 +64,7 @@ class Event extends ApiController
 
         if (!$task) {
             return response()->json([
-                'message' => 'Job detail',
+                'message' => 'Not found!',
                 'status' => 'success',
                 'data' => null
             ], 200);
@@ -71,6 +72,7 @@ class Event extends ApiController
 
         $eventSession = $this->taskEvent->whereTaskId($task->id)->whereType(TASK_SESSION)->first();
         $eventBooth = $this->taskEvent->whereTaskId($task->id)->whereType(TASK_BOOTH)->first();
+
         $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)->get();
         $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)->get();
 
@@ -115,23 +117,38 @@ class Event extends ApiController
         $bTravels = $this->travelGame->whereIn('id', $travelBoothIds)->get();
 
         foreach($sTravels as $item) {
+            $sCodes = $this->userCode
+                ->whereUserId($user->id)
+                ->whereTaskEventId($eventSession->id)
+                ->whereTravelGameId($item->id)
+                ->whereType(0)
+                ->pluck('number_code')
+                ->toArray();
+
             $travelSessions[] = [
                 'id' => $item->id,
                 'name' => $item->name,
                 'note' => $item->note,
                 'prize_at' => Carbon::parse($item->prize_at)->format('Y-m-d H:i'),
-                'codes' => null,
+                'codes' => $sCodes ? $sCodes : null,
             ]; 
         }
 
         foreach($bTravels as $item) {
-            $a = [12,42,43, 54, 14];
+            $bCodes = $this->userCode
+                ->whereUserId($user->id)
+                ->whereTaskEventId($eventBooth->id)
+                ->whereTravelGameId($item->id)
+                ->whereType(1)
+                ->pluck('number_code')
+                ->toArray();
+
             $travelBooths[] = [
                 'id' => $item->id,
                 'name' => $item->name,
                 'note' => $item->note,
                 'prize_at' => Carbon::parse($item->prize_at)->format('Y-m-d H:i'),
-                'codes' => [$a[array_rand($a, 1)], $a[array_rand($a, 1)]],
+                'codes' => $bCodes ? $bCodes : null,
             ]; 
         }
 
@@ -146,7 +163,6 @@ class Event extends ApiController
             'session_game' => $travelSessions,
             'booth_game' => $travelBooths,
         ];
-
 
         return response()->json([
             'message' => 'Job detail',

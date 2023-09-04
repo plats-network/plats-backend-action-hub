@@ -16,6 +16,52 @@ body.swal2-toast-shown .swal2-container.swal2-top-right {
   display: block;
 }
 
+.event-improgress {
+  padding: 10px 15px;
+  background-color: #fff;
+  margin-top: 85px;
+  width: 100%;
+  display: none;
+
+  @media only screen and (max-width: 767px) {
+    display: inline-block;
+  }
+
+  .item {
+    background-color: #ffe0f6;
+    border-radius: 5px;
+    padding: 20px 15px;
+    border-radius: 10px;
+    border: 1px solid #3EA2FF;
+
+    h3 {
+      font-size: 20px;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 10px;
+
+      tr {
+        td {
+          &.img {
+            width: 30%;
+            height: 30px;
+            padding: 5px;
+          }
+
+          &.title {
+            width: 70%;
+            padding: 5px;
+          }
+        }
+      }
+    }
+  }
+
+
+}
+
 .icon-classy-nav-down-arrow {
   font-family: "classyfonts";
   speak: none;

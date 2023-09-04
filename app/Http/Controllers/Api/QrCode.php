@@ -6,7 +6,7 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Http\Requests\Api\QrCode\EventRequest;
 use App\Http\Resources\QrCodeResource;
-use App\Services\CodeHashService;
+use App\Services\{CodeHashService, TaskService};
 
 // Model
 use App\Models\Event\{
@@ -16,6 +16,7 @@ use App\Models\Event\{
     UserEvent,
     EventUserTicket
 };
+use App\Models\{Task, TravelGame};
 use DB;
 
 class QrCode extends ApiController
@@ -26,7 +27,10 @@ class QrCode extends ApiController
         private TaskEvent $taskEvent,
         private UserEvent $userEvent,
         private EventUserTicket $eventUserTicket,
-        private CodeHashService $codeHashService
+        private CodeHashService $codeHashService,
+        private Task $task,
+        private TravelGame $travelGame,
+        private TaskService $taskService,
     ) {}
 
     public function qrEvent(EventRequest $request)
@@ -42,7 +46,11 @@ class QrCode extends ApiController
             if ($type == 'event') {
                 $eventDetail = $this->taskEventDetail->whereCode($code)->first();
                 $taskEvent = $this->taskEvent->find($eventDetail->task_event_id);
-                $userJoinEvent = $this->userJoinEvent->whereUserId($userId)->whereTaskEventDetailId($eventDetail->id)->exists();
+
+                $userJoinEvent = $this->userJoinEvent
+                    ->whereUserId($userId)
+                    ->whereTaskEventDetailId($eventDetail->id)
+                    ->exists();
 
                 if (!$eventDetail) {
                     return $this->respondError('Job no found!', 404);
@@ -64,11 +72,26 @@ class QrCode extends ApiController
                         'user_id' => $userId,
                         'task_event_detail_id' => $eventDetail->id,
                         'task_id' => $taskEvent->task_id,
-                        'task_event_id' => $taskEvent->id
+                        'task_event_id' => $taskEvent->id,
+                        'travel_game_id' => $eventDetail->travel_game_id,
+                        'type' => $taskEvent->type,
+                        'is_important' => $taskEvent->type == 0 ? $eventDetail->is_question : $eventDetail->is_required
                     ];
 
                     $this->userJoinEvent->create($data);
                 }
+
+
+                /// Gen code
+                $taskId = $taskEvent->task_id;
+                $event = $this->task->find($taskId);
+                $session = $this->taskEvent->whereTaskId($taskId)->whereType(TASK_SESSION)->first();
+                $booth = $this->taskEvent->whereTaskId($taskId)->whereType(TASK_BOOTH)->first();
+                $travelSessionIds = $this->taskEventDetail->select('travel_game_id')->distinct()->whereTaskEventId($session->id)->pluck('travel_game_id')->toArray();
+                $travelBootsIds = $this->taskEventDetail->select('travel_game_id')->distinct()->whereTaskEventId($booth->id)->pluck('travel_game_id')->toArray();
+                $userId = $request->user()->id;
+                $this->taskService->genCodeByUser($userId, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
+                ////End Gen code
 
                 $data = [
                     'task_id' => $taskEvent->task_id,

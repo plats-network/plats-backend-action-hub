@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\{Task, User, Sponsor};
 use App\Models\Event\{EventUserTicket, UserJoinEvent};
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 // Task
 if (!function_exists('genCodeTask')) {
@@ -148,6 +149,25 @@ if (!function_exists('imgAvatar')) {
         }
 
         return Storage::disk('s3')->url($img);
+    }
+}
+
+
+if (!function_exists('eventImprogess')) {
+    function eventImprogess() {
+        if (Auth::guest()) {
+            return null;
+        }
+
+        $userId = Auth::user()->id;
+        $data = EventUserTicket::whereUserId($userId)
+            ->where('created_at', '<=', Carbon::now()->addDays(3))
+            ->where('created_at', '>=', Carbon::now()->subDays(3))
+            ->orderBy('created_at', 'desc')
+            ->limit(3)
+            ->get();
+
+        return $data;
     }
 }
 

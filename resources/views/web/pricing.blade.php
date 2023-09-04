@@ -1,6 +1,8 @@
 @extends('web.layouts.event_app')
 
 @section('content')
+    @include('web.layouts.event')
+
     <section class="home-top pb230">
         <div class="container">
             <div class="row align-items-center">

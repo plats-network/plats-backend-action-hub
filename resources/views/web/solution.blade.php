@@ -1,6 +1,8 @@
 @extends('web.layouts.event_app')
 
 @section('content')
+    @include('web.layouts.event')
+
     <section class="welcome-area">
         <div class="welcome-slides owl-carousel">
             <div class="single-welcome-slide bg-img bg-overlay jarallax" style="background-image: url(events/solutions/solution.svg);">

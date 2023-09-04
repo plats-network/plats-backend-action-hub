@@ -56,8 +56,7 @@
                                         ></button>
                                       <div id="e-menu" class="dropdown-content">
                                         <a href="{{route('web.profile')}}">Profile</a>
-                                        <a href="#">Link 2</a>
-
+                                        {{-- <a href="#">Link 2</a> --}}
                                         <a href="{{route('web.logout')}}">Logout</a>
                                       </div>
                                     </div>

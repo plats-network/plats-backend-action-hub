@@ -151,7 +151,6 @@ class Job extends Controller
                         'type' => $taskEvent->type
                     ]);
                 } else {
-                    // $taskEvent = $this->taskEvent->find($detail->task_event_id);
                     $isImportant = $taskEvent->type == 0 ? $detail->is_question : $detail->is_required;
 
                     $this->joinEvent->create([
