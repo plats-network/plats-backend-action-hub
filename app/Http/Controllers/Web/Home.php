@@ -205,7 +205,7 @@ class Home extends Controller
                     'travel_game_name' => $travel->name,
                     'user_id' => $request->user()->id,
                     'name' => $booth->name,
-                    'desc' => $session->description,
+                    'desc' => $booth->description,
                     'date' => $job ? Carbon::parse($job->created_at)->format('Y-m-d') : '',
                     'time' => $job ? Carbon::parse($job->created_at)->format('H:i') : '',
                     'required' => $booth->is_required,
