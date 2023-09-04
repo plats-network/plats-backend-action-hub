@@ -1,6 +1,9 @@
 @extends('web.layouts.event_app')
 
 @section('content')
+    @php
+        $type = request()->get('type'); 
+    @endphp
     <section class="our-schedule-area bg-white section-padding-100">
         {{-- <h3>Ready to get started with Plats Network?</h3> --}}
         <div class="container" style="margin-top: 85px;">
@@ -9,10 +12,10 @@
                     <div class="schedule-tab list-job">
                         <ul class="nav nav-tabs" id="conferScheduleTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="session-tab" data-toggle="tab" href="#step-one" role="tab" aria-controls="step-one" aria-expanded="true">Session</a>
+                                <a class="nav-link {{$type == 0 ? 'active' : ''}}" id="session-tab" data-toggle="tab" href="#step-one" role="tab" aria-controls="step-one" aria-expanded="true">Session</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="booth-tab" data-toggle="tab" href="#step-two" role="tab" aria-controls="step-two" aria-expanded="true">Booth</a>
+                                <a class="nav-link {{$type == 1 ? 'active' : ''}}" id="booth-tab" data-toggle="tab" href="#step-two" role="tab" aria-controls="step-two" aria-expanded="true">Booth</a>
                             </li>
                         </ul>
 
@@ -37,9 +40,7 @@
                         </p>
                     </div>
 
-                    @php
-                        $type = request()->get('type'); 
-                    @endphp
+                    
 
                     <div class="tab-content" id="conferScheduleTabContent">
                         <div class="tab-pane {{$type == '0' ? 'fade show in active' : ''}}" id="step-one" role="tabpanel" aria-labelledby="session-tab">

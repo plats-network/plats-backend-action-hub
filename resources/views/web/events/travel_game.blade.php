@@ -60,7 +60,7 @@
                                 <p><strong>Mã số quay thưởng:</strong> <span class="fs-25">{{$codes ? $codes : '___'}}</span></p>
                                 <p>
                                     <strong>Nhiệm vụ phải làm:</strong>
-                                    <a href="{{route('web.jobEvent', ['id' => $event->code])}}">Click Here!</a>
+                                    <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 0])}}">Click Here!</a>
                                 </p>
                                 <p>Thời giam quay thưởng:</strong> {{$session->prize_at}}</p>
                                 <p>Phân thưởng:</strong> {{$session->note}}</p>
@@ -82,7 +82,7 @@
                                 <p><strong>Mã số quay thưởng:</strong> <span class="fs-25">{{$codeBooths ? $codeBooths : '___'}}</span></p>
                                 <p>
                                     <strong>Nhiệm vụ phải làm:</strong>
-                                    <a href="{{route('web.jobEvent', ['id' => $event->code])}}">Click Here!</a>
+                                    <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 1])}}">Click Here!</a>
                                 </p>
                                 <p><strong>Thời giam quay thưởng:</strong> {{$booth->prize_at}}</p>
                                 <p><strong>Phân thưởng:</strong> {{$booth->note}}</p>
