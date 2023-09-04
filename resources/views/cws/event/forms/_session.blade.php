@@ -75,17 +75,9 @@
                                 <p class="qr" id="se-{{$session->id}}" data-se-url="{{$qr}}"></p>
                                 <div class="d-none" style="width: 300px; height: 300px;" id="dse-{{$session->id}}" data-se-url="{{$qr}}"></div>
                                 <a class="se-donw" data-id="{{$session->id}}" data-num="{{$k+1}}" data-name="session">Download</a>
-                                {{-- <img style="margin: 0 auto;"
-                                    src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(100)->generate($qr)) !!}"> --}}
                            </td>
-                           {{-- <td width="20%" class="text-center" data-url="{{$qr}}"> --}}
-                                {{-- <a href="#" class="se-donw" data-id="{{$session->id}}" data-num="{{$k+1}}">Download</a> --}}
-                                {{-- <a href="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(300)->generate($qr)) !!}"
-                                    download="session_{{$session->code.'_'.($k+1)}}.png">
-                                    Download</a> --}}
-                           {{-- </td> --}}
                            <td width="5%">{{totalUserJob($session->id)}}</td>
-                           <td width="5%"><a href="{{$qr}}" target="_blank">click</a></td>
+                           <td width="5%"><a href="{{$qr}}" target="_blank">link</a></td>
                            <td width="20%">
                                 <input
                                         type="checkbox"

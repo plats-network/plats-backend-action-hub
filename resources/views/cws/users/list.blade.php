@@ -41,32 +41,53 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="row mb-4">
+                        @php
+                            $vips = [
+                                0 => 'Normal',
+                                1 => 'Vip'
+                            ];
+                        @endphp
+                        <div class="col-3">
+                            <label class="col-form-label">Name <span class="text-danger">(*)</span></label>
+                            <input type="text" class="form-control" name="name" id="userName">
+                            <input type="hidden" name="task_id" value="{{$id}}" id="taskId">
+                            <p class="text-danger d-none" id="errorName">ss</p>
+                        </div>
+                        <div class="col-3">
+                            <label class="col-form-label">Email <span class="text-danger">(*)</span></label>
+                            <input type="text" class="form-control" name="email" id="userEmail">
+                            <p class="text-danger d-none" id="errorEmail"></p>
+                        </div>
+                        <div class="col-2">
+                            <label class="col-form-label">Set Vip</label>
+                            <select name="type_prize" class="form-select" id="userVip">
+                                @foreach($vips as $k => $v)
+                                    <option value="{{ $k }}">{{$v}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <button
+                                class="btn btn-primary btn-sm cUserVip"
+                                style="margin-top: 43px;"
+                                data-url="{{route('cws.createUser')}}">Save</button>
+                        </div>
+                    </div>
                     <div class="d-flex flex-wrap align-items-center mb-2">
                         <h5 class="card-title">Lists Users</h5>
                     </div>
-
                     <div class="table-responsive">
                         <table class="table table-bordered mb-0">
                             <thead class="table-light">
                                 <tr>
                                     <th>Avatar</th>
-                                    <th>
-                                        Name
-                                        <br>
-                                        Email
-                                    </th>
+                                    <th>Name</th>
+                                    <th>Email</th>
                                     <th>Checkin</th>
-                                    <th>
-                                        Session
-                                        <br>
-                                        Booth
-                                    </th>
-                                    <th>
-                                        Created
-                                        <br>
-                                        Logined
-                                    </th>
-                                    <th>Tạo code</th>
+                                    <th>Set Vip</th>
+                                    <th>Created</th>
+                                    <th>Updated</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -74,7 +95,6 @@
                                     @php
                                         $userInfo = eventInfo($user->id, $id);
                                     @endphp
-
                                     <tr>
                                         <td style="width: 5%;">
                                             <div class="avatar">
@@ -83,57 +103,32 @@
                                                 </div>
                                             </div>
                                         </td>
+                                        <td class="fw-semibold" style="width: 10%;">{{$user->name}}</td>
                                         <td class="fw-semibold" style="width: 10%;">
-                                            {{$user->name}}
-                                            <br>
                                             <p class="text-success" style="font-size: 11px">{{$user->email}}</p>
                                         </td>
                                         <td>
                                             {{$userInfo->is_checkin ? 'Checkin' : 'Not checkin'}}
                                         </td>
-                                        <td width="15%">
-                                            <p>
-                                                Code: {{$userInfo->sesion_code ?? '__'}}
-                                                @if (!$userInfo->sesion_code)
-                                                    <button
-                                                        class="genCode btn btn-primary btn-sm"
-                                                        style="margin-left: 10px;"
-                                                        data-id="{{$id}}"
-                                                        data-user-id="{{$user->id}}"
-                                                        data-type="session">Tạo mã</button>
-                                                    
-                                                @endif
-                                            </p>
-                                            <p>
-                                                Code: {{$userInfo->booth_code ?? '__'}}
-                                                @if (!$userInfo->booth_code)
-                                                    <button
-                                                        class="genCode btn btn-primary btn-sm"
-                                                        style="margin-left: 10px;"
-                                                        data-id="{{$id}}"
-                                                        data-user-id="{{$user->id}}"
-                                                        data-type="booth">Tạo mã</button>
-                                                @endif
-                                            </p>
-                                        </td>
+                                        <td>
+                                            <input
+                                                type="checkbox"
+                                                id="v_{{$id}}"
+                                                switch="none"
+                                                @if($userInfo->is_vip) checked @endif>
+                                            <label
+                                                class="userVip"
+                                                data-id="{{$userInfo->id}}"
+                                                for="v_{{$userInfo->id}}"
+                                                data-on-label="On"
+                                                data-off-label="Off"
+                                                data-url="{{route('cws.setTicketVip', ['id' => $userInfo->id])}}"></label>
+                                            </td>
                                         <td>
                                             {{dateFormat($user->created_at)}}
-                                            <br>
-                                            {{dateFormat($user->updated_at)}}
                                         </td>
                                         <td>
-                                            <a href="#">Session</a> |
-                                            <a href="#">Booth</a>
-                                            {{-- <div class="dropdown">
-                                                <a class="text-muted dropdown-toggle font-size-18" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                    <i class="mdi mdi-dots-horizontal"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <a class="dropdown-item" href="#">Edit</a>
-                                                    <a class="dropdown-item" href="#">Print</a>
-                                                    <a class="dropdown-item" href="#">Delete</a>
-                                                </div>
-                                            </div> --}}
+                                            {{dateFormat($user->updated_at)}}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -178,6 +173,78 @@
             })
         })
 
+        $('.userVip').on('click', function(e) {
+            var id = $(this).data('id'),
+                url = $(this).data('url');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (data) {
+                    location.reload();
+                }
+            })
+        })
+
+        $('.cUserVip').on('click', function(e) {
+            var name = $('#userName').val(),
+                email = $('#userEmail').val(),
+                task_id = $('#taskId').val(),
+                checkMail = checkEmail(email),
+                vip = $('#userVip').val(),
+                url = $(this).data('url');
+
+            if (name == '' || email == '' || !checkMail) {
+                if (name == '') {
+                    $('#errorName').removeClass('d-none').html('Please input name');
+                } else {
+                    $('#errorName').addClass('d-none');
+                }
+                if (email == '') {
+                    $('#errorEmail').removeClass('d-none').html('Please input email');
+                } else {
+                    $('#errorEmail').addClass('d-none');
+                }
+                if (email && !checkMail) {
+                    $('#errorEmail').removeClass('d-none').html('Email not format');
+                } else {
+                    $('#errorEmail').addClass('d-none');
+                }
+            } else {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        _token: _token,
+                        name: name,
+                        email: email,
+                        task_id: task_id,
+                        vip: vip
+                    },
+                    success: function (data) {
+                        $.notify('Success', 'success');
+                        setTimeout(function(e) {
+                            location.reload();
+                        }, 1000);
+                    },
+                    error: function (data) {
+                        $.notify('Error', 'error');
+                        setTimeout(function(e) {
+                            location.reload();
+                        }, 1000);
+                    }
+                })
+            }
+        })
+
+        function checkEmail(email) {
+            var re = /\S+@\S+\.\S+/;
+            return re.test(email);
+        }
     </script>
 @endsection
 

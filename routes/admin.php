@@ -72,6 +72,11 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->post('setup/minigame', [EventController::class, 'setupMiniGame'])->name('cws.setupMiniGame');
     $cws->get('vip/{id}', [EventController::class, 'setupVip'])->name('cws.setupVip');
     $cws->get('prizeList/{id}', [EventController::class, 'getPrizeList'])->name('cws.getPrizeList');
+    $cws->get('userLists/{id}/{travelId}', [EventController::class, 'listUserCodes'])->name('cws.listUserCodes');
+    $cws->get('userVip/{id}', [EventController::class, 'setTicketVip'])->name('cws.setTicketVip');
+
+    // Create user by event
+    $cws->post('user/create', [User::class, 'saveUserByEvent'])->name('cws.createUser');
 
     // Travel Games
     $cws->get('travel-game', [TravelGame::class, 'index'])->name('cws.travelGames');

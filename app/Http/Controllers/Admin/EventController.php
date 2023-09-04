@@ -13,7 +13,12 @@ use App\Models\Event\{
 use App\Models\Quiz\Quiz;
 use App\Models\Game\{MiniGame};
 
-use App\Models\{Task, TaskGallery, TaskGroup, TaskGenerateLinks, TravelGame, Sponsor, SponsorDetail, UserSponsor};
+use App\Models\{
+    Task, TaskGallery, TaskGroup,
+    TaskGenerateLinks, TravelGame,
+    Sponsor, SponsorDetail,
+    UserSponsor, User
+};
 use App\Services\Admin\{EventService, TaskService};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +32,7 @@ class EventController extends Controller
         private EventService $eventService,
         private TaskService  $taskService,
         private Task $task,
+        private User $user,
         private Sponsor $sponsor,
         private SponsorDetail $sponsorDetail,
         private UserSponsor $userSponsor,
@@ -193,7 +199,7 @@ class EventController extends Controller
 
                 $miniGame->update([
                     'banner_url' => $request->input('banner_url'),
-                    'type_prize' => (int)$is_game,
+                    'type_prize' => (int)$type_prize,
                     'num' => $num,
                     'is_game' => (int)$is_game == 0 ? 1 : $is_game
                 ]);
@@ -698,6 +704,43 @@ class EventController extends Controller
         ]);
     }
 
+    public function listUserCodes(Request $request, $id, $travelId)
+    {
+        try {
+            $eventTask = $this->eventModel->find($id);
+            $userLists = [];
+            $userIds = $this->userCode
+                ->select('user_id')
+                ->distinct()
+                ->where('travel_game_id', $travelId)
+                ->where('task_event_id', $id)
+                ->pluck('user_id')
+                ->toArray();
+
+            $users = $this->user->whereIn('id', $userIds)->get();
+
+            foreach($users as $user) {
+                $codes = $this->userCode->whereTaskEventId($id)
+                    ->whereTravelGameId($travelId)
+                    ->whereUserId($user->id)
+                    ->pluck('number_code')->implode(',');
+                $userLists[] = [
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'created_at' => $user->created_at,
+                    'code' => $codes
+                ];
+            }
+        } catch (\Exception $e) {
+            abort(404);
+        }
+
+        return view('cws.event.userList', [
+            'userLists' => $userLists,
+            'id' => $eventTask->task_id
+        ]);
+    }
+
     // Api
     public function updMiniGame(Request $request, $id)
     {
@@ -736,6 +779,29 @@ class EventController extends Controller
                     return $this->resError();
                 } else {
                     $miniGame->update(['is_vip' => $miniGame->is_vip ? false : true]);
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->resError();
+        }
+
+        return response()->json([
+            'message' => 'Ok'
+        ], 200);
+    }
+
+
+    public function setTicketVip(Request $request, $id)
+    {
+        try {
+            if (Auth::guest()) {
+                return $this->resError();
+            } else {
+                $ticket = $this->eventUserTicket->find($id);
+                if (!$ticket) {
+                    return $this->resError();
+                } else {
+                    $ticket->update(['is_vip' => $ticket->is_vip ? false : true]);
                 }
             }
         } catch (\Exception $e) {

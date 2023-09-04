@@ -55,7 +55,7 @@
                             <th>Description</th>
                             <th>QR Code</th>
                             <th>Total</th>
-                            <th>C</th>
+                            <th>Click</th>
                             <th>QR <span class="text-danger">(ON/OFF)</span></th>
                         </tr>
                     </thead>
@@ -74,7 +74,7 @@
                                     <a class="bo-donw" data-id="{{$booth->id}}" data-num="{{$k+1}}" data-name="booth">Download</a>
                                </td> 
                                <td width="10%">{{totalUserJob($booth->id)}}</td>
-                               <td width="10%"><a href="{{$qr}}" target="_blank">cc</a></td>
+                               <td width="10%"><a href="{{$qr}}" target="_blank">link</a></td>
                                <td width="20%">
                                     <input
                                         type="checkbox"

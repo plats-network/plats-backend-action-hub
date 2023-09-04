@@ -20,25 +20,6 @@ class HomeController extends Controller
         // code
     }
 
-    public function demo(Request $request)
-    {
-        dd(232);
-        $code = $request->input('code');
-
-        if ($code != 'r65n4wIfrcrv3ngktcNyxj3vO') {
-            abort(404);
-        }
-
-        $numbers = [];
-        for($i = 0; $i <= 100; $i++) {
-            $numbers[] = $i+1;
-        }
-
-        return view('game.demo', [
-            'numbers' => $numbers
-        ]);
-    }
-
     public function miniGame(Request $request, $code)
     {
         try {
@@ -49,15 +30,24 @@ class HomeController extends Controller
                 ->where('task_event_id', $miniGame->task_event_id)
                 ->where('travel_game_id', $miniGame->travel_game_id)
                 ->whereType($miniGame->type)
-                ->whereIsPrize(false)
-                ->inRandomOrder()
-                ->pluck('number_code')
-                ->toArray();
+                ->whereIsPrize(false);
+
+            if ($miniGame->is_vip) {
+                $event = $this->taskEvent->find($miniGame->task_event_id);
+                $userIds = $this->eventUserTicket
+                    ->whereTaskId($event->task_id)
+                    ->whereIsVip(true)
+                    ->pluck('user_id')
+                    ->toArray();
+                $codes = $codes->whereIn('user_id', $userIds);
+            }
+
+            $codes = $codes->inRandomOrder()->pluck('number_code')->toArray();
         } catch (\Exception $e) {
             abort(404);
         }
 
-        return view('game.demo', [
+        return view('game.game', [
             'numbers' => $codes,
             'code' => $code,
             'img' => $miniGame->banner_url ?? 'bg_game_4.png',

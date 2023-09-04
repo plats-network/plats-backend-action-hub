@@ -50,7 +50,8 @@ class UserService extends BaseService
         $this->makeBuilder($conditions);
         if ($this->filter->has('name')) {
             $this->builder->where(function ($q) {
-                $q->where(DB::raw('LOWER(name)'), 'like', '%' . strtolower($this->filter->get('name')) . '%');
+                $q->where(DB::raw('LOWER(name)'), 'like', '%' . strtolower($this->filter->get('name')) . '%')
+                    ->orWhere(DB::raw('LOWER(email)'), 'like', '%' . strtolower($this->filter->get('name')) . '%');
             });
 
             // Remove condition after apply query builder

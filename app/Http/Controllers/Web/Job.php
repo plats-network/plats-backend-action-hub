@@ -218,14 +218,10 @@ class Job extends Controller
             $travelSessions = $this->travelGame->whereIn('id', $travelSessionIds)->get();
             $travelBooths = $this->travelGame->whereIn('id', $travelBootsIds)->get();
 
-            // dd($travelBooths->pluck('id')->toArray(), $travelSessions->pluck('id')->toArray());
-
-
             // Start
             $userId = Auth::user()->id;
             $this->taskService->genCodeByUser($userId, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
         } catch (\Exception $e) {
-            dd($e->getMessage());
             abort(404);
         }
 

@@ -50,9 +50,9 @@
                     <table class="table table-bordered mb-0 table-responsive">
                         <thead class="table-light">
                             <tr>
-                                <th>Travel Game<br>Link</th>
+                                <th>Travel Game<br>Link Quay Thưởng</th>
                                 <th>VIP(ON/OFF)</th>
-                                <th>Prize List</th>
+                                <th>Prize List<br>User List</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -84,7 +84,9 @@
                                             data-url="{{route('cws.setupVip', ['id' => $id])}}"></label>
                                    </td>
                                    <td width="20%">
-                                        <a href="{{route('cws.getPrizeList', ['id' => $id])}}">Click here!</a>
+                                        <a href="{{route('cws.getPrizeList', ['id' => $id])}}">Link here!</a>
+                                        <br>
+                                        <a href="{{route('cws.listUserCodes', ['id' => $session->task_event_id, 'travelId' => $session->travel_game_id])}}">Link here!</a>
                                    </td>
                                    <td width="10%">
                                        <input
@@ -155,9 +157,9 @@
                     <table class="table table-bordered mb-0 table-responsive">
                         <thead class="table-light">
                             <tr>
-                                <th>Travel Game<br>Link</th>
+                                <th>Travel Game<br>Link Quay Thưởng</th>
                                 <th>VIP(ON/OFF)</th>
-                                <th>Prize List</th>
+                                <th>Prize List<br>User List</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -191,7 +193,9 @@
                                             data-off-label="Off"></label>
                                    </td>
                                    <td width="20%">
-                                        <a href="{{route('cws.getPrizeList', ['id' => $id])}}">Click here!</a>
+                                        <a href="{{route('cws.getPrizeList', ['id' => $id])}}">Link here!</a>
+                                        <br>
+                                        <a href="{{route('cws.listUserCodes', ['id' => $booth->task_event_id, 'travelId' => $booth->travel_game_id])}}">Link here!</a>
                                    </td>
                                    <td width="10%">
                                        <input

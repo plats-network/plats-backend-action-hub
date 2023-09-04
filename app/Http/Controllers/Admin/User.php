@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\{
     Session, Auth, Hash, Storage, DB, Log
 };
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class User extends Controller
 {
@@ -38,6 +39,68 @@ class User extends Controller
         return view('cws.users.index', [
             'users' => $users
         ]);
+    }
+
+
+    public function saveUserByEvent(Request $request)
+    {
+        try {
+            $email = $request->input('email');
+            $name = $request->input('name');
+            $taskId = $request->input('task_id');
+            $vip = $request->input('vip') == 1 ? true : false;
+            $user = $this->user->whereEmail($email)->first();
+
+            if ($user) {
+                $ticket = $this->eventUserTicket
+                    ->whereTaskId($taskId)
+                    ->whereUserId($user->id)
+                    ->first();
+
+                if ($ticket) {
+                    $ticket->update(['is_vip' => $vip]);
+                } else {
+                    $this->eventUserTicket->create([
+                        'name' => $name ?? 'No Name',
+                        'phone' => $user->phone ?? '0955435345',
+                        'email' => $email,
+                        'task_id' => $taskId,
+                        'user_id' => $user->id,
+                        'is_checkin' => true,
+                        'hash_code' => Str::random(35),
+                        'is_vip' => $vip
+                    ]);
+                }
+            } else {
+                $user = $this->user->create([
+                    'name' => $name,
+                    'email' => $email,
+                    'phone' => '0932842323',
+                    'role' => GUEST_ROLE,
+                    'confirm_at' => now(),
+                    'status' => USER_CONFIRM
+                ]);
+
+                $this->eventUserTicket->create([
+                    'name' => $name ?? 'No Name',
+                    'phone' => "09348324098",
+                    'email' => $email,
+                    'task_id' => $taskId,
+                    'user_id' => $user->id,
+                    'is_checkin' => true,
+                    'hash_code' => Str::random(35),
+                    'is_vip' => $vip
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error'
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'Ok'
+        ], 200);
     }
 
     public function listUsers(Request $request, $id)

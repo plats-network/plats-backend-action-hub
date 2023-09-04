@@ -31,7 +31,8 @@ class EventUserTicket extends Model
         'task_id',
         'user_id',
         'is_checkin',
-        'hash_code'
+        'hash_code',
+        'is_vip',
     ];
 
     public function task()
