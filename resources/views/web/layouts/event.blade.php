@@ -1,9 +1,12 @@
-@if (eventImprogess())
+@php
+  $events = eventImprogess();
+@endphp
+@if (count($events) > 0)
     <section class="event-improgress">
       <div class="item">
-        <h3>My Event Improgress.</h3>
+        <h3>My Event Improgress</h3>
         <table>
-          @foreach(eventImprogess() as $item)
+          @foreach($events as $item)
             <tr>
               <td width="20%" class="img">
                 <a href="{{route('job.getTravelGame', ['task_id' => $item->task_id])}}">

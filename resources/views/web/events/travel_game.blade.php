@@ -33,15 +33,14 @@
                 <div class="event-info">
                     <h3>{{$event->name}}</h3>
                     <img src="{{$event->banner_url}}" alt="{{$event->name}}">
-                    <h4>Thông tin sự kiện:</h4>
-                    <div class="content mt-2">
-                        {!! $event->description !!}
+                    <div class="content mt-2 text-center" style="margin-top: 15px;">
+                        Tham gia sự kiện để nhận những phần quà có giá trị với tổng giải thưởng lên đến 300 triệu.
                     </div>
                 </div>
 
                 <ul class="nav nav-tabs">
-                  <li><a data-toggle="tab" href="#sesion">Sessions</a></li>
-                  <li><a data-toggle="tab" href="#booth">Booths</a></li>
+                  <li><a data-toggle="tab" href="#sesion">Session Game</a></li>
+                  <li><a data-toggle="tab" href="#booth">Booth Game</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -57,13 +56,13 @@
 
                             <div class="item">
                                 <h3 class="text-center">{{$session->name}}</h3>
-                                <p><strong>Mã số quay thưởng:</strong> <span class="fs-25">{{$codes ? $codes : '___'}}</span></p>
+                                <p><strong>Mã số:</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
                                 <p>
-                                    <strong>Nhiệm vụ phải làm:</strong>
+                                    <strong>Nhiệm vụ:</strong>
                                     <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 0])}}">Click Here!</a>
                                 </p>
-                                <p>Thời giam quay thưởng:</strong> {{$session->prize_at}}</p>
-                                <p>Phân thưởng:</strong> {{$session->note}}</p>
+                                <p><strong>Thời gian:</strong> {{dateFormat($session->prize_at)}}</p>
+                                <p><strong>Phân thưởng:</strong> {{$session->note}}</p>
                             </div>
                         @endforeach
                     </div>
@@ -79,12 +78,12 @@
                             @endphp
                             <div class="item">
                                 <h3 class="text-center">{{$booth->name}}</h3>
-                                <p><strong>Mã số quay thưởng:</strong> <span class="fs-25">{{$codeBooths ? $codeBooths : '___'}}</span></p>
+                                <p><strong>Mã số:</strong> <span class="fs-25">{{$codeBooths ? $codeBooths : '---'}}</span></p>
                                 <p>
-                                    <strong>Nhiệm vụ phải làm:</strong>
+                                    <strong>Nhiệm vụ:</strong>
                                     <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 1])}}">Click Here!</a>
                                 </p>
-                                <p><strong>Thời giam quay thưởng:</strong> {{$booth->prize_at}}</p>
+                                <p><strong>Thời gian:</strong> {{dateFormat($booth->prize_at)}}</p>
                                 <p><strong>Phân thưởng:</strong> {{$booth->note}}</p>
                             </div>
                         @endforeach
@@ -92,13 +91,15 @@
                 </div>
 
                 <div class="event-info" style="border-top: 0; margin-top: 15px;">
-                    <div class="content mt-2" style="height: 90px;background-color: #ffe0f6;">Cài app Plats bạn có cơ hội quay thưởng và trúng những phần thưởng có giá trị.</div>
+                    <div class="content mt-2 text-center" style="background-color: #ffe0f6;">
+                        Cài app Plats bạn có cơ hội quay thưởng và trúng những phần thưởng có giá trị.
+                    </div>
                     <div class="app text-center">
                         <a href="https://apps.apple.com/us/app/plats/id1672212885" style="padding-right: 20px;" target="_blank">
-                            <img style="width: 140px;" src="{{url('/')}}/events/apple-store.svg">
+                            <img style="width: 150px;" src="{{url('/')}}/events/apple-store.svg">
                         </a>
                         <a href="https://play.google.com/store/apps/details?id=network.plats.action" target="_blank">
-                            <img style="width: 140px;" src="{{url('/')}}/events/ggplay.svg">
+                            <img style="width: 150px;" src="{{url('/')}}/events/ggplay.svg">
                         </a>
                     </div>
                 </div>

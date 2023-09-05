@@ -4,6 +4,11 @@
             <nav class="classy-navbar justify-content-between" id="conferNav">
                 <a class="nav-brand" href="{{url('/')}}">
                     <img src="{{url('events/logo-event.svg')}}" alt="">
+                    {{-- <div class="lang">
+                        <a href="{{route('web.lang', ['lang' => lang() == 'en' ? 'vi' : 'en'])}}">
+                            <img src="{{url('/')}}/events/{{lang()}}.png">
+                        </a>
+                    </div> --}}
                 </a>
                 <div class="classy-navbar-toggler">
                     <span class="navbarToggler">

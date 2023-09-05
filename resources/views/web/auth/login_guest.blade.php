@@ -4,11 +4,11 @@
     <div class="card">
         <h3 class="title mb-3">Thông tin của bạn</h3>
         {{-- @include('web.auth._social') --}}
-        <p class="note-login">
+        {{-- <p class="note-login">
            Bạn vui lòng nhập đúng số điện thoại hoặc email để có cơ hội nhận những phần quà hấp dẫn từ chương trình.
            Phần thưởng trong qua trình tham gia mini game chúng tôi sẽ liên hệ thông qua email or số điện thoại này.
            Xin chân thành cảm ơn!
-        </p>
+        </p> --}}
 
         <x-form::open action="{{ route('web.loginGuest') }}">
           <div class="email-login">

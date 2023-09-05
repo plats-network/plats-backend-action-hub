@@ -45,9 +45,9 @@
                                 padding: 10px 30px!important;
                             }
                         </style>
-                        <p class="text-center desc">
+                        {{-- <p class="text-center desc">
                             Chú ý: Những nhiệm vụ nào có dấu <span class="text-danger">(*)</span> thì bắt buộc phải qua khu vực đó quét QR mới nhận được mã số quay thưởng.
-                        </p>
+                        </p> --}}
                         <p class="text-center" style="padding-top: 10px;">
                             <a class="back" href="{{route('job.getTravelGame', ['task_id' => $task_id])}}">Back to Event!</a>
                         </p>

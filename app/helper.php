@@ -171,6 +171,12 @@ if (!function_exists('eventImprogess')) {
     }
 }
 
+if (!function_exists('lang')) {
+    function lang() {
+        return app()->getLocale() ?? 'vi';
+    }
+}
+
 /*
  * Convert data size to bytes
  * Example 2M => 2097152

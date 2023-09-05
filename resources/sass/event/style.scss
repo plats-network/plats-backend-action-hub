@@ -428,6 +428,13 @@ body.swal2-toast-shown .swal2-container.swal2-top-right {
 
 }
 
+.lang {
+  width: 45px;
+  position: absolute;
+  right: 62px;
+  top: -9px;
+}
+
 
 // Travel
 .travel {
@@ -488,12 +495,10 @@ body.swal2-toast-shown .swal2-container.swal2-top-right {
 
       .content {
         padding: 10px 20px;
-        height: 130px;
-        overflow-y: auto;
         margin-bottom: 20px;
         border-radius: 10px;
-        background-color: #fff8ea;
-        color: #000!important;
+        background-color: #ffe0f6;
+        color: red!important;
 
         p {
           line-height: 25px;
