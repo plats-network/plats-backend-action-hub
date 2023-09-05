@@ -48,7 +48,9 @@ $(document).ready(function() {
   $('.aws').on('click', function(e) {
     var id = $(this).data('id'),
       result = $(this).data('result'),
-      url = $('#taskQ').data('url');
+      url = $('#taskQ').data('url'),
+      num = $('#taskQ').data('num'),
+      url2 = $('#taskQ').data('url2');
 
     const Toast = Swal.mixin({
       toast: true,
@@ -75,7 +77,8 @@ $(document).ready(function() {
     }
 
     setTimeout(function(e) {
-      window.location.replace(url);
+      var aLink = num == 1 ? url2 : url;
+      window.location.replace(aLink);
     }, 1500);
   });
 

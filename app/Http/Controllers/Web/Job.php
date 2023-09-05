@@ -141,7 +141,6 @@ class Job extends Controller
                 ->where('task_event_detail_id', $detail->id)
                 ->whereUserId($user->id)
                 ->exists();
-            $taskEvent = $this->taskEvent->find($detail->task_event_id);
 
             if (!$checkEventJob) {
                 if (!$detail->status) {
@@ -166,22 +165,25 @@ class Job extends Controller
 
             }
 
+            $eventIds = $this->taskEvent->whereTaskId($taskId)->pluck('id')->toArray();
+            $countJobOne = $this->joinEvent
+                ->whereUserId($user->id)
+                ->whereIn('task_event_id', $eventIds)
+                ->count();
+
             if ($detail->is_question == false) {
                 notify()->success('Quét QR code success');
 
-                // $eventIds = $this->taskEvent->whereTaskId($taskId)->pluck('task_event_id')->toArray();
-                // $countJobOne = $this->joinEvent
-                //     ->whereIn('task_event_id', $eventIds)
-                //     ->count();
-
-                // if ($countJobOne <= 1) {
-                //     return redirect()->route('job.getTravelGame', ['task_id' => $taskId]);
-                // }
-
-                return redirect()->route('web.jobEvent', [
-                    'id' => $task->code,
-                    'type' => $taskEvent->type
-                ]);
+                if ($countJobOne <= 1) {
+                    return redirect()->route('job.getTravelGame', [
+                        'task_id' => $taskId
+                    ]);
+                } else {
+                    return redirect()->route('web.jobEvent', [
+                        'id' => $task->code,
+                        'type' => $taskEvent->type
+                    ]);
+                }
             }
         } catch (\Exception $e) {
             notify()->error('Có lỗi xảy ra');
@@ -190,7 +192,9 @@ class Job extends Controller
 
         return view('web.events.quiz', [
             'detail' => $detail,
-            'task_code' => $task->code
+            'task_code' => $task->code,
+            'task_id' => $taskId,
+            'count' => $countJobOne
         ]);
     }
 
