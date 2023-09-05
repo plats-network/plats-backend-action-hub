@@ -90,6 +90,18 @@
                         @endforeach
                     </div>
                 </div>
+
+                <div class="event-info" style="border-top: 0; margin-top: 15px;">
+                    <div class="content mt-2" style="height: 90px;background-color: #ffe0f6;">Cài app Plats bạn có cơ hội quay thưởng và trúng những phần thưởng có giá trị.</div>
+                    <div class="app text-center">
+                        <a href="https://apps.apple.com/us/app/plats/id1672212885" style="padding-right: 20px;" target="_blank">
+                            <img style="width: 140px;" src="{{url('/')}}/events/apple-store.svg">
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=network.plats.action" target="_blank">
+                            <img style="width: 140px;" src="{{url('/')}}/events/ggplay.svg">
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
