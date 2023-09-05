@@ -165,8 +165,18 @@ class Job extends Controller
                 }
 
             }
+
             if ($detail->is_question == false) {
                 notify()->success('Quét QR code success');
+
+                // $eventIds = $this->taskEvent->whereTaskId($taskId)->pluck('task_event_id')->toArray();
+                // $countJobOne = $this->joinEvent
+                //     ->whereIn('task_event_id', $eventIds)
+                //     ->count();
+
+                // if ($countJobOne <= 1) {
+                //     return redirect()->route('job.getTravelGame', ['task_id' => $taskId]);
+                // }
 
                 return redirect()->route('web.jobEvent', [
                     'id' => $task->code,

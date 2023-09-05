@@ -1,7 +1,7 @@
 @php
   $events = eventImprogess();
 @endphp
-@if (count($events) > 0)
+@if ($events && count($events) > 0)
     <section class="event-improgress">
       <div class="item">
         <h3>My Event Improgress</h3>
