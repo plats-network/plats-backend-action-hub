@@ -226,6 +226,8 @@ class Job extends Controller
 
         return view('web.events.travel_game', [
             'event' => $event,
+            'session_id' => $session->id,
+            'booth_id' => $booth->id,
             'travelSessions' => $travelSessions,
             'travelBooths' => $travelBooths
         ]);

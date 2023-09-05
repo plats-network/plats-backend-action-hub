@@ -49,6 +49,7 @@
                             @php
                                 $codes = $userCode->where('user_id', $userId)
                                     ->where('travel_game_id', $session->id)
+                                    ->where('task_event_id', $session_id)
                                     ->where('type', 0)
                                     ->pluck('number_code')
                                     ->implode(',');
@@ -72,6 +73,7 @@
                             @php
                                 $codeBooths = $userCode->where('user_id', $userId)
                                     ->where('travel_game_id', $booth->id)
+                                    ->where('task_event_id', $booth_id)
                                     ->where('type', 1)
                                     ->pluck('number_code')
                                     ->implode(',');
