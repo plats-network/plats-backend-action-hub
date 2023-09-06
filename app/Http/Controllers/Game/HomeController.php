@@ -20,6 +20,79 @@ class HomeController extends Controller
         // code
     }
 
+
+    public function dayOne(Request $request)
+    {
+        try {
+            $codes = [];
+
+            for($i=1; $i <= 234; $i++) {
+                $codes[] = $i;
+            }
+            $datas =  array_rand($codes, 150);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error datas',
+                'data' => null
+            ], 500);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successful',
+            'data' => $datas
+        ], 200);
+    }
+
+    public function dayTwo(Request $request)
+    {
+        try {
+            $codes = [];
+
+            for($i=100; $i <= 500; $i++) {
+                $codes = $i;
+            }
+            $datas =  array_rand($codes, 150);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error datas',
+                'data' => null
+            ], 500);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successful',
+            'data' => $datas
+        ], 200);
+    }
+
+    public function boothCodes(Request $request)
+    {
+        try {
+            $codes = [];
+
+            for($i = 230; $i <= 600; $i++) {
+                $codes[] = $i;
+            }
+            $datas =  array_rand($codes, 100);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error datas',
+                'data' => null
+            ], 500);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successful',
+            'data' => $datas
+        ], 200);
+    }
+
     public function miniGame(Request $request, $code)
     {
         try {
