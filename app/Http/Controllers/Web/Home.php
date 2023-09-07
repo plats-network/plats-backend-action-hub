@@ -229,6 +229,7 @@ class Home extends Controller
             'groupBooths' => $groupBooths,
             'groupSessions' => $groupSessions,
             'task_id' => $task->id,
+            'id' => $id
         ]);
     }
 

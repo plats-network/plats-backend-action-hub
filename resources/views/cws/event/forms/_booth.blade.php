@@ -55,6 +55,7 @@
                             <th>Description</th>
                             <th>QR Code</th>
                             <th>Total</th>
+                            <th>Vip</th>
                             <th>Click</th>
                             <th>QR <span class="text-danger">(ON/OFF)</span></th>
                         </tr>
@@ -74,6 +75,7 @@
                                     <a class="bo-donw" data-id="{{$booth->id}}" data-num="{{$k+1}}" data-name="booth">Download</a>
                                </td> 
                                <td width="10%">{{totalUserJob($booth->id)}}</td>
+                               <td>{{$booth->is_required ? 'Vip' : 'Normal'}}</td>
                                <td width="10%"><a href="{{$qr}}" target="_blank">link</a></td>
                                <td width="20%">
                                     <input
@@ -151,7 +153,7 @@
                                     @if($boothDetail->is_required) checked @endif
                                     id="br_{{$boothDetail->id}}">
                                 <label class="form-check-label" for="br_{{$boothDetail->id}}">
-                                    Required <span class="text-danger" style="font-size: 11px;">(Yes/No)</span>
+                                    Vip <span class="text-danger" style="font-size: 11px;">(Yes/No)</span>
                                 </label>
                             </div>
 

@@ -18,6 +18,7 @@ use App\Models\Event\{
 use App\Models\{Task, User, TravelGame, Sponsor, SponsorDetail, UserSponsor};
 use App\Services\{CodeHashService, TaskService};
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class Job extends Controller
 {
@@ -44,6 +45,20 @@ class Job extends Controller
     public function index(Request $request)
     {
         try {
+            if (Auth::guest()) {
+                $time = Carbon::now()->timestamp;
+                $user = User::create([
+                    'name' => 'Guest-'.$time,
+                    'email' => 'guest-'.$time.'@gmail.com',
+                    'password' => '12345678a@#',
+                    'role' => GUEST_ROLE,
+                    'confirmation_code' => null,
+                    'email_verified_at' => now()
+                ]);
+
+                Auth::login($user, true);
+            }
+
             $user = Auth::user();
             $code = $request->input('id');
             $event = $this->eventDetail->whereCode($code)->first();

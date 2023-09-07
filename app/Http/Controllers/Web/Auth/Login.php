@@ -117,9 +117,6 @@ class Login extends Controller
 
     public function formLoginGuest(Request $request)
     {
-        $sessionGuest = session()->get('guest');
-        $code = $sessionGuest['id'];
-        $eventDetail = $this->eventDetail->whereCode($code)->first();
         return view('web.auth.login_guest');
     }
 

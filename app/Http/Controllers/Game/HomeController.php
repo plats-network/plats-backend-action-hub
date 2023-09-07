@@ -51,7 +51,7 @@ class HomeController extends Controller
             $codes = [];
 
             for($i=100; $i <= 500; $i++) {
-                $codes = $i;
+                $codes[] = $i;
             }
             $datas =  array_rand($codes, 150);
         } catch (\Exception $e) {

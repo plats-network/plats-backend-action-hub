@@ -43,7 +43,7 @@
             name="booths[detail][{{$indexImageItem}}][is_required]"
             id="br_{{$getInc}}">
         <label class="form-check-label" for="br_{{$getInc}}">
-            Is required <span class="text-danger fs-11">(Yes/No)</span>
+            Vip <span class="text-danger fs-11">(Yes/No)</span>
         </label>
     </div>
 

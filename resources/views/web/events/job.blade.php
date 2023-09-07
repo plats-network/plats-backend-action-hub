@@ -4,18 +4,43 @@
     @php
         $type = request()->get('type'); 
     @endphp
+    <style type="text/css">
+        .tab-job {
+            justify-content: center;
+            order-bottom: none;
+        }
+
+        .nav-link {
+            border: 2px solid #177FE2;
+        }
+        .b1 {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .b2 {
+            border-radius: 0px 10px 10px 0;
+        }
+        .active-job {
+            background-color: #177FE2;
+            color: #fff;
+        }
+
+        .ac-color {
+            color: #258CC7!important;
+        }
+    </style>
     <section class="our-schedule-area bg-white section-padding-100">
         {{-- <h3>Ready to get started with Plats Network?</h3> --}}
         <div class="container" style="margin-top: 85px;">
             <div class="row">
                 <div class="col-12">
                     <div class="schedule-tab list-job">
-                        <ul class="nav nav-tabs" id="conferScheduleTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="tab nav-link {{$type == 0 ? 'active' : ''}}" id="session-tab" data-toggle="tab" href="#step1" role="tab" aria-controls="step1" aria-expanded="true">Session</a>
+                        <ul class="nav tab-job">
+                            <li class="nav-item b1">
+                                <a class="nav-link {{$type == 0 ? 'active-job' : ''}}" href="{{route('web.jobEvent', ['id' => $id, 'type' => 0])}}">Session Game</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="tab nav-link {{$type == 1 ? 'active' : ''}}" id="booth-tab" data-toggle="tab" href="#step2" role="tab" aria-controls="step2" aria-expanded="true">Booth</a>
+                            <li class="nav-item b2">
+                                <a class="nav-link {{$type == 1 ? 'active-job' : ''}}" href="{{route('web.jobEvent', ['id' => $id, 'type' => 1])}}">Booth Game</a>
                             </li>
                         </ul>
 
@@ -45,16 +70,13 @@
                                 padding: 10px 30px!important;
                             }
                         </style>
-                        {{-- <p class="text-center desc">
-                            Chú ý: Những nhiệm vụ nào có dấu <span class="text-danger">(*)</span> thì bắt buộc phải qua khu vực đó quét QR mới nhận được mã số quay thưởng.
-                        </p> --}}
                         <p class="text-center" style="padding-top: 10px;">
                             <a class="back" href="{{route('job.getTravelGame', ['task_id' => $task_id])}}">Back to Event!</a>
                         </p>
                     </div>
 
-                    <div class="tab-content" id="conferScheduleTabContent">
-                        <div class="tab-pane {{$type == '0' ? 'fade show in active' : ''}}" id="step1" role="tabpanel" aria-labelledby="session-tab">
+                    <div class="tab-content">
+                        <div class="tab-pane {{$type == '0' ? 'fade show in active' : ''}}">
                             <div class="timeline-container">
                                 @foreach($groupSessions as $itemDatas)
                                     <hr style="margin-bottom: 20px;">
@@ -65,12 +87,13 @@
                                                 <div class="item-icon {{ $item['flag'] ? '' : 'not__active'}}"></div>
                                                 <div class="item-text">
                                                     <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">
-                                                        {{$item['name']}}
-                                                        @if ($item['required'])
+                                                        <p class="{{$item['flag'] ? 'ac-color' : ''}}">{{$item['name']}}</p>
+                                                        
+                                                        {{-- @if ($item['required'])
                                                             <span class="text-danger" style="font-size: 11px;position: absolute;">(*)</span>
-                                                        @endif
+                                                        @endif --}}
                                                     </div>
-                                                    <div class="item-detail">{{$item['desc']}}</div>
+                                                    <div class="item-detail {{$item['flag'] ? 'ac-color' : ''}}">{{Str::limit($item['desc'], 20)}}</div>
                                                 </div>
                                                 @if ($item['date'])
                                                     <div class="item-timestamp">
@@ -97,12 +120,12 @@
                                                 <div class="item-icon {{ $item['flag'] ? '' : 'not__active'}}"></div>
                                                 <div class="item-text">
                                                     <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">
-                                                        {{$item['name']}}
-                                                        @if ($item['required'])
+                                                        <p class="{{$item['flag'] ? 'ac-color' : ''}}">{{$item['name']}}</p>
+                                                        {{-- @if ($item['required'])
                                                             <span class="text-danger" style="font-size: 11px;position: absolute;">(*)</span>
-                                                        @endif
+                                                        @endif --}}
                                                     </div>
-                                                    <div class="item-detail">{{$item['desc']}}</div>
+                                                    <div class="item-detail {{$item['flag'] ? 'ac-color' : ''}}">{{Str::limit($item['desc'], 20)}}</div>
                                                 </div>
                                                 @if ($item['date'])
                                                     <div class="item-timestamp">

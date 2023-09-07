@@ -23,9 +23,15 @@
                 <div class="info">
                     <table class="table">
                         <tr>
-                            <td>{{$email}}</td>
+                            <td>
+                                @if (Str::contains($email, 'guest'))
+                                    <p class="text-danger">Please add email.</p>
+                                @else
+                                    {{$email}}
+                                @endif
+                            </td>
                             <td class="text-center">
-                                <a id="editInfo" href="#" style="color: red;">Edit</a>
+                                <a id="editInfo" href="#" style="color: red;">{{Str::contains($email, 'guest') ? 'Add' : 'Edit'}}</a>
                             </td>
                         </tr>
                     </table>
