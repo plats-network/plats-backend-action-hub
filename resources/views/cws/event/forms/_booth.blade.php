@@ -113,7 +113,24 @@
                                     <a class="bo-donw" data-id="{{$booth->id}}" data-num="{{$k+1}}" data-name="booth">Download</a>
                                </td> 
                                <td width="10%">{{totalUserJob($booth->id)}}</td>
-                               <td>{{$booth->is_required ? 'Vip' : 'Normal'}}</td>
+                               <td>
+                                    <input
+                                        type="checkbox"
+                                        id="b_vip_{{ $k+1 }}"
+                                        switch="none"
+                                        @if($booth->is_required) checked @endif
+                                    >
+                                    <label class="jobVip"
+                                        {{-- data-id="{{$booth->is_required}}" --}}
+                                        {{-- data-detail-id="{{$booths->id}}" --}}
+                                        for="b_vip_{{ $k+1 }}"
+                                        data-on-label="On"
+                                        data-url="{{route('api.upEventVip', ['id' => $booth->id])}}"
+                                        data-off-label="Off">
+                                    </label>
+
+                                    {{$booth->is_required ? 'Vip' : 'Normal'}}
+                                </td>
                                <td width="10%"><a href="{{$qr}}" target="_blank">link</a></td>
                                <td width="20%">
                                     <input

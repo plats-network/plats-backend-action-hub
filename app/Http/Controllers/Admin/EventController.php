@@ -98,6 +98,25 @@ class EventController extends Controller
         ], 200);
     }
 
+    public function upEventVip(Request $request, $id)
+    {
+        try {
+            $detail = $this->taskEventDetail->find($id);
+            if ($detail) {
+                $detail->update(['is_required' => $detail->is_required ? false : true]);
+            }
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error'
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'Ok'
+        ], 200);
+    }
+
     // method: GET
     // url: http://cws.plats.test/overview/{id}
     public function overview(Request $request, $id)

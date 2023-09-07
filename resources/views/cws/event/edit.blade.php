@@ -773,6 +773,22 @@
 
             });
 
+            
+            $(document).on('click', '.jobVip', function (e) {
+                var url = $(this).data('url');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        window.location.reload();
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+
             /*Start Booth*/
             $(document).on('click', '#btnAddItemBooth', function (event) {
                 var rowCount = $('.itemBoothDetail').length;
