@@ -37,9 +37,12 @@
                     </table>
                 </div>
                 <div class="event-info">
-                    <h3>{{$event->name}}</h3>
-                    <img src="{{$event->banner_url}}" alt="{{$event->name}}">
-                    <div class="content mt-2 text-center" style="margin-top: 15px;">
+                    <h3 style="padding-bottom: 0;">{{$event->name}}</h3>
+                    {{-- <img src="{{$event->banner_url}}" alt="{{$event->name}}"> --}}
+                    <div class="text-center" style="margin: 5px auto;">
+                        <img style="width: 70%;" src="{{url('/')}}/events/prize.png" alt="{{$event->name}}">
+                    </div>
+                    <div class="content mt-2 text-center" style="margin-top: 15px; line-height: 20px;">
                         Tham gia sự kiện để nhận những phần quà có giá trị với tổng giải thưởng lên đến 300 triệu.
                     </div>
                 </div>
@@ -63,13 +66,13 @@
 
                             <div class="item">
                                 <h3 class="text-center">{{$session->name}}</h3>
-                                <p><strong>Mã số:</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
+                                <p><strong>Code (mã số):</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
                                 <p>
-                                    <strong>Nhiệm vụ:</strong>
+                                    <strong>Missions (nhiệm vụ):</strong>
                                     <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 0])}}">Click Here!</a>
                                 </p>
-                                <p><strong>Thời gian:</strong> {{dateFormat($session->prize_at)}}</p>
-                                <p><strong>Phân thưởng:</strong> {{$session->note}}</p>
+                                <p><strong>Time (thời gian):</strong> {{dateFormat($session->prize_at)}}</p>
+                                <p><strong>Reward (phần thưởng):</strong> {{$session->note}}</p>
                             </div>
                         @endforeach
                     </div>
@@ -86,20 +89,20 @@
                             @endphp
                             <div class="item">
                                 <h3 class="text-center">{{$booth->name}}</h3>
-                                <p><strong>Mã số:</strong> <span class="fs-25">{{$codeBooths ? $codeBooths : '---'}}</span></p>
+                                <p><strong>Code (mã số):</strong> <span class="fs-25">{{$codeBooths ? $codeBooths : '---'}}</span></p>
                                 <p>
-                                    <strong>Nhiệm vụ:</strong>
+                                    <strong>Missions (nhiệm vụ):</strong>
                                     <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 1])}}">Click Here!</a>
                                 </p>
-                                <p><strong>Thời gian:</strong> {{dateFormat($booth->prize_at)}}</p>
-                                <p><strong>Phân thưởng:</strong> {{$booth->note}}</p>
+                                <p><strong>Time (thời gian):</strong> {{dateFormat($booth->prize_at)}}</p>
+                                <p><strong>Reward (phần thưởng):</strong> {{$booth->note}}</p>
                             </div>
                         @endforeach
                     </div>
                 </div>
 
                 <div class="event-info" style="border-top: 0; margin-top: 15px;">
-                    <div class="content mt-2 text-center" style="background-color: #ffe0f6;">
+                    <div class="content mt-2 text-center" style="background-color: #ffe0f6; line-height: 20px;">
                         Cài app Plats bạn có cơ hội quay thưởng và trúng những phần thưởng có giá trị.
                     </div>
                     <div class="app text-center">
@@ -114,6 +117,11 @@
             </div>
         </div>
     </section>
+
+    @include('web.events._modal_nft', [
+        'nft' => $nft,
+        'url' => $url
+    ])
 
     <div id="infoEditEmail" class="modal fade" data-backdrop="static" data-keyboard="false">
         <style type="text/css">

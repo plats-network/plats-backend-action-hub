@@ -14,7 +14,7 @@
                     <div class="d-flex flex-wrap align-items-center mb-2">
                         <h5 class="card-title">Lists prize</h5>
                         <div class="ms-auto">
-                            <a href="{{ route('cws.event.miniGame', ['id' => $id]) }}" class="btn btn-primary mb-2 me-2">Back</a>
+                            <a href="{{ route('cws.event.miniGame', ['id' => $id]) }}" class="btn btn-danger btn-sm mb-2 me-2">Back</a>
                         </div>
                     </div>
 
@@ -35,7 +35,9 @@
                                     <td>{{optional($prize->travelGame)->name}}</td>
                                     <td>{{optional($prize->user)->name}}</td>
                                     <td>
-                                        <p class="text-success" style="font-size: 11px; margin-bottom: 0;">{{optional($prize->user)->email}}</p>
+                                        <p class="text-success" style="font-size: 11px; margin-bottom: 0;">
+                                            {{optional($prize->user)->email}}
+                                        </p>
                                     </td>
                                     <td>{{codePrize($prize->name_prize)}}</td>
                                 </tr>

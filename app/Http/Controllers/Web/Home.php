@@ -158,10 +158,13 @@ class Home extends Controller
     public function jobEvent(Request $request, $id)
     {
         try {
+
             $sessionDatas = [];
             $boothDatas = [];
             $user = Auth::user();
             $task = $this->task->whereCode($id)->first();
+            $sessionNFT = session()->get('nft-'.$user->id);
+
             if (!$task) {
                 $this->redirectPath();
             }
@@ -229,7 +232,9 @@ class Home extends Controller
             'groupBooths' => $groupBooths,
             'groupSessions' => $groupSessions,
             'task_id' => $task->id,
-            'id' => $id
+            'id' => $id,
+            'url' => $sessionNFT && $sessionNFT['url'] ? $sessionNFT['url'] : null,
+            'nft' => $sessionNFT && $sessionNFT['nft'] ? 1 : 0
         ]);
     }
 

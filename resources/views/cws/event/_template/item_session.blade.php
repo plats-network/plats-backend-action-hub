@@ -43,7 +43,7 @@
             name="sessions[detail][{{$indexImageItem}}][is_question]"
             id="q_{{$getInc}}">
         <label class="form-check-label" for="q_{{$getInc}}">
-            Is question <span class="text-danger fs-11">(Yes/No)</span>
+            Quiz <span class="text-danger fs-11">(Yes/No)</span>
         </label>
     </div>
 

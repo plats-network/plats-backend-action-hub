@@ -62,6 +62,14 @@ class Job extends Controller
             $user = Auth::user();
             $code = $request->input('id');
             $event = $this->eventDetail->whereCode($code)->first();
+
+            if ($event->nft_link) {
+                session()->put('nft-'.$user->id, [
+                    'url' => $event->nft_link,
+                    'nft' => true
+                ]);
+            }
+
             $taskEvent = $this->taskEvent->find($event->task_event_id);
             $task = $this->task->find($taskEvent->task_id);
 
@@ -248,6 +256,8 @@ class Job extends Controller
 
             // Start
             $userId = Auth::user()->id;
+            $sessionNFT = session()->get('nft-'.$userId);
+
             $this->taskService->genCodeByUser($userId, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
         } catch (\Exception $e) {
             abort(404);
@@ -258,8 +268,26 @@ class Job extends Controller
             'session_id' => $session->id,
             'booth_id' => $booth->id,
             'travelSessions' => $travelSessions,
-            'travelBooths' => $travelBooths
+            'travelBooths' => $travelBooths,
+            'url' => $sessionNFT && $sessionNFT['url'] ? $sessionNFT['url'] : null,
+            'nft' => $sessionNFT && $sessionNFT['nft'] ? 1 : 0
         ]);
+    }
+
+    public function removeNft(Request $request)
+    {
+        try {
+            $userId = Auth::user()->id;
+            session()->forget('nft-'.$userId);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error'
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'Ok'
+        ], 200);
     }
 
     // New sponsor

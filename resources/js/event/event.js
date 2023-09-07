@@ -143,8 +143,43 @@ $(document).ready(function() {
           }
       });
   });
-  
 
+  if ($('#nftC').length > 0) {
+    var nft = $('#nftC').data('nft');
+    if (nft == 1 || nft == '1') {
+      $('#nftC').modal();
+    }
+  }
+
+  if ($('#reset-NFT').length > 0) {
+    $(document).on('click', '#reset-NFT', function (event) {
+      var url = $(this).data('url'),
+        url_reset = $(this).data('reset');
+      $.ajax({
+          url :  url_reset,
+          type: 'GET',
+          success: function(data) {
+            Toast.fire({
+              icon: 'success',
+              title: 'Redirect to Claim NFT.'
+            });
+            setTimeout(function(e) {
+              window.location.replace(url);
+            }, 500);
+          },
+          error: function() {
+            Toast.fire({
+              icon: 'error',
+              title: 'Error'
+            });
+            setTimeout(function(e) {
+              window.location.reload();
+            }, 900);
+          }
+      });
+    });
+  }
+  
   $("#infoForm").validate({
     onfocusout: false,
     onkeyup: false,

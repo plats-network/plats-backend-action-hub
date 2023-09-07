@@ -58,6 +58,7 @@
                         <th>Description</th>
                         <th>QR</th>
                         <th>Total</th>
+                        <th>Quiz</th>
                         <th>Click</th>
                         <th>QR <span class="text-danger">(ON/OFF)</span></th>
                     </tr>
@@ -77,6 +78,7 @@
                                 <a class="se-donw" data-id="{{$session->id}}" data-num="{{$k+1}}" data-name="session">Download</a>
                            </td>
                            <td width="5%">{{totalUserJob($session->id)}}</td>
+                           <td width="5%">{{$session->is_question ? 'Yes' : 'No'}}</td>
                            <td width="5%"><a href="{{$qr}}" target="_blank">link</a></td>
                            <td width="20%">
                                 <input
@@ -153,12 +155,12 @@
                                     class="form-check-input sCheck"
                                     data-id="{{$sessionDetail->id}}"
                                     type="checkbox"
-                                    value="{{$sessionDetail->is_question}}"
+                                    value="1"
                                     name="sessions[detail][{{$sessionDetail->id}}][is_question]"
                                     @if ($sessionDetail->is_question) checked @endif
                                     id="q_{{$sessionDetail->id}}">
                                 <label class="form-check-label" for="q_{{$sessionDetail->id}}">
-                                    Is question <span class="text-danger" style="font-size: 11px;">(Yes/No)</span>
+                                    Quiz <span class="text-danger" style="font-size: 11px;">(Yes/No)</span>
                                 </label>
                             </div>
 

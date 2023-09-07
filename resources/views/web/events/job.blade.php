@@ -27,6 +27,7 @@
 
         .ac-color {
             color: #258CC7!important;
+            font-weight: bold!important;
         }
     </style>
     <section class="our-schedule-area bg-white section-padding-100">
@@ -88,12 +89,8 @@
                                                 <div class="item-text">
                                                     <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">
                                                         <p class="{{$item['flag'] ? 'ac-color' : ''}}">{{$item['name']}}</p>
-                                                        
-                                                        {{-- @if ($item['required'])
-                                                            <span class="text-danger" style="font-size: 11px;position: absolute;">(*)</span>
-                                                        @endif --}}
                                                     </div>
-                                                    <div class="item-detail {{$item['flag'] ? 'ac-color' : ''}}">{{Str::limit($item['desc'], 20)}}</div>
+                                                    {{-- <div class="item-detail {{$item['flag'] ? 'ac-color' : ''}}">{{Str::limit($item['desc'], 20)}}</div> --}}
                                                 </div>
                                                 @if ($item['date'])
                                                     <div class="item-timestamp">
@@ -111,7 +108,7 @@
                             <div class="timeline-container">
                                 @foreach($groupBooths as $itemDatas)
                                     <hr style="margin-bottom: 20px;">
-                                    <h3 class="step">
+                                    <h3 class="step d-none" style="display: none;">
                                         {{$itemDatas && $itemDatas[0] ? $itemDatas[0]['travel_game_name'] : ''}}
                                     </h3>
                                     <ul class="tl">
@@ -121,11 +118,8 @@
                                                 <div class="item-text">
                                                     <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">
                                                         <p class="{{$item['flag'] ? 'ac-color' : ''}}">{{$item['name']}}</p>
-                                                        {{-- @if ($item['required'])
-                                                            <span class="text-danger" style="font-size: 11px;position: absolute;">(*)</span>
-                                                        @endif --}}
                                                     </div>
-                                                    <div class="item-detail {{$item['flag'] ? 'ac-color' : ''}}">{{Str::limit($item['desc'], 20)}}</div>
+                                                    {{-- <div class="item-detail {{$item['flag'] ? 'ac-color' : ''}}">{{Str::limit($item['desc'], 20)}}</div> --}}
                                                 </div>
                                                 @if ($item['date'])
                                                     <div class="item-timestamp">
@@ -143,4 +137,9 @@
             </div>
         </div>
     </section>
+
+    @include('web.events._modal_nft', [
+        'nft' => $nft,
+        'url' => $url
+    ])
 @endsection

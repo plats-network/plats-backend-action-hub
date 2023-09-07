@@ -64,6 +64,9 @@ Route::middleware(['user_event'])->group(function ($r) {
     // New sponsor
     $r->get('sponsor/new', [Job::class, 'newSponsor'])->name('new.sponsor');
     $r->post('sponsor/pay', [Job::class, 'saveSponsor'])->name('new.saveSponsor');
+
+    // remove pop ntf
+    $r->get('api/remove-nft', [Job::class, 'removeNft'])->name('nft.remove');
 });
 
 Route::get('/', [Home::class, 'index'])->name('web.home');

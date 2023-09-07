@@ -51,7 +51,7 @@
                     <thead class="table-light">
                         <tr class="text-center">
                             <th>No</th>
-                            <th>Name</th>
+                            <th>Name<br>Link NFT</th>
                             <th>Description</th>
                             <th>QR Code</th>
                             <th>Total</th>
@@ -67,7 +67,11 @@
                             @endphp
                             <tr>
                                <td width="5%">{{$k+1}}</td> 
-                               <td width="20%">{{$booth->name}}</td> 
+                               <td width="20%">
+                                    {{$booth->name}}
+                                    <br>
+                                    {{$booth->nft_link}}
+                                </td> 
                                <td width="30%">{!!$booth->description!!}</td> 
                                <td width="20%" data-url="{{$qr}}" class="text-center">
                                     <p class="qr" id="bo-{{$booth->id}}" data-bo-url="{{$qr}}"></p>
@@ -155,6 +159,19 @@
                                 <label class="form-check-label" for="br_{{$boothDetail->id}}">
                                     Vip <span class="text-danger" style="font-size: 11px;">(Yes/No)</span>
                                 </label>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <label class="col-form-label">Link NFT <span class="text-danger fs-11">(optional)</span></label>
+                                    <input class="form-control"
+                                        type="text" name="booths[detail][{{$boothDetail->id}}][nft_link]"
+                                        value="{{$boothDetail->nft_link}}">
+                                </div>
+                                <div class="col-sm-4 text-right" style="margin-top: 20px;">
+                                    <div class="col-auto">
+                                        <button type="button" data-id="{{$boothDetail->id}}" class="btn btn-danger mb-3 bRemove">Remove</button>
+                                    </div>
+                                </div>
                             </div>
 
                             {{-- Question --}}
@@ -276,12 +293,11 @@
                                     </div>
                                 </div>
                             </div> --}}
-
-                            <div class="col-sm-12 text-right">
+                            {{-- <div class="col-sm-12 text-right">
                                 <div class="col-auto">
                                     <button type="button" data-id="{{$boothDetail->id}}" class="btn btn-danger mb-3 bRemove">Remove</button>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     @endforeach
                 </div>

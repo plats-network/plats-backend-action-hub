@@ -14,7 +14,7 @@
                     <div class="d-flex flex-wrap align-items-center mb-2">
                         <h5 class="card-title">List Users</h5>
                         <div class="ms-auto">
-                            <a href="{{ route('cws.event.miniGame', ['id' => $id]) }}" class="btn btn-primary mb-2 me-2">Back</a>
+                            <a href="{{ route('cws.event.miniGame', ['id' => $id]) }}" class="btn btn-danger btn-sm mb-2 me-2">Back</a>
                         </div>
                     </div>
 
