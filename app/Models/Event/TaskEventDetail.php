@@ -35,6 +35,7 @@ class TaskEventDetail extends Model
         'is_required',
         'is_question',
         'nft_link',
+        'sort',
         'question',
         'a1', 'a2', 'a3', 'a4',
         'is_a1', 'is_a2', 'is_a3', 'is_a4',

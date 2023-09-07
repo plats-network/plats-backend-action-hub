@@ -1,3 +1,32 @@
+@php
+    $lists = [
+        0 => 0,
+        1 => 1,
+        2 => 2,
+        3 => 3,
+        4 => 4,
+        5 => 5,
+        6 => 6,
+        7 => 7,
+        8 => 8,
+        9 => 9,
+        10 => 10,
+        11 => 11,
+        12 => 12,
+        13 => 13,
+        14 => 14,
+        15 => 15,
+        16 => 16,
+        17 => 17,
+        18 => 18,
+        19 => 19,
+        20 => 20,
+        21 => 21,
+        22 => 22,
+        23 => 23
+    ];
+@endphp
+
 <div id="tabwizard2" class="wizard-tab">
     <div class="text-center mb-4">
         <h5>Sessions</h5>
@@ -61,6 +90,7 @@
                         <th>Quiz</th>
                         <th>Click</th>
                         <th>QR <span class="text-danger">(ON/OFF)</span></th>
+                        <th>Sort</th>
                     </tr>
                 </thead>
                 <tbody id="list-session-id" data-s-ids="{{json_encode($sessions->detail->pluck('id')->toArray())}}">
@@ -71,7 +101,7 @@
                         <tr>
                            <td width="5%">{{$k+1}}</td> 
                            <td width="20%">{{$session->name}}</td> 
-                           <td width="30%">{!!$session->description!!}</td>
+                           <td width="20%">{!!$session->description!!}</td>
                            <td width="20%" class="text-center" data-url="{{$qr}}">
                                 <p class="qr" id="se-{{$session->id}}" data-se-url="{{$qr}}"></p>
                                 <div class="d-none" style="width: 300px; height: 300px;" id="dse-{{$session->id}}" data-se-url="{{$qr}}"></div>
@@ -80,7 +110,7 @@
                            <td width="5%">{{totalUserJob($session->id)}}</td>
                            <td width="5%">{{$session->is_question ? 'Yes' : 'No'}}</td>
                            <td width="5%"><a href="{{$qr}}" target="_blank">link</a></td>
-                           <td width="20%">
+                           <td width="10%">
                                 <input
                                         type="checkbox"
                                         id="session_{{ $k+1 }}"
@@ -94,6 +124,17 @@
                                         data-on-label="On"
                                         data-off-label="Off">
                                     </label>
+                           </td>
+                           <td width="20%">
+                               <select
+                                    name="sort"
+                                    class="form-select sortUpdate"
+                                    data-id="{{$session->id}}"
+                                    data-url="{{route('api.upEventSort', ['id' => $session->id])}}">
+                                    @foreach($lists as $k => $v)
+                                        <option value="{{ $k }}" {{$k == $session->sort ? 'selected' : ''}}>{{$v}}</option>
+                                    @endforeach
+                                </select>
                            </td>
                         </tr>
                     @endforeach

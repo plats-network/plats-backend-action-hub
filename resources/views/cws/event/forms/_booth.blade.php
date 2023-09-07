@@ -1,3 +1,36 @@
+@php
+    $lists = [
+        0 => 0,
+        1 => 1,
+        2 => 2,
+        3 => 3,
+        4 => 4,
+        5 => 5,
+        6 => 6,
+        7 => 7,
+        8 => 8,
+        9 => 9,
+        10 => 10,
+        11 => 11,
+        12 => 12,
+        13 => 13,
+        14 => 14,
+        15 => 15,
+        16 => 16,
+        17 => 17,
+        18 => 18,
+        19 => 19,
+        20 => 20,
+        21 => 21,
+        22 => 22,
+        23 => 23,
+        24 => 24,
+        25 => 25,
+        26 => 26,
+        27 => 27
+    ];
+@endphp
+
 <div id="tabwizard3" class="wizard-tab">
     <div class="text-center mb-4">
         <h5>Booths</h5>
@@ -56,7 +89,7 @@
                 <table class="table table-bordered mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th colspan="10">
+                            <th colspan="11">
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <label class="col-form-label">Name</label>
@@ -93,6 +126,7 @@
                             <th>Click</th>
                             <th>QR <span class="text-danger">(ON/OFF)</span></th>
                             <th>NFT</th>
+                            <th>Sort</th>
                             <th>Edit</th>
                         </tr>
                     </thead>
@@ -103,11 +137,11 @@
                             @endphp
                             <tr>
                                <td width="5%">{{$k+1}}</td> 
-                               <td width="20%">
+                               <td width="15%">
                                     {{$booth->name}}
                                 </td> 
-                               <td width="30%">{!!$booth->description!!}</td> 
-                               <td width="20%" data-url="{{$qr}}" class="text-center">
+                               <td width="20%">{!!$booth->description!!}</td> 
+                               <td width="15%" data-url="{{$qr}}" class="text-center">
                                     <p class="qr" id="bo-{{$booth->id}}" data-bo-url="{{$qr}}"></p>
                                     <div class="d-none" style="width: 300px; height: 300px;" id="dbo-{{$booth->id}}" data-bo-url="{{$qr}}"></div>
                                     <a class="bo-donw" data-id="{{$booth->id}}" data-num="{{$k+1}}" data-name="booth">Download</a>
@@ -128,11 +162,9 @@
                                         data-url="{{route('api.upEventVip', ['id' => $booth->id])}}"
                                         data-off-label="Off">
                                     </label>
-
-                                    {{$booth->is_required ? 'Vip' : 'Normal'}}
                                 </td>
                                <td width="10%"><a href="{{$qr}}" target="_blank">link</a></td>
-                               <td width="20%">
+                               <td width="5%">
                                     <input
                                         type="checkbox"
                                         id="booth_{{ $k+1 }}"
@@ -147,7 +179,18 @@
                                         data-off-label="Off">
                                     </label>
                                </td>
-                               <td>{{$booth->nft_link ? 'Yes' : 'No'}}</td>
+                               <td width="5%">{{$booth->nft_link ? 'Yes' : 'No'}}</td>
+                               <td width="10%">
+                                    <select
+                                        name="sort"
+                                        class="form-select sortUpdate"
+                                        data-id="{{$booth->id}}"
+                                        data-url="{{route('api.upEventSort', ['id' => $booth->id])}}">
+                                        @foreach($lists as $k => $v)
+                                            <option value="{{ $k }}" {{$k == $booth->sort ? 'selected' : ''}}>{{$v}}</option>
+                                        @endforeach
+                                        </select>
+                               </td>
                                <td>
                                    <a 
                                         class="btn btn-danger btn-sm bbEdit"

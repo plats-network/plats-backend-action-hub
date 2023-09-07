@@ -647,6 +647,7 @@
                     $('#b-name').attr('disabled', false);
                     $('#b-desc').attr('disabled', false);
                     $('#b-nft').attr('disabled', false);
+                    $('.sortUpdate').attr('disabled', false);
                 }
             }
 
@@ -717,6 +718,28 @@
                 }
             });
             // End Session
+
+            
+            $(document).on('change', '.sortUpdate', function (e) {
+                var id = $(this).data('id'),
+                    url = $(this).data('url'),
+                    val = $(this).val();
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        _token: _token,
+                        sort: val
+                    },
+                    success: function (data) {
+                        // window.location.reload();
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
 
             $(document).on('click', '.bbEdit', function (e) {
                 var id = $(this).data('id'),

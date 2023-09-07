@@ -86,6 +86,7 @@ Route::middleware(['client_admin'])->group(function($cws) {
     // Update Detial Event
     $cws->get('api/detail', [EventController::class, 'upEventDetail'])->name('api.upEventDetail');
     $cws->get('api/job-vip/{id}', [EventController::class, 'upEventVip'])->name('api.upEventVip');
+    $cws->get('api/job-sort/{id}', [EventController::class, 'upEventSort'])->name('api.upEventSort');
 });
 //Upload file
 /*Upload Single*/
