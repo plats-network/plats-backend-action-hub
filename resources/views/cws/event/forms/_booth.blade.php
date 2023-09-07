@@ -46,18 +46,54 @@
             </div>
         </div>
         <div class="row mt-3">
+            <style type="text/css">
+                .bg-input {
+                    background-color: #fff !important;
+                }
+            </style>
+
             @if ($isPreview)
                 <table class="table table-bordered mb-0">
                     <thead class="table-light">
+                        <tr>
+                            <th colspan="10">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label">Name</label>
+                                        <input type="hidden" name="id" id="b-id">
+                                        <input class="form-control bg-input" type="text" name="name" id="b-name">
+                                        <p class="text-danger d-none" id="error-b-name">Please imput name</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label">Description</label>
+                                        <input class="form-control bg-input" type="text" name="name" id="b-desc">
+                                        <p class="text-danger d-none" id="error-b-desc">Please imput cescription</p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="col-form-label">Link NFT</label>
+                                        <input class="form-control bg-input" type="text" name="name" id="b-nft">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a
+                                            class="btn btn-primary bbSave"
+                                            style="margin-top: 38px;"
+                                            data-url="{{route('api.upEventDetail')}}"
+                                            data-url-reload="{{route('cws.eventPreview', ['id' => $event->id, 'tab' => 3, 'preview' => 1])}}">Save</a>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
                         <tr class="text-center">
                             <th>No</th>
-                            <th>Name<br>Link NFT</th>
+                            <th>Name</th>
                             <th>Description</th>
                             <th>QR Code</th>
                             <th>Total</th>
                             <th>Vip</th>
                             <th>Click</th>
                             <th>QR <span class="text-danger">(ON/OFF)</span></th>
+                            <th>NFT</th>
+                            <th>Edit</th>
                         </tr>
                     </thead>
                     <tbody id="list-booth-id" data-b-ids="{{json_encode($booths->detail->pluck('id')->toArray())}}">
@@ -69,8 +105,6 @@
                                <td width="5%">{{$k+1}}</td> 
                                <td width="20%">
                                     {{$booth->name}}
-                                    <br>
-                                    {{$booth->nft_link}}
                                 </td> 
                                <td width="30%">{!!$booth->description!!}</td> 
                                <td width="20%" data-url="{{$qr}}" class="text-center">
@@ -95,6 +129,15 @@
                                         data-on-label="On"
                                         data-off-label="Off">
                                     </label>
+                               </td>
+                               <td>{{$booth->nft_link ? 'Yes' : 'No'}}</td>
+                               <td>
+                                   <a 
+                                        class="btn btn-danger btn-sm bbEdit"
+                                        data-id="{{$booth->id}}"
+                                        data-name="{{$booth->name}}"
+                                        data-desc="{{$booth->description}}"
+                                        data-nft="{{$booth->nft_link}}">Edit</a>
                                </td>
                             </tr>
                         @endforeach

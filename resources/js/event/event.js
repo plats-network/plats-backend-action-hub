@@ -164,7 +164,9 @@ $(document).ready(function() {
               title: 'Redirect to Claim NFT.'
             });
             setTimeout(function(e) {
-              window.location.replace(url);
+              // window.location.replace(url);
+              window.open(url,'_blank');
+              window.location.reload();
             }, 500);
           },
           error: function() {

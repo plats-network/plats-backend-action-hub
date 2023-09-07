@@ -74,6 +74,30 @@ class EventController extends Controller
         return view('cws.event.index', $data);
     }
 
+    public function upEventDetail(Request $request)
+    {
+        try {
+            $id = $request->input('id');
+            $detail = $this->taskEventDetail->find($id);
+            if ($detail) {
+                $detail->update([
+                    'name' => $request->input('name'),
+                    'description' => $request->input('desc'),
+                    'nft_link' => $request->input('nft')
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error'
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'Ok'
+        ], 200);
+    }
+
     // method: GET
     // url: http://cws.plats.test/overview/{id}
     public function overview(Request $request, $id)

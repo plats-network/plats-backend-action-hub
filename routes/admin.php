@@ -82,6 +82,9 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->get('travel-game', [TravelGame::class, 'index'])->name('cws.travelGames');
     $cws->get('travel/upd/{id}', [TravelGame::class, 'updStatus'])->name('cws.travel.updStatus');
     $cws->post('travel/create', [TravelGame::class, 'create'])->name('cws.travel.create');
+
+    // Update Detial Event
+    $cws->get('api/detail', [EventController::class, 'upEventDetail'])->name('api.upEventDetail');
 });
 //Upload file
 /*Upload Single*/

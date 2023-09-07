@@ -75,6 +75,11 @@ ul.tl li .item-title {
   &.not-active {
     color: #888;
   }
+
+  p {
+    line-height: 20px;
+    font-size: 15px;
+  }
 }
 ul.tl li .item-detail {
     color:rgba(0,0,0,0.5);
@@ -85,6 +90,7 @@ ul.tl li .item-timestamp{
   font-size: 12px;
   text-align: right;
   padding-left: 20px;
+  width: 170px;
 }
 
 

@@ -88,7 +88,9 @@
                                                 <div class="item-icon {{ $item['flag'] ? '' : 'not__active'}}"></div>
                                                 <div class="item-text">
                                                     <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">
-                                                        <p class="{{$item['flag'] ? 'ac-color' : ''}}">{{$item['name']}}</p>
+                                                        <p class="{{$item['flag'] ? 'ac-color' : ''}}">
+                                                            {{Str::limit($item['name'], 50)}}
+                                                        </p>
                                                     </div>
                                                     {{-- <div class="item-detail {{$item['flag'] ? 'ac-color' : ''}}">{{Str::limit($item['desc'], 20)}}</div> --}}
                                                 </div>
@@ -117,7 +119,9 @@
                                                 <div class="item-icon {{ $item['flag'] ? '' : 'not__active'}}"></div>
                                                 <div class="item-text">
                                                     <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">
-                                                        <p class="{{$item['flag'] ? 'ac-color' : ''}}">{{$item['name']}}</p>
+                                                        <p class="{{$item['flag'] ? 'ac-color' : ''}}">
+                                                            {{Str::limit($item['name'], 50)}}
+                                                        </p>
                                                     </div>
                                                     {{-- <div class="item-detail {{$item['flag'] ? 'ac-color' : ''}}">{{Str::limit($item['desc'], 20)}}</div> --}}
                                                 </div>

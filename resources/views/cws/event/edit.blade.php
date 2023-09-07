@@ -642,6 +642,12 @@
                 $('textarea').attr('disabled', 'disabled');
                 $('select').attr('disabled', 'disabled');
                 $('input[type=checkbox]').removeAttr('disabled');
+
+                if ($('#b-id').length > 0) {
+                    $('#b-name').attr('disabled', false);
+                    $('#b-desc').attr('disabled', false);
+                    $('#b-nft').attr('disabled', false);
+                }
             }
 
             //btnAddItemSession onclick call ajax
@@ -711,6 +717,61 @@
                 }
             });
             // End Session
+
+            $(document).on('click', '.bbEdit', function (e) {
+                var id = $(this).data('id'),
+                    name = $(this).data('name'),
+                    desc = $(this).data('desc'),
+                    nft = $(this).data('nft');
+                $('#b-name').focus();
+                $('#b-name').val(name);
+                $('#b-id').val(id);
+                $('#b-desc').val(desc);
+                $('#b-nft').val(nft);
+            });
+
+            $(document).on('click', '.bbSave', function (e) {
+                var id = $('#b-id').val(),
+                    name = $('#b-name').val(),
+                    desc = $('#b-desc').val(),
+                    nft = $('#b-nft').val(),
+                    url = $(this).data('url'),
+                    url_reload = $(this).data('url-reload');
+
+                if (name == '' || desc == '') {
+                    if (name == '') {
+                        $('#error-b-name').removeClass('d-none');
+                    } else {
+                        $('#error-b-name').addClass('d-none');
+                    }
+
+                    if (desc == '') {
+                        $('#error-b-desc').removeClass('d-none');
+                    } else {
+                        $('#error-b-desc').addClass('d-none');
+                    }
+                } else {
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            _token: _token,
+                            id: id,
+                            name: name,
+                            desc: desc,
+                            nft: nft
+                        },
+                        success: function (data) {
+                            window.location.reload();
+                        },
+                        error: function (data) {
+                            console.log(data);
+                        }
+                    });
+                }
+
+            });
 
             /*Start Booth*/
             $(document).on('click', '#btnAddItemBooth', function (event) {
