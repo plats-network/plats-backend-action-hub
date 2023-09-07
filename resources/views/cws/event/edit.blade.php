@@ -40,7 +40,7 @@
                     <a class="btn btn-primary btn-sm mb-2 mr-5" style="margin-right: 10px;" href="{{ route('cws.eventEdit', ['id' => $event->id]) }}">Edit Event</a>
                     <a class="ml-5 btn btn-primary btn-sm mb-2" href="{{route('cws.event.users', ['id' => $event->id])}}">List User</a>
                 </div>
-            @else
+            @elseif ($event && $event->id)
                 <div class="col-md-12">
                     <a class="btn btn-danger btn-sm mb-2 mr-5" style="margin-right: 10px;" href="{{ route('cws.eventPreview', ['id' => $event->id, 'preview' => 1]) }}">Back</a>
                 </div>
