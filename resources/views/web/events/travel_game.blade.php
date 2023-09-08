@@ -67,8 +67,7 @@
                             <p class="pp">➤ Bạn có thể dùng bất kỳ nền tảng nào như Camera hay Zalo... để quét QR code, nhưng cần dùng  1 nền tảng duy nhất  để quét trong suốt sự kiện. Ví dụ nếu đã dùng Zalo để quét lần đầu thì các lần sau cũng dùng Zalo.</p>
                             <p class="pp">➤ Bạn cần nhập Email (phía trên của màn hình) để tham gia quay thưởng. Vì quyền lợi của bạn, Email này phải  trùng với Email bạn đã đăng ký vé tham gia sự kiện.</p>
                             <p class="pp" style="padding-bottom: 10px;">➤ Tại giờ quay thưởng vào cuối ngày, nếu bạn trúng thưởng mà không có mặt sẽ bị loại và giành cơ hội cho người khác.</p>
-                            Chi tiết từng Game ở bên dưới.<br>
-                            Tham gia sự kiện để nhận những phần quà có giá trị với tổng giải thưởng lên đến 300 triệu.
+                            Chi tiết từng Game ở bên dưới.
                         </div>
                         <p class="text-center" id="see1" style="cursor: pointer;">Read more</p>
                     </div>
