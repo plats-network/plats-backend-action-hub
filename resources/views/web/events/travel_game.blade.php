@@ -131,8 +131,10 @@
                 </div>
 
                 <div class="event-info" style="border-top: 0; margin-top: 15px;">
-                    <div class="content mt-2 text-center" style="background-color: #ffe0f6; line-height: 20px;">
-                        Cài app Plats bạn có cơ hội quay thưởng và trúng những phần thưởng có giá trị.
+                    <div class="aaa mt-2">
+                        Plats Network: Web 2.5 Event Platform.<br>
+                        Thăm quan gian hàng Plats Network, bạn có cơ hội tham gia các trò chơi vui nhộn với những phần quà hấp dẫn.<br>
+                        Games, Gifts, and Good Times Await at Plats Network's Booth!
                     </div>
                     <div class="app text-center">
                         <a href="https://apps.apple.com/us/app/plats/id1672212885" style="padding-right: 20px;" target="_blank">

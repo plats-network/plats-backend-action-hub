@@ -25,9 +25,17 @@ class HomeController extends Controller
     {
         try {
             $codes = [];
-
-            for($i=1; $i <= 3000; $i++) {
-                $codes[] = $i;
+            if (env('APP_ENV') != 'production') {
+                for($i=1; $i <= 30000; $i++) {
+                    $codes[] = $i;
+                }
+            } else {
+                $codes = $this->userCode
+                    ->where('task_event_id', '9a131bf1-d4fa-4368-bb6b-c4e5f8d1da08')
+                    ->where('travel_game_id', '9a13167f-4a75-4a46-aa5b-4fb8baea4b9b')
+                    ->inRandomOrder()
+                    ->pluck('number_code')
+                    ->toArray();
             }
         } catch (\Exception $e) {
             return response()->json([
@@ -49,8 +57,17 @@ class HomeController extends Controller
         try {
             $codes = [];
 
-            for($i=1; $i <= 3000; $i++) {
-                $codes[] = $i;
+            if (env('APP_ENV') != 'production') {
+                for($i=1; $i <= 30000; $i++) {
+                    $codes[] = $i;
+                }
+            } else {
+                $codes = $this->userCode
+                    ->where('task_event_id', '9a131bf1-d4fa-4368-bb6b-c4e5f8d1da08')
+                    ->where('travel_game_id', '9a1316c2-56b7-4e70-816a-5a56c110ccac')
+                    ->inRandomOrder()
+                    ->pluck('number_code')
+                    ->toArray();
             }
         } catch (\Exception $e) {
             return response()->json([
@@ -72,8 +89,24 @@ class HomeController extends Controller
         try {
             $codes = [];
 
-            for($i = 1; $i <= 3000; $i++) {
-                $codes[] = $i;
+            if (env('APP_ENV') != 'production') {
+                for($i=1; $i <= 30000; $i++) {
+                    $codes[] = $i;
+                }
+            } else {
+                $userIds = $this->eventUserTicket
+                    ->whereTaskId('9a131bf1-d41a-4412-a075-599e97bf6dcb')
+                    ->whereIsVip(true)
+                    ->pluck('user_id')
+                    ->toArray();
+
+                $codes = $this->userCode
+                    ->where('task_event_id', '9a131bf1-d41a-4412-a075-599e97bf6dcb')
+                    ->where('travel_game_id', '9a131755-0cc0-4849-8391-256df36f36f4')
+                    ->whereIn('user_id', $userIds)
+                    ->inRandomOrder()
+                    ->pluck('number_code')
+                    ->toArray();
             }
         } catch (\Exception $e) {
             return response()->json([
