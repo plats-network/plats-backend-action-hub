@@ -89,6 +89,10 @@
                                     ->where('type', 0)
                                     ->pluck('number_code')
                                     ->implode(',');
+                                $sTests = [];
+                                if ($session->note) {
+                                    $sTests = explode('-', $session->note);
+                                }
                             @endphp
 
                             <div class="item">
@@ -100,7 +104,14 @@
                                 </p>
                                 <p><strong>Thời gian quay thưởng (Time):</strong> {{dateFormat($session->prize_at)}}</p>
                                 <p><strong>Địa điểm (Position):</strong> Hội trường chính (Main Stage)</p>
-                                <p><strong>Reward (phần thưởng):</strong> {{$session->note}}</p>
+                                <p><strong>Reward (phần thưởng):</strong></p>
+                                <p style="padding-left: 15px; line-height: 20px;">
+                                    @foreach($sTests as $item)
+                                        @if($item)
+                                            {!! '➤ '.$item.'<br>' !!}
+                                        @endif
+                                    @endforeach
+                                </p>
                             </div>
                         @endforeach
                     </div>
@@ -114,6 +125,10 @@
                                     ->where('type', 1)
                                     ->pluck('number_code')
                                     ->implode(',');
+                                $aTests = [];
+                                if ($booth->note) {
+                                    $aTests = explode('-', $booth->note);
+                                }
                             @endphp
                             <div class="item">
                                 <h3 class="text-center">{{$booth->name}}</h3>
@@ -124,7 +139,14 @@
                                 </p>
                                 <p><strong>Thời gian quay thưởng (Time):</strong> {{dateFormat($booth->prize_at)}}</p>
                                 <p><strong>Địa điểm (Position):</strong> Hội trường chính (Main Stage)</p>
-                                <p><strong>Reward (phần thưởng):</strong> {{$booth->note}}</p>
+                                <p><strong>Reward (phần thưởng):</strong></p>
+                                <p style="padding-left: 15px; line-height: 20px;">
+                                    @foreach($aTests as $item)
+                                        @if($item)
+                                            {!! '➤ '.$item.'<br>' !!}
+                                        @endif
+                                    @endforeach
+                                </p>
                             </div>
                         @endforeach
                     </div>
