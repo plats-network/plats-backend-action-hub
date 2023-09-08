@@ -107,12 +107,12 @@ class User extends Controller
     public function listUsers(Request $request, $id)
     {
         try {
-            $userIds = $this->eventUserTicket
-                ->select('user_id')
-                ->whereTaskId($id)
-                ->pluck('user_id')
-                ->toArray();
-
+            $userIds = $this->eventUserTicket->select('user_id')->whereTaskId($id);
+            if ($request->input('vip')) {
+                $vip = $request->input('vip') == 1 ? false : true;
+                $userIds = $userIds->where('is_vip', $vip);
+            }
+            $userIds = $userIds->pluck('user_id')->toArray();
             $userIds = array_unique($userIds);
             $users = $this->userService->search([
                 'limit' => $request->get('limit') ?? PAGE_SIZE,

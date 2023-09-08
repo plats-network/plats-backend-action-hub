@@ -11,23 +11,47 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title mb-0">Search</h4>
+                    {{-- <h4 class="card-title mb-0">Search</h4> --}}
+                    <div class="ms-auto">
+                        <a href="{{route('cws.eventPreview', [
+                            'id' => $id,
+                            'tab' => 0,
+                            'preview' => 1])}}"
+                            class="btn btn-danger btn-sm">Back</a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <form action="{{route('cws.event.users', ['id' => $id])}}">
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="mb-3">
+                                    <label class="col-form-label">Name or Email</label>
                                     <input
                                         type="text"
                                         name="name"
                                         value="{{request()->input('name') ?? ''}}"
                                         class="form-control"
-                                        placeholder="name"
                                         id="name">
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
+                                <label class="col-form-label">Vip/Normal</label>
+                                <div class="form-group">
+                                    @php
+                                        $vips = [
+                                            '' => 'Selected',
+                                            '1' => 'Normal',
+                                            '2' => 'Vip'
+                                        ];
+                                    @endphp
+                                    <select name="vip" class="form-select">
+                                        @foreach($vips as $k => $v)
+                                            <option value="{{ $k }}" {{($k == request()->get('vip')) ? 'selected' : ''}}>{{$v}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3" style="margin-top: 38px;">
                                 <button type="submit" class="btn btn-primary w-md">Search</button>
                             </div>
                         </div>
