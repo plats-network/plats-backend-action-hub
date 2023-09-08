@@ -71,6 +71,7 @@
                             <p class="pp">➤ Thu thập Mã số quay thưởng (MSQT) để tham gia vòng quay may mắn.</p>
                             <p class="pp">➤ Bạn có thể dùng bất kỳ nền tảng nào như Camera hay Zalo... để quét QR code, nhưng cần dùng  1 nền tảng duy nhất  để quét trong suốt sự kiện. Ví dụ nếu đã dùng Zalo để quét lần đầu thì các lần sau cũng dùng Zalo.</p>
                             <p class="pp">➤ Bạn cần nhập Email (phía trên của màn hình) để tham gia quay thưởng. Vì quyền lợi của bạn, Email này phải  trùng với Email bạn đã đăng ký vé tham gia sự kiện.</p>
+                            <p class="pp">➤ Riêng với Travel Game sau khi quét mã QR tại bất kỳ Booth nào sẽ hiển thị 1 của sổ thông báo cần Claim bộ NFT ở các Booth để hoàn thành nhiệm vụ, người tham gia cần đăng nhập bằng các tài khoản mạng xã hội như Facebook, Google hoặc Apple Icloud để được tặng ví lưu trữ NFT và Claim NFT. Việc đăng nhập này chỉ thực hiện 1 lần duy nhất.</p>
                             <p class="pp" style="padding-bottom: 10px;">➤ Tại giờ quay thưởng vào cuối ngày, nếu bạn trúng thưởng mà không có mặt sẽ bị loại và giành cơ hội cho người khác.</p>
                             Chi tiết từng Game ở bên dưới.
                         </div>
