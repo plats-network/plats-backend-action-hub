@@ -26,10 +26,9 @@ class HomeController extends Controller
         try {
             $codes = [];
 
-            for($i=1; $i <= 234; $i++) {
+            for($i=1; $i <= 3000; $i++) {
                 $codes[] = $i;
             }
-            $datas =  array_rand($codes, 150);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -41,7 +40,7 @@ class HomeController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Successful',
-            'data' => $datas
+            'data' => $codes
         ], 200);
     }
 
@@ -50,10 +49,9 @@ class HomeController extends Controller
         try {
             $codes = [];
 
-            for($i=100; $i <= 500; $i++) {
+            for($i=1; $i <= 3000; $i++) {
                 $codes[] = $i;
             }
-            $datas =  array_rand($codes, 150);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -65,7 +63,7 @@ class HomeController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Successful',
-            'data' => $datas
+            'data' => $codes
         ], 200);
     }
 
@@ -74,10 +72,9 @@ class HomeController extends Controller
         try {
             $codes = [];
 
-            for($i = 230; $i <= 600; $i++) {
+            for($i = 1; $i <= 3000; $i++) {
                 $codes[] = $i;
             }
-            $datas =  array_rand($codes, 100);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -89,7 +86,7 @@ class HomeController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Successful',
-            'data' => $datas
+            'data' => $codes
         ], 200);
     }
 

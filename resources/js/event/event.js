@@ -181,6 +181,24 @@ $(document).ready(function() {
       });
     });
   }
+
+  if ($('#see1').length > 0) {
+    $(document).on('click', '#see1', function (event) {
+      $('#seeMore1').removeAttr('style', 'display: none');
+      $('#see1').addClass('lessMore1').html('Less more');
+    })
+  }
+
+  $(document).on('click', '.lessMore1', function (event) {
+    $('#seeMore1').attr('style', 'display: none');
+    $('.lessMore1').removeClass('lessMore1').html('Read more');
+  })
+
+  if ($('#s').length > 0) {
+    $(document).on('click', '#see1', function (event) {
+      
+    })
+  }
   
   $("#infoForm").validate({
     onfocusout: false,

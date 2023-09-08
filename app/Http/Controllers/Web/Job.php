@@ -108,6 +108,7 @@ class Job extends Controller
                         'code' => $event->code
                     ])->with('error', "Job locked!");
                 } else {
+                    notify()->success('Scan QR code success');
                     return redirect()->route('job.getJob', [
                         'code' => $event->code
                     ]);
@@ -194,20 +195,45 @@ class Job extends Controller
                 ->whereIn('task_event_id', $eventIds)
                 ->count();
 
+            // Gen code
+            $session = $this->taskEvent->whereTaskId($taskId)->whereType(TASK_SESSION)->first();
+            $travelSessionIds = $this->eventDetail
+                ->select('travel_game_id')
+                ->distinct()
+                ->whereTaskEventId($session->id)
+                ->pluck('travel_game_id')
+                ->toArray();
+            // End 
+
+            $booth = $this->taskEvent->whereTaskId($taskId)->whereType(TASK_BOOTH)->first();
+            $travelBootsIds = $this->eventDetail
+                ->select('travel_game_id')
+                ->distinct()
+                ->whereTaskEventId($booth->id)
+                ->pluck('travel_game_id')
+                ->toArray();
+
             if ($detail->is_question == false) {
-                notify()->success('Quét QR code success');
+                notify()->success('Scan QR code success');
 
                 if ($countJobOne <= 1) {
                     return redirect()->route('job.getTravelGame', [
                         'task_id' => $taskId
                     ]);
                 } else {
+                    // Gen code
+                    $this->taskService->genCodeByUser($user->id, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
+
+                    notify()->success('Scan QR code success');
                     return redirect()->route('web.jobEvent', [
                         'id' => $task->code,
                         'type' => $taskEvent->type
                     ]);
                 }
             }
+
+            // Gen code
+            $this->taskService->genCodeByUser($user->id, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
         } catch (\Exception $e) {
             notify()->error('Có lỗi xảy ra');
             return redirect()->route('web.home');
@@ -258,7 +284,7 @@ class Job extends Controller
             $userId = Auth::user()->id;
             $sessionNFT = session()->get('nft-'.$userId);
 
-            $this->taskService->genCodeByUser($userId, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
+            // $this->taskService->genCodeByUser($userId, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
         } catch (\Exception $e) {
             abort(404);
         }

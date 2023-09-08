@@ -158,7 +158,6 @@ class Home extends Controller
     public function jobEvent(Request $request, $id)
     {
         try {
-
             $sessionDatas = [];
             $boothDatas = [];
             $user = Auth::user();
@@ -173,7 +172,6 @@ class Home extends Controller
             $eventBooth = $this->eventModel->whereTaskId($task->id)->whereType(TASK_BOOTH)->first();
             $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)->orderBy('sort', 'asc')->get();
             $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)->orderBy('sort', 'asc')->get();
-            // dd($sessions);
 
             foreach($sessions as $session) {
                 $travel = $this->travelGame->find($session->travel_game_id);
@@ -225,6 +223,8 @@ class Home extends Controller
             foreach($boothDatas as $item) {
                 $groupBooths[$item['travel_game_id']][] = $item;
             }
+
+            notify()->success('Scan QR code success');
         } catch (\Exception $e) {
             $this->redirectPath();
         }

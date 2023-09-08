@@ -16,6 +16,23 @@
             font-size: 25px;
             color: #228b22;
         }
+
+        .pp {
+            padding-left: 20px;
+            line-height: 20px !important;
+            color: #000 !important;
+        }
+
+        .aaa {
+            background-color: #fff8ea;
+            padding: 7px 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            color: #000;
+            line-height: 20px;
+            font-size: 15px;
+            border: 2px solid #fab501;
+        }
     </style>
     <section class="travel">
         <div class="container">
@@ -42,14 +59,24 @@
                     <div class="text-center" style="margin: 5px auto;">
                         <img style="width: 70%;" src="{{url('/')}}/events/prize.png" alt="{{$event->name}}">
                     </div>
-                    <div class="content mt-2 text-center" style="margin-top: 15px; line-height: 20px;">
-                        Tham gia sự kiện để nhận những phần quà có giá trị với tổng giải thưởng lên đến 300 triệu.
+                    <div class="aaa mt-2" style="margin-top: 15px; line-height: 20px;">
+                        Tham gia các Games tại sự kiện với tổng giải thưởng lên tới 300 triệu.
+                        <div id="seeMore1" style="display: none;">
+                            <p class="pp" style="padding-top: 10px;">➤ Có 3 game là "Travel Game", "Session game day 1" và "Session game day 2" độc lập nhau. Bạn có thể tham gia 1 hoặc cả 3 game.</p>
+                            <p class="pp">➤ Thu thập Mã số quay thưởng (MSQT) để tham gia vòng quay may mắn.</p>
+                            <p class="pp">➤ Bạn có thể dùng bất kỳ nền tảng nào như Camera hay Zalo... để quét QR code, nhưng cần dùng  1 nền tảng duy nhất  để quét trong suốt sự kiện. Ví dụ nếu đã dùng Zalo để quét lần đầu thì các lần sau cũng dùng Zalo.</p>
+                            <p class="pp">➤ Bạn cần nhập Email (phía trên của màn hình) để tham gia quay thưởng. Vì quyền lợi của bạn, Email này phải  trùng với Email bạn đã đăng ký vé tham gia sự kiện.</p>
+                            <p class="pp" style="padding-bottom: 10px;">➤ Tại giờ quay thưởng vào cuối ngày, nếu bạn trúng thưởng mà không có mặt sẽ bị loại và giành cơ hội cho người khác.</p>
+                            Chi tiết từng Game ở bên dưới.<br>
+                            Tham gia sự kiện để nhận những phần quà có giá trị với tổng giải thưởng lên đến 300 triệu.
+                        </div>
+                        <p class="text-center" id="see1" style="cursor: pointer;">Read more</p>
                     </div>
                 </div>
 
                 <ul class="nav nav-tabs">
-                  <li><a data-toggle="tab" href="#sesion">Session Game</a></li>
-                  <li><a data-toggle="tab" href="#booth">Booth Game</a></li>
+                  <li><a data-toggle="tab" href="#sesion">Sessions Game</a></li>
+                  <li><a data-toggle="tab" href="#booth">Travel Game</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -66,12 +93,13 @@
 
                             <div class="item">
                                 <h3 class="text-center">{{$session->name}}</h3>
-                                <p><strong>Code (mã số):</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
+                                <p><strong>Mã số quay thưởng (Lucky Code):</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
                                 <p>
                                     <strong>Missions (nhiệm vụ):</strong>
                                     <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 0])}}">Click Here!</a>
                                 </p>
-                                <p><strong>Time (thời gian):</strong> {{dateFormat($session->prize_at)}}</p>
+                                <p><strong>Thời gian quay thưởng (Time):</strong> {{dateFormat($session->prize_at)}}</p>
+                                <p><strong>Địa điểm (Position):</strong> Hội trường chính (Main Stage)</p>
                                 <p><strong>Reward (phần thưởng):</strong> {{$session->note}}</p>
                             </div>
                         @endforeach
@@ -89,12 +117,13 @@
                             @endphp
                             <div class="item">
                                 <h3 class="text-center">{{$booth->name}}</h3>
-                                <p><strong>Code (mã số):</strong> <span class="fs-25">{{$codeBooths ? $codeBooths : '---'}}</span></p>
+                                <p><strong>Mã số quay thưởng (Lucky Code):</strong> <span class="fs-25">{{$codeBooths ? $codeBooths : '---'}}</span></p>
                                 <p>
-                                    <strong>Missions (nhiệm vụ):</strong>
+                                    <strong>Nhiệm vụ (Missions):</strong>
                                     <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 1])}}">Click Here!</a>
                                 </p>
-                                <p><strong>Time (thời gian):</strong> {{dateFormat($booth->prize_at)}}</p>
+                                <p><strong>Thời gian quay thưởng (Time):</strong> {{dateFormat($booth->prize_at)}}</p>
+                                <p><strong>Địa điểm (Position):</strong> Hội trường chính (Main Stage)</p>
                                 <p><strong>Reward (phần thưởng):</strong> {{$booth->note}}</p>
                             </div>
                         @endforeach

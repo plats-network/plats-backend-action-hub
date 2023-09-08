@@ -29,19 +29,45 @@
             color: #258CC7!important;
             font-weight: bold!important;
         }
+
+        .desc-prize {
+            background-color: #fff8ea;
+            padding: 7px 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            color: #000;
+            line-height: 20px;
+            font-size: 15px;
+            border: 2px solid #fab501;
+        }
     </style>
     <section class="our-schedule-area bg-white section-padding-100">
         {{-- <h3>Ready to get started with Plats Network?</h3> --}}
-        <div class="container" style="margin-top: 85px;">
+        <div class="container" style="margin-top: 65px;">
             <div class="row">
                 <div class="col-12">
                     <div class="schedule-tab list-job">
+                        <p class="text-center" style="padding-bottom: 10px;">
+                            <a class="back" href="{{route('job.getTravelGame', ['task_id' => $task_id, 'type' => $type])}}">{{'< Back to Event!'}}</a>
+                        </p>
+                        <p class="desc-prize">
+                            @if ($type == 0)
+                                Quét QR code sau mỗi phiên thảo luận tại hội trường chính và hội trường builder, quét 3 phiên thảo luận nhận được 1 Mã số quay thưởng (MSQT). Hãy thu thập càng nhiều MSQT cơ hội trúng thưởng càng cao. <br>
+                                (Scan 3 Session QR Code to receive 1 Lucky Code).
+                            @else
+                                - Quét QR Code tại các gian hàng (booths), quét 5 booths nhận được 1 Mã số quay thưởng (MSQT). <br>
+                                - Riêng với Booth VIP NEAR, GFI, VBI thì chỉ cần quét 1 booth nhận được 1 MSQT. <br>
+                                - Hãy thu thập càng nhiều MSQT cơ hội trúng thưởng càng cao. <br>
+                                (Scan 5 Booth QR Code to receive 1 Lucky Code).
+                            @endif
+                        </p>
+
                         <ul class="nav tab-job">
                             <li class="nav-item b1">
-                                <a class="nav-link {{$type == 0 ? 'active-job' : ''}}" href="{{route('web.jobEvent', ['id' => $id, 'type' => 0])}}">Session Game</a>
+                                <a class="nav-link {{$type == 0 ? 'active-job' : ''}}" href="{{route('web.jobEvent', ['id' => $id, 'type' => 0])}}">Sessions Game</a>
                             </li>
                             <li class="nav-item b2">
-                                <a class="nav-link {{$type == 1 ? 'active-job' : ''}}" href="{{route('web.jobEvent', ['id' => $id, 'type' => 1])}}">Booth Game</a>
+                                <a class="nav-link {{$type == 1 ? 'active-job' : ''}}" href="{{route('web.jobEvent', ['id' => $id, 'type' => 1])}}">Travel Game</a>
                             </li>
                         </ul>
 
@@ -71,9 +97,7 @@
                                 padding: 10px 30px!important;
                             }
                         </style>
-                        <p class="text-center" style="padding-top: 10px;">
-                            <a class="back" href="{{route('job.getTravelGame', ['task_id' => $task_id])}}">Back to Event!</a>
-                        </p>
+                        
                     </div>
 
                     <div class="tab-content">

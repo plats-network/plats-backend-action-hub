@@ -21,10 +21,10 @@
         }
     </style>
 
-    <div class="modal-dialog" style="width: 300px; margin: 20% auto;">
+    <div class="modal-dialog" style="width: 380px; margin: 20% auto; height: 62%;">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" style="font-size: 25px; text-align: center;">Claim NFT</h5>
+                <h5 class="modal-title" style="font-size: 23px; text-align: center;">Claim NFT To Complete Task</h5>
             </div>
             <div class="modal-body">
                 <div class="text-center">
@@ -32,7 +32,7 @@
                         class="btn-nft"
                         href="#"
                         data-url="{{$url}}"
-                        data-reset="{{route('nft.remove')}}">Claim</a>
+                        data-reset="{{route('nft.remove')}}">NEXT</a>
                 </div>
             </div>
         </div>
