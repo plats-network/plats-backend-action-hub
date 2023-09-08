@@ -33,6 +33,11 @@
             font-size: 15px;
             border: 2px solid #fab501;
         }
+
+        #laravel-notify {
+          position: absolute;
+          z-index: 99999;
+        }
     </style>
     <section class="travel">
         <div class="container">

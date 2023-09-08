@@ -213,8 +213,12 @@ class Job extends Controller
                 ->pluck('travel_game_id')
                 ->toArray();
 
-            if ($detail->is_question == false) {
+            if ($taskEvent->type == 0) {
                 notify()->success('Scan QR code success');
+            }
+
+            if ($detail->is_question == false) {
+                // notify()->success('Scan QR code success');
 
                 if ($countJobOne <= 1) {
                     return redirect()->route('job.getTravelGame', [
@@ -224,7 +228,7 @@ class Job extends Controller
                     // Gen code
                     $this->taskService->genCodeByUser($user->id, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
 
-                    notify()->success('Scan QR code success');
+                    // notify()->success('Scan QR code success');
                     return redirect()->route('web.jobEvent', [
                         'id' => $task->code,
                         'type' => $taskEvent->type

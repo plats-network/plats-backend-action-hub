@@ -224,10 +224,9 @@ class Home extends Controller
             foreach($boothDatas as $item) {
                 $groupBooths[$item['travel_game_id']][] = $item;
             }
-
-            notify()->success('Scan QR code success');
         } catch (\Exception $e) {
-            $this->redirectPath();
+            notify()->error('Sự kiện không tồn tại.');
+            return redirect()->route('web.home');
         }
 
         return view('web.events.job', [
