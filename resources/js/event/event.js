@@ -208,12 +208,18 @@ $(document).ready(function() {
       "email": {
         required: true,
         email: true
-      }
+      },
+      "name": {
+        required: true
+      },
     },
     messages: {
       "email": {
-        required: "Vui lòng nhập email",
-        email: 'Email không đúng định dạng'
+        required: "Please input email",
+        email: 'Email format fail'
+      },
+      "name": {
+        required: "Please input name"
       },
     }
   });

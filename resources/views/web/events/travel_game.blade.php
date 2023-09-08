@@ -87,7 +87,7 @@
 
                 <div class="tab-content">
                     <div id="sesion" class="tab-pane fade in active">
-                        @foreach($travelSessions as $session)
+                        @foreach($travelSessions as $k => $session)
                             @php
                                 $codes = $userCode->where('user_id', $userId)
                                     ->where('travel_game_id', $session->id)
@@ -106,7 +106,7 @@
                                 <p><strong>Mã số quay thưởng (Lucky Code):</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
                                 <p>
                                     <strong>Missions (nhiệm vụ):</strong>
-                                    <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 0])}}">Click Here!</a>
+                                    <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 0])}}#day{{$k+1}}">Click Here!</a>
                                 </p>
                                 <p><strong>Thời gian quay thưởng (Time):</strong> {{dateFormat($session->prize_at)}}</p>
                                 <p><strong>Địa điểm (Position):</strong> Hội trường chính (Main Stage)</p>
@@ -207,6 +207,14 @@
                         @csrf
                         <input type="hidden" name="task_id" value="{{$event->id}}">
                         <div class="row" style="display: block;">
+                            <div class="col-md-12">
+                                <label class="form-label">Name <span class="text-danger">*</span></label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="name"
+                                    required>
+                            </div>
                             <div class="col-md-12">
                                 <label class="form-label">Email <span class="text-danger">*</span></label>
                                 <input

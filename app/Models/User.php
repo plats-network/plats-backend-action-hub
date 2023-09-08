@@ -46,6 +46,7 @@ class User extends Authenticatable implements JWTSubject
         'comfirm_hash',
         'confirm_at',
         'status',
+        'deleted_at',
     ];
 
     /**

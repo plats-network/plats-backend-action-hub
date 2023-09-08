@@ -104,13 +104,13 @@
                                 padding: 10px 30px!important;
                             }
                         </style>
-                        
                     </div>
 
                     <div class="tab-content">
                         <div class="tab-pane {{$type == '0' ? 'fade show in active' : ''}}">
                             <div class="timeline-container">
-                                @foreach($groupSessions as $itemDatas)
+                                @foreach($groupSessions as  $itemDatas)
+                                    <div id="day{{($loop->index+1)}}">&nbsp;</div>
                                     <hr style="margin-bottom: 20px;">
                                     <h3 class="step">{{$itemDatas && $itemDatas[0] ? $itemDatas[0]['travel_game_name'] : ''}}</h3>
                                     <ul class="tl">

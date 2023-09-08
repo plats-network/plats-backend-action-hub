@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Log;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -41,15 +42,27 @@ class UserController extends Controller
             $user = Auth::user();
             $taskId = $request->input('task_id');
 
-            $checkEmail = $this->user
+            $oldUser = $this->user
                 ->whereNotIn('email', [$user->email])
                 ->whereEmail($request->input('email'))
-                ->exists();
+                ->first();
 
-            if ($checkEmail) {
-                notify()->error('Email này đã tồn tại');
+            if ($oldUser) {
+                $oldUser->update([
+                    'status' => USER_DELETED,
+                    'email' => Carbon::now()->timestamp . '-'.$oldUser->email,
+                    'deleted_at' => now(),
+                ]);
+                $user->update([
+                    'name' => $request->input('name'),
+                    'email' => $request->input('email')
+                ]);
+                notify()->success('Update email successfully');
             } else {
-                $user->update(['email' => $request->input('email')]);
+                $user->update([
+                    'name' => $request->input('name'),
+                    'email' => $request->input('email')
+                ]);
                 notify()->success('Update email successfully');
             }
 
