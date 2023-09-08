@@ -16,6 +16,31 @@ body.swal2-toast-shown .swal2-container.swal2-top-right {
   display: block;
 }
 
+// Zalo
+.zalo {
+  position: fixed;
+  bottom: 90px;
+  right: -28px;
+  z-index: 10000;
+
+  img {
+    width: 56%;
+  }
+
+  h5 {
+    background-color: red;
+    text-align: center;
+    margin-top: 4px;
+    width: 55px;
+    border-radius: 10px;
+    padding: 5px 0;
+    font-size: 13px;
+    color: #fff;
+  }
+}
+//
+
+
 .event-improgress {
   padding: 10px 15px;
   background-color: #fff;

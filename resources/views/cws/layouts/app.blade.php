@@ -56,6 +56,7 @@
                 </footer>
             </div>
         </div>
+
         @yield('js')
         @livewireScripts
 
