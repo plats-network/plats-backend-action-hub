@@ -21,7 +21,7 @@
         }
     </style>
 
-    <div class="modal-dialog" style="width: 380px; margin: 20% auto; height: 62%;">
+    <div class="modal-dialog" style="width: 380px; margin: 20% auto;">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" style="font-size: 23px; text-align: center;">Claim NFT To Complete Task</h5>

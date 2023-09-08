@@ -220,6 +220,7 @@ class Home extends Controller
             foreach($sessionDatas as $item) {
                 $groupSessions[$item['travel_game_id']][] = $item;
             }
+
             foreach($boothDatas as $item) {
                 $groupBooths[$item['travel_game_id']][] = $item;
             }
@@ -231,7 +232,7 @@ class Home extends Controller
 
         return view('web.events.job', [
             'groupBooths' => $groupBooths,
-            'groupSessions' => $groupSessions,
+            'groupSessions' => array_reverse($groupSessions),
             'task_id' => $task->id,
             'id' => $id,
             'url' => $sessionNFT && $sessionNFT['url'] ? $sessionNFT['url'] : null,

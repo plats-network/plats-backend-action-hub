@@ -277,7 +277,10 @@ class Job extends Controller
                 ->pluck('travel_game_id')
                 ->toArray();
 
-            $travelSessions = $this->travelGame->whereIn('id', $travelSessionIds)->get();
+            $travelSessions = $this->travelGame
+                ->whereIn('id', $travelSessionIds)
+                ->orderBy('created_at', 'desc')
+                ->get();
             $travelBooths = $this->travelGame->whereIn('id', $travelBootsIds)->get();
 
             // Start
