@@ -33,6 +33,7 @@ class HomeController extends Controller
                 $codes = $this->userCode
                     ->where('task_event_id', '9a131bf1-d4fa-4368-bb6b-c4e5f8d1da08')
                     ->where('travel_game_id', '9a13167f-4a75-4a46-aa5b-4fb8baea4b9b')
+                    ->whereType(0)
                     ->inRandomOrder()
                     ->pluck('number_code')
                     ->toArray();
@@ -65,6 +66,7 @@ class HomeController extends Controller
                 $codes = $this->userCode
                     ->where('task_event_id', '9a131bf1-d4fa-4368-bb6b-c4e5f8d1da08')
                     ->where('travel_game_id', '9a1316c2-56b7-4e70-816a-5a56c110ccac')
+                    ->whereType(0)
                     ->inRandomOrder()
                     ->pluck('number_code')
                     ->toArray();
@@ -101,9 +103,10 @@ class HomeController extends Controller
                     ->toArray();
 
                 $codes = $this->userCode
-                    ->where('task_event_id', '9a131bf1-d41a-4412-a075-599e97bf6dcb')
+                    ->where('task_event_id', '9a131bf1-db68-4f38-9232-8c6cb2039681')
                     ->where('travel_game_id', '9a131755-0cc0-4849-8391-256df36f36f4')
                     ->whereIn('user_id', $userIds)
+                    ->whereType(1)
                     ->inRandomOrder()
                     ->pluck('number_code')
                     ->toArray();
