@@ -44,6 +44,8 @@ class UserController extends Controller
     public function editEmail(Request $request)
     {
         try {
+            // controller@formidium.com
+
             $user = Auth::user();
             $taskId = $request->input('task_id');
             $email = Str::lower($request->input('email'));
@@ -51,16 +53,18 @@ class UserController extends Controller
 
             $oldUser = User::whereRaw('lower(email) = ? ', [$email])->first();
 
-            if ($email == $oldUser->email) {
+            if ($user->email == $oldUser->email) {
                 notify()->error('Not change');
                 return redirect()->route('job.getTravelGame', [
                     'task_id' => $taskId
                 ]);
             }
 
-            $ticket = $this->ticket->whereUserId($oldUser->id)
+            $ticket = $this->ticket
+                ->whereUserId($oldUser->id)
                 ->whereTaskId($taskId)
                 ->first();
+            // dd($ticket, $oldUser);
 
             if ($oldUser) {
                 $oldUser->update([
@@ -68,6 +72,7 @@ class UserController extends Controller
                     'email' => Carbon::now()->timestamp . '-'.$oldUser->email,
                     'deleted_at' => now(),
                 ]);
+
                 $user->update([
                     'name' => $name,
                     'email' => $email
@@ -82,12 +87,19 @@ class UserController extends Controller
             }
 
             if ($ticket) {
-                $vip = $ticket->is_vip ? true : false;
-                $ticket->update([
-                    'is_vip' => $vip,
-                    'user_id' => $user->id,
-                    'email' => $email
-                ]);
+                if ($ticket->is_vip) {
+                    $ticket->update([
+                        'is_vip' => true,
+                        'user_id' => $user->id,
+                        'email' => $email
+                    ]);
+                } else {
+                    $ticket->update([
+                        'is_vip' => false,
+                        'user_id' => $user->id,
+                        'email' => $email
+                    ]);
+                }
             }
         } catch (\Exception $e) {
             return redirect()->route('web.home');

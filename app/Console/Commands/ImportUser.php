@@ -34,14 +34,14 @@ class ImportUser extends Command
     {
         printf("Start Import\n");
         $users = (new FastExcel)->import(public_path().'/list_users.xlsx', function ($line) {
-            $email = $line['email'];
+            $email = Str::lower($line['email']);
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $user = User::where('email', $email)->first();
 
                 if ($user) {
                     $check = EventUserTicket::whereUserId($user->id)
-                        ->where('task_id', '9a131bf1-d41a-4412-a075-599e97bf6dcb')
+                        ->where('task_id', '9a0ad18b-de5b-4881-a323-f141420713ab')
                         ->exists();
 
                     if (!$check) {
@@ -49,7 +49,7 @@ class ImportUser extends Command
                             'name' => $user->name,
                             'phone' => $user->phone ?? '0934238'.random_int(100, 999),
                             'email' => $user->email,
-                            'task_id' => '9a131bf1-d41a-4412-a075-599e97bf6dcb',
+                            'task_id' => '9a0ad18b-de5b-4881-a323-f141420713ab',
                             'user_id' => $user->id,
                             'is_checkin' => true,
                             'hash_code' => Str::random(35),
@@ -72,7 +72,7 @@ class ImportUser extends Command
                             'name' => $user->name,
                             'phone' => $user->phone,
                             'email' => $email,
-                            'task_id' => '9a131bf1-d41a-4412-a075-599e97bf6dcb',
+                            'task_id' => '9a0ad18b-de5b-4881-a323-f141420713ab',
                             'user_id' => $user->id,
                             'is_checkin' => true,
                             'hash_code' => Str::random(35),

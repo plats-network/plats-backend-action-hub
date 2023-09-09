@@ -109,7 +109,7 @@ class User extends Controller
         try {
             $userIds = $this->eventUserTicket->select('user_id')->whereTaskId($id);
             if ($request->input('vip')) {
-                $vip = $request->input('vip') == 1 ? false : true;
+                $vip = $request->input('vip') == 1 ? 0 : 1;
                 $userIds = $userIds->where('is_vip', $vip);
             }
             $userIds = $userIds->pluck('user_id')->toArray();
