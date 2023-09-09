@@ -49,15 +49,17 @@ class UserController extends Controller
             $email = Str::lower($request->input('email'));
             $name = $request->input('name');
 
+            $oldUser = User::whereRaw('lower(email) = ? ', [$email])->first();
 
-            $oldUser = $this->user
-                ->whereNotIn('email', [$user->email])
-                ->whereEmail($email)
-                ->first();
+            if ($email == $oldUser->email) {
+                notify()->error('Not change');
+                return redirect()->route('job.getTravelGame', [
+                    'task_id' => $taskId
+                ]);
+            }
 
-            $uVip = $this->user->whereEmail($email)->first();
-            $ticket = $this->ticket->whereUserId($uVip->id)
-                ->whereTaskId($taskId)
+            $ticket = $this->ticket->whereUserId($oldUser->id)
+                ->whereTaskId('98c902d3-748f-4424-a8bc-7964567bfaa3')
                 ->first();
 
             if ($oldUser) {
@@ -81,7 +83,11 @@ class UserController extends Controller
 
             if ($ticket) {
                 $vip = $ticket->is_vip ? true : false;
-                $ticket->update(['is_vip' => $vip, 'user_id' => $user->id]);
+                $ticket->update([
+                    'is_vip' => $vip,
+                    'user_id' => $user->id,
+                    'email' => $email
+                ]);
             }
         } catch (\Exception $e) {
             return redirect()->route('web.home');
