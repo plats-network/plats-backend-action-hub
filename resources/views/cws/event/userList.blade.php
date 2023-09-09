@@ -29,6 +29,12 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr style="background-color: #3EA2FF; color: #fff;">
+                                <td colspan="2">
+                                    <strong>Total</strong>
+                                </td>
+                                <td colspan="3"><strong>{{count($userLists)}}</strong></td>
+                            </tr>
                             @forelse($userLists as $k => $user)
                                 <tr>
                                     <td>{{$k+1}}</td>
