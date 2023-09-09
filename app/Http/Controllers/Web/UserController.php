@@ -8,10 +8,15 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Log;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+use App\Models\Event\EventUserTicket;
 
 class UserController extends Controller
 {
-    public function __construct(private User $user)
+    public function __construct(
+        private User $user,
+        private EventUserTicket $ticket,
+    )
     {
         // code
     }
@@ -41,11 +46,17 @@ class UserController extends Controller
         try {
             $user = Auth::user();
             $taskId = $request->input('task_id');
+            $email = Str::lower($request->input('email'));
+            $name = $request->input('name');
 
             $oldUser = $this->user
                 ->whereNotIn('email', [$user->email])
-                ->whereEmail($request->input('email'))
+                ->whereEmail($email)
                 ->first();
+
+            // $ticket = $this->ticket->whereUserId($user->id)
+            //     ->whereTaskId($taskId)
+            //     ->first();
 
             if ($oldUser) {
                 $oldUser->update([
@@ -54,18 +65,21 @@ class UserController extends Controller
                     'deleted_at' => now(),
                 ]);
                 $user->update([
-                    'name' => $request->input('name'),
-                    'email' => $request->input('email')
+                    'name' => $name,
+                    'email' => $email
                 ]);
                 notify()->success('Update email successfully');
             } else {
                 $user->update([
-                    'name' => $request->input('name'),
-                    'email' => $request->input('email')
+                    'name' => $name,
+                    'email' => $email
                 ]);
                 notify()->success('Update email successfully');
             }
 
+            // if ($ticket) {
+            //     $ticket->update(['user_id' => $user->id]);
+            // }
         } catch (\Exception $e) {
             return redirect()->route('web.home');
         }

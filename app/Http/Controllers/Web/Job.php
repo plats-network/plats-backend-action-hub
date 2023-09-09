@@ -63,15 +63,26 @@ class Job extends Controller
             $code = $request->input('id');
             $event = $this->eventDetail->whereCode($code)->first();
 
-            if ($event->nft_link) {
-                session()->put('nft-'.$user->id, [
-                    'url' => $event->nft_link,
-                    'nft' => true
-                ]);
-            }
-
             $taskEvent = $this->taskEvent->find($event->task_event_id);
             $task = $this->task->find($taskEvent->task_id);
+
+            // Check NFT
+            $eventIds = $this->taskEvent->whereTaskId($task->id)->pluck('id')->toArray();
+            $countJobOne = $this->joinEvent
+                ->whereUserId($user->id)
+                ->whereIn('task_event_id', $eventIds)
+                ->count();
+
+            if ($countJobOne >= 1) {
+                if ($event->nft_link) {
+                    session()->put('nft-'.$user->id, [
+                        'url' => $event->nft_link,
+                        'nft' => true
+                    ]);
+                }
+            }
+
+            // End Check NFT
 
             if (!$event) {
                 notify()->error('Không tồn tại');;
