@@ -54,9 +54,9 @@ class UserController extends Controller
                 ->whereEmail($email)
                 ->first();
 
-            // $ticket = $this->ticket->whereUserId($user->id)
-            //     ->whereTaskId($taskId)
-            //     ->first();
+            $ticket = $this->ticket->whereUserId($user->id)
+                ->whereTaskId($taskId)
+                ->first();
 
             if ($oldUser) {
                 $oldUser->update([
@@ -77,9 +77,9 @@ class UserController extends Controller
                 notify()->success('Update email successfully');
             }
 
-            // if ($ticket) {
-            //     $ticket->update(['user_id' => $user->id]);
-            // }
+            if ($ticket) {
+                $ticket->update(['is_vip' => $ticket->is_vip]);
+            }
         } catch (\Exception $e) {
             return redirect()->route('web.home');
         }
