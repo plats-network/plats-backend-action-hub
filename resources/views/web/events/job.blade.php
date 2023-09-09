@@ -58,9 +58,9 @@
                         <p class="desc-prize">
                             <strong style="color: red;">➤ Không nên dùng Zalo để quét QR code, nên quét từ Camera</strong><br>
                             @if ($type == 0)
-                                ➤ Quét QR code sau mỗi phiên thảo luận tại hội trường chính và hội trường builder, quét 3 phiên thảo luận nhận được 1 Mã số quay thưởng (MSQT).<br>
+                                ➤ Quét QR code sau mỗi phiên thảo luận tại hội trường chính và hội trường builder, quét 2 phiên thảo luận nhận được 1 Mã số quay thưởng (MSQT).<br>
                                 ➤ Hãy thu thập càng nhiều MSQT cơ hội trúng thưởng càng cao. <br>
-                                (Scan 3 Session QR Code to receive 1 Lucky Code).
+                                (Scan 2 Session QR Code to receive 1 Lucky Code).
                             @else
                                 ➤ Quét QR Code tại các gian hàng (booths), quét 5 booths nhận được 1 Mã số quay thưởng (MSQT). <br>
                                 ➤ Riêng với Booth VIP NEAR, GFI, VBI thì chỉ cần quét 1 booth nhận được 1 MSQT. <br>

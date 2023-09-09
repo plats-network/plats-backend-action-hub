@@ -105,12 +105,12 @@
                                 <h3 class="text-center">{{$session->name}}</h3>
                                 <p><strong>Mã số quay thưởng (Lucky Code):</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
                                 <p>
-                                    <strong>Missions (nhiệm vụ):</strong>
+                                    <strong>Nhiệm vụ (Missions):</strong>
                                     <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 0])}}#day{{$k+1}}">Click Here!</a>
                                 </p>
                                 <p><strong>Thời gian quay thưởng (Time):</strong> {{dateFormat($session->prize_at)}}</p>
                                 <p><strong>Địa điểm (Position):</strong> Hội trường chính (Main Stage)</p>
-                                <p><strong>Reward (phần thưởng):</strong></p>
+                                <p><strong>Phần thưởng (Reward):</strong></p>
                                 <p style="padding-left: 15px; line-height: 20px;">
                                     @foreach($sTests as $item)
                                         @if($item)
@@ -145,7 +145,7 @@
                                 </p>
                                 <p><strong>Thời gian quay thưởng (Time):</strong> {{dateFormat($booth->prize_at)}}</p>
                                 <p><strong>Địa điểm (Position):</strong> Hội trường chính (Main Stage)</p>
-                                <p><strong>Reward (phần thưởng):</strong></p>
+                                <p><strong>Phần thưởng (Reward ):</strong></p>
                                 <p style="padding-left: 15px; line-height: 20px;">
                                     @foreach($aTests as $item)
                                         @if($item)
