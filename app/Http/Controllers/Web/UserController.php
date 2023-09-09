@@ -49,12 +49,14 @@ class UserController extends Controller
             $email = Str::lower($request->input('email'));
             $name = $request->input('name');
 
+
             $oldUser = $this->user
                 ->whereNotIn('email', [$user->email])
                 ->whereEmail($email)
                 ->first();
 
-            $ticket = $this->ticket->whereUserId($user->id)
+            $uVip = $this->user->whereEmail($email)->first();
+            $ticket = $this->ticket->whereUserId($uVip->id)
                 ->whereTaskId($taskId)
                 ->first();
 
@@ -78,7 +80,8 @@ class UserController extends Controller
             }
 
             if ($ticket) {
-                $ticket->update(['is_vip' => $ticket->is_vip]);
+                $vip = $ticket->is_vip ? true : false;
+                $ticket->update(['is_vip' => $vip, 'user_id' => $user->id]);
             }
         } catch (\Exception $e) {
             return redirect()->route('web.home');
