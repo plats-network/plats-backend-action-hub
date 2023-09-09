@@ -59,7 +59,7 @@ class UserController extends Controller
             }
 
             $ticket = $this->ticket->whereUserId($oldUser->id)
-                ->whereTaskId('98c902d3-748f-4424-a8bc-7964567bfaa3')
+                ->whereTaskId($taskId)
                 ->first();
 
             if ($oldUser) {
