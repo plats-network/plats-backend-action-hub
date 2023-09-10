@@ -44,14 +44,21 @@ class UserController extends Controller
     public function editEmail(Request $request)
     {
         try {
-            // controller@formidium.com
-
             $user = Auth::user();
             $taskId = $request->input('task_id');
             $email = Str::lower($request->input('email'));
             $name = $request->input('name');
 
             $oldUser = User::whereRaw('lower(email) = ? ', [$email])->first();
+            $oldId = optional($oldUser)->id;
+            $ticket = $this->ticket
+                ->whereUserId($oldId)
+                ->whereTaskId($taskId)
+                ->first();
+            $tt = $this->ticket
+                ->whereUserId(optional($user)->id)
+                ->whereTaskId($taskId)
+                ->first();
 
             if (Str::lower($user->email) == $email) {
                 notify()->error('Duplicate current email account');
@@ -61,15 +68,14 @@ class UserController extends Controller
                 ]);
             }
 
-            // dd($oldUser);
-
             if ($oldUser) {
-                $oldUser->update(['email' => Carbon::now()->timestamp.'_'.$email]);
                 notify()->success('Update email successfully');
+                $oldUser->update(['email' => 'delete_'.Carbon::now()->timestamp.$oldUser->email]);
+                $user->update(['name' => $name, 'email' => $email]);
             } else {
                 $user->update([
                     'name' => $name,
-                    'email' => $email
+                    'email' => (string)$email
                 ]);
                 notify()->success('Update email successfully');
             }
@@ -77,12 +83,6 @@ class UserController extends Controller
             if (session()->get('u-'.$user->id)) {
                 session()->forget('u-'.$user->id);
             }
-            $user->update(['name' => $name,'email' => $email]);
-
-            $ticket = $this->ticket
-                ->whereUserId(optional($oldUser)->id)
-                ->whereTaskId($taskId)
-                ->first();
             
             if ($ticket) {
                 $tt = $this->ticket
@@ -90,7 +90,7 @@ class UserController extends Controller
                     ->whereTaskId($taskId)
                     ->first();
                 if ($tt) {
-                    $tt->update(['is_vip' => $ticket->is_vip, 'email' => $email]);
+                    $tt->update(['is_vip' => $ticket->is_vip]);
                 }
             }
         } catch (\Exception $e) {
