@@ -61,24 +61,10 @@ class UserController extends Controller
                 ]);
             }
 
-            $ticket = $this->ticket
-                ->whereUserId(optional($oldUser)->id)
-                ->whereTaskId($taskId)
-                ->first();
-
-            // dd($oldUser, $taskId, $ticket);
+            // dd($oldUser);
 
             if ($oldUser) {
-                $oldUser->update([
-                    'status' => USER_DELETED,
-                    'email' => Carbon::now()->timestamp . '-'.$oldUser->email,
-                    'deleted_at' => now(),
-                ]);
-
-                $user->update([
-                    'name' => $name,
-                    'email' => $email
-                ]);
+                $oldUser->update(['email' => Carbon::now()->timestamp.'_'.$email]);
                 notify()->success('Update email successfully');
             } else {
                 $user->update([
@@ -88,18 +74,25 @@ class UserController extends Controller
                 notify()->success('Update email successfully');
             }
 
+            if (session()->get('u-'.$user->id)) {
+                session()->forget('u-'.$user->id);
+            }
+            $user->update(['name' => $name,'email' => $email]);
+
+            $ticket = $this->ticket
+                ->whereUserId(optional($oldUser)->id)
+                ->whereTaskId($taskId)
+                ->first();
             
             if ($ticket) {
                 if ($ticket->is_vip) {
                     $ticket->update([
                         'is_vip' => true,
-                        'user_id' => $user->id,
                         'email' => $email
                     ]);
                 } else {
                     $ticket->update([
                         'is_vip' => false,
-                        'user_id' => $user->id,
                         'email' => $email
                     ]);
                 }

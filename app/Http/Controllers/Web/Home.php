@@ -54,6 +54,30 @@ class Home extends Controller
         ]);
     }
 
+    public function isResult(Request $request, $id)
+    {
+        try {
+            if (env('APP_ENV') == 'production') {
+                $id = '9a131bf1-d41a-4412-a075-599e97bf6dcb';
+            } else {
+                $id = '9a0ad18b-de5b-4881-a323-f141420713ab';
+            }
+            $user = Auth::user();
+
+            if ($user && Str::contains($user->email, 'guest')) {
+                session()->put('u-'.$user->id, 1);
+            } 
+        } catch (\Exception $e) {
+            return redirect()->route('job.getTravelGame', [
+                'task_id' => $id
+            ]);
+        }
+
+        return redirect()->route('job.getTravelGame', [
+            'task_id' => $id
+        ]);
+    }
+
     public function show(Request $request, $id)
     {
         try {

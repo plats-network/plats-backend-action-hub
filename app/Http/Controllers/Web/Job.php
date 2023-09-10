@@ -299,8 +299,13 @@ class Job extends Controller
             $travelBooths = $this->travelGame->whereIn('id', $travelBootsIds)->get();
 
             // Start
-            $userId = Auth::user()->id;
-            $sessionNFT = session()->get('nft-'.$userId);
+            $user = Auth::user();
+            $sessionNFT = session()->get('nft-'.$user->id);
+            $flag = session()->get('u-'.$user->id);
+            $flagU = 0;
+            if ($flag == 1 && Str::contains($user->email, 'guest')) {
+                $flagU = 1;
+            }
 
             // $this->taskService->genCodeByUser($userId, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
         } catch (\Exception $e) {
@@ -314,7 +319,8 @@ class Job extends Controller
             'travelSessions' => $travelSessions,
             'travelBooths' => $travelBooths,
             'url' => $sessionNFT && $sessionNFT['url'] ? $sessionNFT['url'] : null,
-            'nft' => $sessionNFT && $sessionNFT['nft'] ? 1 : 0
+            'nft' => $sessionNFT && $sessionNFT['nft'] ? 1 : 0,
+            'flagU' => $flagU
         ]);
     }
 

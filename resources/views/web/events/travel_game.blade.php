@@ -39,7 +39,7 @@
           z-index: 99999;
         }
     </style>
-    <section class="travel">
+    <section class="travel" id="flagU" data-flag="{{$flagU}}">
         <div class="container">
             <div class="travel-content">
                 <div class="info">
