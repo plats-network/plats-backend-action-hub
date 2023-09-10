@@ -85,16 +85,12 @@ class UserController extends Controller
                 ->first();
             
             if ($ticket) {
-                if ($ticket->is_vip) {
-                    $ticket->update([
-                        'is_vip' => true,
-                        'email' => $email
-                    ]);
-                } else {
-                    $ticket->update([
-                        'is_vip' => false,
-                        'email' => $email
-                    ]);
+                $tt = $this->ticket
+                    ->whereUserId(optional($user)->id)
+                    ->whereTaskId($taskId)
+                    ->first();
+                if ($tt) {
+                    $tt->update(['is_vip' => $ticket->is_vip, 'email' => $email]);
                 }
             }
         } catch (\Exception $e) {
