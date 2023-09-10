@@ -61,6 +61,13 @@ class UserController extends Controller
                 ]);
             }
 
+            $ticket = $this->ticket
+                ->whereUserId(optional($oldUser)->id)
+                ->whereTaskId($taskId)
+                ->first();
+
+            // dd($oldUser, $taskId, $ticket);
+
             if ($oldUser) {
                 $oldUser->update([
                     'status' => USER_DELETED,
@@ -81,10 +88,7 @@ class UserController extends Controller
                 notify()->success('Update email successfully');
             }
 
-            $ticket = $this->ticket
-                ->whereUserId($oldUser->id)
-                ->whereTaskId($taskId)
-                ->first();
+            
             if ($ticket) {
                 if ($ticket->is_vip) {
                     $ticket->update([
