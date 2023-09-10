@@ -53,18 +53,13 @@ class UserController extends Controller
 
             $oldUser = User::whereRaw('lower(email) = ? ', [$email])->first();
 
-            if ($user->email == $oldUser->email) {
-                notify()->error('Not change');
+            if (Str::lower($user->email) == $email) {
+                notify()->error('Duplicate current email account');
+
                 return redirect()->route('job.getTravelGame', [
                     'task_id' => $taskId
                 ]);
             }
-
-            $ticket = $this->ticket
-                ->whereUserId($oldUser->id)
-                ->whereTaskId($taskId)
-                ->first();
-            // dd($ticket, $oldUser);
 
             if ($oldUser) {
                 $oldUser->update([
@@ -86,6 +81,10 @@ class UserController extends Controller
                 notify()->success('Update email successfully');
             }
 
+            $ticket = $this->ticket
+                ->whereUserId($oldUser->id)
+                ->whereTaskId($taskId)
+                ->first();
             if ($ticket) {
                 if ($ticket->is_vip) {
                     $ticket->update([
@@ -102,7 +101,10 @@ class UserController extends Controller
                 }
             }
         } catch (\Exception $e) {
-            return redirect()->route('web.home');
+            notify()->error('Lỗi: '.$e->getMessage());
+            return redirect()->route('job.getTravelGame', [
+                'task_id' => $taskId
+            ]);
         }
 
         return redirect()->route('job.getTravelGame', [
