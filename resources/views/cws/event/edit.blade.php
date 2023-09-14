@@ -53,6 +53,7 @@
                     <div class="card-body">
                         <form method="POST"
                             id="post_form"
+                            data-qr-logo="{{url('/')}}/events/qr_logo.svg"
                             action="{{$is_update ? route('cws.eventUpdate', ['id' => $event->id]) : route('cws.eventStore')}}">
                             @csrf
                             <input type="hidden" name="id" value="{{ $event->id }}">
@@ -226,6 +227,8 @@
         </div>
     </div>
 
+    {{-- <div id="canvas"></div> --}}
+
     {{--Modal Loading--}}
     <div class="modal fade" id="modalLoading" tabindex="-1" role="dialog" aria-labelledby="modal-default"
          aria-hidden="true">
@@ -265,6 +268,8 @@
     <script src="https://uicdn.toast.com/editor/latest/i18n/ja-jp.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
+    <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+
     <script>
         var _token = $('meta[name="csrf-token"]').attr('content');
         var spinText = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ';
@@ -275,6 +280,29 @@
         var contentEditor = document.getElementById('description').value;
         var contentEditor2 = document.getElementById('sessions-description').value;
         var contentEditor3 = document.getElementById('booths-description').value;
+
+        // const qrCode = new QRCodeStyling({
+        //     width: 300,
+        //     height: 300,
+        //     margin: 10,
+        //     type: "png",
+        //     data: "https://event.plats.network",
+        //     image: "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
+        //     dotsOptions: {
+        //         color: "#333333",
+        //         type: "extra-rounded"
+        //     },
+        //     backgroundOptions: {
+        //         color: "#e9ebee",
+        //     },
+        //     imageOptions: {
+        //         crossOrigin: "anonymous",
+        //         margin: 10
+        //     }
+        // });
+
+        // qrCode.append(document.getElementById("canvas"));
+        // qrCode.download({ name: "qr", extension: "png" });
 
         const editor = new toastui.Editor({
             el: document.querySelector('#editor'),
@@ -546,61 +574,114 @@
             // });
         });
 
+        var qr_logo = $('#post_form').data('qr-logo');
         if ($('#list-booth-id').length > 0) {
             var boothIds = $('#list-booth-id').data('b-ids');
-
             if (boothIds.length > 0) {
-                boothIds.forEach(function(item) {
-                    var url = $("#bo-"+item).data('bo-url');
-                    new QRCode(document.getElementById("bo-"+item), url);
-                    new QRCode("dbo-"+item, {
-                        text: url,
-                        width: 300,
-                        height: 300
-                    });
+                boothIds.forEach(function(ii) {
+                    var url = $("#bo-"+ii).data('bo-url'),
+                        op = optBooth(url, 60, 60, 0.3, qr_logo, 1),
+                        sCode = new QRCodeStyling(op);
+                    sCode.append(document.getElementById("bo-"+ii));
+
+                    // qrCode.download({ name: "qr", extension: "png" });
+                    // new QRCode(document.getElementById("bo-"+item), url);
+                    // new QRCode("dbo-"+item, {
+                    //     text: url,
+                    //     width: 300,
+                    //     height: 300
+                    // });
                 });
             }
             $('.bo-donw').on('click', function(e) {
-                var id = $(this).data('id')
-                    num = $(this).data('num'),
-                    name = $(this).data('name');
-                let dataUrl = document.querySelector('#dbo-'+id).querySelector('img').src;
-                downloadURI(dataUrl, name+'-'+num+'.png');
+                var url = $(this).data('url'),
+                    name = $(this).data('name'),
+                    op = optBooth(url, 400, 400, 20, qr_logo, 10),
+                    dbCode = new QRCodeStyling(op);
+                dbCode.download({ name: name, extension: "png" });
             });
         }
 
         if ($('#list-session-id').length > 0) {
             var sessionIds = $('#list-session-id').data('s-ids');
             if (sessionIds.length > 0) {
-                sessionIds.forEach(function(item) {
-                    var url = $("#se-"+item).data('se-url');
-                    new QRCode(document.getElementById("se-"+item), url);
-                    new QRCode("dse-"+item, {
-                        text: url,
-                        width: 300,
-                        height: 300
-                    });
+                sessionIds.forEach(function(kk) {
+                    var url = $("#se-"+kk).data('se-url'),
+                        op = options(url, 60, 60, 0.3, qr_logo, 1),
+                        sCode = new QRCodeStyling(op);
+
+                    sCode.append(document.getElementById("se-"+kk));
                 });
             }
 
             $('.se-donw').on('click', function(e) {
-                var id = $(this).data('id')
-                    num = $(this).data('num'),
-                    name = $(this).data('name');
-                let dataUrl = document.querySelector('#dse-'+id).querySelector('img').src;
-                downloadURI(dataUrl, name+'-'+num+'.png');
+                var url = $(this).data('url'),
+                    name = $(this).data('name'),
+                    op = options(url, 400, 400, 20, qr_logo, 10),
+                    dsCode = new QRCodeStyling(op);
+                dsCode.download({ name: name, extension: "png" });
+
+                // var id = $(this).data('id')
+                //     num = $(this).data('num'),
+                //     name = $(this).data('name');
+                // let dataUrl = document.querySelector('#dse-'+id).querySelector('img').src;
+                // downloadURI(dataUrl, name+'-'+num+'.png');
             })
         }
 
-        function downloadURI(uri, name) {
-          var link = document.createElement("a");
-          link.download = name;
-          link.href = uri;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          delete link;
-        };
+        function options(url, w, h, m, logo, im) {
+            return {
+                width: w ? w : 300,
+                height: h ? h : 300,
+                margin: m ? m : 10,
+                type: "png",
+                data: url,
+                image: logo,
+                dotsOptions: {
+                    color: "#000000",
+                    type: "rounded"
+                },
+                backgroundOptions: {
+                    color: "#e9ebee",
+                },
+                imageOptions: {
+                    crossOrigin: "anonymous",
+                    margin: im ? im : 5
+                }
+            };
+        }
+
+        function optBooth(url, w, h, m, logo, im) {
+            return {
+                width: w ? w : 300,
+                height: h ? h : 300,
+                margin: m ? m : 10,
+                type: "png",
+                data: url,
+                image: logo,
+                dotsOptions: {
+                    color: "#000000",
+                    type: "rounded"
+                },
+                backgroundOptions: {
+                    color: "#e9ebee",
+                },
+                imageOptions: {
+                    crossOrigin: "anonymous",
+                    margin: im ? im : 5
+                }
+            };
+        }
+
+        // function downloadURI(uri, name) {
+        //   var link = document.createElement("a");
+        //   link.download = name;
+        //   link.href = uri;
+        //   document.body.appendChild(link);
+        //   link.click();
+        //   document.body.removeChild(link);
+        //   delete link;
+        // };
     </script>
 
     <script>

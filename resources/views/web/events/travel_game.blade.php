@@ -60,32 +60,102 @@
                 </div>
                 <div class="event-info">
                     <h3 style="padding-bottom: 0;">{{$event->name}}</h3>
-                    {{-- <img src="{{$event->banner_url}}" alt="{{$event->name}}"> --}}
-                    <div class="text-center" style="margin: 5px auto;">
+                    <img src="{{$event->banner_url}}" alt="{{$event->name}}">
+                    {{-- <div class="text-center" style="margin: 5px auto;">
                         <img style="width: 70%;" src="{{url('/')}}/events/prize.png" alt="{{$event->name}}">
-                    </div>
+                    </div> --}}
                     <div class="aaa mt-2" style="margin-top: 15px; line-height: 20px;">
-                        Tham gia các Games tại sự kiện với tổng giải thưởng lên tới 300 triệu.
+                        Tham gia các Games tại sự kiện với tổng giải thưởng có giá trị.
                         <p class="pp" style="padding-top: 10px; color: red!important;">➤ Không nên dùng Zalo để quét QR code, nên quét từ Camera</p>
-                        <div id="seeMore1" style="display: none;">
+                        {{-- <div id="seeMore1" style="display: none;">
                             <p class="pp">➤ Có 3 game là "Travel Game", "Session game day 1" và "Session game day 2" độc lập nhau. Bạn có thể tham gia 1 hoặc cả 3 game.</p>
                             <p class="pp">➤ Thu thập Mã số quay thưởng (MSQT) để tham gia vòng quay may mắn.</p>
-                            {{-- <p class="pp">➤ Bạn có thể dùng bất kỳ nền tảng nào như Camera hay Zalo... để quét QR code, nhưng cần dùng  1 nền tảng duy nhất  để quét trong suốt sự kiện. Ví dụ nếu đã dùng Zalo để quét lần đầu thì các lần sau cũng dùng Zalo.</p> --}}
                             <p class="pp">➤ Bạn cần nhập Email (phía trên của màn hình) để tham gia quay thưởng. Vì quyền lợi của bạn, Email này phải  trùng với Email bạn đã đăng ký vé tham gia sự kiện.</p>
                             <p class="pp">➤ Riêng với Travel Game sau khi quét mã QR tại bất kỳ Booth nào sẽ hiển thị 1 của sổ thông báo cần Claim bộ NFT ở các Booth để hoàn thành nhiệm vụ, người tham gia cần đăng nhập bằng các tài khoản mạng xã hội như Facebook, Google hoặc Apple Icloud để được tặng ví lưu trữ NFT và Claim NFT. Việc đăng nhập này chỉ thực hiện 1 lần duy nhất.</p>
                             <p class="pp" style="padding-bottom: 10px;">➤ Tại giờ quay thưởng vào cuối ngày, nếu bạn trúng thưởng mà không có mặt sẽ bị loại và giành cơ hội cho người khác.</p>
                             Chi tiết từng Game ở bên dưới.
-                        </div>
+                        </div> --}}
                         <p class="text-center" id="see1" style="cursor: pointer;">Read more</p>
                     </div>
                 </div>
 
-                <ul class="nav nav-tabs">
-                  <li><a data-toggle="tab" href="#sesion">Sessions Game</a></li>
-                  <li><a data-toggle="tab" href="#booth">Travel Game</a></li>
+                <ul class="nav" style="border-bottom: 1px solid #dee2e6;">
+                  <li><a href="#" style="background-color: #3EA2FF; color: #fff;">Sessions Game</a></li>
+                  {{-- <li><a data-toggle="tab" href="#booth">Travel Game</a></li> --}}
                 </ul>
+                @foreach($travelSessions as $k => $session)
+                    @php
+                        $codes = $userCode->where('user_id', $userId)
+                            ->where('travel_game_id', $session->id)
+                            ->where('task_event_id', $session_id)
+                            ->where('type', 0)
+                            ->pluck('number_code')
+                            ->implode(',');
+                        $sTests = [];
+                        if ($session->note) {
+                            $sTests = explode('-', $session->note);
+                        }
+                    @endphp
 
-                <div class="tab-content">
+                    <div class="item" style="border-bottom: 0;">
+                        <h3 class="text-center d-none" style="display: none;">{{$session->name}}</h3>
+                        <p><strong>Mã số quay thưởng (Lucky Code):</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
+                        <p>
+                            <strong>Nhiệm vụ (Missions):</strong>
+                            <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 0])}}#day{{$k+1}}">Click Here!</a>
+                        </p>
+                        <p><strong>Thời gian quay thưởng (Time):</strong> {{dateFormat($session->prize_at)}}</p>
+                        <p><strong>Địa điểm (Position):</strong> Hội trường chính (Main Stage)</p>
+                        <p><strong>Phần thưởng (Reward):</strong></p>
+                        <p style="padding-left: 15px; line-height: 20px;">
+                            @foreach($sTests as $item)
+                                @if($item)
+                                    {!! '➤ '.$item.'<br>' !!}
+                                @endif
+                            @endforeach
+                        </p>
+                    </div>
+                @endforeach
+
+                <ul class="nav" style="border-bottom: 1px solid #dee2e6; margin-top: 20px;">
+                  {{-- <li><a data-toggle="tab" href="#sesion">Sessions Game</a></li> --}}
+                  <li><a href="#" style="background-color: #3EA2FF; color: #fff;">Travel Game</a></li>
+                </ul>
+                @foreach($travelBooths as $booth)
+                    @php
+                        $codeBooths = $userCode->where('user_id', $userId)
+                            ->where('travel_game_id', $booth->id)
+                            ->where('task_event_id', $booth_id)
+                            ->where('type', 1)
+                            ->pluck('number_code')
+                            ->implode(',');
+                        $aTests = [];
+                        if ($booth->note) {
+                            $aTests = explode('-', $booth->note);
+                        }
+                    @endphp
+                    <div class="item" style="border-bottom: 0;">
+                        <h3 class="text-center" style="display: none;">{{$booth->name}}</h3>
+                        <p><strong>Mã số quay thưởng (Lucky Code):</strong> <span class="fs-25">{{$codeBooths ? $codeBooths : '---'}}</span></p>
+                        <p>
+                            <strong>Nhiệm vụ (Missions):</strong>
+                            <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 1])}}">Click Here!</a>
+                        </p>
+                        <p><strong>Thời gian quay thưởng (Time):</strong> {{dateFormat($booth->prize_at)}}</p>
+                        <p><strong>Địa điểm (Position):</strong> Hội trường chính (Main Stage)</p>
+                        <p><strong>Phần thưởng (Reward ):</strong></p>
+                        <p style="padding-left: 15px; line-height: 20px;">
+                            @foreach($aTests as $item)
+                                @if($item)
+                                    {!! '➤ '.$item.'<br>' !!}
+                                @endif
+                            @endforeach
+                        </p>
+                    </div>
+                @endforeach
+
+
+                {{-- <div class="tab-content">
                     <div id="sesion" class="tab-pane fade in active">
                         @foreach($travelSessions as $k => $session)
                             @php
@@ -156,7 +226,7 @@
                             </div>
                         @endforeach
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="event-info" style="border-top: 0; margin-top: 15px;">
                     <div class="aaa mt-2">
@@ -180,6 +250,11 @@
     @include('web.events._modal_nft', [
         'nft' => $nft,
         'url' => $url
+    ])
+
+    @include('web.events._info', [
+        'task_id' => $event->id,
+        'user' => $user
     ])
 
     <div id="infoEditEmail" class="modal fade" data-backdrop="static" data-keyboard="false">
@@ -206,6 +281,7 @@
                     <form id="infoForm" method="POST" action="{{route('web.editEmail')}}">
                         @csrf
                         <input type="hidden" name="task_id" value="{{$event->id}}">
+                        <input type="hidden" name="user_type" value="1">
                         <div class="row" style="display: block;">
                             <div class="col-md-12">
                                 <label class="form-label">Name <span class="text-danger">*</span></label>

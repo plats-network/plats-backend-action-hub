@@ -3,11 +3,11 @@
         <x-form::label :label="$label" :class="$labelCol()"/>
     @endif
 
-@if ($isHorizontal())
-    <div class="{{ $inputCol() }}">
-@endif
-    {!! $slot !!}
-@if ($isHorizontal())
-    </div>
-@endif
+    @if ($isHorizontal())
+        <div class="{{ $inputCol() }}">
+    @endif
+        {!! $slot !!}
+    @if ($isHorizontal())
+        </div>
+    @endif
 </div>

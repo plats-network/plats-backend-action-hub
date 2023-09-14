@@ -142,9 +142,14 @@
                                 </td> 
                                <td width="20%">{!!$booth->description!!}</td> 
                                <td width="15%" data-url="{{$qr}}" class="text-center">
-                                    <p class="qr" id="bo-{{$booth->id}}" data-bo-url="{{$qr}}"></p>
-                                    <div class="d-none" style="width: 300px; height: 300px;" id="dbo-{{$booth->id}}" data-bo-url="{{$qr}}"></div>
-                                    <a class="bo-donw" data-id="{{$booth->id}}" data-num="{{$k+1}}" data-name="booth">Download</a>
+                                    <div class="qr" id="bo-{{$booth->id}}" data-bo-url="{{$qr}}"></div>
+                                    {{-- <p class="qr" id="bo-{{$booth->id}}" data-bo-url="{{$qr}}"></p> --}}
+                                    {{-- <div class="d-none" style="width: 300px; height: 300px;" id="dbo-{{$booth->id}}" data-bo-url="{{$qr}}"></div> --}}
+                                    <a
+                                        class="bo-donw"
+                                        data-id="{{$booth->id}}"
+                                        data-name="booth-{{$k+1}}-{{Str::slug($booth->name, '-')}}"
+                                        data-url="{{$qr}}">Download</a>
                                </td> 
                                <td width="10%">{{totalUserJob($booth->id)}}</td>
                                <td>
@@ -155,8 +160,6 @@
                                         @if($booth->is_required) checked @endif
                                     >
                                     <label class="jobVip"
-                                        {{-- data-id="{{$booth->is_required}}" --}}
-                                        {{-- data-detail-id="{{$booths->id}}" --}}
                                         for="b_vip_{{ $k+1 }}"
                                         data-on-label="On"
                                         data-url="{{route('api.upEventVip', ['id' => $booth->id])}}"

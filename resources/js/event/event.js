@@ -48,7 +48,7 @@ $(document).ready(function() {
   if ($('#flagU').length > 0) {
     var flag = $('#flagU').data('flag');
     if (flag == 1) {
-      $('#infoEditEmail').modal();
+      $('#infoUser').modal();
     }
   }
 

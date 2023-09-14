@@ -41,23 +41,23 @@ class Job extends Controller
     }
 
     // GET
-    // Url: http://event.plats.test/events/code?type=event&id=tuiLOSvRxDUZk2cNTMu5LoA8s4VXxoO4fXe
+    // Url: http://event.plats.test/events/code?type=event&id=n6FCNVMw
     public function index(Request $request)
     {
         try {
-            if (Auth::guest()) {
-                $time = Carbon::now()->timestamp;
-                $user = User::create([
-                    'name' => 'Guest-'.$time,
-                    'email' => 'guest-'.$time.'@gmail.com',
-                    'password' => '12345678a@#',
-                    'role' => GUEST_ROLE,
-                    'confirmation_code' => null,
-                    'email_verified_at' => now()
-                ]);
+            // if (Auth::guest()) {
+            //     $time = Carbon::now()->timestamp;
+            //     $user = User::create([
+            //         'name' => 'Guest-'.$time,
+            //         'email' => 'guest-'.$time.'@gmail.com',
+            //         'password' => '12345678a@#',
+            //         'role' => GUEST_ROLE,
+            //         'confirmation_code' => null,
+            //         'email_verified_at' => now()
+            //     ]);
 
-                Auth::login($user, true);
-            }
+            //     Auth::login($user, true);
+            // }
 
             $user = Auth::user();
             $code = $request->input('id');
@@ -66,22 +66,31 @@ class Job extends Controller
             $taskEvent = $this->taskEvent->find($event->task_event_id);
             $task = $this->task->find($taskEvent->task_id);
 
-            // Check NFT
-            $eventIds = $this->taskEvent->whereTaskId($task->id)->pluck('id')->toArray();
-            $countJobOne = $this->joinEvent
-                ->whereUserId($user->id)
-                ->whereIn('task_event_id', $eventIds)
-                ->count();
+            if (Auth::guest()) {
+                session()->put('guest', [
+                    'id' => $code,
+                    'type' => 'job'
+                ]);
+                notify()->error('Vui lòng login để hoàn thành.');
 
-            if ($countJobOne >= 1) {
-                if ($event->nft_link) {
-                    session()->put('nft-'.$user->id, [
-                        'url' => $event->nft_link,
-                        'nft' => true
-                    ]);
-                }
+                return redirect()->route('web.formLoginGuest');
             }
 
+            // Check NFT
+            // $eventIds = $this->taskEvent->whereTaskId($task->id)->pluck('id')->toArray();
+            // $countJobOne = $this->joinEvent
+            //     ->whereUserId($user->id)
+            //     ->whereIn('task_event_id', $eventIds)
+            //     ->count();
+
+            // if ($countJobOne >= 1) {
+            //     if ($event->nft_link) {
+            //         session()->put('nft-'.$user->id, [
+            //             'url' => $event->nft_link,
+            //             'nft' => true
+            //         ]);
+            //     }
+            // }
             // End Check NFT
 
             if (!$event) {
@@ -113,11 +122,11 @@ class Job extends Controller
                 }
 
                 if ($event && $event->status == false) {
-                    notify()->error('Job locked!');
+                    notify()->error('QrCode locked!');
 
                     return redirect()->route('job.getJob', [
                         'code' => $event->code
-                    ])->with('error', "Job locked!");
+                    ]);
                 } else {
                     notify()->success('Scan QR code success');
                     return redirect()->route('job.getJob', [
@@ -229,9 +238,9 @@ class Job extends Controller
             }
 
             if ($detail->is_question == false) {
-                // notify()->success('Scan QR code success');
-
                 if ($countJobOne <= 1) {
+                    session()->put('u-'.$user->id, 1);
+
                     return redirect()->route('job.getTravelGame', [
                         'task_id' => $taskId
                     ]);
@@ -273,6 +282,17 @@ class Job extends Controller
     {
         try {
             $event = $this->task->find($taskId);
+            $user = Auth::user();
+
+            $eventIds = $this->taskEvent->whereTaskId($taskId)->pluck('id')->toArray();
+            $countJobOne = $this->joinEvent
+                ->whereUserId($user->id)
+                ->whereIn('task_event_id', $eventIds)
+                ->count();
+
+            if ($countJobOne <= 1 && empty($user->age)) {
+                session()->put('u-'.$user->id, 1);
+            }
 
             $travelSessions = [];
             $session = $this->taskEvent->whereTaskId($taskId)->whereType(TASK_SESSION)->first();
@@ -299,11 +319,11 @@ class Job extends Controller
             $travelBooths = $this->travelGame->whereIn('id', $travelBootsIds)->get();
 
             // Start
-            $user = Auth::user();
+            // $user = Auth::user();
             $sessionNFT = session()->get('nft-'.$user->id);
             $flag = session()->get('u-'.$user->id);
             $flagU = 0;
-            if ($flag == 1 && Str::contains($user->email, 'guest')) {
+            if ($flag == 1) {
                 $flagU = 1;
             }
 
@@ -314,6 +334,7 @@ class Job extends Controller
 
         return view('web.events.travel_game', [
             'event' => $event,
+            'user' => $user,
             'session_id' => $session->id,
             'booth_id' => $booth->id,
             'travelSessions' => $travelSessions,

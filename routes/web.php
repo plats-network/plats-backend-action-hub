@@ -68,6 +68,7 @@ Route::middleware(['user_event'])->group(function ($r) {
     $r->get('r/{id}', [Home::class, 'isResult'])->name('r.isResult');
     // remove pop ntf
     $r->get('api/remove-nft', [Job::class, 'removeNft'])->name('nft.remove');
+    $r->get('up/vip', [UserController::class, 'upVip'])->name('u.Vip');
 });
 
 Route::get('/', [Home::class, 'index'])->name('web.home');

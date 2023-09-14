@@ -4,7 +4,7 @@
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Models\{Task, User, Sponsor};
-use App\Models\Event\{EventUserTicket, UserJoinEvent};
+use App\Models\Event\{EventUserTicket, UserJoinEvent, TaskEventDetail};
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,6 +24,20 @@ if (!function_exists('existCodeTask')) {
         return Task::whereCode($hash)->exists();
     }
 }
+
+if (!function_exists('genCode')) {
+    function genCode() {
+        $code = Str::random(8);
+        $checkExists = TaskEventDetail::whereCode($code)->exists();
+
+        if ($checkExists) {
+            return genCode();
+        }
+
+        return $code;
+    }
+}
+
 // EndTask
 
 if (!function_exists('eventInfo')) {

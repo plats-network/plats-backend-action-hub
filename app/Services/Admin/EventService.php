@@ -297,7 +297,7 @@ class EventService extends BaseService
                             'task_event_id' => $event->id,
                             'name' => $item['name'],
                             'description' => $item['description'],
-                            'code' => Str::random(35),
+                            'code' => genCode(),
                             'travel_game_id' => $item['travel_game_id'],
                             'is_required' => false,
                             'is_question' => $is_question,
@@ -335,7 +335,7 @@ class EventService extends BaseService
                             'task_event_id' => $event->id,
                             'name' => $item['name'],
                             'description' => $item['description'],
-                            'code' => Str::random(35),
+                            'code' => genCode(),
                             'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
                             'is_required' => false,
                             'is_question' => isset($item['is_question']) && $item['is_question'] == '1' ? true : false,
@@ -357,10 +357,6 @@ class EventService extends BaseService
 
     private function saveBooth($task, $booths)
     {
-        // dd($booths);
-        // https://use.tekuno.app/claim/d5b24e31-0a08-4314-9a1c-6dcaf394f42f
-        // https://use.tekuno.app/claim/a057e74e-5d5a-4d2b-81b2-c22c28e043d8
-        // https://use.tekuno.app/claim/9e186e9e-49cb-4885-971d-933f1da16540
         if (isset($booths['id']) && $booths['id']) {
             $event = TaskEvent::where('id', $booths['id'])->first();
 
@@ -397,7 +393,7 @@ class EventService extends BaseService
                             'name' => $item['name'],
                             'description' => $item['description'],
                             'nft_link' => $item['nft_link'] ?? null,
-                            'code' => Str::random(35),
+                            'code' => genCode(),
                             'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
                             'is_question' => false,
                             'is_required' => isset($item['is_required']) && $item['is_required'] == '1' ? true : false
@@ -427,7 +423,7 @@ class EventService extends BaseService
                             'name' => $item['name'],
                             'nft_link' => $item['nft_link'] ?? null,
                             'description' => $item['description'],
-                            'code' => Str::random(35),
+                            'code' => genCode(),
                             'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
                             'is_question' => false,
                             'is_required' => isset($item['is_required']) && $item['is_required'] == '1' ? true : false
