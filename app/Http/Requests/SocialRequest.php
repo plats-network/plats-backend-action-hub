@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
+use App\Enums\Social;
 
 class SocialRequest extends FormRequest
 {
@@ -24,7 +26,8 @@ class SocialRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => ['required', 'string'],
+            'type' => ['required', new Enum(Social::class)],
+            'account' => ['required']
         ];
     }
 }

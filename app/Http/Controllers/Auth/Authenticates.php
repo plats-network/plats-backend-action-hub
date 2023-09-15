@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Redirect;
 
 trait Authenticates
 {
@@ -23,6 +26,15 @@ trait Authenticates
     {
         $this->validateLogin($request);
 
+        $check = User::where('email',$request->input('email'))->first();
+        if ($check) {
+            if (
+                empty($check->email_verified_at)
+                && $check->role == USER_ROLE
+            ) {
+                return redirect('/client/login')->withErrors('Account not active!');
+            }
+        }
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.
@@ -68,10 +80,9 @@ trait Authenticates
      */
     protected function attemptLogin(Request $request)
     {
-        return $this->guard()->attempt(
-            $this->credentials($request),
-            $request->filled('remember'),
-        );
+        $user = $this->credentials($request);
+
+        return $this->guard()->attempt($user, $request->filled('remember'));
     }
 
     /**
@@ -96,9 +107,11 @@ trait Authenticates
         $request->session()->regenerate();
 
         $this->clearLoginAttempts($request);
-
-        return $this->authenticated($request, $this->guard()->user())
-            ?: redirect()->intended($this->redirectPath());
+        $userCheck = $this->authenticated($request, $this->guard()->user());
+        if (session()->get('code') != null){
+            return Redirect::to('/events/code?type=event&id='.session()->get('code'));
+        }
+        return $userCheck ?: redirect()->intended($this->redirectPath());
     }
 
     /**
@@ -136,11 +149,28 @@ trait Authenticates
      */
     public function redirectPath()
     {
-        if (method_exists($this, 'redirectTo')) {
-            return $this->redirectTo();
+        if (!in_array(optional(Auth::user())->role, [ADMIN_ROLE, CLIENT_ROLE])
+            && str_contains(URL::current(), 'auth/cws')) {
+            Redirect::to('/');
         }
 
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+        if (method_exists($this, 'redirectTo')) {
+            if (str_contains(URL::current(),'auth/cws')
+                && !is_null(Auth::user())
+                && in_array(optional(Auth::user())->role, [ADMIN_ROLE, CLIENT_ROLE])) {
+                return $this->redirectTo();
+            }
+        }
+
+        if (optional(Auth::user())->role != USER_ROLE
+            && str_contains(URL::current(), 'client/login')) {
+            Auth::logout();
+        } elseif (optional(Auth::user())->role == USER_ROLE
+            && !str_contains(URL::current(), 'client/login')) {
+            Auth::logout();
+            redirect('auth/cws');
+        }
+//        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
     }
 
     /**
@@ -165,7 +195,11 @@ trait Authenticates
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return $this->loggedOut($request) ?: redirect('auth/cp');
+        // if (str_contains(URL::current(),'auth/cws')){
+        //     return $this->loggedOut($request) ?: redirect('auth/cws');
+        // }
+
+        return $this->loggedOut($request) ?: redirect('/');
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
-
+// Không dùng nữa
 namespace App\Models;
 
 use App\Models\Traits\Uuid;
@@ -24,16 +24,15 @@ class TaskLocation extends Model
      * @var string[]
      */
     protected $fillable = [
+        'id',
         'task_id',
+        'reward_id',
         'name',
-        'address',
-        'long',
-        'lat',
-        'sort',
+        'description',
+        'amount',
+        'job_num',
+        'order',
         'status',
-        'phone_number',
-        'open_time',
-        'close_time',
     ];
 
     /**
@@ -42,11 +41,10 @@ class TaskLocation extends Model
      * @var array
      */
     protected $hidden = [
-        'task_id',
+        'id',
         'created_at',
         'updated_at',
         'deleted_at',
-        'status',
     ];
 
     /**
@@ -60,11 +58,23 @@ class TaskLocation extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+    public function taskLocationJobs()
+    {
+        return $this->hasMany(TaskLocationJob::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function histories()
     {
         return $this->hasMany(TaskLocationHistory::class, 'location_id');
     }
 
+    public function taskLocationJob()
+    {
+        return $this->hasMany(TaskLocationJob::class, 'task_location_id');
+    }
     /**
      * Checkin guild
      *

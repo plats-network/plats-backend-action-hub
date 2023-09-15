@@ -308,18 +308,12 @@
 
 .full-page-content-right-border {
   border-radius: initial !important;
-  border-bottom-left-radius: var(--border-radius-lg) !important;
-  border-bottom-right-radius: var(--border-radius-lg) !important;
 
   @include respond-above(md) {
     border-radius: initial !important;
-    border-bottom-left-radius: var(--border-radius-lg) !important;
-    border-top-left-radius: var(--border-radius-lg) !important;
   }
 }
 
 .full-page-content-single-border {
   border-radius: initial !important;
-  border-bottom-left-radius: var(--border-radius-lg) !important;
-  border-bottom-right-radius: var(--border-radius-lg) !important;
 }

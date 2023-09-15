@@ -17,7 +17,6 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('user_id')->index();
             $table->decimal('amount', 12, 2)->nullable()->default(0);
-            $table->string('address')->nullable();
             $table->tinyInteger('status')->nullable()->default(0);
             $table->timestamps();
         });

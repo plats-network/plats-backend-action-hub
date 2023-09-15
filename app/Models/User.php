@@ -2,18 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Support\Arr;
+use App\Models\Traits\Uuid;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use App\Helpers\BaseImage;
+use Laravel\Sanctum\HasApiTokens;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Event\EventUserTicket;
 
-class User implements Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
-    use AuthenticatableTrait;
-
-    /**
-     * @var array
-     */
-    protected $attributes = [];
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+    use SoftDeletes;
+    use Uuid;
 
     /**
      * The attributes that are mass assignable.
@@ -21,87 +28,107 @@ class User implements Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
         'name',
         'email',
+        'phone',
+        'new_email',
+        'birth',
+        'gender',
+        'avatar_path',
+        'password',
         'role',
         'twitter',
         'facebook',
         'discord',
-        'telegram'
+        'telegram',
+        'email_verified_at',
+        'confirmation_code',
+        'comfirm_hash',
+        'confirm_at',
+        'status',
+        'age',
+        'position',
+        'organization',
+        'deleted_at',
     ];
 
     /**
-     * @param array $userAttributes
-     * @param string $accessToken
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
      */
-    public function __construct($userAttributes, $accessToken = null)
-    {
-        $this->attributes = Arr::only($userAttributes, $this->fillable);
-        $this->attributes['token'] = $accessToken;
-    }
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'check_avatar',
+    ];
 
     /**
-     * Get the name of the unique identifier for the user.
+     * The attributes that should be cast.
      *
-     * @return string
+     * @var array<string, string>
      */
-    public function getAuthIdentifierName()
-    {
-        return 'token';
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 
     /**
-     * Get the password for the user.
-     *
-     * @return string
-     */
-    public function getAuthPassword()
-    {
-        // TODO: Implement getAuthPassword() method.
-    }
-
-    /**
-     * Get the token value for the "remember me" session.
-     *
-     * @return string
-     */
-    public function getRememberToken()
-    {
-        // TODO: Implement getRememberToken() method.
-    }
-
-    /**
-     * Set the token value for the "remember me" session.
-     *
-     * @param string $value
-     *
-     * @return void
-     */
-    public function setRememberToken($value)
-    {
-        // TODO: Implement setRememberToken() method.
-    }
-
-    /**
-     * Get the column name for the "remember me" token.
-     *
-     * @return string
-     */
-    public function getRememberTokenName()
-    {
-        // TODO: Implement getRememberTokenName() method.
-    }
-
-    /**
-     * Dynamically retrieve attributes on the model.
-     *
-     * @param string $key
+     * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
      */
-    public function __get($key)
+    public function getJWTIdentifier()
     {
-        return $this->attributes[$key];
+        return $this->getKey();
+    }
+
+    public function getAvatarPathAttribute()
+    {
+        return BaseImage::loadImage($this->attributes['avatar_path']);
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return $this->attributesToArray();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function providers()
+    {
+        return $this->hasOne(Provider::class, 'user_id', 'id');
+    }
+
+    public function user_events()
+    {
+        return $this->hasMany(EventUserTicket::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return string
+     */
+    public function getBirthAttribute($birth)
+    {
+        if (is_null($this->attributes['birth'])) {
+            return null;
+        }
+
+        return Carbon::parse($this->attributes['birth'])->format('d/m/Y');
+    }
+
+    /**
+     * Add a mutator to ensure hashed passwords
+     */
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
     }
 }

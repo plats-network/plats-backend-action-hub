@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+
 use App\Models\TaskUser;
 use App\Repositories\Concerns\BaseRepository;
 use Carbon\Carbon;
@@ -27,6 +28,9 @@ class TaskUserRepository extends BaseRepository
     public function userStartedTask($taskId, $userId, $locaId)
     {
         return $this->model::with('task:id,name', 'taskLocations')
+            ->whereHas('task', function($query) {
+                $query->where('type', TYPE_CHECKIN);
+            })
             ->where('task_id', $taskId)
             ->where('user_id', $userId)
             ->where('location_id', $locaId)
@@ -60,7 +64,10 @@ class TaskUserRepository extends BaseRepository
      */
     public function userDoingTask($userId)
     {
-        return $this->model::with('task:id,name', 'taskLocations')
+        return $this->model::with('task:id,name,type', 'taskLocations')
+            ->whereHas('task', function($query) {
+                $query->where('type', TYPE_CHECKIN);
+            })
             ->where('user_id', $userId)
             ->where('status', USER_PROCESSING_TASK)
             ->first();
@@ -91,10 +98,41 @@ class TaskUserRepository extends BaseRepository
             ->where('status', $status);
 
         if ($type) {
-            $now = Carbon::now()->subMinutes(10); // 10 phút
+            $now = Carbon::now()->subMinutes(10);
             $query->where('time_end', '>=', $now)->where('time_end', '<=', Carbon::now());
         }
 
         return $query;
+    }
+
+    /**
+     * @param $userId User ID
+     * @param $taskId Task ID
+     * @param $userSocialId User Social ID
+     *
+     * @return mixed
+     */
+    public function firstOrNewSocial($userId, $taskId, $userSocialId)
+    {
+        return $this->model
+            ->firstOrNew([
+                'user_id' => $userId,
+                'task_id' => $taskId,
+                'social_id' => $userSocialId
+            ]);
+    }
+
+    /**
+     * @param $userId User ID
+     * @param $taskId Task ID
+     *
+     * @return mixed
+     */
+    public function countUserTaskSocial($userId, $taskId)
+    {
+        return $this->model
+            ->whereUserId($userId)
+            ->whereTaskId($taskId)
+            ->count();
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Helpers\BaseImage;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\Uuid;
@@ -25,7 +27,7 @@ class TaskGuide extends Model
     protected $fillable = [
         'task_id',
         'url_image',
-        'order_num',
+        'order',
         'status',
     ];
 
@@ -35,7 +37,7 @@ class TaskGuide extends Model
      * @var array
      */
     protected $hidden = [
-        'task_id',
+
     ];
 
     /**
@@ -44,5 +46,12 @@ class TaskGuide extends Model
     public function task()
     {
         return $this->belongsTo(Task::class);
+    }
+
+    protected function urlImage(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => BaseImage::loadImage($value)
+        );
     }
 }

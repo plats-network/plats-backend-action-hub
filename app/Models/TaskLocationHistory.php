@@ -1,4 +1,5 @@
 <?php
+// Không dùng nữa
 
 namespace App\Models;
 
@@ -34,6 +35,7 @@ class TaskLocationHistory extends Model
         'user_id',
         'task_id',
         'location_id',
+        'social_id',
         'started_at',
         'ended_at',
         'checkin_image',

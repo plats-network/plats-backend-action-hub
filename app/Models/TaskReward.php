@@ -1,4 +1,5 @@
 <?php
+// Không dùng nữa
 
 namespace App\Models;
 
@@ -7,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+// Bỏ đi ko dùng nữa 
 class TaskReward extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
@@ -27,7 +29,10 @@ class TaskReward extends Model
         'task_id',
         'reward_id',
         'amount',
-        'unit'
+        'unit',
+        'time_public',
+        'time_campaign',
+        'time_reward',
     ];
 
     /**
@@ -36,9 +41,22 @@ class TaskReward extends Model
      * @var array
      */
     protected $hidden = [
-        'id',
-        'task_id',
-        'reward_id',
         'deleted_at',
     ];
+
+    /**
+     * Get the task that owns the task_rewards.
+     */
+    public function task()
+    {
+        return $this->belongsTo(Task::class);
+    }
+
+    /**
+     * Get the reward that owns the task_rewards.
+     */
+    public function reward()
+    {
+        return $this->belongsTo(Reward::class);
+    }
 }

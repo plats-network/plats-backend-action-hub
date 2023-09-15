@@ -15,7 +15,6 @@ class TaskControls {
     this._initSingleImageUpload();
     this._initGalleries();
     this._initLocation();
-    this._checkType();
     this._changeTaskType();
   }
   /**
@@ -137,13 +136,6 @@ class TaskControls {
       acceptedFiles: 'image/*',
       thumbnailWidth: 160,
       previewTemplate: DropzoneTemplates.previewTemplate,
-    });
-  }
-
-  _checkType() {
-   $('.select2-hidden-accessible').on('change', function() {
-      alert(3);
-      // alert( $(this).find(":selected").val() );
     });
   }
 }

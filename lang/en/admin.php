@@ -28,19 +28,21 @@ return [
             INACTIVE_TASK => 'Draft',
             ACTIVE_TASK => 'Active',
         ],
-        'order' => [
-            OUT_OF_ORDER => 'Out of order',
-            IN_ORDER => 'In order',
-        ],
+        // 'order' => [
+        //     OUT_OF_ORDER => 'Out of order',
+        //     IN_ORDER => 'In order',
+        // ],
         'type' => [
             TYPE_CHECKIN => 'Checkin',
             // TYPE_INSTALL_APP => 'Install Mobile App',
             // TYPE_VIDEO_WATCH => 'Video Watch',
             TYPE_SOCIAL => 'Social',
+
         ],
         'checkin_type' => [
             ONE_OF_MANY_LOCATIONS => 'One of many locations',
-            MULTIPLE_LOCATIONS => 'Multiple locations'
+            MULTIPLE_LOCATIONS => 'Multiple locations',
+
         ],
         'social' => [
             'platform' => 'Platform',
@@ -49,52 +51,60 @@ return [
             'url' => 'Url',
             'type' => [
                 FOLLOW      => 'Follow',
-                // LIKE        => 'Like page / post',
+                LIKE        => 'Like',
                 // SHARE       => 'Share post',
                 RETWEET     => 'Retweet',
-                TWEET       => 'Tweet',
+                // TWEET       => 'Tweet',
                 // POST        => 'Post',
                 // JOIN_GROUP  => 'Join group',
-                // HASHTAG     => 'Post/retweet with hashtag',
+                HASHTAG     => 'Hashtag',
+
             ],
             'platform_option' => [
-                TWITTER => 'Tweet',
+                TWITTER => 'Twitter',
                 // FACEBOOK => 'Facebook',
                 // DISCORD => 'Discord',
                 // TELEGRAM => 'Telegram',
+
             ]
+
         ]
     ],
     'reward' => [
-        'page_name' => 'Quản lý rewards',
+        'page_name' => 'Campain',
         'page_desc' => 'Mô tả',
-        'create_page' => 'Create a new reward',
-        'edit_page' => 'Edit reward',
+        'create_page' => 'Create',
+        'edit_page' => 'Edit',
         'form' => [
-            'type' => 'Type of reward',
-            'name' => 'Title of reward',
-            'desc' => 'Description for reward',
+            'type' => 'Type',
+            'name' => 'Title',
+            'desc' => 'Description',
             'duration' => 'Duration (Minutes)',
             'order' => 'Order',
             'valid_amount' => 'Valid amount',
             'valid_radius' => 'Valid radius',
             'status' => 'Status',
             'image' => 'Image',
+
         ],
         'status' => [
             INACTIVE_TASK => 'Draft',
             ACTIVE_TASK => 'Active',
+
         ],
         'order' => [
             OUT_OF_ORDER => 'Out of order',
             IN_ORDER => 'In order',
+
         ],
         'type' => [
             TYPE_CHECKIN => 'Checkin',
             // TYPE_INSTALL_APP => 'Install Mobile App',
             // TYPE_VIDEO_WATCH => 'Video Watch',
             TYPE_SOCIAL => 'Social',
+
         ],
+
     ],
     'location' => [
         'form' => [
@@ -102,8 +112,10 @@ return [
             'address' => 'Location address',
             'coordinate' => 'Coordinate: Latitude, Longitude',
             'phone_number' => 'Phone number',
-            'open_time' => 'Open time'
+            'open_time' => 'Open time',
+
         ],
+
     ],
     'task_created' => 'Task created successfully',
     'guild' => [
@@ -111,10 +123,12 @@ return [
         'page_desc' => 'List your guilds',
         'create_page' => 'Create a new guild',
         'edit_page' => 'Edit task',
+
     ],
     'placeholders' => [
         'valid_amount' => 'Ex: number of places to checkin',
-        'phone_number' => 'Ex: 0123456789'
+        'phone_number' => 'Ex: 0123456789',
+
     ],
     'company' => [
         'name' => 'Name',
@@ -123,6 +137,9 @@ return [
             'logo' => 'Logo',
             'address' => 'Address',
             'phone' => 'Phone number'
+
         ]
+
     ]
+
 ];

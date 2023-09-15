@@ -1,4 +1,5 @@
 <?php
+// Không dùng nữa
 
 namespace App\Models;
 
@@ -7,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+// Bỏ đi ko dùng nữa
 class TaskSocialResult extends Model
 {
     use HasFactory, Uuid, SoftDeletes;

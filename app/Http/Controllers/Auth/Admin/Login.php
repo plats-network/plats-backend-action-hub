@@ -15,6 +15,10 @@ class Login extends Controller
      */
     public function showFormLogin()
     {
+        if (Auth::guard('web')->user()) {
+            return redirect('/');
+        }
+
         return view('admin.auth.login');
     }
 
@@ -25,7 +29,7 @@ class Login extends Controller
      */
     public function redirectTo()
     {
-        return route(DASHBOARD_ADMIN_ROUTER);
+        return route('cws.home');
     }
 
     /**
@@ -35,6 +39,6 @@ class Login extends Controller
      */
     protected function guard()
     {
-        return Auth::guard('api');
+        return Auth::guard('web');
     }
 }

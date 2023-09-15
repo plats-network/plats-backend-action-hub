@@ -1,6 +1,4 @@
 <?php
-
-
 namespace App\Services;
 
 use App\Events\{UserCanceledTaskEvent, UserCheckedInLocationEvent, UserCheckingLocationEvent};
@@ -12,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Carbon as SupportCarbon;
+use App\Models\Event\{UserJoinEvent, UserCode};
 
 class TaskService extends BaseService
 {
@@ -35,11 +34,110 @@ class TaskService extends BaseService
     public function __construct(
         TaskRepository $repository,
         LocationHistoryRepository $locationHistoryRepository,
-        TaskUserRepository $taskUserRepository
+        TaskUserRepository $taskUserRepository,
+        private UserJoinEvent $joinEvent,
+        private UserCode $userCode,
     ) {
         $this->repository = $repository;
         $this->locationHistoryRepository = $locationHistoryRepository;
         $this->taskUserRepository = $taskUserRepository;
+    }
+
+
+    // Gen Code
+    public function genCodeByUser(
+        $userId,
+        $taskId,
+        $travelSessionIds,
+        $travelBootsIds,
+        $sEventId,
+        $bEventId
+    )
+    {
+        $importants = $this->joinEvent
+            ->whereUserId($userId)
+            ->whereTaskId($taskId)
+            ->where('is_code', false)
+            ->where('is_important', true)
+            ->get();
+
+        foreach($importants as $item) {
+            $max = $this->userCode
+                ->whereTaskEventId($item->task_event_id)
+                ->where('travel_game_id', $item->travel_game_id)
+                ->max('number_code');
+
+            $this->userCode->create([
+                'user_id' => $userId,
+                'task_event_id' => $item->task_event_id,
+                'travel_game_id' => $item->travel_game_id,
+                'type' => $item->type,
+                'number_code' => $max + 1,
+                'color_code' => randColor()
+            ]);
+
+            $item->update(['is_code' => true]);
+        }
+
+        foreach($travelSessionIds as $tId) {
+            $maxSession = $this->userCode
+                ->where('task_event_id', $sEventId)
+                ->where('travel_game_id', $tId)
+                ->where('type', 0)
+                ->max('number_code');
+
+            $codeSessions = $this->joinEvent
+                ->select('id')
+                ->whereUserId($userId)
+                ->where('task_event_id', $sEventId)
+                ->where('travel_game_id', $tId)
+                ->where('is_code', false)
+                ->where('is_important', false)
+                ->limit(2);
+
+            if (count($codeSessions->pluck('id')->toArray()) == 2) {
+                $this->userCode->create([
+                    'user_id' => $userId,
+                    'task_event_id' => $sEventId,
+                    'travel_game_id' => $tId,
+                    'type' => 0,
+                    'number_code' => $maxSession + 1,
+                    'color_code' => randColor()
+                ]);
+
+                $codeSessions->update(['is_code' => true]);
+            }
+        }
+
+        foreach($travelBootsIds as $travelId) {
+            $maxBooth = $this->userCode
+                ->whereTaskEventId($bEventId)
+                ->where('travel_game_id', $travelId)
+                ->where('type', 1)
+                ->max('number_code');
+
+            $codeBooths = $this->joinEvent
+                ->select('id')
+                ->whereUserId($userId)
+                ->where('task_event_id', $bEventId)
+                ->where('travel_game_id', $travelId)
+                ->where('is_code', false)
+                ->where('is_important', false)
+                ->limit(5);
+
+            if (count($codeBooths->pluck('id')->toArray()) == 5) {
+                $this->userCode->create([
+                    'user_id' => $userId,
+                    'task_event_id' => $bEventId,
+                    'travel_game_id' => $travelId,
+                    'type' => 1,
+                    'number_code' => $maxBooth + 1,
+                    'color_code' => randColor()
+                ]);
+
+                $codeBooths->update(['is_code' => true]);
+            }
+        }
     }
 
     /**
@@ -63,12 +161,12 @@ class TaskService extends BaseService
      *
      * @param string $userId
      */
-    public function getTaskDoing($userId)
-    {
-        $task = $this->taskUserRepository->userDoingTask($userId);
+    // public function getTaskDoing($userId)
+    // {
+    //     $task = $this->taskUserRepository->userDoingTask($userId);
 
-        return $task;
-    }
+    //     return $task;
+    // }
 
     /**
      * Auto paginate with query parameters
@@ -91,28 +189,6 @@ class TaskService extends BaseService
 
         return $this->endFilter();
     }
-
-    /**
-     * Calculate the remaining time of the quest from the start
-     *
-     * @param \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Collection $userHistories
-     * @param integer $duration Minute
-     */
-    // public function timeRemaining($userHistories, $duration)
-    // {
-    //     return $duration;
-    //     //TODO: Calculate
-    //     $timeUsed = 0;
-    //     foreach ($userHistories as $history) {
-    //         if (is_null($history->ended_at)) {
-    //             continue;
-    //         }
-    //         $calcu = Carbon::parse($history->started_at)->diffInRealMinutes(Carbon::parse($history->ended_at));
-    //         $timeUsed += 0;
-    //     }
-
-    //     return $duration - $timeUsed;
-    // }
 
     /**
      * User start task at location
@@ -238,9 +314,11 @@ class TaskService extends BaseService
         $taskType = $request->type;
         $data['status']         = $request->status;
         $data['type']           = $taskType;
+        $data['valid_radius']   = random_int(100, 200);
         $data['creator_id']     = $request->user()->id;
         $data['valid_amount']   = $request->valid_amount ?? 1;
         $data['total_reward']   = $request->total_reward ?? 0;
+        $data['order'] = $request->order ?? 0;
 
         //Save cover
         if ($request->hasFile('image')) {
@@ -279,7 +357,7 @@ class TaskService extends BaseService
     {
         $task = $this->find($request->input('id'));
 
-        $data = $request->except(['image', 'locations', 'guilds']);
+        $data = $request->except(['image', 'locations', 'guilds', 'socials']);
 
         //Save cover
         if ($request->hasFile('image')) {
@@ -309,9 +387,7 @@ class TaskService extends BaseService
 
             //Delete location
             if ($request->filled('list_delete')) {
-                $task->locations()
-                    ->whereIn('id', $request->input('list_delete', []))
-                    ->delete();
+                $task->locations()->whereIn('id', $request->input('list_delete', []))->delete();
             }
         }
         
@@ -334,9 +410,7 @@ class TaskService extends BaseService
 
             //Delete social
             if ($request->filled('list_delete')) {
-                $task->taskSocials()
-                    ->whereIn('id', $request->input('list_delete', []))
-                    ->delete();
+                $task->taskSocials()->whereIn('id', $request->input('list_delete', []))->delete();
             }
         }
 

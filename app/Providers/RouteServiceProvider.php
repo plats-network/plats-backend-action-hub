@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
+     * 
      * The path to the "home" route for your application.
      *
      * This is used by Laravel authentication to redirect users after login.
@@ -29,19 +30,25 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
+            // Local: http://cws.plats.test
+            // Dev: https://dev-cws.plats.network
+            // Prod: https://cws.plats.network
+            $this->mapCwsRoute(ENV('APP_URL'));
 
-            Route::middleware(['web', 'auth:api'])
-                ->prefix('cp')
-                ->group(base_path('routes/admin.php'));
+            // Local: http://event.plats.test
+            // Dev: https://dev-event.plats.network
+            // Prod: https://event.plats.network
+            $this->mapEventRoute(ENV('APP_URL'));
 
-            Route::middleware(['web'])
-                ->prefix('auth')
-                ->group(base_path('routes/auth.php'));
+            // Local: http://api.plats.test
+            // Dev: https://dev-api.plats.network
+            // Prod: https://api.plats.network
+            $this->mapApiRoute(ENV('APP_URL'));
 
-            Route::prefix('api')->middleware(['api', 'auth:api', 'debug.api'])
-                ->group(base_path('routes/api.php'));
+            // Local: http://minigame.plats.test
+            // Dev: https://dev-minigame.plats.network
+            // Prod: https://minigame.plats.network
+            $this->mapGameRoute(ENV('APP_URL'));
         });
     }
 
@@ -55,5 +62,34 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
+    }
+
+    protected function mapApiRoute($domain)
+    {
+        Route::domain(ENV('SUB_API').'.'.$domain)
+            ->middleware(['api'])
+            ->prefix('api')
+            ->group(base_path('routes/api.php'));
+    }
+
+    protected function mapCwsRoute($domain)
+    {
+        Route::domain(ENV('SUB_CWS').'.'.$domain)
+            ->middleware(['web'])
+            ->group(base_path('routes/admin.php'));
+    }
+
+    protected function mapEventRoute($domain)
+    {
+        Route::domain(ENV('SUB_EVENT').'.'.$domain)
+            ->middleware(['web'])
+            ->group(base_path('routes/web.php'));
+    }
+
+    protected function mapGameRoute($domain)
+    {
+        Route::domain(ENV('SUB_MINIGAME').'.'.$domain)
+            ->middleware(['web'])
+            ->group(base_path('routes/game.php'));
     }
 }

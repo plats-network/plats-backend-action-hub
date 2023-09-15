@@ -52,6 +52,23 @@ trait ApiResponseTrait
     }
 
     /**
+     * Return generic json response with the given data.
+     *
+     * @param       $data
+     * @param message $message
+     *
+     * @return JsonResponse
+     */
+    protected function respondWithData($data = [], $message = '')
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+            'message' => $message
+        ]);
+    }
+
+    /**
      * @param JsonResource $resource
      * @param null $message
      * @param int $statusCode
@@ -337,20 +354,6 @@ trait ApiResponseTrait
     {
         return $this->respondError($message, 404);
     }
-
-    // /**
-    //  * Respond with failed login.
-    //  *
-    //  * @return \Illuminate\Http\JsonResponse
-    //  */
-    // protected function respondFailedLogin()
-    // {
-    //     return $this->apiResponse([
-    //         'errors' => [
-    //             'email or password' => 'is invalid',
-    //         ]
-    //     ], 422);
-    // }
 
     /**
      * Respond with internal error.

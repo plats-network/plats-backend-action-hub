@@ -65,8 +65,8 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'token',
-            //'model' => App\Models\User::class,
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
         ],
 
         // 'users' => [
@@ -111,4 +111,5 @@ return [
     */
 
     'password_timeout' => 10800,
+    'url_reset_password_timeout' => 48,
 ];

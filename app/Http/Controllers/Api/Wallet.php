@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\WithdrawRequest;
 use App\Services\WithdrawService;
 use Illuminate\Http\Request;
 
@@ -23,18 +22,14 @@ class Wallet extends ApiController
     }
 
     /**
-     * @param WithdrawRequest $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function withdraw(WithdrawRequest $request)
+    public function withdraw(Request $request)
     {
-        $this->withdrawService->claim(
-            $request->user()->id,
-            $request->input('wallet_address'),
-            $request->input('amount', 0)
-        );
+        $this->withdrawService->claim($request->user()->id);
 
         return $this->responseMessage('Done');
     }

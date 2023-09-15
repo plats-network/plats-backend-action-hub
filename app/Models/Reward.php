@@ -2,22 +2,22 @@
 
 namespace App\Models;
 
+use App\Helpers\BaseImage;
 use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Storage;
 
 /**
- * attrs
+ * Attributes
  * @property uuid $id
  * @property string $name
  * @property string $description
  * @property string $image
  * @property integer $type
  * @property integer $region
- * @property date $start_at
- * @property date $end_at
  * @property datatime $created_at
  * @property datatime $updated_at
  */
@@ -42,10 +42,10 @@ class Reward extends Model
         'name',
         'description',
         'image',
-        'type', // 0:  1:
+        'symbol',
         'region',
-        'start_at',
-        'end_at',
+        'order',
+        'status',
     ];
 
     /**
@@ -54,20 +54,34 @@ class Reward extends Model
      * @var array
      */
     protected $hidden = [
-        'id',
         'deleted_at',
     ];
 
-    /**
-     * Get the comments for the blog post.
-     */
-    public function detail_rewards()
+    protected function image(): Attribute
     {
-        return $this->hasMany(DetailReward::class);
+        return Attribute::make(
+            get: fn ($value) => BaseImage::loadImage($value)
+        );
     }
 
-    public function getImageAttribute()
+    protected function region(): Attribute
     {
-        return Storage::disk('s3')->url('icon/hidden_box.png');
+        return Attribute::make(
+            get: fn ($value) => (string)$value
+        );
+    }
+
+    protected function order(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => (string)$value
+        );
+    }
+
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => (string)$value
+        );
     }
 }

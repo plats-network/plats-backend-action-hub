@@ -1,8 +1,11 @@
 <?php
+// Không dùng nữa
 
 namespace App\Models;
 
+use App\Helpers\BaseImage;
 use App\Models\Traits\Uuid;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,7 +34,8 @@ class TaskGallery extends Model
      */
     protected $fillable = [
         'task_id',
-        'url'
+        'url_image',
+        'status',
     ];
 
     /**
@@ -40,7 +44,13 @@ class TaskGallery extends Model
      * @var array
      */
     protected $hidden = [
-        'id',
-        'task_id',
+
     ];
+
+    protected function urlImage(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => BaseImage::loadImage($value)
+        );
+    }
 }

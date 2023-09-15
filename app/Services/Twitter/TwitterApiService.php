@@ -4,56 +4,53 @@ namespace App\Services\Twitter;
 
 use App\Services\Concerns\BaseTwitter;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+use App\Helpers\ActionHelper;
+use Log;
 
 class TwitterApiService extends BaseTwitter {
-    // define('FOLLOW', 1);
-    // define('LIKE', 2);
-    // define('SHARE', 3);
-    // define('RETWEET', 4);
-    // define('TWEET', 5);
-    // define('POST', 6);
-    // define('JOIN_GROUP', 7);
-    // define('HASHTAG', 8);
-
     /**
      * Get user Follow
-     *
      * @param $userId
-     *
-     * @return array|void
+     * @return boolean|void
      */
-    public function getFollows($userId = null, $name = null)
+    public function isHashTag($userTweetId, $keyHashTag)
     {
-        $follows = [];
-        $userId = 571432663; // Mock
+        Log::info('Call hashtag: ', [
+            'user_tweeter_id' => $userTweetId,
+            'key_hashtag' => $keyHashTag
+        ]);
 
-        if (is_null($userId) || $userId == 'error') {
-            return $follows;
-        }
-        $uri = "/2/users/{$userId}/followers?max_results=" . TWITTER_LIMIT;
+        $ver = config('app.twitter_api_ver');
+        if (is_null($userTweetId) || $userTweetId == '') { return [false, 'Tweet Id not found!']; }
+        if (is_null($keyHashTag) || $keyHashTag == '') { return [false, 'Key hashtag not found!']; }
 
-        return $this->fetchData($uri);
+        $uri = "/{$ver}/users/{$userTweetId}/tweets?max_results=" . TWITTER_LIMIT;
+
+        return $this->fetchData($uri, HASHTAG, $userTweetId, $keyHashTag);
     }
 
     /**
      * Get user Following
      *
-     * @param $userId
+     * @param $userTweetId
      *
-     * @return array|void
+     * @return boolean|void
      */
-    public function isFollowing($userId = null, $name = null)
+    public function isFollowing($userTweetId, $keyFollow)
     {
-        $follows = [];
-        $userId = 571432663; // Mock
-        $name = 'tamarincrypto'; // mock
+        Log::info('Call following: ', [
+            'user_tweeter_id' => $userTweetId,
+            'key_follow' => $keyFollow
+        ]);
 
-        if (is_null($userId) || $userId == 'error') {
-            return $follows;
-        }
-        $uri = "/2/users/{$userId}/following?max_results=" . TWITTER_LIMIT;
+        $ver = config('app.twitter_api_ver');
+        if (is_null($userTweetId) || $userTweetId == '') { return [false, 'Tweet Id not found!']; }
+        if (is_null($keyFollow) || $keyFollow == '') { return [false, 'Key following not found!']; }
 
-        return $this->fetchData($uri, FOLLOW, $name);
+        $uri = "/{$ver}/users/{$userTweetId}/following?max_results=" . TWITTER_LIMIT;
+
+        return $this->fetchData($uri, FOLLOW, $userTweetId, $keyFollow);
     }
 
     /**
@@ -63,79 +60,152 @@ class TwitterApiService extends BaseTwitter {
      *
      * @return array|void
      */
-    public function getLikes($tweetId = null, $name = null)
+    public function isLikes($userTweetId, $keyLike)
     {
-        $likes = [];
+        Log::info('Call api like: ', [
+            'user_tweeter_id' => $userTweetId,
+            'key_like' => $keyLike
+        ]);
 
-        $userId = 571432663; // Mock
+        $ver = config('app.twitter_api_ver');
+        if (is_null($userTweetId) || $userTweetId == '') { return [false, 'Tweet Id not found!']; }
+        if (is_null($keyLike) || $keyLike == '') { return [false, 'Key like not found!']; }
 
-        if (is_null($userId) || $userId == 'error') {
-            return $follows;
-        }
-        $uri = "/2/users/{$userId}/liked_tweets?max_results=" . TWITTER_LIMIT;
+        $uri = "/{$ver}/users/{$userTweetId}/liked_tweets?max_results=" . TWITTER_LIMIT;
 
-        return $this->fetchData($uri);
+        return $this->fetchData($uri, LIKE, $userTweetId, $keyLike);
     }
 
     /**
      * Get user Retweets page
      *
-     * @param $tweetId $request
+     * @param $tweetId
      *
      * @return array|void
      */
-    public function getUserTweets($tweetId = null)
+    public function isUserRetweet($userTweetId, $keyRetweet)
     {
-        $userIds = [];
-        $tweetId = 1590210694095736833;
+        Log::info('Call retweet: ', [
+            'user_tweeter_id' => $userTweetId,
+            'key_retweet' => $keyRetweet
+        ]);
+     
+        $ver = config('app.twitter_api_ver');
+        if (is_null($userTweetId) || $userTweetId == '') { return [false, 'Tweet Id not found!']; }
+        if (is_null($keyRetweet) || $keyRetweet == '') { return [false, 'Retweet not found!']; }
 
-        if (is_null($tweetId)) {
-            return $userIds;
-        }
+        $uri = "/{$ver}/tweets/{$keyRetweet}/retweeted_by?max_results=" . TWITTER_LIMIT;
 
-        $uri = "/2/tweets/{$tweetId}/retweeted_by?max_results=" . TWITTER_LIMIT;
-        
-        return $this->fetchData($uri, FOLLOW, '');
+        return $this->fetchData($uri, RETWEET, $userTweetId, $keyRetweet);
     }
 
-    private function fetchData($uri, $type = LIKE, $key = null, $limit = 10)
+    /**
+     * Call api twitter
+     *
+     * @param $uri $request
+     *
+     * @return array|void
+     */
+    private function fetchData($uri, $type = LIKE, $userTweetId, $key, $limit = 10)
     {
         $datas = [];
-        if (is_null($uri)) { return false; }
+        $resultSuccess = [true, ActionHelper::getTypeStr($type)[1] . ' Success!'];
+        $resultErrors = [false, "Not " . ActionHelper::getTypeStr($type)[1] . ' Yet?'];
+
+        if (is_null($uri)) {
+            return [false, 'Url not found!'];
+        }
         $res = $this->callApi($uri);
 
-        if (is_null($res)) { return false; }
+        if (is_null($res)) {
+            return [false, 'Data not found!'];
+        }
+
         $statusCode = $res->getStatusCode();
         $data = json_decode($res->getBody()->getContents());
-        $i = ZERO;
+
+        Log::info('Call api tweets', [
+            'code' => $statusCode
+        ]);
+
+        if ($statusCode != 200) {
+            return [false, optional($data->errors[0])->message];
+        }
+
+        $i = 0;
 
         do {
             if ($statusCode == 200) {
                 if ($i <= 0) {
                     switch($type) {
                         case FOLLOW:
-                        case RETWEET:
-                            foreach($data->data as $item) {
-                                $datas[] = $item->username;
+                            if (isset($data->data)) {
+                                foreach($data->data as $item) {
+                                    $datas[] = $item->username;
+                                }
                             }
+                            if (in_array($key, $datas)) {
+                                return $resultSuccess;
+                            }
+
+                            break;
+                        case HASHTAG:
+                            if (isset($data->data)) {
+                                foreach($data->data as $item) {
+                                    $contains = Str::contains($item->text, $key);
+
+                                    if ($contains) {
+                                        return $resultSuccess;
+                                    }
+                                }
+                            }
+
+                            break;
+                        case LIKE:
+                            if (isset($data->data)) {
+                                foreach($data->data as $item) {
+                                    $datas[] = $item->id;
+                                }
+                            }
+
+                            if (in_array($key, $datas)) {
+                                return $resultSuccess;
+                            }
+
+                            break;
+                        case RETWEET:
+                            if (isset($data->data)) {
+                                foreach($data->data as $item) {
+                                    $datas[] = $item->id;
+                                }
+                            }
+
+                            if (in_array($userTweetId, $datas)) {
+                                return $resultSuccess;
+                            }
+
                             break;
                         default:
-                            foreach($data->data as $item) {
-                                $datas[] = $item->id;
-                            }
-                    }
-
-                    if (in_array($key, $datas)) {
-                        return true;
+                            return $resultErrors;
                     }
                 } else {
                     if (!isset($data->meta->next_token)) {
                         break;
                     }
 
-                    $nextUri = $uri . "&pagination_token={$data->meta->next_token}";
-                    $nextRes = $this->callApi($nextUri);
-                    $nextData = json_decode($nextRes->getBody()->getContents());
+                    if ($i == 1) {
+                        $nextUri = $uri . "&pagination_token={$data->meta->next_token}";
+                        $nextRes = $this->callApi($nextUri);
+                        $nextData = json_decode($nextRes->getBody()->getContents());
+                    } else {
+                        if (!isset($nextData->meta->next_token)) {
+                            break;
+                        }
+
+                        $nextUri = $uri . "&pagination_token={$nextData->meta->next_token}";
+                        $nextRes = $this->callApi($nextUri);
+                        $nextData = json_decode($nextRes->getBody()->getContents());
+                    }
 
                     if ($nextData->meta->result_count == 0) {
                         break;
@@ -143,26 +213,60 @@ class TwitterApiService extends BaseTwitter {
 
                     switch($type) {
                         case FOLLOW:
-                        case RETWEET:
-                            foreach($data->data as $item) {
-                                $datas[] = $item->username;
+                            if (isset($nextData->data)) {
+                                foreach($nextData->data as $item) { $datas[] = $item->username; }
                             }
+
+                            if (in_array($key, $datas)) {
+                                return $resultSuccess;
+                            }
+
+                            break;
+                        case HASHTAG:
+                            if (isset($nextData->data)) {
+                                foreach($nextData->data as $item) {
+                                    $contains = Str::contains($item->text, $key);
+
+                                    if ($contains) {
+                                        return $resultSuccess;
+                                    }
+                                }
+                            }
+
+                            break;
+                        case LIKE:
+                            if (isset($nextData->data)) {
+                                foreach($nextData->data as $item) {
+                                    $datas[] = $item->id;
+                                }
+                            }
+
+                            if (in_array($key, $datas)) {
+                                return $resultSuccess;
+                            }
+
+                            break;
+                        case RETWEET:
+                            if (isset($nextData->data)) {
+                                foreach($nextData->data as $item) {
+                                    $datas[] = $item->id;
+                                }
+                            }
+
+                            if (in_array($userTweetId, $datas)) {
+                                return $resultSuccess;
+                            }
+
                             break;
                         default:
-                            foreach($data->data as $item) {
-                                $datas[] = $item->id;
-                            }
-                    }
-
-                    if (in_array($key, $datas)) {
-                        return true;
+                            return $resultErrors;
                     }
                 }
             }
 
             $i++;
         } while($i < $limit);
-        
-        return false;
+
+        return $resultErrors;
     }
 }

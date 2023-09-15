@@ -3,33 +3,39 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\{CheckInTaskRequest, CreateTaskRequest, StartTaskRequest};
-use App\Http\Resources\{TaskResource, TaskUserResource, TaskDogingResource};
-use App\Services\TaskService;
+use App\Http\Resources\SocialResource;
 use App\Http\Requests\SocialRequest;
+use Illuminate\Http\Request;
 use App\Models\Task as ModelTask;
-use App\Models\TaskUser;
-use Illuminate\Database\QueryException;
-use App\Repositories\{LocationHistoryRepository, TaskRepository, TaskUserRepository};
-use Illuminate\Support\Carbon as SupportCarbon;
-use Illuminate\Support\Facades\{DB, Http};
-use Carbon\Carbon;
+use App\Models\{TaskUser, UserTaskReward};
+use App\Repositories\{
+    TaskRepository,
+    TaskSocialRepository,
+    TaskUserRepository
+};
+use App\Services\SocialService;
+use App\Helpers\ActionHelper;
+use Illuminate\Support\Facades\{Http};
+use Illuminate\Support\Str;
+use Log;
 
 class Social extends ApiController
 {
     /**
      * @param $taskService
      * @param $modelTask
-     * @param $locationHistoryRepository
+     * @param $taskUser
      * @param $taskRepository
      * @param $taskUserRepository
+     * @param $taskSocialRepository
      * 
      */
     public function __construct(
-        private TaskService $taskService,
+        private SocialService $socialService,
         private ModelTask $modelTask,
-        private LocationHistoryRepository $locationHistoryRepository,
+        private TaskUser $taskUser,
         private TaskRepository $taskRepository,
+        private TaskSocialRepository $taskSocialRepository,
         private TaskUserRepository $taskUserRepository
     ) {}
 
@@ -49,12 +55,17 @@ class Social extends ApiController
                 }])
                 ->whereStatus(ACTIVE_TASK)
                 ->whereType(TYPE_SOCIAL)
+                ->orderBy('order', 'desc')
                 ->paginate($limit);
+
+            if (count($socials) <= 0) {
+                return $this->respondNotFound();
+            }
         } catch (QueryException $e) {
             return $this->respondNotFound();
         }
 
-        $datas = TaskResource::collection($socials);
+        $datas = SocialResource::collection($socials);
         $pages = [
             'current_page' => (int)$request->get('page'),
             'last_page' => $socials->lastPage(),
@@ -62,7 +73,7 @@ class Social extends ApiController
             'total' => $socials->lastPage()
         ];
 
-        return $this->respondWithIndex($datas, $pages);
+        return $this->respondWithIndex($datas, $pages, 'List socials!');
     }
 
     /**
@@ -74,12 +85,89 @@ class Social extends ApiController
      */
     public function update(SocialRequest $request, $id, $socialId)
     {
-        $user = $request->user();
+        try {
+            $user = $request->user();
+            $tweetId = optional($this->getSocialAccount($user->token))->twitter;
 
-        if (is_null($user->twitter) || $user->twitter == '') {
+            $type = ActionHelper::getTypeTwitter($request->type);
+            Log::info('Call api: ', [
+                'id' => $id,
+                'type' => $type
+            ]);
 
+            if (is_null($tweetId) || $tweetId == '') {
+                return $this->respondError('Account twitter not connect!', 422);
+            }
+
+            $userSocial = $this->taskSocialRepository->find($socialId);
+            $userTask = $this->taskUser->whereUserId($user->id)
+                ->whereTaskId($userSocial->task_id)
+                ->whereSocialId($userSocial->id)
+                ->first();
+
+            if ($userTask && $userTask->status == USER_COMPLETED_TASK) {
+                $label = ActionHelper::getTypeStr($userSocial->type)[1];
+                return $this->responseMessage($label . ' done!');
+            }
+
+            // Service
+            $isSocial = $this->socialService->performTwitter($user, $tweetId, $type, $id, $userSocial);
+
+            if ($isSocial[0]) {
+                // $dataReward = $this->socialService->saveDetailReward($user, $userSocial);
+                return response()->json([
+                    'message' => $isSocial[1],
+                    'data' => [
+                        'amount' => optional($dataReward)->amount,
+                        'units' => 'PSP',
+                        'message' => $isSocial[1]
+                    ]
+                ], 200);
+            }
+        } catch (\Exception $e) {
+            return $this->respondError($e->getMessage());
         }
 
-        dd($user);
+        return $this->respondError($isSocial[1], 422);
+    }
+
+    /**
+     * Start social tasks
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function start($id, Request $request)
+    {
+        try {
+            $userId = $request->user()->id;
+            $task = $this->taskRepository->find($id);
+
+            if ($this->taskUserRepository->countUserTaskSocial($userId, $task->id) > 0) {
+                return $this->responseMessage('Social task started!');
+            }
+
+            $this->socialService->startTaskSocial($userId, $task);
+        } catch(\Exception $e) {
+            return $this->respondError($e->getMessage());
+        }
+
+        return $this->responseMessage('Social task started!');
+    }
+
+
+    private function getSocialAccount($token)
+    {
+        try {
+            $res = Http::withToken($token)
+                ->get(config('app.api_user_url') . '/api/account-socials');
+
+            $data = json_decode($res->getBody()->getContents())->data;
+        } catch (\Exception $e) {
+            $data = null;
+        }
+
+        return $data;
     }
 }

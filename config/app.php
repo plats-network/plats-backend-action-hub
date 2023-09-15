@@ -15,7 +15,17 @@ return [
     |
     */
 
+
     'name' => env('APP_NAME', 'Laravel'),
+    'link_event' => env('LINK_EVENT', 'https://event.plats.network'),
+    'link_cws' => env('LINK_CWS', 'https://cws.plats.network'),
+    'link_minigame' => env('LINK_MINIGAME', 'https://minigame.plats.network'),
+    'type_reward' => [
+        0 => 'web',
+        1 => 'users',
+    ],
+
+    'upload_type' => env('UPLOAD_TYPE', 3),
 
     /*
     |--------------------------------------------------------------------------
@@ -29,6 +39,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+
 
     /*
     |--------------------------------------------------------------------------
@@ -69,8 +80,8 @@ return [
 
     // API Twitter
     'twitter_token' => env('TWITTER_BEARER_TOKEN', ''),
-    'twitter_gen_url' => env('TWITTER_GEN_URL', ''),
     'twitter_api_url' => env('TWITTER_API_URL', ''),
+    'twitter_api_ver' => env('TWITTER_API_VER', 1),
 
     /*
     |--------------------------------------------------------------------------
@@ -190,6 +201,10 @@ return [
         /*
          * Package Service Providers...
          */
+        Jorenvh\Share\Providers\ShareServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -199,8 +214,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class,
-
+        App\Providers\BladeServiceProvider::class,
     ],
 
     /*
@@ -215,8 +229,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Share' => Jorenvh\Share\ShareFacade::class,
     ])->toArray(),
-
 ];
