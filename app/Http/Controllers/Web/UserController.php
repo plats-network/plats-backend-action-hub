@@ -41,11 +41,22 @@ class UserController extends Controller
         ]);
     }
 
+    public function info(Request $request, $code)
+    {
+        if (Auth::guest()) {
+            return redirect()->route('web.formLoginGuest');
+        }
+
+        return view('web.user.info', [
+            'user' => Auth::user()
+        ]);
+    }
+
     public function editEmail(Request $request)
     {
         try {
             $user = Auth::user();
-            $taskId = $request->input('task_id');
+            // $taskId = $request->input('task_id');
             $email = Str::lower($request->input('email'));
             $name = $request->input('name');
             $type = $request->input('user_type');
@@ -56,7 +67,7 @@ class UserController extends Controller
                 $pInfo = [
                     'name' => $name,
                     'phone' => $request->input('phone'),
-                    'age' => $request->input('age'),
+                    'age' => random_int(20, 60),
                     'position' => $request->input('position'),
                     'organization' => $request->input('organization'),
                 ];
@@ -64,9 +75,9 @@ class UserController extends Controller
                 if ($user->email != $email && !$oldUser) {
                     $pInfo = array_merge($pInfo, ['email' => $email]);
                 }
-                if (session()->get('u-'.$user->id)) {
-                    session()->forget('u-'.$user->id);
-                }
+                // if (session()->get('u-'.$user->id)) {
+                //     session()->forget('u-'.$user->id);
+                // }
                 $user->update($pInfo);
             }
 
@@ -138,9 +149,9 @@ class UserController extends Controller
             ]);
         }
 
-        notify()->success('Update email successfully');
-        return redirect()->route('job.getTravelGame', [
-            'task_id' => $taskId
+        notify()->success('Update info successfully');
+        return redirect()->route('user.Info', [
+            'code' => 'techfest2023'
         ]);
     }
 

@@ -45,27 +45,7 @@ class Job extends Controller
     public function index(Request $request)
     {
         try {
-            // if (Auth::guest()) {
-            //     $time = Carbon::now()->timestamp;
-            //     $user = User::create([
-            //         'name' => 'Guest-'.$time,
-            //         'email' => 'guest-'.$time.'@gmail.com',
-            //         'password' => '12345678a@#',
-            //         'role' => GUEST_ROLE,
-            //         'confirmation_code' => null,
-            //         'email_verified_at' => now()
-            //     ]);
-
-            //     Auth::login($user, true);
-            // }
-
-            $user = Auth::user();
             $code = $request->input('id');
-            $event = $this->eventDetail->whereCode($code)->first();
-
-            $taskEvent = $this->taskEvent->find($event->task_event_id);
-            $task = $this->task->find($taskEvent->task_id);
-
             if (Auth::guest()) {
                 session()->put('guest', [
                     'id' => $code,
@@ -74,6 +54,15 @@ class Job extends Controller
                 notify()->error('Vui lòng login để hoàn thành.');
 
                 return redirect()->route('web.formLoginGuest');
+            }
+
+            $user = Auth::user();
+            $event = $this->eventDetail->whereCode($code)->first();
+            $taskEvent = $this->taskEvent->find($event->task_event_id);
+            $task = $this->task->find($taskEvent->task_id);
+
+            if ($user && empty($user->organization)) {
+                return redirect()->route('user.Info', ['code' => 'techfest2023']);
             }
 
             // Check NFT
@@ -159,6 +148,10 @@ class Job extends Controller
             $task = $this->task->find($taskId);
             $user = Auth::user();
 
+            if ($user && empty($user->organization)) {
+                return redirect()->route('user.Info', ['code' => 'techfest2023']);
+            }
+
             if (!$detail) {
                 notify()->error('Có lỗi xảy ra');
                 return redirect()->route('web.home');
@@ -239,7 +232,7 @@ class Job extends Controller
 
             if ($detail->is_question == false) {
                 if ($countJobOne <= 1) {
-                    session()->put('u-'.$user->id, 1);
+                    // session()->put('u-'.$user->id, 1);
 
                     return redirect()->route('job.getTravelGame', [
                         'task_id' => $taskId
@@ -290,9 +283,9 @@ class Job extends Controller
                 ->whereIn('task_event_id', $eventIds)
                 ->count();
 
-            if ($countJobOne <= 1 && empty($user->age)) {
-                session()->put('u-'.$user->id, 1);
-            }
+            // if ($countJobOne <= 1 && empty($user->age)) {
+            //     session()->put('u-'.$user->id, 1);
+            // }
 
             $travelSessions = [];
             $session = $this->taskEvent->whereTaskId($taskId)->whereType(TASK_SESSION)->first();
@@ -321,8 +314,9 @@ class Job extends Controller
             // Start
             // $user = Auth::user();
             $sessionNFT = session()->get('nft-'.$user->id);
-            $flag = session()->get('u-'.$user->id);
+            // $flag = session()->get('u-'.$user->id);
             $flagU = 0;
+            $flag = 0;
             if ($flag == 1) {
                 $flagU = 1;
             }

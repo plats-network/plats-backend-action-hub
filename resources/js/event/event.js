@@ -52,6 +52,19 @@ $(document).ready(function() {
     }
   }
 
+  if ($('#eInfo').length > 0) {
+    if ($('#eInfo').data('flag') == 1) {
+      $('#upInfo').modal();
+    }
+  }
+
+  
+  $(document).on('click', '.editUUser', function (event) {
+    if ($('#upInfo').length > 0) {
+      $('#upInfo').modal();
+    }
+  });
+
   $(document).on('click', '.see', function (event) {
     for(var i = 7; i < 70; i++) {
       if ($('#s-'+i).length > 0) {

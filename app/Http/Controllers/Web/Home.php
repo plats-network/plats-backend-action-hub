@@ -65,7 +65,7 @@ class Home extends Controller
             $user = Auth::user();
 
             if ($user && Str::contains($user->email, 'guest')) {
-                session()->put('u-'.$user->id, 1);
+                // session()->put('u-'.$user->id, 1);
             } 
         } catch (\Exception $e) {
             return redirect()->route('job.getTravelGame', [
