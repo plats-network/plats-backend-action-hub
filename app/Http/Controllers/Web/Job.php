@@ -341,7 +341,8 @@ class Job extends Controller
             'travelBooths' => $travelBooths,
             'url' => $sessionNFT && $sessionNFT['url'] ? $sessionNFT['url'] : null,
             'nft' => $sessionNFT && $sessionNFT['nft'] ? 1 : 0,
-            'flagU' => $flagU
+            'flagU' => $flagU,
+            'count' => $countJobOne
         ]);
     }
 

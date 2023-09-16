@@ -195,7 +195,7 @@ class Home extends Controller
             $eventSession = $this->eventModel->whereTaskId($task->id)->whereType(TASK_SESSION)->first();
             $eventBooth = $this->eventModel->whereTaskId($task->id)->whereType(TASK_BOOTH)->first();
             $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)->orderBy('sort', 'asc')->get();
-            $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)->orderBy('sort', 'asc')->get();
+            $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)->orderBy('id', 'asc')->get();
 
             foreach($sessions as $session) {
                 $travel = $this->travelGame->find($session->travel_game_id);

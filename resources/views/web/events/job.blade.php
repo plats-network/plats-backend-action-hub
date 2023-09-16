@@ -62,17 +62,16 @@
                                 ➤ Hãy thu thập càng nhiều MSQT cơ hội trúng thưởng càng cao. <br>
                                 (Scan 2 Session QR Code to receive 1 Lucky Code).
                             @else
-                                ➤ Quét QR Code tại các gian hàng (booths), quét 5 booths nhận được 1 Mã số quay thưởng (MSQT). <br>
-                                ➤ Riêng với Booth VIP NEAR, GFI, VBI thì chỉ cần quét 1 booth nhận được 1 MSQT. <br>
-                                ➤ Hãy thu thập càng nhiều MSQT cơ hội trúng thưởng càng cao. <br>
-                                (Scan 5 Booth QR Code to receive 1 Lucky Code).
+                                ➤ 100 bạn đầu tiên thăm quan trên 40/60 gian hàng (Booths) bằng cách quét QR Code tại gian hàng, để nhận được một thẻ Danh thiếp điện tử NFC hiện đại, đẳng cấp trị giá 300K VND. <br>
+                                ➤ Thời gian phát thưởng: 15h ngày 19/09/2023. <br>
+                                ➤ Địa điểm phát thưởng: Gian hàng Plats Network
                             @endif
                         </p>
 
                         <ul class="nav tab-job">
-                            <li class="nav-item b1">
+                            {{-- <li class="nav-item b1">
                                 <a class="nav-link {{$type == 0 ? 'active-job' : ''}}" href="{{route('web.jobEvent', ['id' => $id, 'type' => 0])}}">Sessions Game</a>
-                            </li>
+                            </li> --}}
                             <li class="nav-item b2">
                                 <a class="nav-link {{$type == 1 ? 'active-job' : ''}}" href="{{route('web.jobEvent', ['id' => $id, 'type' => 1])}}">Travel Game</a>
                             </li>
@@ -107,7 +106,7 @@
                     </div>
 
                     <div class="tab-content">
-                        <div class="tab-pane {{$type == '0' ? 'fade show in active' : ''}}">
+                        {{-- <div class="tab-pane {{$type == '0' ? 'fade show in active' : ''}}">
                             <div class="timeline-container">
                                 @foreach($groupSessions as  $itemDatas)
                                     <div id="day{{($loop->index+1)}}">&nbsp;</div>
@@ -123,7 +122,6 @@
                                                             {{Str::limit($item['name'], 50)}}
                                                         </p>
                                                     </div>
-                                                    {{-- <div class="item-detail {{$item['flag'] ? 'ac-color' : ''}}">{{Str::limit($item['desc'], 20)}}</div> --}}
                                                 </div>
                                                 @if ($item['date'])
                                                     <div class="item-timestamp">
@@ -135,7 +133,19 @@
                                     </ul>
                                 @endforeach
                             </div>
-                        </div>
+                        </div> --}}
+                        <style type="text/css">
+                            .d-none {
+                                display: none!important;
+                            }
+                            .see, .less {
+                                padding: 5px 20px;
+                                background: #177FE2;
+                                border-radius: 28px;
+                                color: #fff!important;
+                                cursor: pointer;
+                            }
+                        </style>
 
                         <div class="tab-pane {{$type == '1' ? 'fade show in active' : ''}}" id="step2" role="tabpanel" aria-labelledby="booth-tab">
                             <div class="timeline-container">
@@ -145,8 +155,8 @@
                                         {{$itemDatas && $itemDatas[0] ? $itemDatas[0]['travel_game_name'] : ''}}
                                     </h3>
                                     <ul class="tl">
-                                        @foreach($itemDatas as $item)
-                                            <li class="tl-item {{ $item['flag'] ? '' : 'dashed'}}">
+                                        @foreach($itemDatas as $k => $item)
+                                            <li id="s-{{$k}}" class="{{$k >= 7 ? 'd-none' : ''}}" class="tl-item {{ $item['flag'] ? '' : 'dashed'}}">
                                                 <div class="item-icon {{ $item['flag'] ? '' : 'not__active'}}"></div>
                                                 <div class="item-text">
                                                     <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">
@@ -154,7 +164,6 @@
                                                             {{Str::limit($item['name'], 50)}}
                                                         </p>
                                                     </div>
-                                                    {{-- <div class="item-detail {{$item['flag'] ? 'ac-color' : ''}}">{{Str::limit($item['desc'], 20)}}</div> --}}
                                                 </div>
                                                 @if ($item['date'])
                                                     <div class="item-timestamp">
@@ -165,6 +174,9 @@
                                         @endforeach
                                     </ul>
                                 @endforeach
+                                <div class="text-center">
+                                    <a class="btn btn-info see">See More</a>
+                                </div>
                             </div>
                         </div>
                     </div>

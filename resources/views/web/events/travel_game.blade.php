@@ -53,14 +53,15 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <a id="editInfo" href="#" style="color: red;">{{Str::contains($email, 'guest') ? 'Add' : 'Edit'}}</a>
+                                <a href="#" style="color: red;">Info</a>
+                                {{-- <a id="editInfo" href="#" style="color: red;">{{Str::contains($email, 'guest') ? 'Add' : 'Edit'}}</a> --}}
                             </td>
                         </tr>
                     </table>
                 </div>
                 <div class="event-info">
-                    <h3 style="padding-bottom: 0;">{{$event->name}}</h3>
-                    <img src="{{$event->banner_url}}" alt="{{$event->name}}">
+                    <h3 style="padding-bottom: 0;">CHƠI GAME NHẬN QUÀ</h3>
+                    {{-- <img src="{{$event->banner_url}}" alt="{{$event->name}}"> --}}
                     {{-- <div class="text-center" style="margin: 5px auto;">
                         <img style="width: 70%;" src="{{url('/')}}/events/prize.png" alt="{{$event->name}}">
                     </div> --}}
@@ -79,11 +80,10 @@
                     </div>
                 </div>
 
-                <ul class="nav" style="border-bottom: 1px solid #dee2e6;">
+                {{-- <ul class="nav" style="border-bottom: 1px solid #dee2e6;">
                   <li><a href="#" style="background-color: #3EA2FF; color: #fff;">Sessions Game</a></li>
-                  {{-- <li><a data-toggle="tab" href="#booth">Travel Game</a></li> --}}
-                </ul>
-                @foreach($travelSessions as $k => $session)
+                </ul> --}}
+                {{-- @foreach($travelSessions as $k => $session)
                     @php
                         $codes = $userCode->where('user_id', $userId)
                             ->where('travel_game_id', $session->id)
@@ -115,10 +115,9 @@
                             @endforeach
                         </p>
                     </div>
-                @endforeach
+                @endforeach --}}
 
                 <ul class="nav" style="border-bottom: 1px solid #dee2e6; margin-top: 20px;">
-                  {{-- <li><a data-toggle="tab" href="#sesion">Sessions Game</a></li> --}}
                   <li><a href="#" style="background-color: #3EA2FF; color: #fff;">Travel Game</a></li>
                 </ul>
                 @foreach($travelBooths as $booth)
@@ -136,21 +135,14 @@
                     @endphp
                     <div class="item" style="border-bottom: 0;">
                         <h3 class="text-center" style="display: none;">{{$booth->name}}</h3>
-                        <p><strong>Mã số quay thưởng (Lucky Code):</strong> <span class="fs-25">{{$codeBooths ? $codeBooths : '---'}}</span></p>
+                        <p><strong>Đứng vị trí thứ:</strong> <span class="fs-25">---</span></p>
+                        <p><strong>Thời gian phát thưởng:</strong> 15h ngày 19/09/2023</p>
                         <p>
                             <strong>Nhiệm vụ (Missions):</strong>
                             <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 1])}}">Click Here!</a>
                         </p>
-                        <p><strong>Thời gian quay thưởng (Time):</strong> {{dateFormat($booth->prize_at)}}</p>
-                        <p><strong>Địa điểm (Position):</strong> Hội trường chính (Main Stage)</p>
-                        <p><strong>Phần thưởng (Reward ):</strong></p>
-                        <p style="padding-left: 15px; line-height: 20px;">
-                            @foreach($aTests as $item)
-                                @if($item)
-                                    {!! '➤ '.$item.'<br>' !!}
-                                @endif
-                            @endforeach
-                        </p>
+                        <p><strong>Địa điểm phát thưởng: </strong> Gian hàng Plats Network</p>
+                        <p><strong>Bạn đã thăm quan: :</strong> {{$count}}/60 Gian hàng</p>
                     </div>
                 @endforeach
 
@@ -231,8 +223,8 @@
                 <div class="event-info" style="border-top: 0; margin-top: 15px;">
                     <div class="aaa mt-2">
                         Plats Network: Web 2.5 Event Platform.<br>
-                        Thăm quan gian hàng Plats Network, bạn có cơ hội tham gia các trò chơi vui nhộn với những phần quà hấp dẫn.<br>
-                        Games, Gifts, and Good Times Await at Plats Network's Booth!
+                        <p style="padding-left: 20px;line-height: 20px;color: #000;">➤ Thăm quan gian hàng Plats Network, tham gia các trò chơi vui nhộn với những phần quà hấp dẫn.</p>
+                        <p style="padding-left: 20px;line-height: 20px;color: #000;">➤ Games, Gifts and Good Times Await at Plats Network's Booth!</p>
                     </div>
                     <div class="app text-center">
                         <a href="https://apps.apple.com/us/app/plats/id1672212885" style="padding-right: 20px;" target="_blank">

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Game;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Event\{TaskEvent, EventUserTicket, UserCode};
+use App\Models\Event\{TaskEvent, EventUserTicket, UserCode, UserJoinEvent, TaskEventDetail};
 use App\Models\Game\{MiniGame};
 use Log;
 
@@ -15,6 +15,8 @@ class HomeController extends Controller
         private EventUserTicket $eventUserTicket,
         private UserCode $userCode,
         private MiniGame $miniGame,
+        private UserJoinEvent $userJoinEvent,
+        private TaskEventDetail $taskEventDetail,
     )
     {
         // code

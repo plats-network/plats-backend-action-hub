@@ -52,6 +52,24 @@ $(document).ready(function() {
     }
   }
 
+  $(document).on('click', '.see', function (event) {
+    for(var i = 7; i < 70; i++) {
+      if ($('#s-'+i).length > 0) {
+        $('#s-'+i).removeClass('d-none');
+      }
+    }
+    $(this).addClass('less').removeClass('see').text('See less');
+  });
+
+  $(document).on('click', '.less', function (event) {
+    for(var i = 7; i < 70; i++) {
+      if ($('#s-'+i).length > 0) {
+        $('#s-'+i).addClass('d-none');
+      }
+    }
+    $(this).removeClass('less').addClass('see').text('See more');
+  });
+
   $('.aws').on('click', function(e) {
     var id = $(this).data('id'),
       result = $(this).data('result'),

@@ -227,7 +227,7 @@
         </div>
     </div>
 
-    {{-- <div id="canvas"></div> --}}
+    <div id="canvas" data-logo="{{url('/')}}/events/qr_logo.svg"></div>
 
     {{--Modal Loading--}}
     <div class="modal fade" id="modalLoading" tabindex="-1" role="dialog" aria-labelledby="modal-default"
@@ -281,13 +281,15 @@
         var contentEditor2 = document.getElementById('sessions-description').value;
         var contentEditor3 = document.getElementById('booths-description').value;
 
+
+        // var logo = $('#canvas').data('logo');
         // const qrCode = new QRCodeStyling({
         //     width: 300,
         //     height: 300,
         //     margin: 10,
         //     type: "png",
-        //     data: "https://event.plats.network",
-        //     image: "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg",
+        //     data: "https://event.plats.network/c/techfest2023",
+        //     image: logo,
         //     dotsOptions: {
         //         color: "#333333",
         //         type: "extra-rounded"
@@ -302,7 +304,7 @@
         // });
 
         // qrCode.append(document.getElementById("canvas"));
-        // qrCode.download({ name: "qr", extension: "png" });
+        // qrCode.download({ name: "techfest_checkin", extension: "png" });
 
         const editor = new toastui.Editor({
             el: document.querySelector('#editor'),
