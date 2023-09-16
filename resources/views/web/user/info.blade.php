@@ -19,7 +19,7 @@
             font-size: 22px;
         }
     </style>
-    <section class="travel" id="eInfo" data-flag="{{$user->organization ? 0 : 1}}">
+    <section class="travel inffo" id="eInfo" data-flag="{{$user->organization ? 0 : 1}}">
         <div class="container">
             <div class="travel-content">
                 <div class="info">
