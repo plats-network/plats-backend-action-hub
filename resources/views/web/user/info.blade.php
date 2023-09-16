@@ -1,6 +1,8 @@
 @extends('web.layouts.event_app')
 
 @section('content')
+    @include('web.layouts.event')
+
     @php
         $userId = auth()->user()->id;
         $email = auth()->user()->email;
@@ -17,7 +19,7 @@
             font-size: 22px;
         }
     </style>
-    <section class="travel" id="eInfo" data-flag="{{$user->organization ? 0 : 1}}">
+    <section class="travel" style="padding: 10px 0;" id="eInfo" data-flag="{{$user->organization ? 0 : 1}}">
         <div class="container">
             <div class="travel-content">
                 <div class="info">
@@ -26,7 +28,7 @@
                         <tr>
                             <td>{{$user->name}}</td>
                             <td class="text-right">
-                                <a class="editUUser" style="color: red;">Edit</a>
+                                <a class="editUUser" style="color: #fff;padding: 5px 10px;background-color: #3EA2FF;">Edit</a>
                             </td>
                         </tr>
                         <tr>

@@ -53,7 +53,7 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <a href="{{route('user.Info', ['code' => 'techfest2023'])}}" style="color: red;">Info</a>
+                                <a href="{{route('user.Info', ['code' => 'techfest2023'])}}" style="color: #fff;padding: 5px 10px;background-color: #3EA2FF;">Info</a>
                                 {{-- <a id="editInfo" href="#" style="color: red;">{{Str::contains($email, 'guest') ? 'Add' : 'Edit'}}</a> --}}
                             </td>
                         </tr>
