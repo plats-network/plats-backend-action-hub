@@ -8,7 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Helpers\{BaseImage, DateHelper};
 use App\Services\UserService;
 use App\Models\{User as UserModel, Task};
-use App\Models\Event\{EventUserTicket, UserCode};
+use App\Models\Event\{EventUserTicket, UserCode, TaskEvent};
 use App\Http\Requests\Cws\{
     EditEmailRequest,
     EditInfoRequest,
@@ -26,6 +26,7 @@ class User extends Controller
         private UserService $userService,
         private UserModel $user,
         private Task $task,
+        private TaskEvent $taskEvent,
         private UserCode $userCode,
         private EventUserTicket $eventUserTicket,
     ) {
@@ -133,12 +134,23 @@ class User extends Controller
     public function listMax(Request $request, $taskId)
     {
         try {
-            $event = $this->
+            $ids = $this->taskEvent->whereTaskId($taskId)
+                ->pluck('id')->toArray();
+
+            $userCodes = $this->userCode
+                ->distinct()
+                ->whereIn('task_event_id', $ids)
+                ->orderBy('number_code', 'asc')
+                ->get();
+            dd($userCodes);
+
         } catch (\Exception $e) {
             abort(404);
         }
 
-        return view
+        return view('cws.users.listCodes', [
+            'userCodes' => $userCodes
+        ]);
     }
 
     // Get setting client user

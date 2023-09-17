@@ -27,13 +27,30 @@
             color: #fff;
             border-radius: 20px;
         }
+
+        .dd {
+            font-size: 18px;
+            color: #000;
+            line-height: 22px;
+            padding-bottom: 10px;
+        }
+
+        .ddd {
+            font-size: 16px;
+            text-align: left;
+            line-height: 20px;
+            color: red;
+        }
     </style>
     <section class="travel inffo" id="eInfo" data-flag="{{$user->organization ? 0 : 1}}">
         <div class="container">
             <div class="travel-content">
                 <div class="info">
                     <div class="text-center m-banner">
-                        <img src="https://d10yumrfxocri1.cloudfront.net/public/images/202309/45c7919b9d40481e1151-9cd10964e372401cb4693953745837dc_6115974007.jpg">
+                        <img src="{{url('/')}}/events/banner_techfest.png">
+                        <h3 style="font-size: 29px;padding-top: 12px;">LỄ KHAI MẠC TECHFEST HAIPHONG</h3>
+                        <p class="dd"><strong>Nhiệt liệt chào mừng các vị khách quý đến với Lễ khai mạc Techfest Haiphong 2023</strong></p>
+                        <p class="ddd">Quý khách vui lòng để lại thông tin để BTC được đón tiếp chu đáo:</p>
                     </div>
                     {{-- <div class="row" style="margin-top: 100px; margin-bottom: 30px;">
                         <div class="col-6">
