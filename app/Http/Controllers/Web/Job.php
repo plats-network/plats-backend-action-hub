@@ -65,6 +65,23 @@ class Job extends Controller
             $taskEvent = $this->taskEvent->find($event->task_event_id);
             $task = $this->task->find($taskEvent->task_id);
 
+            $checkTicket = $this->eventUserTicket
+                ->whereUserId($user->id)
+                ->whereTaskId($taskEvent->task_id)
+                ->exists();
+
+            if (!$checkTicket) {
+                $this->eventUserTicket->create([
+                    'user_id' => $user->id,
+                    'task_id' => $taskEvent->task_id,
+                    'name' => $user->name,
+                    'phone' => $user->phone ?? '098432323',
+                    'email' => $user->email,
+                    'is_checkin' => true,
+                    'hash_code' => Str::random(32)
+                ]);
+            }
+
             if ($user && empty($user->organization)) {
                 return redirect()->route('user.Info', ['code' => 'techfest2023']);
             }

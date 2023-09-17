@@ -22,14 +22,12 @@
                             <tr>
                                 <th>No</th>
                                 <th>Time Checkin</th>
-                                <th>
-                                    Họ Tên <br>
-                                    Đơn vị công tác <br>
-                                    Chức vụ <br>
-                                    Email <br>
-                                    Số điện thoại
-                                </th>
-                                <th>Total booth done</th>
+                                <th>Họ Tên</th>
+                                <th>Đơn vị công tác</th>
+                                <th>Chức vụ</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Booth done</th>
                                 <th>List booth</th>
                                 <th>Vị trí hiện tại</th>
                             </tr>
@@ -49,7 +47,9 @@
                                         {{optional($userCode->user)->updated_at}}
                                     </td>
                                     <td>
-                                        {{optional($userCode->user)->name}}<br>
+                                        {{optional($userCode->user)->name}}
+                                    </td>
+                                    <td>
                                         @if ($a == 1)
                                             {{'Cơ quan nhà nước/ Chính phủ'}}
                                         @elseif ($a == 2)
@@ -57,9 +57,14 @@
                                         @else 
                                             {{'Cá nhân khác'}}
                                         @endif
-                                        <br>
-                                        {{optional($userCode->user)->name}}<br>
-                                        {{optional($userCode->user)->email}}<br>
+                                    </td>
+                                    <td>
+                                        {{optional($userCode->user)->name}}
+                                    </td>
+                                    <td>
+                                        {{optional($userCode->user)->email}}
+                                    </td>
+                                    <td>
                                         {{optional($userCode->user)->phone}}
                                     </td>
                                     <td>{{countJob($userId, $eventId, $travelId)}}</td>
