@@ -32,7 +32,10 @@
         <div class="container">
             <div class="travel-content">
                 <div class="info">
-                    <div class="row" style="margin-top: 100px; margin-bottom: 30px;">
+                    <div class="text-center">
+                        <img src="https://d10yumrfxocri1.cloudfront.net/public/images/202309/45c7919b9d40481e1151-9cd10964e372401cb4693953745837dc_6115974007.jpg">
+                    </div>
+                    {{-- <div class="row" style="margin-top: 100px; margin-bottom: 30px;">
                         <div class="col-6">
                             <img src="{{url('/')}}/events/star.png">
                         </div>
@@ -45,7 +48,7 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
+                    <hr> --}}
                     <h3 class="title">Thông tin tài khoản</h3>
                     <table class="table">
                         <tr>

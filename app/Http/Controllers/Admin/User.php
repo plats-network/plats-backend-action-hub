@@ -7,8 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Helpers\{BaseImage, DateHelper};
 use App\Services\UserService;
-use App\Models\{User as UserModel};
-use App\Models\Event\EventUserTicket;
+use App\Models\{User as UserModel, Task};
+use App\Models\Event\{EventUserTicket, UserCode};
 use App\Http\Requests\Cws\{
     EditEmailRequest,
     EditInfoRequest,
@@ -25,6 +25,8 @@ class User extends Controller
     public function __construct(
         private UserService $userService,
         private UserModel $user,
+        private Task $task,
+        private UserCode $userCode,
         private EventUserTicket $eventUserTicket,
     ) {
         // Code
@@ -126,6 +128,17 @@ class User extends Controller
             'users' => $users,
             'id' => $id
         ]);
+    }
+
+    public function listMax(Request $request, $taskId)
+    {
+        try {
+            $event = $this->
+        } catch (\Exception $e) {
+            abort(404);
+        }
+
+        return view
     }
 
     // Get setting client user
