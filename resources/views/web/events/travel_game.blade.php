@@ -68,8 +68,8 @@
                         <img style="width: 70%;" src="{{url('/')}}/events/prize.png" alt="{{$event->name}}">
                     </div>
                     <div class="aaa mt-2" style="margin-top: 15px; line-height: 20px;">
+                        <p style="padding-top: 10px; color: red!important;line-height: 20px;padding-bottom: 7px;">Có 60 gian hàng công nghệ ở Tầng 4 Sheraton và 41 gian hàng OCOP ở Tầng 1 Vincom Plaza</p>
                         Luật chơi: 200 bạn đầu tiên thăm quan trên 80/101 gian hàng (Booths) bằng cách quét QR Code <span id="seeMore1" style="display: none;"> tại gian hàng, để nhận được một phần quà là 1 thẻ Danh thiếp điện tử NFC hiện đại, đẳng cấp trị giá 300K VND, hoặc 1 Voucher mua hàng giá trị tại các gian hàng.</span>
-                        {{-- <p class="pp" style="padding-top: 10px; color: red!important;">➤ Không nên dùng Zalo để quét QR code, nên quét từ Camera</p>
                         <div id="seeMore1" style="display: none;">
                             <p class="pp">➤ Có 3 game là "Travel Game", "Session game day 1" và "Session game day 2" độc lập nhau. Bạn có thể tham gia 1 hoặc cả 3 game.</p>
                             <p class="pp">➤ Thu thập Mã số quay thưởng (MSQT) để tham gia vòng quay may mắn.</p>
@@ -77,7 +77,7 @@
                             <p class="pp">➤ Riêng với Travel Game sau khi quét mã QR tại bất kỳ Booth nào sẽ hiển thị 1 của sổ thông báo cần Claim bộ NFT ở các Booth để hoàn thành nhiệm vụ, người tham gia cần đăng nhập bằng các tài khoản mạng xã hội như Facebook, Google hoặc Apple Icloud để được tặng ví lưu trữ NFT và Claim NFT. Việc đăng nhập này chỉ thực hiện 1 lần duy nhất.</p>
                             <p class="pp" style="padding-bottom: 10px;">➤ Tại giờ quay thưởng vào cuối ngày, nếu bạn trúng thưởng mà không có mặt sẽ bị loại và giành cơ hội cho người khác.</p>
                             Chi tiết từng Game ở bên dưới.
-                        </div> --}}
+                        </div>
                         <p class="text-center" id="see1" style="cursor: pointer;">Read more</p>
                     </div>
                 </div>

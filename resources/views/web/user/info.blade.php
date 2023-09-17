@@ -6,6 +6,11 @@
     @php
         $userId = optional(auth()->user())->id;
         $email = optional(auth()->user())->email;
+        $roles = [
+            1 => 'Cơ quan nhà nước-Chính phủ/State Agency',
+            2 => 'Media - đối tác truyền thông/Media Partner',
+            3 => 'Cá nhân khác/Enterprise - Individual'
+        ];
     @endphp
 
     <style type="text/css">
@@ -71,13 +76,14 @@
                                 @php
                                     $a = $user ? (int) $user->organization : 0;
                                 @endphp
-                                @if ($a == 1)
+                                {{$roles[$a]}}
+                                {{-- @if ($a == 1)
                                     {{'Cơ quan nhà nước - Chính phủ/State Agency'}}
                                 @elseif ($a == 2)
                                     {{'Media - đối tác truyền thông/Media Partner'}}
                                 @elseif($a == 3) 
                                     {{'Cá nhân khác/Enterprise - Individual'}}
-                                @endif
+                                @endif --}}
                             <td>
                         </tr>
                         <tr>
@@ -105,14 +111,6 @@
                 text-align: right;
             }
         </style>
-
-        @php
-            $roles = [
-                1 => 'Cơ quan nhà nước/ Chính phủ',
-                2 => 'Media - đối tác truyền thông',
-                3 => 'Cá nhân khác'
-            ];
-        @endphp
 
         <div class="modal-dialog">
             <div class="modal-content">
