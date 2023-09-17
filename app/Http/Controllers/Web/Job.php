@@ -240,12 +240,15 @@ class Job extends Controller
                 } else {
                     // Gen code
                     $this->taskService->genCodeByUser($user->id, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
+                    return redirect()->route('job.getTravelGame', [
+                        'task_id' => $taskId
+                    ]);
 
                     // notify()->success('Scan QR code success');
-                    return redirect()->route('web.jobEvent', [
-                        'id' => $task->code,
-                        'type' => $taskEvent->type
-                    ]);
+                    // return redirect()->route('web.jobEvent', [
+                    //     'id' => $task->code,
+                    //     'type' => $taskEvent->type
+                    // ]);
                 }
             }
 
