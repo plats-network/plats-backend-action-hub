@@ -44,13 +44,11 @@ class UserController extends Controller
     public function info(Request $request, $code)
     {
         $title = Auth::guest() ? "Checkin sự kiện" : 'Cập nhật thông tin';
-        // if (Auth::guest()) {
-        //     return redirect()->route('web.formLoginGuest');
-        // }
 
         return view('web.user.info', [
             'user' => Auth::user(),
-            'title' => $title
+            'title' => $title,
+            'flag' => Auth::guest() ? 0 : 1,
         ]);
     }
 

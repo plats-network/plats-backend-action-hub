@@ -52,7 +52,7 @@
                         <p class="dd"><strong>Nhiệt liệt chào mừng các vị khách quý đến với Lễ khai mạc Techfest Haiphong 2023</strong></p>
                         {{-- <p class="ddd">Quý khách vui lòng để lại thông tin để BTC được đón tiếp chu đáo:</p> --}}
                     </div>
-                    <h3 class="title">{{$title}}</h3>
+                    <h3 class="title">Thông tin tài khoản</h3>
                     <table class="table">
                         <tr>
                             <td width="80%"><strong>Họ Tên/Name:</strong> {{$user ? $user->name : ''}}</td>
@@ -117,8 +117,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" style="font-size: 25px; text-align: center;">Cập nhật thông tin</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5 class="modal-title" style="font-size: 25px; text-align: center;">{{$title}}</h5>
+                    @if ($flag)
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    @endif
                 </div>
                 <div class="modal-body">
                     <form id="infoForm" method="POST" action="{{route('web.editEmail')}}">
