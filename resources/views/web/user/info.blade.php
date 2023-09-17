@@ -50,26 +50,12 @@
                         <img src="{{url('/')}}/events/banner_techfest.png">
                         <h3 style="font-size: 29px;padding-top: 12px;">LỄ KHAI MẠC TECHFEST HAIPHONG</h3>
                         <p class="dd"><strong>Nhiệt liệt chào mừng các vị khách quý đến với Lễ khai mạc Techfest Haiphong 2023</strong></p>
-                        <p class="ddd">Quý khách vui lòng để lại thông tin để BTC được đón tiếp chu đáo:</p>
+                        {{-- <p class="ddd">Quý khách vui lòng để lại thông tin để BTC được đón tiếp chu đáo:</p> --}}
                     </div>
-                    {{-- <div class="row" style="margin-top: 100px; margin-bottom: 30px;">
-                        <div class="col-6">
-                            <img src="{{url('/')}}/events/star.png">
-                        </div>
-                        <div class="col-6">
-                            <p style="color: #000;line-height: 20px;">Tham gia ngay Travel Game với những phần thưởng hấp dẫn.</p>
-                            <div class="text-center">
-                                <a class="go" href="{{route('job.getTravelGame', [
-                                    'task_id' => '9a23915f-07ae-4278-ba9d-bb8f11b46663'
-                                    ])}}">Go</a>
-                            </div>
-                        </div>
-                    </div>
-                    <hr> --}}
                     <h3 class="title">Thông tin tài khoản</h3>
                     <table class="table">
                         <tr>
-                            <td width="80%"><strong>Họ và Tên:</strong> {{$user->name}}</td>
+                            <td width="80%"><strong>Họ Tên/Name:</strong> {{$user->name}}</td>
                             <td class="text-right" width="20%">
                                 <a class="editUUser" style="color: #fff;padding: 5px 10px;background-color: #3EA2FF;">Edit</a>
                             </td>
@@ -81,24 +67,24 @@
                             <td colspan="2"><strong>Phone: </strong>{{$user->phone}}<td>
                         </tr>
                         <tr>
-                            <td colspan="2"><strong>Đơn vị công tác: </strong>
+                            <td colspan="2"><strong>Đơn vị công tác/Organization type: </strong>
                                 @php
                                     $a = (int) $user->organization;
                                 @endphp
                                 @if ($a == 1)
-                                    {{'Cơ quan nhà nước/ Chính phủ'}}
+                                    {{'Cơ quan nhà nước - Chính phủ/State Agency'}}
                                 @elseif ($a == 2)
-                                    {{'Media - đối tác truyền thông'}}
+                                    {{'Media - đối tác truyền thông/Media Partner'}}
                                 @else 
-                                    {{'Cá nhân khác'}}
+                                    {{'Cá nhân khác/Enterprise - Individual'}}
                                 @endif
                             <td>
                         </tr>
                         <tr>
-                            <td colspan="2"><strong>Tên Đơn vị/ Tổ chức/ Trường học: </strong>{{$user->company}}<td>
+                            <td colspan="2"><strong>Tên Đơn vị-Tổ chức-Trường học/Organization: </strong>{{$user->company}}<td>
                         </tr>
                         <tr>
-                            <td colspan="2"><strong>Chức vụ: </strong>{{$user->position}}<td>
+                            <td colspan="2"><strong>Chức vụ/Position: </strong>{{$user->position}}<td>
                         </tr>
                     </table>
                 </div>
@@ -140,7 +126,7 @@
                         <input type="hidden" name="user_type" value="2">
                         <div class="row" style="display: block;">
                             <div class="col-md-12" style="margin-bottom: 15px;">
-                                <label class="form-label">Họ và Tên <span class="text-danger">*</span></label>
+                                <label class="form-label">Họ Tên/Name <span class="text-danger">*</span></label>
                                 <input
                                     type="text"
                                     class="form-control"
@@ -149,7 +135,7 @@
                                     required>
                             </div>
                             <div class="col-md-12" style="margin-bottom: 15px;">
-                                <label class="form-label">Đơn vị công tác <span class="text-danger">*</span></label>
+                                <label class="form-label">Đơn vị công tác/Organization type: <span class="text-danger">*</span></label>
                                 <select class="form-control" name="organization">
                                     @foreach($roles as $k => $v)
                                         <option
@@ -161,7 +147,7 @@
                                 </select>
                             </div>
                             <div class="col-md-12" style="margin-bottom: 15px;">
-                                <label class="form-label">Tên Đơn vị/ Tổ chức/ Trường học: <span class="text-danger">*</span></label>
+                                <label class="form-label">Tên Đơn vị-Tổ chức-Trường học/Organization: <span class="text-danger">*</span></label>
                                 <input
                                     type="text"
                                     class="form-control"
@@ -171,7 +157,7 @@
                             </div>
                             
                             <div class="col-md-12" style="margin-bottom: 15px;">
-                                <label class="form-label">Chức vụ <span class="text-danger">*</span></label>
+                                <label class="form-label">Chức vụ/Position: <span class="text-danger">*</span></label>
                                 <input
                                     type="text"
                                     class="form-control"
