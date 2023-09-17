@@ -69,10 +69,10 @@ Route::middleware(['user_event'])->group(function ($r) {
     // remove pop ntf
     $r->get('api/remove-nft', [Job::class, 'removeNft'])->name('nft.remove');
     $r->get('up/vip', [UserController::class, 'upVip'])->name('u.Vip');
-
-    // User Info
-    $r->get('/c/{code}', [UserController::class, 'info'])->name('user.Info');
 });
+
+Route::post('editEmail', [UserController::class, 'editEmail'])->name('web.editEmail');
+Route::get('/c/{code}', [UserController::class, 'info'])->name('user.Info');
 
 Route::get('/', [Home::class, 'index'])->name('web.home');
 Route::get('event-lists', [Home::class, 'events'])->name('web.events');

@@ -47,13 +47,17 @@ class Job extends Controller
         try {
             $code = $request->input('id');
             if (Auth::guest()) {
-                session()->put('guest', [
-                    'id' => $code,
-                    'type' => 'job'
+                return redirect()->route('user.Info', [
+                    'code' => 'techfest2023'
                 ]);
-                notify()->error('Vui lòng login để hoàn thành.');
 
-                return redirect()->route('web.formLoginGuest');
+                // session()->put('guest', [
+                //     'id' => $code,
+                //     'type' => 'job'
+                // ]);
+                // notify()->error('Vui lòng login để hoàn thành.');
+
+                // return redirect()->route('web.formLoginGuest');
             }
 
             $user = Auth::user();

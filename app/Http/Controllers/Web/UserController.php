@@ -43,54 +43,74 @@ class UserController extends Controller
 
     public function info(Request $request, $code)
     {
-        if (Auth::guest()) {
-            return redirect()->route('web.formLoginGuest');
-        }
+        $title = Auth::guest() ? "Checkin sự kiện" : 'Cập nhật thông tin';
+        // if (Auth::guest()) {
+        //     return redirect()->route('web.formLoginGuest');
+        // }
 
         return view('web.user.info', [
-            'user' => Auth::user()
+            'user' => Auth::user(),
+            'title' => $title
         ]);
     }
 
     public function editEmail(Request $request)
     {
         try {
-            $user = Auth::user();
-            // $taskId = $request->input('task_id');
             $email = Str::lower($request->input('email'));
             $name = $request->input('name');
             $type = $request->input('user_type');
-
             $oldUser = User::whereRaw('lower(email) = ? ', [$email])->first();
 
-            if ($type && $type == 2) {
-                $pInfo = [
+            if (Auth::guest() && !$oldUser) {
+                $user = User::create([
                     'name' => $name,
+                    'email' => $email,
                     'phone' => $request->input('phone'),
                     'age' => random_int(20, 60),
                     'position' => $request->input('position'),
                     'organization' => $request->input('organization'),
                     'company' => $request->input('company'),
-                ];
+                    'password' => '123456a@',
+                    'confirmation_code' => null,
+                    'role' => GUEST_ROLE,
+                    'email_verified_at' => now()
+                ]);
 
-                if ($user->email != $email && !$oldUser) {
-                    $pInfo = array_merge($pInfo, ['email' => $email]);
+                Auth::login($user, true);
+                notify()->success('Checkin successfully');
+            } else {
+                Auth::login($oldUser, true);
+
+                $user = Auth::user();
+                if ($type && $type == 2) {
+                    $pInfo = [
+                        'name' => $name,
+                        'phone' => $request->input('phone'),
+                        'age' => random_int(20, 60),
+                        'position' => $request->input('position'),
+                        'organization' => $request->input('organization'),
+                        'company' => $request->input('company'),
+                    ];
+
+                    if ($user->email != $email && !$oldUser) {
+                        $pInfo = array_merge($pInfo, ['email' => $email]);
+                        $user->update($pInfo);
+                    }
                 }
-                // if (session()->get('u-'.$user->id)) {
-                //     session()->forget('u-'.$user->id);
-                // }
-                $user->update($pInfo);
-            }
 
-            if ($type && $type == 1) {
-                $pInfo = ['name' => $name];
+                if ($type && $type == 1) {
+                    $pInfo = ['name' => $name];
 
-                if ($user->email != $email && !$oldUser) {
-                    $pInfo = array_merge($pInfo, ['email' => $email]);
+                    if ($user->email != $email && !$oldUser) {
+                        $pInfo = array_merge($pInfo, ['email' => $email]);
+                    }
+
+                    $user->update($pInfo);
                 }
-
-                $user->update($pInfo);
+                notify()->success('Update info successfully');
             }
+            $user = Auth::user();
 
             // TODO: Event Apac 2023
             // $oldId = optional($oldUser)->id;
@@ -128,9 +148,9 @@ class UserController extends Controller
             //     notify()->success('Update email successfully');
             // }
 
-            if (session()->get('u-'.$user->id)) {
-                session()->forget('u-'.$user->id);
-            }
+            // if (session()->get('u-'.$user->id)) {
+            //     session()->forget('u-'.$user->id);
+            // }
             
             // if ($ticket) {
             //     $tt = $this->ticket
@@ -145,12 +165,10 @@ class UserController extends Controller
             // End Event Apac 2023
         } catch (\Exception $e) {
             notify()->error('Lỗi: '.$e->getMessage());
-            return redirect()->route('job.getTravelGame', [
-                'task_id' => $taskId
-            ]);
+
+            return redirect()->route('web.home');
         }
 
-        notify()->success('Update info successfully');
         return redirect()->route('user.Info', [
             'code' => 'techfest2023'
         ]);
@@ -166,7 +184,6 @@ class UserController extends Controller
             $user->update(['email' => $email]);
             notify()->success('Update email successfully');
         } catch (\Exception $e) {
-            dd($e->getMessage());
             return redirect()->route('job.getTravelGame', [
                 'task_id' => '9a131bf1-d41a-4412-a075-599e97bf6dcb'
             ]);

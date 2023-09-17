@@ -4,8 +4,8 @@
     {{-- @include('web.layouts.event') --}}
 
     @php
-        $userId = auth()->user()->id;
-        $email = auth()->user()->email;
+        $userId = optional(auth()->user())->id;
+        $email = optional(auth()->user())->email;
     @endphp
 
     <style type="text/css">
@@ -42,7 +42,7 @@
             color: red;
         }
     </style>
-    <section class="travel inffo" id="eInfo" data-flag="{{$user->organization ? 0 : 1}}">
+    <section class="travel inffo" id="eInfo" data-flag="{{($user && $user->organization) || !auth()->guest() ? 0 : 1}}">
         <div class="container">
             <div class="travel-content">
                 <div class="info">
@@ -52,39 +52,39 @@
                         <p class="dd"><strong>Nhiệt liệt chào mừng các vị khách quý đến với Lễ khai mạc Techfest Haiphong 2023</strong></p>
                         {{-- <p class="ddd">Quý khách vui lòng để lại thông tin để BTC được đón tiếp chu đáo:</p> --}}
                     </div>
-                    <h3 class="title">Thông tin tài khoản</h3>
+                    <h3 class="title">{{$title}}</h3>
                     <table class="table">
                         <tr>
-                            <td width="80%"><strong>Họ Tên/Name:</strong> {{$user->name}}</td>
+                            <td width="80%"><strong>Họ Tên/Name:</strong> {{$user ? $user->name : ''}}</td>
                             <td class="text-right" width="20%">
                                 <a class="editUUser" style="color: #fff;padding: 5px 10px;background-color: #3EA2FF;">Edit</a>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2"><strong>Email: </strong>{{$email}}<td>
+                            <td colspan="2"><strong>Email: </strong>{{$user ? $email : ''}}<td>
                         </tr>
                         <tr>
-                            <td colspan="2"><strong>Phone: </strong>{{$user->phone}}<td>
+                            <td colspan="2"><strong>Phone: </strong>{{$user ? $user->phone : ''}}<td>
                         </tr>
                         <tr>
                             <td colspan="2"><strong>Đơn vị công tác/Organization type: </strong>
                                 @php
-                                    $a = (int) $user->organization;
+                                    $a = $user ? (int) $user->organization : 0;
                                 @endphp
                                 @if ($a == 1)
                                     {{'Cơ quan nhà nước - Chính phủ/State Agency'}}
                                 @elseif ($a == 2)
                                     {{'Media - đối tác truyền thông/Media Partner'}}
-                                @else 
+                                @elseif($a == 3) 
                                     {{'Cá nhân khác/Enterprise - Individual'}}
                                 @endif
                             <td>
                         </tr>
                         <tr>
-                            <td colspan="2"><strong>Tên Đơn vị-Tổ chức-Trường học/Organization: </strong>{{$user->company}}<td>
+                            <td colspan="2"><strong>Tên Đơn vị-Tổ chức-Trường học/Organization: </strong>{{$user ? $user->company : ''}}<td>
                         </tr>
                         <tr>
-                            <td colspan="2"><strong>Chức vụ/Position: </strong>{{$user->position}}<td>
+                            <td colspan="2"><strong>Chức vụ/Position: </strong>{{$user ? $user->position : ''}}<td>
                         </tr>
                     </table>
                 </div>
@@ -140,7 +140,7 @@
                                     @foreach($roles as $k => $v)
                                         <option
                                             value="{{ $k }}"
-                                            {{ (int)$user->organization == $k ? 'selected="selected"' : '' }}>
+                                            {{ $user && (int)$user->organization == $k ? 'selected="selected"' : '' }}>
                                             {{ $v }}
                                         </option>    
                                     @endforeach
