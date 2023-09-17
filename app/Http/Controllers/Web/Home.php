@@ -13,6 +13,7 @@ use App\Models\Event\{
     TaskEventDetail,
     UserEventLike,
     UserJoinEvent,
+    UserCode,
 };
 use App\Services\Admin\{
     EventService,
@@ -34,6 +35,7 @@ class Home extends Controller
         private EventService $eventService,
         private TaskService $taskService,
         private TravelGame $travelGame,
+        private UserCode $userCode,
     ) {}
 
     public function index(Request $request)
@@ -189,7 +191,8 @@ class Home extends Controller
             $sessionNFT = session()->get('nft-'.$user->id);
 
             if (!$task) {
-                $this->redirectPath();
+                notify()->error('Event not found!');
+                return redirect()->route('web.home');
             }
 
             $eventSession = $this->eventModel->whereTaskId($task->id)->whereType(TASK_SESSION)->first();
@@ -248,6 +251,16 @@ class Home extends Controller
             foreach($boothDatas as $item) {
                 $groupBooths[$item['travel_game_id']][] = $item;
             }
+
+            $eventIds = $this->eventModel->whereTaskId($task->id)->pluck('id')->toArray();
+            $count = $this->taskDone
+                ->whereUserId($user->id)
+                ->whereIn('task_event_id', $eventIds)
+                ->count();
+            $maxCode = $this->userCode
+                ->whereUserId($user->id)
+                ->whereIn('task_event_id', $eventIds)
+                ->max('number_code');
         } catch (\Exception $e) {
             notify()->error('Sự kiện không tồn tại.');
             return redirect()->route('web.home');
@@ -259,7 +272,9 @@ class Home extends Controller
             'task_id' => $task->id,
             'id' => $id,
             'url' => $sessionNFT && $sessionNFT['url'] ? $sessionNFT['url'] : null,
-            'nft' => $sessionNFT && $sessionNFT['nft'] ? 1 : 0
+            'nft' => $sessionNFT && $sessionNFT['nft'] ? 1 : 0,
+            'count' => $count,
+            'maxCode' => $maxCode,
         ]);
     }
 

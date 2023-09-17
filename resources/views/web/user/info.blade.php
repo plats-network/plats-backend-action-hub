@@ -1,7 +1,7 @@
 @extends('web.layouts.event_app')
 
 @section('content')
-    @include('web.layouts.event')
+    {{-- @include('web.layouts.event') --}}
 
     @php
         $userId = auth()->user()->id;
@@ -18,16 +18,39 @@
             margin-bottom: 10px;
             font-size: 22px;
         }
+
+        .go {
+            margin-top: 19px;
+            display: inline-block;
+            padding: 7px 50px;
+            background: #3EA2FF;
+            color: #fff;
+            border-radius: 20px;
+        }
     </style>
     <section class="travel inffo" id="eInfo" data-flag="{{$user->organization ? 0 : 1}}">
         <div class="container">
             <div class="travel-content">
                 <div class="info">
+                    <div class="row" style="margin-top: 100px; margin-bottom: 30px;">
+                        <div class="col-6">
+                            <img src="{{url('/')}}/events/star.png">
+                        </div>
+                        <div class="col-6">
+                            <p style="color: #000;line-height: 20px;">Tham gia ngay Travel Game với những phần thưởng hấp dẫn.</p>
+                            <div class="text-center">
+                                <a class="go" href="{{route('job.getTravelGame', [
+                                    'task_id' => '9a23915f-07ae-4278-ba9d-bb8f11b46663'
+                                    ])}}">Go</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
                     <h3 class="title">Thông tin tài khoản</h3>
                     <table class="table">
                         <tr>
-                            <td>{{$user->name}}</td>
-                            <td class="text-right">
+                            <td width="80%"><strong>Họ và Tên:</strong> {{$user->name}}</td>
+                            <td class="text-right" width="20%">
                                 <a class="editUUser" style="color: #fff;padding: 5px 10px;background-color: #3EA2FF;">Edit</a>
                             </td>
                         </tr>
@@ -50,6 +73,9 @@
                                     {{'Cá nhân khác'}}
                                 @endif
                             <td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>Tên Đơn vị/ Tổ chức/ Trường học: </strong>{{$user->company}}<td>
                         </tr>
                         <tr>
                             <td colspan="2"><strong>Chức vụ: </strong>{{$user->position}}<td>
@@ -114,6 +140,16 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-md-12" style="margin-bottom: 15px;">
+                                <label class="form-label">Tên Đơn vị/ Tổ chức/ Trường học: <span class="text-danger">*</span></label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="company"
+                                    value="{{$user->company ?? ''}}"
+                                    required>
+                            </div>
+                            
                             <div class="col-md-12" style="margin-bottom: 15px;">
                                 <label class="form-label">Chức vụ <span class="text-danger">*</span></label>
                                 <input

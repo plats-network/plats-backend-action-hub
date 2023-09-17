@@ -93,9 +93,9 @@ class TaskService extends BaseService
                 ->where('travel_game_id', $tId)
                 ->where('is_code', false)
                 ->where('is_important', false)
-                ->limit(2);
+                ->limit(40);
 
-            if (count($codeSessions->pluck('id')->toArray()) == 2) {
+            if (count($codeSessions->pluck('id')->toArray()) == 40) {
                 $this->userCode->create([
                     'user_id' => $userId,
                     'task_event_id' => $sEventId,
@@ -123,9 +123,9 @@ class TaskService extends BaseService
                 ->where('travel_game_id', $travelId)
                 ->where('is_code', false)
                 ->where('is_important', false)
-                ->limit(5);
+                ->limit(40);
 
-            if (count($codeBooths->pluck('id')->toArray()) == 5) {
+            if (count($codeBooths->pluck('id')->toArray()) == 40) {
                 $this->userCode->create([
                     'user_id' => $userId,
                     'task_event_id' => $bEventId,

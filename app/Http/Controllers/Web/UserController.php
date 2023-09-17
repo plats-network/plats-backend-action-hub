@@ -70,6 +70,7 @@ class UserController extends Controller
                     'age' => random_int(20, 60),
                     'position' => $request->input('position'),
                     'organization' => $request->input('organization'),
+                    'company' => $request->input('company'),
                 ];
 
                 if ($user->email != $email && !$oldUser) {

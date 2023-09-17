@@ -56,15 +56,18 @@
                             <a class="back" href="{{route('job.getTravelGame', ['task_id' => $task_id, 'type' => $type])}}">{{'< Back to Event!'}}</a>
                         </p>
                         <p class="desc-prize">
-                            <strong style="color: red;">➤ Không nên dùng Zalo để quét QR code, nên quét từ Camera</strong><br>
+                            {{-- <strong style="color: red;">➤ Không nên dùng Zalo để quét QR code, nên quét từ Camera</strong><br> --}}
                             @if ($type == 0)
                                 ➤ Quét QR code sau mỗi phiên thảo luận tại hội trường chính và hội trường builder, quét 2 phiên thảo luận nhận được 1 Mã số quay thưởng (MSQT).<br>
                                 ➤ Hãy thu thập càng nhiều MSQT cơ hội trúng thưởng càng cao. <br>
                                 (Scan 2 Session QR Code to receive 1 Lucky Code).
                             @else
-                                ➤ 100 bạn đầu tiên thăm quan trên 40/60 gian hàng (Booths) bằng cách quét QR Code tại gian hàng, để nhận được một thẻ Danh thiếp điện tử NFC hiện đại, đẳng cấp trị giá 300K VND. <br>
-                                ➤ Thời gian phát thưởng: 15h ngày 19/09/2023. <br>
-                                ➤ Địa điểm phát thưởng: Gian hàng Plats Network
+                                ➤ Luật chơi: 100 bạn đầu tiên thăm quan trên 40/60 gian hàng (Booths) bằng cách quét QR Code tại gian hàng, để nhận được một thẻ Danh thiếp điện tử NFC hiện đại, đẳng cấp trị giá 300K VND."<br>
+                                ➤ Thời gian phát thưởng: 15h ngày 19/09/2023.<br>
+                                ➤ Địa điểm phát thưởng: Gian hàng Plats Network.<br>
+                                ➤ Bạn đã thăm quan: {{$count}}/60 Gian hàng<br>
+                                ➤ Bạn hoàn thành nhiệm vụ thứ : {{$maxCode ? $maxCode : '---'}}<br>
+                                ➤ Danh sách Booths:
                             @endif
                         </p>
 
@@ -156,7 +159,7 @@
                                     </h3>
                                     <ul class="tl">
                                         @foreach($itemDatas as $k => $item)
-                                            <li id="s-{{$k}}" class="{{$k >= 7 ? 'd-none' : ''}}" class="tl-item {{ $item['flag'] ? '' : 'dashed'}}">
+                                            <li id="s-{{$k}}" class="{{$k >= 3 ? 'd-none' : ''}}" class="tl-item {{ $item['flag'] ? '' : 'dashed'}}">
                                                 <div class="item-icon {{ $item['flag'] ? '' : 'not__active'}}"></div>
                                                 <div class="item-text">
                                                     <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">

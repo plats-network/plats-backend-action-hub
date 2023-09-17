@@ -203,7 +203,7 @@ class Job extends Controller
             }
 
             $eventIds = $this->taskEvent->whereTaskId($taskId)->pluck('id')->toArray();
-            $countJobOne = $this->joinEvent
+            $count = $this->joinEvent
                 ->whereUserId($user->id)
                 ->whereIn('task_event_id', $eventIds)
                 ->count();
@@ -231,7 +231,7 @@ class Job extends Controller
             }
 
             if ($detail->is_question == false) {
-                if ($countJobOne <= 1) {
+                if ($count <= 1) {
                     // session()->put('u-'.$user->id, 1);
 
                     return redirect()->route('job.getTravelGame', [
@@ -260,7 +260,7 @@ class Job extends Controller
             'detail' => $detail,
             'task_code' => $task->code,
             'task_id' => $taskId,
-            'count' => $countJobOne
+            'count' => $count,
         ]);
     }
 
@@ -278,10 +278,14 @@ class Job extends Controller
             $user = Auth::user();
 
             $eventIds = $this->taskEvent->whereTaskId($taskId)->pluck('id')->toArray();
-            $countJobOne = $this->joinEvent
+            $count = $this->joinEvent
                 ->whereUserId($user->id)
                 ->whereIn('task_event_id', $eventIds)
                 ->count();
+            $maxCode = $this->userCode
+                ->whereUserId($user->id)
+                ->whereIn('task_event_id', $eventIds)
+                ->max('number_code');
 
             // if ($countJobOne <= 1 && empty($user->age)) {
             //     session()->put('u-'.$user->id, 1);
@@ -336,7 +340,8 @@ class Job extends Controller
             'url' => $sessionNFT && $sessionNFT['url'] ? $sessionNFT['url'] : null,
             'nft' => $sessionNFT && $sessionNFT['nft'] ? 1 : 0,
             'flagU' => $flagU,
-            'count' => $countJobOne
+            'count' => $count,
+            'maxCode' => $maxCode,
         ]);
     }
 

@@ -46,14 +46,15 @@
                     <table class="table">
                         <tr>
                             <td>
-                                @if (Str::contains($email, 'guest'))
+                                {{$email}}
+                                {{-- @if (Str::contains($email, 'guest'))
                                     <p class="text-danger">Please add email.</p>
                                 @else
                                     {{$email}}
-                                @endif
+                                @endif --}}
                             </td>
-                            <td class="text-center">
-                                <a href="{{route('user.Info', ['code' => 'techfest2023'])}}" style="color: #fff;padding: 5px 10px;background-color: #3EA2FF;">Info</a>
+                            <td class="text-right">
+                                <a href="{{route('user.Info', ['code' => 'techfest2023'])}}" style="color: #fff;padding: 5px 10px;background-color: #3EA2FF;">Thông tin</a>
                                 {{-- <a id="editInfo" href="#" style="color: red;">{{Str::contains($email, 'guest') ? 'Add' : 'Edit'}}</a> --}}
                             </td>
                         </tr>
@@ -61,21 +62,28 @@
                 </div>
                 <div class="event-info">
                     <h3 style="padding-bottom: 0;">CHƠI GAME NHẬN QUÀ</h3>
-                    {{-- <img src="{{$event->banner_url}}" alt="{{$event->name}}"> --}}
-                    {{-- <div class="text-center" style="margin: 5px auto;">
+                    <div class="row" style="margin-top: 30px;">
+                        <div class="col-6" style="padding-right: 7px;">
+                            <img src="{{url('/')}}/events/apac.png">
+                        </div>
+                        <div class="col-6" style="padding-left: 7px;">
+                            <img src="{{url('/')}}/events/near.png">
+                        </div>
+                    </div>
+                    <div class="text-center" style="margin: 5px auto; display: none;">
                         <img style="width: 70%;" src="{{url('/')}}/events/prize.png" alt="{{$event->name}}">
-                    </div> --}}
-                    <div class="aaa mt-2" style="margin-top: 15px; line-height: 20px;">
+                    </div>
+                    <div class="aaa mt-2" style="margin-top: 15px; line-height: 20px; display: none;">
                         Tham gia các Games tại sự kiện với tổng giải thưởng có giá trị.
                         <p class="pp" style="padding-top: 10px; color: red!important;">➤ Không nên dùng Zalo để quét QR code, nên quét từ Camera</p>
-                        {{-- <div id="seeMore1" style="display: none;">
+                        <div id="seeMore1" style="display: none;">
                             <p class="pp">➤ Có 3 game là "Travel Game", "Session game day 1" và "Session game day 2" độc lập nhau. Bạn có thể tham gia 1 hoặc cả 3 game.</p>
                             <p class="pp">➤ Thu thập Mã số quay thưởng (MSQT) để tham gia vòng quay may mắn.</p>
                             <p class="pp">➤ Bạn cần nhập Email (phía trên của màn hình) để tham gia quay thưởng. Vì quyền lợi của bạn, Email này phải  trùng với Email bạn đã đăng ký vé tham gia sự kiện.</p>
                             <p class="pp">➤ Riêng với Travel Game sau khi quét mã QR tại bất kỳ Booth nào sẽ hiển thị 1 của sổ thông báo cần Claim bộ NFT ở các Booth để hoàn thành nhiệm vụ, người tham gia cần đăng nhập bằng các tài khoản mạng xã hội như Facebook, Google hoặc Apple Icloud để được tặng ví lưu trữ NFT và Claim NFT. Việc đăng nhập này chỉ thực hiện 1 lần duy nhất.</p>
                             <p class="pp" style="padding-bottom: 10px;">➤ Tại giờ quay thưởng vào cuối ngày, nếu bạn trúng thưởng mà không có mặt sẽ bị loại và giành cơ hội cho người khác.</p>
                             Chi tiết từng Game ở bên dưới.
-                        </div> --}}
+                        </div>
                         <p class="text-center" id="see1" style="cursor: pointer;">Read more</p>
                     </div>
                 </div>
@@ -135,7 +143,7 @@
                     @endphp
                     <div class="item" style="border-bottom: 0;">
                         <h3 class="text-center" style="display: none;">{{$booth->name}}</h3>
-                        <p><strong>Đứng vị trí thứ:</strong> <span class="fs-25">---</span></p>
+                        <p><strong>Đứng vị trí thứ:</strong> <span class="fs-25">{{$maxCode ? $maxCode : '---'}}</span></p>
                         <p><strong>Thời gian phát thưởng:</strong> 15h ngày 19/09/2023</p>
                         <p>
                             <strong>Nhiệm vụ (Missions):</strong>

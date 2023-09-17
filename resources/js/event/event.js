@@ -66,7 +66,7 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '.see', function (event) {
-    for(var i = 7; i < 70; i++) {
+    for(var i = 3; i < 70; i++) {
       if ($('#s-'+i).length > 0) {
         $('#s-'+i).removeClass('d-none');
       }
@@ -75,7 +75,7 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '.less', function (event) {
-    for(var i = 7; i < 70; i++) {
+    for(var i = 3; i < 70; i++) {
       if ($('#s-'+i).length > 0) {
         $('#s-'+i).addClass('d-none');
       }
