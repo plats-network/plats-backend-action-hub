@@ -77,13 +77,6 @@
                                     $a = $user ? (int) $user->organization : 0;
                                 @endphp
                                 {{$roles[$a]}}
-                                {{-- @if ($a == 1)
-                                    {{'Cơ quan nhà nước - Chính phủ/State Agency'}}
-                                @elseif ($a == 2)
-                                    {{'Media - đối tác truyền thông/Media Partner'}}
-                                @elseif($a == 3) 
-                                    {{'Cá nhân khác/Enterprise - Individual'}}
-                                @endif --}}
                             <td>
                         </tr>
                         <tr>
