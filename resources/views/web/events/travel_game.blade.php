@@ -244,6 +244,111 @@
                     </div>
                 </div>
             </div>
+
+            {{-- <div class="row">
+                <div class="col-12">
+                    <div class="schedule-tab list-job">
+                        <p class="text-center" style="padding-bottom: 10px;">
+                            <a class="back" href="{{route('job.getTravelGame', ['task_id' => $task_id, 'type' => $type])}}">{{'< Back to Event!'}}</a>
+                        </p>
+                        <p class="desc-prize">
+                            @if ($type == 0)
+                                ➤ Quét QR code sau mỗi phiên thảo luận tại hội trường chính và hội trường builder, quét 2 phiên thảo luận nhận được 1 Mã số quay thưởng (MSQT).<br>
+                                ➤ Hãy thu thập càng nhiều MSQT cơ hội trúng thưởng càng cao. <br>
+                                (Scan 2 Session QR Code to receive 1 Lucky Code).
+                            @else
+                                ➤ Luật chơi: 100 bạn đầu tiên thăm quan trên 40/60 gian hàng (Booths) bằng cách quét QR Code tại gian hàng, để nhận được một thẻ Danh thiếp điện tử NFC hiện đại, đẳng cấp trị giá 300K VND."<br>
+                                ➤ Thời gian phát thưởng: 15h ngày 19/09/2023.<br>
+                                ➤ Địa điểm phát thưởng: Gian hàng Plats Network.<br>
+                                ➤ Bạn đã thăm quan: {{$count}}/60 Gian hàng<br>
+                                ➤ Bạn hoàn thành nhiệm vụ thứ : {{$maxCode ? $maxCode : '---'}}<br>
+                                ➤ Danh sách Booths:
+                            @endif
+                        </p>
+
+                        <ul class="nav tab-job">
+                            <li class="nav-item b2">
+                                <a class="nav-link {{$type == 1 ? 'active-job' : ''}}" href="{{route('web.jobEvent', ['id' => $id, 'type' => 1])}}">Travel Game</a>
+                            </li>
+                        </ul>
+
+                        <style type="text/css">
+                            .desc {
+                                line-height: 20px;
+                                background: antiquewhite;
+                                color: #000;
+                                border-radius: 10px;
+                                padding: 10px;
+                                margin-top: 20px;
+                            }
+                            .swal2-title {
+                                margin: -32px 13px;
+                            }
+
+                            .back {
+                                display: inline-block;
+                                margin: 5px 0;
+                                padding: 6px 35px;
+                                background: aqua;
+                                border-radius: 15px;
+                                color: #000;
+                            }
+
+                            .tab {
+                                padding: 10px 30px!important;
+                            }
+                        </style>
+                    </div>
+
+                    <div class="tab-content">
+                        <style type="text/css">
+                            .d-none {
+                                display: none!important;
+                            }
+                            .see, .less {
+                                padding: 5px 20px;
+                                background: #177FE2;
+                                border-radius: 28px;
+                                color: #fff!important;
+                                cursor: pointer;
+                            }
+                        </style>
+
+                        <div class="tab-pane {{$type == '1' ? 'fade show in active' : ''}}" id="step2" role="tabpanel" aria-labelledby="booth-tab">
+                            <div class="timeline-container">
+                                @foreach($groupBooths as $itemDatas)
+                                    <hr style="margin-bottom: 20px;">
+                                    <h3 class="step d-none" style="display: none;">
+                                        {{$itemDatas && $itemDatas[0] ? $itemDatas[0]['travel_game_name'] : ''}}
+                                    </h3>
+                                    <ul class="tl">
+                                        @foreach($itemDatas as $k => $item)
+                                            <li id="s-{{$k}}" class="{{$k >= 3 ? 'd-none' : ''}}" class="tl-item {{ $item['flag'] ? '' : 'dashed'}}">
+                                                <div class="item-icon {{ $item['flag'] ? '' : 'not__active'}}"></div>
+                                                <div class="item-text">
+                                                    <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">
+                                                        <p class="{{$item['flag'] ? 'ac-color' : ''}}">
+                                                            {{Str::limit($item['name'], 50)}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                @if ($item['date'])
+                                                    <div class="item-timestamp">
+                                                        {{$item['date']}}<br> {{$item['time']}}
+                                                    </div>
+                                                @endif
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endforeach
+                                <div class="text-center">
+                                    <a class="btn btn-info see">See More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
         </div>
     </section>
 

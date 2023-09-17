@@ -737,7 +737,7 @@
             //btnAddItemSession onclick call ajax
             $(document).on('click', '#btnAddItemSession', function (event) {
                 var rowCount = $('.itemSessionDetail').length;
-                if(rowCount >= 100){
+                if(rowCount >= 150){
                     alert('{{__('Maximum number of Item is')}} 100');
                     return false;
                 }
@@ -898,7 +898,7 @@
             /*Start Booth*/
             $(document).on('click', '#btnAddItemBooth', function (event) {
                 var rowCount = $('.itemBoothDetail').length;
-                if(rowCount >= 100){
+                if(rowCount >= 150){
                     alert('{{__('Maximum number of Item is')}} 100');
                     return false;
                 }

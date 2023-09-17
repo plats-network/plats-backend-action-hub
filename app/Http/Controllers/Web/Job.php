@@ -325,7 +325,63 @@ class Job extends Controller
                 $flagU = 1;
             }
 
-            // $this->taskService->genCodeByUser($userId, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
+            /// Start
+            $eventSession = $this->taskEvent->whereTaskId($event->id)->whereType(TASK_SESSION)->first();
+            $eventBooth = $this->taskEvent->whereTaskId($event->id)->whereType(TASK_BOOTH)->first();
+            $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)->orderBy('sort', 'asc')->get();
+            $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)->orderBy('id', 'asc')->get();
+
+            foreach($sessions as $session) {
+                $travel = $this->travelGame->find($session->travel_game_id);
+                $job = $this->joinEvent
+                    ->whereUserId($user->id)
+                    ->whereTaskEventDetailId($session->id)
+                    ->first();
+
+                $sessionDatas[] = [
+                    'id' => $session->id,
+                    'travel_game_id' => $session->travel_game_id,
+                    'travel_game_name' => $travel->name,
+                    'user_id' => $request->user()->id,
+                    'name' => $session->name,
+                    'desc' => $session->description,
+                    'date' => $job ? Carbon::parse($job->created_at)->format('Y-m-d') : '',
+                    'time' => $job ? Carbon::parse($job->created_at)->format('H:i') : '',
+                    'required' => $session->is_required,
+                    'flag' => $this->checkDoneJob($session->id),
+                ];
+            }
+
+            foreach($booths as $booth) {
+                $travel = $this->travelGame->find($booth->travel_game_id);
+                $job = $this->joinEvent
+                    ->whereUserId($user->id)
+                    ->whereTaskEventDetailId($booth->id)
+                    ->first();
+
+                $boothDatas[] = [
+                    'id' => $booth->id,
+                    'travel_game_id' => $booth->travel_game_id,
+                    'travel_game_name' => $travel->name,
+                    'user_id' => $request->user()->id,
+                    'name' => $booth->name,
+                    'desc' => $booth->description,
+                    'date' => $job ? Carbon::parse($job->created_at)->format('Y-m-d') : '',
+                    'time' => $job ? Carbon::parse($job->created_at)->format('H:i') : '',
+                    'required' => $booth->is_required,
+                    'flag' => $this->checkDoneJob($booth->id),
+                ];
+            }
+
+            $groupSessions = [];
+            $groupBooths = [];
+            foreach($sessionDatas as $item) {
+                $groupSessions[$item['travel_game_id']][] = $item;
+            }
+
+            foreach($boothDatas as $item) {
+                $groupBooths[$item['travel_game_id']][] = $item;
+            }
         } catch (\Exception $e) {
             abort(404);
         }
@@ -342,6 +398,11 @@ class Job extends Controller
             'flagU' => $flagU,
             'count' => $count,
             'maxCode' => $maxCode,
+            'groupSessions' => $groupSessions,
+            'groupBooths' => $groupBooths,
+            'task_id' => $event->id,
+            'type' => 1,
+            'id' => $event->id
         ]);
     }
 
@@ -426,5 +487,14 @@ class Job extends Controller
                 'message' => 'Successful'
             ]
         ], 200);
+    }
+
+    private function checkDoneJob($eventDetailId)
+    {
+        $userId = Auth::user()->id;
+        return $this->joinEvent
+            ->whereUserId($userId)
+            ->whereTaskEventDetailId($eventDetailId)
+            ->exists();
     }
 }
