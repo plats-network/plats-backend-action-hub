@@ -48,7 +48,7 @@
                 <div class="info">
                     <div class="text-center m-banner">
                         <img src="{{url('/')}}/events/banner_techfest.png">
-                        <h3 style="font-size: 29px;padding-top: 12px;">LỄ KHAI MẠC TECHFEST HAIPHONG</h3>
+                        <h3 style="font-size: 29px;padding-top: 12px;">WARMLY WELCOME TO TECHFEST HAIPHONG 2023</h3>
                         <p class="dd"><strong>Nhiệt liệt chào mừng các vị khách quý đến với Lễ khai mạc Techfest Haiphong 2023</strong></p>
                         {{-- <p class="ddd">Quý khách vui lòng để lại thông tin để BTC được đón tiếp chu đáo:</p> --}}
                     </div>
