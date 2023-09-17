@@ -95,8 +95,8 @@ class UserController extends Controller
 
                     if ($user->email != $email && !$oldUser) {
                         $pInfo = array_merge($pInfo, ['email' => $email]);
-                        $user->update($pInfo);
                     }
+                    $user->update($pInfo);
                 }
 
                 if ($type && $type == 1) {
