@@ -25,6 +25,29 @@ if (!function_exists('existCodeTask')) {
     }
 }
 
+if (!function_exists('countJob')) {
+    function countJob($userId, $taskEventId, $travelId) {
+        return UserJoinEvent::whereUserId($userId)
+            ->where('task_event_id', $taskEventId)
+            ->where('travel_game_id', $travelId)
+            ->count();
+    }
+}
+
+if (!function_exists('listJobs')) {
+    function listJobs($userId, $taskEventId, $travelId) {
+        $ids = UserJoinEvent::whereUserId($userId)
+            ->where('task_event_id', $taskEventId)
+            ->where('travel_game_id', $travelId)
+            ->pluck('task_event_detail_id')
+            ->toArray();
+
+        return TaskEventDetail::whereIn('id', $ids)
+            ->orderBy('id', 'asc')
+            ->pluck('name');
+    }
+}
+
 if (!function_exists('genCode')) {
     function genCode() {
         $code = Str::random(8);

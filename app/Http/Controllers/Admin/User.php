@@ -138,18 +138,19 @@ class User extends Controller
                 ->pluck('id')->toArray();
 
             $userCodes = $this->userCode
+                ->with('user', 'taskEvent', 'travelGame')
                 ->distinct()
                 ->whereIn('task_event_id', $ids)
                 ->orderBy('number_code', 'asc')
                 ->get();
-            dd($userCodes);
 
         } catch (\Exception $e) {
             abort(404);
         }
 
-        return view('cws.users.listCodes', [
-            'userCodes' => $userCodes
+        return view('cws.users.list_max', [
+            'userCodes' => $userCodes,
+            'id' => $taskId
         ]);
     }
 

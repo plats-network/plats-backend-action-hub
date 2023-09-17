@@ -87,6 +87,9 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->get('api/detail', [EventController::class, 'upEventDetail'])->name('api.upEventDetail');
     $cws->get('api/job-vip/{id}', [EventController::class, 'upEventVip'])->name('api.upEventVip');
     $cws->get('api/job-sort/{id}', [EventController::class, 'upEventSort'])->name('api.upEventSort');
+
+    // Max code
+    $cws->get('user_codes/{id}', [User::class, 'listMax'])->name('user.listMax');
 });
 //Upload file
 /*Upload Single*/

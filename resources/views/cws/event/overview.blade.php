@@ -59,6 +59,12 @@
                                     </tr>
                                 @endif
                             @endforeach
+                            <tr>
+                                <td>2</td>
+                                <td colspan="3">
+                                    <a href="{{route('user.listMax', ['id' => $event->id])}}">Danh sách mã số</a>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
