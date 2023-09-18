@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Helpers\{BaseImage, DateHelper};
 use App\Services\UserService;
 use App\Models\{User as UserModel, Task};
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Event\{EventUserTicket, UserCode, TaskEvent};
 use App\Http\Requests\Cws\{
     EditEmailRequest,
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\{
 };
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use App\Exports\UserList;
 
 class User extends Controller
 {
@@ -154,7 +156,9 @@ class User extends Controller
             //     }
             // }
 
-            if ($request->input('type') == 1) {
+            $type = $request->input('type');
+
+            if ($type && $type == 1) {
                 $userCodes = $this->eventUserTicket
                     ->with('task', 'user')
                     ->whereTaskId($taskId)
@@ -164,6 +168,14 @@ class User extends Controller
                     ->with('task', 'user')
                     ->whereTaskId($taskId)
                     ->count();
+            } elseif($type && $type == 2) {
+                $userCodes = $this->eventUserTicket
+                    ->with('task', 'user')
+                    ->whereTaskId($taskId)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+                return Excel::download(new UserList($userCodes), 'user-join-event.xlsx');
             } else {
                 $ids = $this->taskEvent->whereTaskId($taskId)
                     ->pluck('id')->toArray();
@@ -287,7 +299,6 @@ class User extends Controller
             notify()->success('Cập nhật thành công');
         } catch (\Exception $e) {
             Log::error('Lỗi update' . $e->getMessage());
-            dd($e->getMessage());
             notify()->error('Lỗi cập nhật');
             return redirect()->route('cws.setting');
         }

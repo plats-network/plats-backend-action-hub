@@ -22,6 +22,7 @@
                             <a href="{{ route('cws.event.overview', ['id' => $id]) }}" class="btn btn-danger">Back</a>
                             <a href="{{route('user.listMax', ['id' => $id])}}" class="btn btn-primary">Top 200 Code</a>
                             <a href="{{route('user.listMax', ['id' => $id, 'type' => 1])}}" class="btn btn-primary">List All Users</a>
+                            {{-- <a href="{{route('user.listMax', ['id' => $id, 'type' => 2])}}" class="btn btn-primary">Export Excel</a> --}}
                         </div>
                         <div class="col-xl-6" style="font-size: 30px;">
                             <strong>Total users: </strong>{{number_format($total)}}

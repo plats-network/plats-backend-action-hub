@@ -123,17 +123,34 @@ class TaskService extends BaseService
                 ->where('travel_game_id', $travelId)
                 ->where('is_code', false)
                 ->where('is_important', false)
-                ->limit(80);
+                ->limit(40);
 
-            if (count($codeBooths->pluck('id')->toArray()) == 80) {
-                $this->userCode->create([
-                    'user_id' => $userId,
-                    'task_event_id' => $bEventId,
-                    'travel_game_id' => $travelId,
-                    'type' => 1,
-                    'number_code' => $maxBooth + 1,
-                    'color_code' => randColor()
-                ]);
+            if (count($codeBooths->pluck('id')->toArray()) == 40) {
+                if ($taskId == '9a23915f-07ae-4278-ba9d-bb8f11b46663') {
+                    $checkEx = $this->userCode->whereUserId($userId)
+                        ->where('travel_game_id', $travelId)
+                        ->exists();
+
+                    if (!$checkEx) {
+                        $this->userCode->create([
+                            'user_id' => $userId,
+                            'task_event_id' => $bEventId,
+                            'travel_game_id' => $travelId,
+                            'type' => 1,
+                            'number_code' => $maxBooth + 1,
+                            'color_code' => randColor()
+                        ]);
+                    }
+                } else {
+                    $this->userCode->create([
+                        'user_id' => $userId,
+                        'task_event_id' => $bEventId,
+                        'travel_game_id' => $travelId,
+                        'type' => 1,
+                        'number_code' => $maxBooth + 1,
+                        'color_code' => randColor()
+                    ]);
+                }
 
                 $codeBooths->update(['is_code' => true]);
             }

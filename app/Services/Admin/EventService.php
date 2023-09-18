@@ -163,7 +163,6 @@ class EventService extends BaseService
 
             DB::commit();
         } catch (\Exception $e) {
-            dd($e->getMessage());
             DB::rollBack();
         }
     }
