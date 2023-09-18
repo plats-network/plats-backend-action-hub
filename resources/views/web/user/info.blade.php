@@ -76,7 +76,9 @@
                                 @php
                                     $a = $user ? (int) $user->organization : 0;
                                 @endphp
-                                {{$roles[$a]}}
+                                @if ($user)
+                                    {{$roles[$a]}}
+                                @endif
                             <td>
                         </tr>
                         <tr>
