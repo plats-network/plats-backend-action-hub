@@ -87,7 +87,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        {{optional($userCode->user)->name}}
+                                        {{optional($userCode->user)->position}}
                                     </td>
                                     <td>
                                         {{optional($userCode->user)->email}}
