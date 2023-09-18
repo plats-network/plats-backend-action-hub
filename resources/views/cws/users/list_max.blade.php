@@ -13,8 +13,15 @@
                 <div class="card-body">
                     <div class="d-flex flex-wrap align-items-center mb-2">
                         <h5 class="card-title">Lists user</h5>
-                        <div class="ms-auto">
+                        {{-- <div class="ms-auto">
                             <a href="{{ route('cws.event.overview', ['id' => $id]) }}" class="btn btn-danger btn-sm mb-2 me-2">Back</a>
+                        </div> --}}
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-xl-12">
+                            <a href="{{ route('cws.event.overview', ['id' => $id]) }}" class="btn btn-danger">Back</a>
+                            <a href="{{route('user.listMax', ['id' => $id])}}" class="btn btn-primary">Top 200 Code</a>
+                            <a href="{{route('user.listMax', ['id' => $id, 'type' => 1])}}" class="btn btn-primary">List All Users</a>
                         </div>
                     </div>
                     <table class="table table-bordered mb-0 table-responsive">
@@ -33,13 +40,29 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $type = request()->input('type');
+                                if($type == 1) {
+                                    $booth = App\Models\Event\TaskEvent::where('task_id', $id)->where('type', 1)->first();
+                                    $detail = App\Models\Event\TaskEventDetail::where('task_event_id', optional($booth)->id)->first();
+                                }
+                            @endphp
+
                             @forelse($userCodes as $k => $userCode)
                                 @php
+                                    $type = request()->input('type');
                                     $a = (int) optional($userCode->user)->organization;
                                     $userId = optional($userCode->user)->id;
-                                    $eventId = $userCode->task_event_id;
-                                    $travelId = $userCode->travel_game_id;
-                                    $listJobs = listJobs($userId, $eventId, $travelId);
+                                    if ($type == 1) {
+                                        $eventId = optional($booth)->id;
+                                        $travelId = optional($detail)->travel_game_id;
+                                        $listJobs = listJobs($userId, optional($booth)->id, optional($detail)->travel_game_id);
+                                        $code = App\Models\Event\UserCode::where('user_id', $userId)->where('task_event_id', optional($booth)->id)->max('number_code');
+                                    } else {
+                                        $eventId = $userCode->task_event_id;
+                                        $travelId = $userCode->travel_game_id;
+                                        $listJobs = listJobs($userId, $eventId, $travelId);
+                                    }
                                 @endphp
                                 <tr>
                                     <td>{{$k+1}}</td>
@@ -77,7 +100,9 @@
                                             <a class="ssee" data-id="{{$k+1}}" data-k="{{$i+1}}" style="cursor: pointer;">Show</a>
                                         @endif
                                     </td>
-                                    <td>{{$userCode->number_code}}</td>
+                                    <td>
+                                        {{$type == 1 ? $code : $userCode->number_code}}
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>

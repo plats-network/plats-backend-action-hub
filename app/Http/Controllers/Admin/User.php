@@ -134,15 +134,25 @@ class User extends Controller
     public function listMax(Request $request, $taskId)
     {
         try {
-            $ids = $this->taskEvent->whereTaskId($taskId)
-                ->pluck('id')->toArray();
+            if ($request->input('type') == 1) {
+                $userCodes = $this->eventUserTicket
+                    ->with('task', 'user')
+                    ->whereTaskId($taskId)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+                // dd($userCodes);
+            } else {
+                $ids = $this->taskEvent->whereTaskId($taskId)
+                    ->pluck('id')->toArray();
 
-            $userCodes = $this->userCode
-                ->with('user', 'taskEvent', 'travelGame')
-                ->distinct()
-                ->whereIn('task_event_id', $ids)
-                ->orderBy('number_code', 'asc')
-                ->get();
+                $userCodes = $this->userCode
+                    ->with('user', 'taskEvent', 'travelGame')
+                    ->distinct()
+                    ->whereIn('task_event_id', $ids)
+                    ->orderBy('number_code', 'asc')
+                    ->limit(200)
+                    ->get();
+            }
 
         } catch (\Exception $e) {
             abort(404);
