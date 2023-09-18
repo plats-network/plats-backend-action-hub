@@ -83,6 +83,106 @@ $(document).ready(function() {
     $(this).removeClass('less').addClass('see').text('See more');
   });
 
+  
+  $(document).on('click', '#fInfo', function (event) {
+    var name = $('#name').val(),
+      url = $(this).data('url'),
+      email = $("#email").val(),
+      user_type = $("#user_type").val(),
+      organization = $("#organization").val(),
+      company = $("#company").val(),
+      position = $("#position").val(),
+      phone = $("#phone").val();
+      if (name == '' || email == '' || organization == '' || company == '' || position == '' || phone == '') {
+        if (name == '') {
+          $('#r-name').removeClass('d-none');
+        } else {
+          $('#r-name').addClass('d-none');
+        }
+        if (email == '') {
+           alert(11);
+          $('#r-email').removeClass('d-none');
+        } else {
+          alert(33);
+          // if (!validateEmail(email)) {
+          //   $('#r-email').removeClass('d-none').html('Email không đúng');
+          // } else {
+          //    alert(22);
+          //   $('#r-email').addClass('d-none');
+          // }
+        }
+
+        if (organization == '') {
+          $('#r-organization').removeClass('d-none');
+        } else {
+          $('#r-organization').addClass('d-none');
+        }
+
+        if (company == '') {
+          $('#r-company').removeClass('d-none');
+        } else {
+          $('#r-company').addClass('d-none');
+        }
+
+        if (position == '') {
+          $('#r-position').removeClass('d-none');
+        } else {
+          $('#r-position').addClass('d-none');
+        }
+
+        if (phone == '') {
+          $('#r-phone').removeClass('d-none');
+        } else {
+          var a = /^-?\d+$/.test(phone);
+          if (phone.length < 10 || phone.length > 15) {
+            $('#r-phone').removeClass('d-none').html('Số điện thoại không đúng');
+          } else if (!a) {
+            $('#r-phone').removeClass('d-none').html('Số điện thoại không đúng');
+          } else {
+            $('#r-phone').addClass('d-none');
+          }
+        }
+      } else {
+        $.ajax({
+          url :  url,
+          type: 'POST',
+          data: {
+            name: name, 
+            email: email, 
+            user_type: user_type, 
+            organization: organization, 
+            company: company,
+            position: position,
+            phone: phone
+          },
+          success: function(data) {
+              Toast.fire({
+                icon: 'success',
+                title: 'Submit success 😀'
+              })
+
+              // setTimeout(function(e) {
+              //   window.location.reload();
+              // }, 400);
+          },
+          error: function() {
+            Toast.fire({
+              icon: 'error',
+              title: 'Errors 😥'
+            });
+            setTimeout(function(e) {
+              window.location.reload();
+            }, 400);
+          }
+      });
+      }
+  });
+
+  function validateEmail(email) {
+    var regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    return regex.test(email);
+  }
+
   $('.aws').on('click', function(e) {
     var id = $(this).data('id'),
       result = $(this).data('result'),

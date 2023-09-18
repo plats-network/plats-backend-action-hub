@@ -55,9 +55,11 @@ class UserController extends Controller
     public function editEmail(Request $request)
     {
         try {
+            // dd($request->all());
+
             $email = Str::lower($request->input('email'));
             $name = $request->input('name');
-            $type = $request->input('user_type');
+            $type = (int) $request->input('user_type');
             $oldUser = User::whereRaw('lower(email) = ? ', [$email])->first();
 
             if (Auth::guest() && !$oldUser) {
@@ -164,12 +166,20 @@ class UserController extends Controller
         } catch (\Exception $e) {
             notify()->error('Lỗi: '.$e->getMessage());
 
-            return redirect()->route('web.home');
+            return response()->json([
+                'message' => 'Error'
+            ], 500);
+
+            // return redirect()->route('web.home');
         }
 
-        return redirect()->route('user.Info', [
-            'code' => 'techfest2023'
-        ]);
+        return response()->json([
+            'message' => 'Ok'
+        ], 200);
+
+        // return redirect()->route('user.Info', [
+        //     'code' => 'techfest2023'
+        // ]);
     }
 
     public function upVip(Request $request)

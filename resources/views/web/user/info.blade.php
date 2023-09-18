@@ -1,8 +1,6 @@
 @extends('web.layouts.event_app')
 
 @section('content')
-    {{-- @include('web.layouts.event') --}}
-
     @php
         $userId = optional(auth()->user())->id;
         $email = optional(auth()->user())->email;
@@ -76,9 +74,7 @@
                                 @php
                                     $a = $user ? (int) $user->organization : 0;
                                 @endphp
-                                @if ($user)
-                                    {{$roles[$a]}}
-                                @endif
+                                {{$user ? $roles[$a] : ''}}
                             <td>
                         </tr>
                         <tr>
@@ -105,6 +101,9 @@
                 color: #fff;
                 text-align: right;
             }
+            .d-none {
+                display: none!important;
+            }
         </style>
 
         <div class="modal-dialog">
@@ -118,7 +117,7 @@
                 <div class="modal-body">
                     <form id="infoForm" method="POST" action="{{route('web.editEmail')}}">
                         @csrf
-                        <input type="hidden" name="user_type" value="2">
+                        <input type="hidden" name="user_type" id="user_type" value="2">
                         <div class="row" style="display: block;">
                             <div class="col-md-12" style="margin-bottom: 15px;">
                                 <label class="form-label">Họ Tên/Name <span class="text-danger">*</span></label>
@@ -126,12 +125,14 @@
                                     type="text"
                                     class="form-control"
                                     name="name"
+                                    id="name"
                                     value="{{$user->name ?? ''}}"
                                     required>
+                                <label class="text-danger d-none" id="r-name">Please input name</label>
                             </div>
                             <div class="col-md-12" style="margin-bottom: 15px;">
                                 <label class="form-label">Đơn vị công tác/Organization type: <span class="text-danger">*</span></label>
-                                <select class="form-control" name="organization">
+                                <select class="form-control" name="organization" id="organization">
                                     @foreach($roles as $k => $v)
                                         <option
                                             value="{{ $k }}"
@@ -140,15 +141,18 @@
                                         </option>    
                                     @endforeach
                                 </select>
+                                <label class="text-danger d-none" id="r-organization">Please select organization</label>
                             </div>
                             <div class="col-md-12" style="margin-bottom: 15px;">
-                                <label class="form-label">Tên Đơn vị-Tổ chức-Trường học/Organization: <span class="text-danger">*</span></label>
+                                <label class="form-label">Tên đơn vị-Tổ chức-Trường học/Organization: <span class="text-danger">*</span></label>
                                 <input
                                     type="text"
                                     class="form-control"
                                     name="company"
+                                    id="company"
                                     value="{{$user->company ?? ''}}"
                                     required>
+                                <label class="text-danger d-none" id="r-company">Please input company</label>
                             </div>
                             
                             <div class="col-md-12" style="margin-bottom: 15px;">
@@ -157,8 +161,10 @@
                                     type="text"
                                     class="form-control"
                                     name="position"
+                                    id="position"
                                     value="{{$user->position ?? ''}}"
                                     required>
+                                <label class="text-danger d-none" id="r-position">Please input position</label>
                             </div>
                             <div class="col-md-12" style="margin-bottom: 15px;">
                                 <label class="form-label">Email <span class="text-danger">*</span></label>
@@ -166,21 +172,25 @@
                                     type="text"
                                     class="form-control"
                                     name="email"
+                                    id="email"
                                     value="{{$user->email ?? ''}}"
                                     required>
+                                <label class="text-danger d-none" id="r-email">Please input email</label>
                             </div>
                             <div class="col-md-12" style="margin-bottom: 15px;">
                                 <label class="form-label">Phone <span class="text-danger">*</span></label>
                                 <input
                                     type="text"
                                     class="form-control"
+                                    id="phone"
                                     name="phone"
                                     value="{{$user->phone ?? ''}}"
                                     required>
+                                <label class="text-danger d-none" id="r-phone">Please input phone</label>
                             </div>
                         </div>
                         <div class="text-center" style="margin-top: 20px;">
-                            <button type="submit" class="btn btn-primary btn--order">Submit</button>
+                            <button id="fInfo" data-url="{{route('web.editEmail')}}" type="button" class="btn btn-primary btn--order">Submit</button>
                         </div>
                     </form>
                 </div>
