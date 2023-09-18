@@ -110,6 +110,30 @@ class UserController extends Controller
             }
             $user = Auth::user();
 
+            // Techfesh HP 2023
+            $day = Carbon::now()->format('d');
+            $taskId = '9a23915f-07ae-4278-ba9d-bb8f11b46663';
+            if ($day == 18 || $day == 19 || $day == 20) {
+                $checkIn = $this->ticket
+                    ->whereTaskId($taskId)
+                    ->whereUserId($user->id)
+                    ->exists();
+
+                if (!$checkIn) {
+                    $this->ticket->create([
+                        'name' => $user->name ?? 'No Name',
+                        'phone' => "09348324098",
+                        'email' => $user->email,
+                        'task_id' => $taskId,
+                        'user_id' => $user->id,
+                        'is_checkin' => true,
+                        'hash_code' => Str::random(35),
+                    ]);
+                }
+            }
+            // End Techfesh HP 2023
+
+
             // TODO: Event Apac 2023
             // $oldId = optional($oldUser)->id;
             // $ticket = $this->ticket
