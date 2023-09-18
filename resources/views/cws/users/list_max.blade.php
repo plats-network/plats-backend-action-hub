@@ -70,7 +70,7 @@
                                 <tr>
                                     <td>{{$k+1}}</td>
                                     <td>
-                                        {{optional($userCode->user)->updated_at}}
+                                        {{$userCode->created_at}}
                                     </td>
                                     <td>
                                         {{optional($userCode->user)->name}}
