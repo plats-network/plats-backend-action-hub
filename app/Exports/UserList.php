@@ -11,6 +11,7 @@ use App\Models\Event\{TaskEvent, UserJoinEvent};
 class UserList implements FromCollection,WithHeadings,WithMapping
 {
     protected $data;
+    protected $index = 0;
 
     public function __construct($data)
     {
@@ -24,6 +25,7 @@ class UserList implements FromCollection,WithHeadings,WithMapping
     public function headings(): array
     {
         $heading = [
+            'No',
             'Time Checkin',
             'Name',
             'Email',
@@ -57,6 +59,7 @@ class UserList implements FromCollection,WithHeadings,WithMapping
         }
 
         $map = [
+            ++$this->index,
             $data->created_at,
             optional($data->user)->name,
             optional($data->user)->email,

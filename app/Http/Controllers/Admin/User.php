@@ -136,26 +136,6 @@ class User extends Controller
     public function listMax(Request $request, $taskId)
     {
         try {
-            // if ($taskId == '9a23915f-07ae-4278-ba9d-bb8f11b46663') {
-            //     $users = $this->user->whereDate('created_at', '=', date('Y-m-d'))->get();
-
-            //     foreach($users as $user) {
-            //         $aCheck = $this->eventUserTicket->whereUserId($user->id)->whereTaskId($taskId)->exists();
-            //         if (!$aCheck) {
-            //             $this->eventUserTicket->create([
-            //                 'user_id' => $user->id,
-            //                 'task_id' => $taskId,
-            //                 'name' => $user->name,
-            //                 'phone' => $user->phone ?? '098432323',
-            //                 'email' => $user->email,
-            //                 'is_checkin' => true,
-            //                 'hash_code' => Str::random(32),
-            //                 'created_at' => $user->created_at
-            //             ]);
-            //         }
-            //     }
-            // }
-
             $type = $request->input('type');
 
             if ($type && $type == 1) {
