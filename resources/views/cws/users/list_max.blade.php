@@ -56,6 +56,8 @@
                                     $type = request()->input('type');
                                     $a = (int) optional($userCode->user)->organization;
                                     $userId = optional($userCode->user)->id;
+                                    $time = App\Models\Event\EventUserTicket::where('user_id', $userId)->where('task_id', $id)->first();
+
                                     if ($type == 1) {
                                         $eventId = optional($booth)->id;
                                         $travelId = optional($detail)->travel_game_id;
@@ -70,7 +72,7 @@
                                 <tr>
                                     <td>{{$k+1}}</td>
                                     <td>
-                                        {{$userCode->created_at}}
+                                        {{$time ? $time->created_at : ''}}
                                     </td>
                                     <td>
                                         {{optional($userCode->user)->name}}
