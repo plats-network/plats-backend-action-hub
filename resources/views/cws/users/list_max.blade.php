@@ -13,16 +13,13 @@
                 <div class="card-body">
                     <div class="d-flex flex-wrap align-items-center mb-2">
                         <h5 class="card-title">Lists user</h5>
-                        {{-- <div class="ms-auto">
-                            <a href="{{ route('cws.event.overview', ['id' => $id]) }}" class="btn btn-danger btn-sm mb-2 me-2">Back</a>
-                        </div> --}}
                     </div>
                     <div class="row" style="margin-bottom: 20px;">
                         <div class="col-xl-6">
                             <a href="{{ route('cws.event.overview', ['id' => $id]) }}" class="btn btn-danger">Back</a>
                             <a href="{{route('user.listMax', ['id' => $id])}}" class="btn btn-primary">Top 200 Code</a>
                             <a href="{{route('user.listMax', ['id' => $id, 'type' => 1])}}" class="btn btn-primary">List All Users</a>
-                            {{-- <a href="{{route('user.listMax', ['id' => $id, 'type' => 2])}}" class="btn btn-primary">Export Excel</a> --}}
+                            <a href="{{route('user.listMax', ['id' => $id, 'type' => 2])}}" class="btn btn-danger">Export Excel</a>
                         </div>
                         <div class="col-xl-6" style="font-size: 30px;">
                             <strong>Total users: </strong>{{number_format($total)}}

@@ -6,6 +6,7 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use App\Models\Event\{TaskEvent, UserJoinEvent};
 
 class UserList implements FromCollection,WithHeadings,WithMapping
 {
@@ -46,6 +47,15 @@ class UserList implements FromCollection,WithHeadings,WithMapping
         ];
         $a = (int) optional($data->user)->organization;
 
+        $booth = TaskEvent::whereTaskId($data->task_id)->whereType(1)->first();
+        $jobDone = 0;
+        if ($booth) {
+            $jobDone = UserJoinEvent::select('*')
+                ->where('task_event_id', $booth->id)
+                ->whereUserId($data->user_id)
+                ->count();
+        }
+
         $map = [
             $data->created_at,
             optional($data->user)->name,
@@ -54,7 +64,7 @@ class UserList implements FromCollection,WithHeadings,WithMapping
             in_array($a, [0,1,2,3]) ? $ops[$a] : '',
             optional($data->user)->position,
             optional($data->user)->company,
-            '99',
+            $jobDone,
         ];
 
         return $map;

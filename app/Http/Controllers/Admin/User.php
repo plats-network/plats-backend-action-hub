@@ -175,7 +175,7 @@ class User extends Controller
                     ->orderBy('created_at', 'desc')
                     ->get();
 
-                return Excel::download(new UserList($userCodes), 'user-join-event.xlsx');
+                return Excel::download(new UserList($userCodes), Carbon::now()->format('YmdHis').'_user-checkin.xlsx');
             } else {
                 $ids = $this->taskEvent->whereTaskId($taskId)
                     ->pluck('id')->toArray();
