@@ -18,10 +18,13 @@
                         </div> --}}
                     </div>
                     <div class="row" style="margin-bottom: 20px;">
-                        <div class="col-xl-12">
+                        <div class="col-xl-6">
                             <a href="{{ route('cws.event.overview', ['id' => $id]) }}" class="btn btn-danger">Back</a>
                             <a href="{{route('user.listMax', ['id' => $id])}}" class="btn btn-primary">Top 200 Code</a>
                             <a href="{{route('user.listMax', ['id' => $id, 'type' => 1])}}" class="btn btn-primary">List All Users</a>
+                        </div>
+                        <div class="col-xl-6" style="font-size: 30px;">
+                            <strong>Total users: </strong>{{number_format($total)}}
                         </div>
                     </div>
                     <table class="table table-bordered mb-0 table-responsive">
@@ -111,6 +114,14 @@
                                     </td>
                                 </tr>
                             @endforelse
+
+                            @if ($type == 1)
+                                <tr>
+                                    <td colspan="10">
+                                        {!!$userCodes->appends(['type' => 1])->links()!!}
+                                    </td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>

@@ -139,8 +139,11 @@ class User extends Controller
                     ->with('task', 'user')
                     ->whereTaskId($taskId)
                     ->orderBy('created_at', 'desc')
-                    ->get();
-                // dd($userCodes);
+                    ->paginate(20);
+                $total = $this->eventUserTicket
+                    ->with('task', 'user')
+                    ->whereTaskId($taskId)
+                    ->count();
             } else {
                 $ids = $this->taskEvent->whereTaskId($taskId)
                     ->pluck('id')->toArray();
@@ -152,6 +155,12 @@ class User extends Controller
                     ->orderBy('number_code', 'asc')
                     ->limit(200)
                     ->get();
+
+                $total = $this->userCode
+                    ->with('user', 'taskEvent', 'travelGame')
+                    ->distinct()
+                    ->whereIn('task_event_id', $ids)
+                    ->count();
             }
 
         } catch (\Exception $e) {
@@ -160,7 +169,8 @@ class User extends Controller
 
         return view('cws.users.list_max', [
             'userCodes' => $userCodes,
-            'id' => $taskId
+            'id' => $taskId,
+            'total' => $total
         ]);
     }
 
