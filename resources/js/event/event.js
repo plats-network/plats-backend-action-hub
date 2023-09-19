@@ -100,16 +100,13 @@ $(document).ready(function() {
           $('#r-name').addClass('d-none');
         }
         if (email == '') {
-           alert(11);
           $('#r-email').removeClass('d-none');
         } else {
-          alert(33);
-          // if (!validateEmail(email)) {
-          //   $('#r-email').removeClass('d-none').html('Email không đúng');
-          // } else {
-          //    alert(22);
-          //   $('#r-email').addClass('d-none');
-          // }
+          if (!validateEmail(email)) {
+            $('#r-email').removeClass('d-none').html('Email không đúng');
+          } else {
+            $('#r-email').addClass('d-none');
+          }
         }
 
         if (organization == '') {
@@ -161,9 +158,9 @@ $(document).ready(function() {
                 title: 'Submit success 😀'
               })
 
-              // setTimeout(function(e) {
-              //   window.location.reload();
-              // }, 400);
+              setTimeout(function(e) {
+                window.location.reload();
+              }, 300);
           },
           error: function() {
             Toast.fire({
@@ -172,7 +169,7 @@ $(document).ready(function() {
             });
             setTimeout(function(e) {
               window.location.reload();
-            }, 400);
+            }, 300);
           }
       });
       }
