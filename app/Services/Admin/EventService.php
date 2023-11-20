@@ -62,7 +62,7 @@ class EventService extends BaseService
             if ($booths && !empty($booths['name'])){
                 $this->saveBooth($dataBaseTask, $booths);
             }
-            
+
             // Update Quiz
             if ($quiz){
                 $this->saveQuiz($dataBaseTask, $quiz);
@@ -72,7 +72,7 @@ class EventService extends BaseService
             if ($sponsors) {
                 $this->saveSponsor($dataBaseTask, $sponsors);
             }
-            
+
             // Update Social
             if ($social){
                 if (empty($social['id'])){
@@ -83,7 +83,7 @@ class EventService extends BaseService
                     $dataBaseTask->taskEventSocials()->update($socialUn,$social['id']);
                 }
             }
-            
+
             // Update discords
             if ($discords){
                 if (empty($discords['id'])){
@@ -130,13 +130,13 @@ class EventService extends BaseService
                 unset($sessions['id']);
                 $this->saveSession($dataBaseTask, $sessions);
             }
-            
+
             // Save booth
             if ($booths && !empty($booths['name'])){
                 unset($booths['id']);
                 $this->saveBooth($dataBaseTask, $booths);
             }
-            
+
             // Save social
             if ($social) {
                 unset($social['id']);
@@ -184,31 +184,33 @@ class EventService extends BaseService
                 'end_at' => isset($sponsors['end_at']) ? $sponsors['end_at'] : null,
             ]);
 
-            foreach($sponsors['detail'] as $item) {
-                if (isset($item['id']) && $item['id']) {
-                    if (isset($item['is_delete']) && $item['is_delete']) {
-                        SponsorDetail::where('id', $item['id'])->delete();
-                    } else {
-                        if (empty($item['name'])) {
+            if (isset($sponsors['detail']) && $sponsors['detail']) {
+                foreach ($sponsors['detail'] as $item) {
+                    if (isset($item['id']) && $item['id']) {
+                        if (isset($item['is_delete']) && $item['is_delete']) {
                             SponsorDetail::where('id', $item['id'])->delete();
                         } else {
-                            SponsorDetail::where('id', $item['id'])->update([
+                            if (empty($item['name'])) {
+                                SponsorDetail::where('id', $item['id'])->delete();
+                            } else {
+                                SponsorDetail::where('id', $item['id'])->update([
+                                    'name' => $item['name'],
+                                    'price' => (int)$item['price'],
+                                    'description' => $item['description']
+                                ]);
+                            }
+                        }
+                    } else {
+                        if (empty($item['name'])) {
+                            continue;
+                        } else {
+                            SponsorDetail::create([
+                                'sponsor_id' => $sponsors['id'],
                                 'name' => $item['name'],
                                 'price' => (int)$item['price'],
                                 'description' => $item['description']
                             ]);
                         }
-                    }
-                } else {
-                    if (empty($item['name'])) {
-                        continue;
-                    } else {
-                        SponsorDetail::create([
-                            'sponsor_id' => $sponsors['id'],
-                            'name' => $item['name'],
-                            'price' => (int)$item['price'],
-                            'description' => $item['description']
-                        ]);
                     }
                 }
             }
@@ -223,19 +225,22 @@ class EventService extends BaseService
                     'end_at' => isset($sponsors['end_at']) ? $sponsors['end_at'] : null,
                 ]);
 
-                foreach($sponsors['detail'] as $item) {
-                    if (empty($item['name'])) {
-                        continue;
-                    } else {
-                        SponsorDetail::create([
-                            'sponsor_id' => $sponsor->id,
-                            'name' => $item['name'],
-                            'price' => (int)$item['price'],
-                            'description' => $item['description']
-                        ]);
-                    }
+                if (isset($sponsors['detail']) && $sponsors['detail']){
+                    foreach($sponsors['detail'] as $item) {
+                        if (empty($item['name'])) {
+                            continue;
+                        } else {
+                            SponsorDetail::create([
+                                'sponsor_id' => $sponsor->id,
+                                'name' => $item['name'],
+                                'price' => (int)$item['price'],
+                                'description' => $item['description']
+                            ]);
+                        }
 
+                    }
                 }
+
             }
 
         }
@@ -253,64 +258,65 @@ class EventService extends BaseService
                 'max_job' => $sessions['max_job'] ?? 1,
                 'description' => $sessions['description']
             ]);
+            if (isset($sessions['detail']) && $sessions['detail']) {
 
-            foreach($sessions['detail'] as $item) {
-                if (isset($item['id']) &&
-                    $item['id'] &&
-                    isset($item['is_delete']) &&
-                    $item['is_delete'] == 1)
-                {
-                    TaskEventDetail::where('id', $item['id'])->delete();
-                } else {
-                    $is_question = isset($item['is_question']) && $item['is_question'] == '1' ? true : false;
-                    $question = isset($item['question']) ? $item['question'] : null;
-                    $a1 = isset($item['a1']) && $item['a1'] != null ? $item['a1'] : null;
-                    $a2 = isset($item['a2']) && $item['a2'] != null ? $item['a2'] : null;
-                    $a3 = isset($item['a3']) && $item['a3'] != null ? $item['a3'] : null;
-                    $a4 = isset($item['a4']) && $item['a4'] != null ? $item['a4'] : null;
-                    $is_a1 = isset($item['is_a1']) && $item['is_a1'] == '1' ? true : false;
-                    $is_a2 = isset($item['is_a2']) && $item['is_a2'] == '1' ? true : false;
-                    $is_a3 = isset($item['is_a3']) && $item['is_a3'] == '1' ? true : false;
-                    $is_a4 = isset($item['is_a4']) && $item['is_a4'] == '1' ? true : false;
-
-                    if (empty($item['name'])) {
-                        continue;
-                    } elseif(isset($item['id']) && $item['id']) {
-                        TaskEventDetail::where('id', $item['id'])->update([
-                            'name' => $item['name'],
-                            'description' => $item['description'],
-                            'travel_game_id' => $item['travel_game_id'],
-                            'is_required' => false,
-                            'is_question' => $is_question,
-                            'question' => $question,
-                            'a1' => $a1,
-                            'a2' => $a2,
-                            'a3' => $a3,
-                            'a4' => $a4,
-                            'is_a1' => $is_a1,
-                            'is_a2' => $is_a2,
-                            'is_a3' => $is_a3,
-                            'is_a4' => $is_a4
-                        ]);
+                foreach ($sessions['detail'] as $item) {
+                    if (isset($item['id']) &&
+                        $item['id'] &&
+                        isset($item['is_delete']) &&
+                        $item['is_delete'] == 1) {
+                        TaskEventDetail::where('id', $item['id'])->delete();
                     } else {
-                        TaskEventDetail::create([
-                            'task_event_id' => $event->id,
-                            'name' => $item['name'],
-                            'description' => $item['description'],
-                            'code' => Str::random(35),
-                            'travel_game_id' => $item['travel_game_id'],
-                            'is_required' => false,
-                            'is_question' => $is_question,
-                            'question' => $question,
-                            'a1' => $a1,
-                            'a2' => $a2,
-                            'a3' => $a3,
-                            'a4' => $a4,
-                            'is_a1' => $is_a1,
-                            'is_a2' => $is_a2,
-                            'is_a3' => $is_a3,
-                            'is_a4' => $is_a4
-                        ]);
+                        $is_question = isset($item['is_question']) && $item['is_question'] == '1' ? true : false;
+                        $question = isset($item['question']) ? $item['question'] : null;
+                        $a1 = isset($item['a1']) && $item['a1'] != null ? $item['a1'] : null;
+                        $a2 = isset($item['a2']) && $item['a2'] != null ? $item['a2'] : null;
+                        $a3 = isset($item['a3']) && $item['a3'] != null ? $item['a3'] : null;
+                        $a4 = isset($item['a4']) && $item['a4'] != null ? $item['a4'] : null;
+                        $is_a1 = isset($item['is_a1']) && $item['is_a1'] == '1' ? true : false;
+                        $is_a2 = isset($item['is_a2']) && $item['is_a2'] == '1' ? true : false;
+                        $is_a3 = isset($item['is_a3']) && $item['is_a3'] == '1' ? true : false;
+                        $is_a4 = isset($item['is_a4']) && $item['is_a4'] == '1' ? true : false;
+
+                        if (empty($item['name'])) {
+                            continue;
+                        } elseif (isset($item['id']) && $item['id']) {
+                            TaskEventDetail::where('id', $item['id'])->update([
+                                'name' => $item['name'],
+                                'description' => $item['description'],
+                                'travel_game_id' => $item['travel_game_id'],
+                                'is_required' => false,
+                                'is_question' => $is_question,
+                                'question' => $question,
+                                'a1' => $a1,
+                                'a2' => $a2,
+                                'a3' => $a3,
+                                'a4' => $a4,
+                                'is_a1' => $is_a1,
+                                'is_a2' => $is_a2,
+                                'is_a3' => $is_a3,
+                                'is_a4' => $is_a4
+                            ]);
+                        } else {
+                            TaskEventDetail::create([
+                                'task_event_id' => $event->id,
+                                'name' => $item['name'],
+                                'description' => $item['description'],
+                                'code' => Str::random(35),
+                                'travel_game_id' => $item['travel_game_id'],
+                                'is_required' => false,
+                                'is_question' => $is_question,
+                                'question' => $question,
+                                'a1' => $a1,
+                                'a2' => $a2,
+                                'a3' => $a3,
+                                'a4' => $a4,
+                                'is_a1' => $is_a1,
+                                'is_a2' => $is_a2,
+                                'is_a3' => $is_a3,
+                                'is_a4' => $is_a4
+                            ]);
+                        }
                     }
                 }
             }
@@ -324,7 +330,9 @@ class EventService extends BaseService
                 'code' => Str::random(35)
             ]);
 
-            foreach($sessions['detail'] as $item) {
+            if (isset($sessions['detail']) && $sessions['detail']){
+
+              foreach($sessions['detail'] as $item) {
                 if (isset($item['is_delete']) && $item['is_delete'] == 1) {
                     continue;
                 } else {
@@ -352,6 +360,7 @@ class EventService extends BaseService
                     }
                 }
             }
+            }
         }
     }
 
@@ -372,36 +381,37 @@ class EventService extends BaseService
                 'description' => $booths['description']
             ]);
 
-            foreach($booths['detail'] as $item) {
-                if (isset($item['id']) &&
-                    $item['id'] &&
-                    isset($item['is_delete']) &&
-                    $item['is_delete'] == 1)
-                {
-                    TaskEventDetail::where('id', $item['id'])->delete();
-                } else {
-                    if (empty($item['name'])) {
-                        continue;
-                    } elseif(isset($item['id']) && $item['id']) {
-                        TaskEventDetail::where('id', $item['id'])->update([
-                            'name' => $item['name'],
-                            'description' => $item['description'],
-                            'nft_link' => $item['nft_link'] ?? null,
-                            'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
-                            'is_question' => false,
-                            'is_required' => isset($item['is_required']) && $item['is_required'] == '1' ? true : false
-                        ]);
+            if (isset($booths['detail']) && $booths['detail']) {
+                foreach ($booths['detail'] as $item) {
+                    if (isset($item['id']) &&
+                        $item['id'] &&
+                        isset($item['is_delete']) &&
+                        $item['is_delete'] == 1) {
+                        TaskEventDetail::where('id', $item['id'])->delete();
                     } else {
-                        TaskEventDetail::create([
-                            'task_event_id' => $event->id,
-                            'name' => $item['name'],
-                            'description' => $item['description'],
-                            'nft_link' => $item['nft_link'] ?? null,
-                            'code' => Str::random(35),
-                            'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
-                            'is_question' => false,
-                            'is_required' => isset($item['is_required']) && $item['is_required'] == '1' ? true : false
-                        ]);
+                        if (empty($item['name'])) {
+                            continue;
+                        } elseif (isset($item['id']) && $item['id']) {
+                            TaskEventDetail::where('id', $item['id'])->update([
+                                'name' => $item['name'],
+                                'description' => $item['description'],
+                                'nft_link' => $item['nft_link'] ?? null,
+                                'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
+                                'is_question' => false,
+                                'is_required' => isset($item['is_required']) && $item['is_required'] == '1' ? true : false
+                            ]);
+                        } else {
+                            TaskEventDetail::create([
+                                'task_event_id' => $event->id,
+                                'name' => $item['name'],
+                                'description' => $item['description'],
+                                'nft_link' => $item['nft_link'] ?? null,
+                                'code' => Str::random(35),
+                                'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
+                                'is_question' => false,
+                                'is_required' => isset($item['is_required']) && $item['is_required'] == '1' ? true : false
+                            ]);
+                        }
                     }
                 }
             }
@@ -415,23 +425,25 @@ class EventService extends BaseService
                 'code' => Str::random(35)
             ]);
 
-            foreach($booths['detail'] as $item) {
-                if (isset($item['is_delete']) && $item['is_delete'] == 1) {
-                    continue;
-                } else {
-                    if (empty($item['name'])) {
+            if (isset($booths['detail']) && $booths['detail']) {
+                foreach ($booths['detail'] as $item) {
+                    if (isset($item['is_delete']) && $item['is_delete'] == 1) {
                         continue;
                     } else {
-                        TaskEventDetail::create([
-                            'task_event_id' => $event->id,
-                            'name' => $item['name'],
-                            'nft_link' => $item['nft_link'] ?? null,
-                            'description' => $item['description'],
-                            'code' => Str::random(35),
-                            'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
-                            'is_question' => false,
-                            'is_required' => isset($item['is_required']) && $item['is_required'] == '1' ? true : false
-                        ]);
+                        if (empty($item['name'])) {
+                            continue;
+                        } else {
+                            TaskEventDetail::create([
+                                'task_event_id' => $event->id,
+                                'name' => $item['name'],
+                                'nft_link' => $item['nft_link'] ?? null,
+                                'description' => $item['description'],
+                                'code' => Str::random(35),
+                                'travel_game_id' => isset($item['travel_game_id']) ? $item['travel_game_id'] : null,
+                                'is_question' => false,
+                                'is_required' => isset($item['is_required']) && $item['is_required'] == '1' ? true : false
+                            ]);
+                        }
                     }
                 }
             }

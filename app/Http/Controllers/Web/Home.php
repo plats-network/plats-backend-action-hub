@@ -48,7 +48,7 @@ class Home extends Controller
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());
         }
-        
+
         return view('web.home', [
             'events' => $events
         ]);
@@ -66,7 +66,7 @@ class Home extends Controller
 
             if ($user && Str::contains($user->email, 'guest')) {
                 session()->put('u-'.$user->id, 1);
-            } 
+            }
         } catch (\Exception $e) {
             return redirect()->route('job.getTravelGame', [
                 'task_id' => $id
@@ -170,7 +170,7 @@ class Home extends Controller
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());
         }
-        
+
         return view('web.events.index', [
             'events' => $events
         ]);

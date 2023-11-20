@@ -22,10 +22,13 @@ class QuizGameController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request The request object.
-     * @param string $eventId  The UUID of the event.
+     * @param string $eventId The UUID of the event.
      */
     public function index(Request $request, $eventId): mixed
     {
+        //Is show board
+        $isShowBoard = $request->get('board', false);
+
         $isUuid = Str::isUuid($eventId);
         // Validate uuid event id
         if (!$isUuid) {
@@ -38,9 +41,11 @@ class QuizGameController extends Controller
         if (!$event) {
             return redirect()->route(DASHBOARD_WEB_ROUTER);
         }
+
         $urlAnswers = route('quiz-name.answers', $eventId);
         $qrCode = QrCode::format('png')->size(300)->generate($urlAnswers);
         $listJoinedUsers = Cache::get('list_joined_users_' . $eventId) ?? [];
+
 
         return view('quiz-game.questions', compact('qrCode', 'event', 'totalQuiz', 'listJoinedUsers'));
     }
@@ -49,7 +54,7 @@ class QuizGameController extends Controller
      * Show answers screen
      *
      * @param Request $request The request object.
-     * @param string $eventId  The UUID of the event.
+     * @param string $eventId The UUID of the event.
      */
     public function showAnswers(Request $request, $eventId): mixed
     {
@@ -159,8 +164,8 @@ class QuizGameController extends Controller
                 'user_id' => $user->id
             ],
             [
-                'point'   => $request->totalPoint,
-                'answer_id'   => $request->answerId
+                'point' => $request->totalPoint,
+                'answer_id' => $request->answerId
             ]
         );
 
@@ -172,11 +177,14 @@ class QuizGameController extends Controller
      *
      * @param Request $request The request object.
      * @param string $eventId The UUID of the event.
-     * 
+     *
      * @return \Illuminate\Http\JsonResponse The JSON response containing the data.
      */
     public function getScoreboard(Request $request, $eventId)
     {
+        //Response type. 1 json, 2 html
+        $responseType = $request->show_type ?? 1;
+
         define('TOP_HIGHEST_SCORE', 10);
         $scoreboard = QuizResult::with('user:name,id')
             ->select('id', 'user_id', 'point')
@@ -189,10 +197,16 @@ class QuizGameController extends Controller
             event(new SummaryResultQuizGameEvent($scoreboard, $request->eventId));
         }
 
-        return response()->json([
+        $data = [
             'topScoreboard' => $scoreboard->take(TOP_HIGHEST_SCORE),
             'scoreboard' => $scoreboard
-        ]);
+        ];
+        //If $responseType = 2, return html
+        if ($responseType == 2) {
+            return view('quiz-game.scoreboard', $data);
+        }
+
+        return response()->json($data);
     }
 
     /**

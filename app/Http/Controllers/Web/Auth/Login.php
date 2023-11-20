@@ -63,6 +63,7 @@ class Login extends Controller
      */
     public function showFormLogin()
     {
+
         if (Auth::guard('web')->user()) {
             return redirect('/');
         }
@@ -176,7 +177,7 @@ class Login extends Controller
                     notify()->error('Đường dẫn không đúng');
                     return redirect()->route('web.home');
                 }
-                
+
                 if ($user) {
                     $user->update(['name' => $userName]);
                 } else {

@@ -63,7 +63,7 @@
         <x-notify::notify />
         @notifyJs
         @yield('scripts')
-        
+
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
         <script type="text/javascript">

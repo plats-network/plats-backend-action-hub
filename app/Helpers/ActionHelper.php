@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use Storage;
+use Illuminate\Support\Facades\Storage;
 
 class ActionHelper
 {

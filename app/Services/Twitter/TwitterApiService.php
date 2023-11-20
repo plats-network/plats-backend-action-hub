@@ -6,7 +6,7 @@ use App\Services\Concerns\BaseTwitter;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use App\Helpers\ActionHelper;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class TwitterApiService extends BaseTwitter {
     /**
@@ -62,7 +62,7 @@ class TwitterApiService extends BaseTwitter {
      */
     public function isLikes($userTweetId, $keyLike)
     {
-        Log::info('Call api like: ', [
+        \Illuminate\Support\Facades\Log::info('Call api like: ', [
             'user_tweeter_id' => $userTweetId,
             'key_like' => $keyLike
         ]);
@@ -85,11 +85,11 @@ class TwitterApiService extends BaseTwitter {
      */
     public function isUserRetweet($userTweetId, $keyRetweet)
     {
-        Log::info('Call retweet: ', [
+        \Illuminate\Support\Facades\Log::info('Call retweet: ', [
             'user_tweeter_id' => $userTweetId,
             'key_retweet' => $keyRetweet
         ]);
-     
+
         $ver = config('app.twitter_api_ver');
         if (is_null($userTweetId) || $userTweetId == '') { return [false, 'Tweet Id not found!']; }
         if (is_null($keyRetweet) || $keyRetweet == '') { return [false, 'Retweet not found!']; }

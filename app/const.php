@@ -2,6 +2,11 @@
 
 if (!defined('DEFINE_CONSTANT')) {
     define('DEFINE_CONSTANT', 'DEFINE_CONSTANT');
+    define('DASHBOARD_WEB_ROUTER', 'cws.home');
+    //USER_COMPLETED_TASK
+    define('USER_COMPLETED_TASK', 1);
+    //USER_PROCESSING_TASK
+    define('USER_PROCESSING_TASK', 0);
 
     // Zero
     define('ZERO', 0);

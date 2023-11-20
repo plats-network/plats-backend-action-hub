@@ -183,3 +183,4 @@
     @include('web.layouts.subscribe')
     <a href="#" class="btn btn-primary ticket--sp">Get ticket</a>
 @endsection
+

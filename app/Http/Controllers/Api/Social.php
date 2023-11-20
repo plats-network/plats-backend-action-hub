@@ -28,7 +28,7 @@ class Social extends ApiController
      * @param $taskRepository
      * @param $taskUserRepository
      * @param $taskSocialRepository
-     * 
+     *
      */
     public function __construct(
         private SocialService $socialService,
@@ -90,7 +90,7 @@ class Social extends ApiController
             $tweetId = optional($this->getSocialAccount($user->token))->twitter;
 
             $type = ActionHelper::getTypeTwitter($request->type);
-            Log::info('Call api: ', [
+            \Illuminate\Support\Facades\Log::info('Call api: ', [
                 'id' => $id,
                 'type' => $type
             ]);

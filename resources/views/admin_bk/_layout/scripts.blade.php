@@ -17,7 +17,7 @@
 <script src="{{ asset('js/admin/theme/plugins/checkall.js') }}"></script>
 <!-- Template Base Scripts End -->
 <!-- Page Specific Scripts Start -->
-@include('admin._layout.script_pages')
+@include('admin_bk._layout.script_pages')
 @stack('scripts')
 
 <script src="{{ asset('js/admin/theme/common.js') }}"></script>

@@ -16,7 +16,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.1.0/css/v4-shims.min.css" />
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        @vite(['resources/sass/event.scss', 'resources/js/event.js'])
+
+        @vite(['resources/sass/event.scss',  'resources/js/event.js'])
+
         @notifyCss
     </head>
     <body id="event-page" data-env="{{env('APP_ENV') == 'local' ? false : true}}">
@@ -34,7 +36,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/1.1.0/jquery.parallax.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollup/2.4.1/jquery.scrollUp.min.js"></script>
-        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
 
         <script type="text/javascript">
             if ($('#event-page').data('env') == true) {
@@ -47,7 +49,7 @@
                       return false;
                     }
                   }, false);
-                  
+
                   if (document.addEventListener) {
                     document.addEventListener('contextmenu', function(e) {
                       e.preventDefault();
