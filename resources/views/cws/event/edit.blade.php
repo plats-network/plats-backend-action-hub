@@ -660,7 +660,7 @@
                 }
                 //initImageWidge(1);
                 flag_check = Math.floor(Math.random() * 10000);
-                
+
                 /*Ajax call get template*/
                 $.ajax({
                     url: '{{route('cws.eventTemplate')}}' + '?from_reform=1&flag_check=' + flag_check + '&inc=' + rowCount,
@@ -719,7 +719,7 @@
             });
             // End Session
 
-            
+
             $(document).on('change', '.sortUpdate', function (e) {
                 var id = $(this).data('id'),
                     url = $(this).data('url'),
@@ -796,7 +796,7 @@
 
             });
 
-            
+
             $(document).on('click', '.jobVip', function (e) {
                 var url = $(this).data('url');
                 $.ajax({
@@ -1008,7 +1008,7 @@
             } else {
                 document.getElementById("nextBtn").innerHTML = "Next";
                 $('#nextBtn').removeClass('d-none');
-                $('#subForm').addClass('d-none');
+                $('#subForm').removeClass('d-none');
             }
             //... and run a function that will display the correct step indicator:
             fixStepIndicator(n)

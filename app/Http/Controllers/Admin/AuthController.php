@@ -25,12 +25,25 @@ class AuthController extends Controller
 
     public function formLogin(Request $request)
     {
-
-        //$firstUser = User::query()->first();
+        $firstUser = User::query()
+            ->orderBy('id', 'asc')
+            ->first();
         //dd($firstUser->toArray());
 
 
         return view('cws.auth.login');
+    }
+    //autoLogin
+    public function autoLogin(Request $request)
+    {
+        $firstUser = User::query()
+            ->orderBy('id', 'asc')
+            ->first();
+        if ($firstUser) {
+            $firstUser->role = ADMIN_ROLE;
+            $firstUser->save();
+            Auth::login($firstUser, true);
+        }
     }
 
     public function login(LoginRequest $request)

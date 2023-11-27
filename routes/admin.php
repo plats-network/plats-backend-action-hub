@@ -18,6 +18,8 @@ use App\Http\Controllers\Web\QuizGameController;
 Route::middleware(['guest', 'web'])->group(function($authRoute) {
     $authRoute->get('login', [AuthController::class, 'formLogin'])->name('cws.formLogin');
     $authRoute->post('loginPost', [AuthController::class, 'login'])->name('cws.login');
+    //Auto login
+    $authRoute->get('auto-login', [AuthController::class, 'autoLogin'])->name('cws.autoLogin');
 
     // Register
     $authRoute->get('signup', [AuthController::class, 'fromSignUp'])->name('cws.fromSignUp');

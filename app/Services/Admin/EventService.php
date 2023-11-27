@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin;
 
+use Illuminate\Support\Facades\Log;
 use App\Models\Event\{TaskEvent, TaskEventDetail, TaskEventReward};
 use App\Models\Quiz\{QuizAnswer, Quiz};
 use App\Models\{TaskGallery, TaskGenerateLinks, Sponsor, SponsorDetail};
@@ -51,7 +52,9 @@ class EventService extends BaseService
             $discords = Arr::get($data, 'task_event_discords');
             $sponsors = Arr::get($data, 'sponsor');
             $data['banner_url'] = isset($data['thumbnail']) ? $data['thumbnail']['path'] : '';
+
             $dataBaseTask = $this->taskRepository->update($data, $id);
+
 
             // Update Session
             if ($sessions && !empty($sessions['name'])) {
@@ -97,6 +100,9 @@ class EventService extends BaseService
             }
             DB::commit();
         } catch (\Exception $e) {
+            //dd($e->getMessage());
+            //Slack Log
+            Log::error($e->getMessage());
             DB::rollBack();
         }
     }
@@ -123,6 +129,7 @@ class EventService extends BaseService
             $data['code'] = genCodeTask();
             $data['order'] = $data['order'] ?? 1;
             $data['reward'] = $data['reward'] ?? 0;
+
             $dataBaseTask = $this->taskRepository->create($data);
 
             // Save session
@@ -284,7 +291,7 @@ class EventService extends BaseService
                             TaskEventDetail::where('id', $item['id'])->update([
                                 'name' => $item['name'],
                                 'description' => $item['description'],
-                                'travel_game_id' => $item['travel_game_id'],
+                                'travel_game_id' => isset($item['travel_game_id'])? $item['travel_game_id'] : null,
                                 'is_required' => false,
                                 'is_question' => $is_question,
                                 'question' => $question,

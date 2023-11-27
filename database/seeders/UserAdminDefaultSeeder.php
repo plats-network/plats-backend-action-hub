@@ -16,6 +16,7 @@ class UserAdminDefaultSeeder extends Seeder
      */
     public function run()
     {
+
         User::withoutEvents(function () {
             User::create([
                 'id'                => (string)Str::orderedUuid(),
@@ -25,6 +26,9 @@ class UserAdminDefaultSeeder extends Seeder
                 'role'              => ADMIN_ROLE,
                 'email_verified_at' => now(),
             ]);
+
+            //Add user client
+
         });
     }
 }
