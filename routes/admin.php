@@ -89,6 +89,9 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->get('api/detail', [EventController::class, 'upEventDetail'])->name('api.upEventDetail');
     $cws->get('api/job-vip/{id}', [EventController::class, 'upEventVip'])->name('api.upEventVip');
     $cws->get('api/job-sort/{id}', [EventController::class, 'upEventSort'])->name('api.upEventSort');
+
+    //Ping test deploy
+    $cws->get('ping', [Dashboard::class, 'ping'])->name('cws.ping');
 });
 //Upload file
 /*Upload Single*/
@@ -170,3 +173,4 @@ Route::prefix('quiz-game')->group(function () {
 
     Route::get('/summary-results/{eventId}', [QuizGameController::class, 'getSummaryResults']);
 });
+

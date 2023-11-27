@@ -31,4 +31,14 @@ class Dashboard extends Controller
             'events' => $events
         ]);
     }
+
+    //ping
+    public function ping()
+    {
+        return response()->json([
+            'status' => 'success',
+            'updated_at' => '27.11.2023',
+            'message' => 'pong'
+        ]);
+    }
 }

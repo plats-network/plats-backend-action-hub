@@ -296,7 +296,7 @@ class UploadController extends Controller
      * Type Storage: 1 Local, 2 Cloudinary, 3 S3
      *  //public/images/Screenshot_1_1663927127.png
      * */
-    private function doUploadFileStorage($result, $type = 1, $fileInfo = [])
+    private function doUploadFileStorage($result, $type = 2, $fileInfo = [])
     {
         //dd($fileInfo);
         $item = [];
