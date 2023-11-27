@@ -25,7 +25,7 @@ return [
         1 => 'users',
     ],
 
-    'upload_type' => env('UPLOAD_TYPE', 3),
+    'upload_type' => env('UPLOAD_TYPE', 2),
 
     /*
     |--------------------------------------------------------------------------

@@ -319,6 +319,9 @@ class UploadController extends Controller
             //https://res.cloudinary.com/dhploi5y1/image/upload/v1669881623/public/images/2022/12/80_07_8531819668.jpg.jpg
             //https://res.cloudinary.com/dhploi5y1/image/upload/v1669881622/public/images/2022/12/80_02_2851968062.jpg
             $cloudinaryname = config('cloudinary.cloud_app');
+            if (empty($cloudinaryname)) {
+                $cloudinaryname = 'dhploi5y1';
+            }
             $appBaseUrl = "http://res.cloudinary.com/$cloudinaryname/image/upload/";
         }
 
