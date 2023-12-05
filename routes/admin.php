@@ -62,6 +62,9 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->get('minigame/{id}', [EventController::class, 'miniGame'])->name('cws.event.miniGame');
     $cws->get('mini/upd/{id}', [EventController::class, 'updMiniGame'])->name('cws.event.updMiniGame');
 
+    //NFT
+    Route::resource('nft', \App\Http\Controllers\Admin\NFTController::class);
+
     //Template form event
     $cws->get('event-template', [EventController::class, 'template'])->name('cws.eventTemplate');
     $cws->get('event-status/{id}', [EventController::class, 'updateStatus'])->name('cws.updateStatus');
@@ -69,6 +72,7 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->get('event-users/{id}', [User::class, 'listUsers'])->name('cws.event.users');
     $cws->get('gen-code/{id}', [EventController::class, 'genCode'])->name('cws.genCode');
     $cws->get('gen-link-social', [EventController::class, 'genLink'])->name('cws.event.genLink');
+
     // Sponser
     $cws->get('sponsor/{id}', [EventController::class, 'sponsor'])->name('cws.event.sponsor');
     $cws->post('setup/minigame', [EventController::class, 'setupMiniGame'])->name('cws.setupMiniGame');
@@ -100,6 +104,7 @@ Route::match(['patch', 'post'], 'upload-single', [UploadController::class, 'uplo
 
 //Upload Editor
 Route::post('upload-editor', [UploadController::class, 'uploadEditor2'])->name('uploadEditor')->withoutMiddleware(['csrf']);
+
 /*Delete image*/
 Route::delete('delete-image', [UploadController::class, 'uploadDelete'])->name('delete-image')->withoutMiddleware(['csrf']);
 
@@ -165,6 +170,7 @@ Route::prefix('export')->controller(Export::class)->group(function () {
 // Quiz game route
 Route::prefix('quiz-game')->group(function () {
 
+    //Question
     Route::get('/questions/{eventId}', [QuizGameController::class, 'index'])->name('cws.quiz.questions');
 
     Route::get('/scoreboard/{eventId}', [QuizGameController::class, 'getScoreboard']);

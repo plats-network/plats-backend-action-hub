@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
+use App\Services\UserService;
 use App\Models\Event\{
     EventDiscords, EventSocial,
     TaskEvent, TaskEventDetail,
@@ -13,6 +14,7 @@ use App\Models\Event\{
 use App\Models\Quiz\Quiz;
 use App\Models\Game\{MiniGame};
 
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\{
     Task, TaskGallery, TaskGroup,
     TaskGenerateLinks, TravelGame,
@@ -31,6 +33,7 @@ class EventController extends Controller
         private TaskEvent    $eventModel,
         private EventService $eventService,
         private TaskService  $taskService,
+        private UserService  $userService,
         private Task $task,
         private User $user,
         private Sponsor $sponsor,
@@ -165,7 +168,8 @@ class EventController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get();
         } catch (\Exception $e) {
-            Log::error('Error');
+            \Illuminate\Support\Facades\Log::error('Error');
+            abort(404);
         }
 
         return view('cws.event.overview', [
@@ -514,6 +518,8 @@ class EventController extends Controller
      */
     public function edit(Request $request, $id)
     {
+        $eventId = $id;
+
         $userId = Auth::user()->id;
         if (Str::contains($request->path(), 'event-preview')) {
             if (!$request->get('preview') == 1) {
@@ -588,11 +594,22 @@ class EventController extends Controller
         $isPreview = $request->get('preview') ?? '0';
         $travelGames = $this->travelGame->whereUserId($userId)->whereStatus(true)->get();
 
+        //New Code
+        //05.12.2023 - Url Check In event
+        $userCheckIn = $this->listUsers( $id); //List user check in event
+
+        //$urlAnswers = route('quiz-name.answers', $eventId);
+        $urlAnswers = route('web.events.show', ['id' => $eventId, 'check_in' => true]);
+        $qrCode = QrCode::format('png')->size(250)->generate($urlAnswers);
+
         $data = [
+            'eventId' => $eventId,
             'event' => $task,
             'sessions' => $sessions,
             'booths' => $booths,
             'quiz' => $quiz,
+            'qrCode' => $qrCode,
+            'userCheckIn' => $userCheckIn,
             'sponsor' => $sponsor,
             'taskEventSocials' => $taskEventSocials,
             'taskEventDiscords' => $taskEventDiscords,
@@ -606,6 +623,25 @@ class EventController extends Controller
         ];
 
         return view('cws.event.edit', $data);
+    }
+
+    private function listUsers( $id)
+    {
+        $users = [];
+        try {
+            $userIds = $this->eventUserTicket->select('user_id')->whereTaskId($id);
+
+            $userIds = $userIds->pluck('user_id')->toArray();
+            $userIds = array_unique($userIds);
+            $users = $this->userService->search([
+                'limit' => 100,
+                'userIds' => $userIds
+            ]);
+        } catch (\Exception $e) {
+
+        }
+
+        return $users;
     }
 
     /**

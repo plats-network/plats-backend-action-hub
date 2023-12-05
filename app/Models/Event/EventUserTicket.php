@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Task;
 use App\Models\Traits\Uuid;
+use Illuminate\Support\Str;
 
 class EventUserTicket extends Model
 {
@@ -38,5 +39,21 @@ class EventUserTicket extends Model
     public function task()
     {
         return $this->belongsTo(Task::class);
+    }
+
+    //Set checkin
+    public function setCheckin($id)
+    {
+        $eventUserTicket = $this->find($id);
+        $eventUserTicket->is_checkin = 1;
+        $eventUserTicket->save();
+    }
+
+    //Generate checkin link
+    public function generateCheckinLink($id)
+    {
+        $eventUserTicket = $this->find($id);
+        $eventUserTicket->hash_code = Str::random(32);
+        $eventUserTicket->save();
     }
 }

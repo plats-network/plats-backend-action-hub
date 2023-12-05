@@ -56,9 +56,37 @@
                             action="{{$is_update ? route('cws.eventUpdate', ['id' => $event->id]) : route('cws.eventStore')}}">
                             @csrf
                             <input type="hidden" name="id" value="{{ $event->id }}">
-                            {{-- Step --}}
-                            @include('cws.event._step')
 
+                            {{-- Step --}}
+                            @if(true)
+                            @include('cws.event._step')
+                            @endif
+
+                            @if(true)
+                            <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link navItemTab active" data-step="0" aria-current="page" href="#">Overview</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link navItemTab"  data-step="10"  href="#">Check-in</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link navItemTab "  data-step="20" >NFT</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link navItemTab"   data-step="1"  href="#">Sponsor</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link navItemTab"  data-step="30"  href="#">Users List</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link navItemTab"  data-step="40"  href="#">Dashboard</a>
+                                </li>
+                            </ul>
+
+                            <p></p>
+
+                            @endif
                             <!-- wizard-nav -->
                             <div id="tabwizard0" class="wizard-tab">
                                 <div class="text-center mb-4">
@@ -83,7 +111,7 @@
                                                 <div class="col-lg-12">
                                                     <div class="mb-3 field-address">
                                                         <label for="basicpill-firstname-input" class="form-label">Address <span class="text-danger">*</span></label>
-                                                        <input type="text" value="{{ $event->address }}"
+                                                        <input  type="text" value="{{ $event->address }}"
                                                                class="form-control" placeholder="30 Đường Văn Cao Hà Nội, Hà Nội" id="address" name="address">
                                                         <div class="valid-feedback"></div>
                                                     </div>
@@ -92,12 +120,12 @@
                                             <div class="row d-none">
                                                 <div class="col-lg-4">
                                                     <div class="mb-3 field-lat">
-                                                        <input type="text" class="form-control" value="1" name="lat">
+                                                        <input type="text" class="form-control" value="1" id="lat-address" name="lat">
                                                     </div>
                                                 </div><!-- end col -->
                                                 <div class="col-lg-4">
                                                     <div class="mb-3 field-lng">
-                                                        <input type="text" class="form-control" value="1" name="lng">
+                                                        <input type="text" class="form-control" value="1" id="lng-address" name="lng">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
@@ -146,7 +174,7 @@
                                                         <div>
                                                             <input type="hidden" id="article-thumbnail" class="empty-value"
                                                                    name="thumbnail">
-                                                            <input type="file" id="w0" name="_fileinput_w0"></div>
+                                                            <input type="file" id="w0" accept="image/png, image/gif, image/jpeg" name="_fileinput_w0"></div>
                                                         <div class="invalid-feedback">
                                                         </div>
                                                     </div>
@@ -164,6 +192,252 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{--CheckIn--}}
+                            <div id="tabwizard10" class="wizard-tab" style="display: none;">
+                                <div>
+                                    <div class="text-center mb-4">
+                                        <h5>Checkin</h5>
+                                        <p class="card-title-desc text-success">
+                                            - Mã QR code đăng ký và Check-in
+                                        </p>
+                                        <div class="d-flex justify-content-center">
+                                            <div class="text-center pl-10">
+                                                <div class="visible-print text-center algin-center">
+                                                    <img src="data:image/png;base64, {!! base64_encode($qrCode) !!}" alt="QR Code" style="max-width: 400px;">
+                                                    <p class="card-title-desc text-success">Quét QR code (Quét Tiket của Users tham gia sự kiện)</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div>
+                                        <div class="listQuiz" id="listRowQuiz">
+
+                                        </div>
+
+                                        <div class="row mt-3 ">
+                                            <div class="d-flex flex-row-reverse">
+                                                <div class="p-2">
+                                                    <button id="btnAddItemQuiz" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2">
+                                                        <i class="mdi mdi-plus me-1"></i> Print out</button>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            {{--NFT--}}
+                            <div id="tabwizard20" class="wizard-tab" style="display: none;">
+                                <div>
+                                    <div class="text-center mb-4">
+                                        <h5>NFT Setting</h5>
+                                        <p class="card-title-desc text-success">
+                                            - Create NFT
+                                        </p>
+
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="mb-3 field-name">
+
+                                            <label for="basicpill-firstname-input" class="form-label">Collection Name <span class="text-danger">*</span></label>
+                                            <input type="text" value="Name" required="" class="form-control" placeholder="" id="nft_name" name="nft_name" aria-invalid="false">
+                                            <div class="valid-feedback"></div>
+                                        </div>
+                                        {{--Collection Description--}}
+
+                                        <div class="mb-3">
+                                            <label for="exampleFormControlTextarea1" class="form-label">Collection Description</label>
+                                            <textarea class="form-control" id="nft_description" name="nft_description" rows="3">Description</textarea>
+                                        </div>
+
+                                        <div class="mb-3 field-name">
+
+                                            <label for="basicpill-firstname-input" class="form-label">Collection Size <span class="text-danger">*</span></label>
+                                            <input type="text" value="Event" required="" class="form-control" placeholder="" id="nft_size" name="nft_size" data-listener-added_7f51dd21="true" aria-invalid="false">
+                                            <div class="valid-feedback"></div>
+                                        </div>
+
+                                        <div class="mb-3 field-name">
+
+                                            <label for="basicpill-firstname-input" class="form-label">Blockchain <span class="text-danger">*</span></label>
+                                            <select class="form-select" id="nft_blockchain" name="nft_blockchain" aria-label="Default select example">
+                                                <option value="1">Aleph Zero</option>
+                                                <option value="3">Astar</option>
+                                                <option value="3">Polkadot</option>
+                                            </select>
+                                            <div class="valid-feedback"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="formFile" class="form-label">Image</label>
+                                            <input class="form-control" type="file" id="formFile">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{--User List--}}
+                            <div id="tabwizard30" class="wizard-tab" style="display: none;">
+                                <div>
+                                    <div class="text-center mb-4">
+                                        <h5>User List</h5>
+                                        <p class="card-title-desc text-success">
+                                            - User Check-in
+                                        </p>
+
+
+                                    </div>
+                                    <div>
+                                        <div class="listUser" id="listUser">
+                                            <table class="table table-bordered mb-0">
+                                                <thead class="table-light">
+                                                <tr>
+                                                    <th>Avatar</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Checkin</th>
+                                                    <th>Set Vip</th>
+                                                    <th>Created</th>
+                                                    <th>Updated</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($userCheckIn as $userItem)
+                                                    @php
+                                                        $userInfo = eventInfo($userItem->id, $eventId);
+                                                    @endphp
+                                                    <tr>
+                                                        <td style="width: 5%;">
+                                                            <div class="avatar">
+                                                                <div class="product-img avatar-title img-thumbnail bg-soft-primary border-0">
+                                                                    <img src="{{imgAvatar($userItem->avatar_path)}}" class="img-fluid" alt="{{$userItem->name}}">
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="fw-semibold" style="width: 10%;">{{$userItem->name}}</td>
+                                                        <td class="fw-semibold" style="width: 10%;">
+                                                            <p class="text-success" style="font-size: 11px">{{$userItem->email}}</p>
+                                                        </td>
+                                                        <td>
+                                                            {{$userInfo->is_checkin ? 'Checkin' : 'Not checkin'}}
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                type="checkbox"
+                                                                id="v_{{$eventId}}"
+                                                                switch="none"
+                                                                @if($userInfo->is_vip) checked @endif>
+                                                            <label
+                                                                class="userVip"
+                                                                data-id="{{$userInfo->id}}"
+                                                                for="v_{{$userInfo->id}}"
+                                                                data-on-label="On"
+                                                                data-off-label="Off"
+                                                                data-url="{{route('cws.setTicketVip', ['id' => $userInfo->id])}}"></label>
+                                                        </td>
+                                                        <td>
+                                                            {{dateFormat($userItem->created_at)}}
+                                                        </td>
+                                                        <td>
+                                                            {{dateFormat($userItem->updated_at)}}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            {{--Dashboard--}}
+                            <div id="tabwizard40" class="wizard-tab" style="display: none;">
+                                <div>
+                                    <div class="text-center mb-4">
+                                        <h5>Dashboard</h5>
+                                        <p class="card-title-desc text-success">
+                                            - Thống kê sự kiện
+                                        </p>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+                                                <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+
+                                                <h2>User Reward</h2>
+                                                <div class="table-responsive small">
+                                                    <table class="table table-bordered mb-0">
+                                                        <thead class="table-light">
+                                                        <tr>
+                                                            <th>Avatar</th>
+                                                            <th>Name</th>
+                                                            <th>Email</th>
+                                                            <th>Checkin</th>
+                                                            <th>Set Vip</th>
+                                                            <th>Created</th>
+                                                            <th>Updated</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach($userCheckIn as $userItem)
+                                                            @php
+                                                                $userInfo = eventInfo($userItem->id, $eventId);
+                                                            @endphp
+                                                            <tr>
+                                                                <td style="width: 5%;">
+                                                                    <div class="avatar">
+                                                                        <div class="product-img avatar-title img-thumbnail bg-soft-primary border-0">
+                                                                            <img src="{{imgAvatar($userItem->avatar_path)}}" class="img-fluid" alt="{{$userItem->name}}">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="fw-semibold" style="width: 10%;">{{$userItem->name}}</td>
+                                                                <td class="fw-semibold" style="width: 10%;">
+                                                                    <p class="text-success" style="font-size: 11px">{{$userItem->email}}</p>
+                                                                </td>
+                                                                <td>
+                                                                    {{$userInfo->is_checkin ? 'Checkin' : 'Not checkin'}}
+                                                                </td>
+                                                                <td>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id="v_{{$eventId}}"
+                                                                        switch="none"
+                                                                        @if($userInfo->is_vip) checked @endif>
+                                                                    <label
+                                                                        class="userVip"
+                                                                        data-id="{{$userInfo->id}}"
+                                                                        for="v_{{$userInfo->id}}"
+                                                                        data-on-label="On"
+                                                                        data-off-label="Off"
+                                                                        data-url="{{route('cws.setTicketVip', ['id' => $userInfo->id])}}"></label>
+                                                                </td>
+                                                                <td>
+                                                                    {{dateFormat($userItem->created_at)}}
+                                                                </td>
+                                                                <td>
+                                                                    {{dateFormat($userItem->updated_at)}}
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </main>
                                         </div>
                                     </div>
                                 </div>
@@ -201,16 +475,20 @@
                                 'quiz' => $quiz,
                                 'isPreview' => $isPreview
                             ])
+
                             <div class="d-flex align-items-start gap-3 mt-4">
-                                <button
-                                    type="button"
-                                    class="btn btn-primary w-sm"
-                                    id="prevBtn" onclick="nextPrev(-1)">
-                                    Previous</button>
-                                <button
-                                    type="button"
-                                    class="btn btn-primary w-sm ms-auto"
-                                    id="nextBtn" onclick="nextPrev(1)">Next</button>
+                                <div>
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary w-sm"
+                                        id="prevBtn" onclick="nextPrev(-1)">
+                                        Previous</button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-primary w-sm ms-auto"
+                                        id="nextBtn" onclick="nextPrev(1)">Next</button>
+                                </div>
+
 
                                 @if($isPreview == false)
                                     <div id="subForm" class="w-sm ms-auto d-none">
@@ -255,6 +533,36 @@
  --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"></script><script src="dashboard.js"></script></body>
+
+    <script type="text/javascript"
+            src="https://maps.google.com/maps/api/js?key={{ env('GOOGLE_MAP_KEY') }}&libraries=places" ></script>
+    <script>
+        $(document).ready(function () {
+            $("#lat-address").addClass("d-none");
+            $("#lng-address").addClass("d-none");
+        });
+    </script>
+    <script>
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+        function initialize() {
+            var input = document.getElementById('address');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+
+            autocomplete.addListener('place_changed', function () {
+                var place = autocomplete.getPlace();
+                $('#lat-address').val(place.geometry['location'].lat());
+                $('#lng-address').val(place.geometry['location'].lng());
+                //Console log lat and lng
+                console.log(place.geometry['location'].lat());
+                console.log(place.geometry['location'].lng());
+
+                //$("#latitudeArea").removeClass("d-none");
+                //$("#longtitudeArea").removeClass("d-none");
+            });
+        }
+    </script>
 
     @if($isPreview == false)
         <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
@@ -994,6 +1302,7 @@
             var x = document.getElementsByClassName("wizard-tab");
 
             x[n].style.display = "block";
+
             //... and fix the Previous/Next buttons:
             if (n == 0) {
                 document.getElementById("prevBtn").style.display = "none";
@@ -1032,6 +1341,7 @@
 
 
         }
+
         //validateForm step
         function validateForm(step){
             let isValid = true
@@ -1094,6 +1404,74 @@
                 }
             });
         @endif
+
+        //Class navItemTab click active tab
+        $(document).on('click', '.navItemTab', function (event) {
+            event.preventDefault();
+            //This add class active
+            $('.navItemTab').removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).attr('data-step');
+            //alert(id)
+            // alert(id);
+            //showTab(id);
+            $('#tabwizard0').css('display', 'none');
+
+            $('#tabwizard' + id).css('display', 'block');
+
+            for (var i = 1; i <= 100; i++) {
+                if (i != id) {
+                    $('#tabwizard' + i).css('display', 'none');
+                }
+            }
+        });
+
+    </script>
+
+    <script>
+        // Graphs
+        const ctx = document.getElementById('myChart')
+        // eslint-disable-next-line no-unused-vars
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [
+                    'Sunday',
+                    'Monday',
+                    'Tuesday',
+                    'Wednesday',
+                    'Thursday',
+                    'Friday',
+                    'Saturday'
+                ],
+                datasets: [{
+                    data: [
+                        10,
+                        120,
+                        100,
+                        190,
+                        150,
+                        200,
+                        300
+                    ],
+                    lineTension: 0,
+                    backgroundColor: 'transparent',
+                    borderColor: '#007bff',
+                    borderWidth: 4,
+                    pointBackgroundColor: '#007bff'
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        boxPadding: 3
+                    }
+                }
+            }
+        })
     </script>
 
     {{--validate--}}

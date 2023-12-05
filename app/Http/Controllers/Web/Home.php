@@ -80,6 +80,7 @@ class Home extends Controller
 
     public function show(Request $request, $id)
     {
+        $show_message = $request->get('sucess_checkin') ?? 0;
         try {
             $user = Auth::user();
             $event = $this->taskService->find($id);
@@ -89,14 +90,53 @@ class Home extends Controller
             if ($request->session()->has('sponsor-' . optional($user)->id)) {
                $request->session()->forget('sponsor-' . optional($user)->id);
             }
+            //05.12.2023
+            //Check param check_in then check user join event
+            if ($request->get('check_in') && $user) {
+                $check = $this->eventUserTicket
+                    ->whereUserId($user->id)
+                    ->whereTaskId($id)
+                    ->exists();
+
+                if (!$check) {
+                    $statusCreateCheckin = $this->eventUserTicket->create([
+                        'name' => $user->name,
+                        'phone' => $user->phone? $user->phone : '0367158269',
+                        'email' => $user->email,
+                        'task_id' => $id,
+                        'user_id' => $user->id,
+                        'is_checkin' => true,
+                        'hash_code' => Str::random(35)
+                    ]);
+                    $show_message = 1;
+                }else{
+                    //Update is_checkin
+                    $statusCreateCheckin = $this->eventUserTicket
+                        ->whereUserId($user->id)
+                        ->whereTaskId($id)
+                        ->update([
+                            'is_checkin' => true,
+                        ]);
+
+                    $show_message = 1;
+                }
+                //Send NFT to user
+
+                return redirect()->route('web.events.show', [
+                    'id' => $id,
+                    'sucess_checkin' =>1
+                ]);
+            }
         } catch (\Exception $e) {
+            dd($e->getMessage());
             notify()->error('Error show event');
         }
 
         return view('web.events.show', [
             'event' => $event,
             'user' => $user,
-            'sponsor' => $sponsor
+            'sponsor' => $sponsor,
+            'show_message' => $show_message,
         ]);
     }
 

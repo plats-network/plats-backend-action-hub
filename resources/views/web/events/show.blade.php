@@ -4,7 +4,9 @@
     <section class="confer-blog-details-area section-padding-100-0">
         <div class="container">
             <div class="row justify-content-center">
+
                 <div class="col-lg-8">
+
                     <div class="pr-lg-4 mb-100">
                         <div class="post-details-content">
                             <div class="post-blog-thumbnail mb-30">
@@ -116,6 +118,20 @@
             </div>
         </div>
     </section>
+
+    {{--Model success--}}
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <i class="bx bx-check-circle"></i>
+                    <h3>Success Checkin</h3>
+                    <p>Thank you for your interest in our event. We will contact you as soon as possible.</p>
+                    <button type="button" class="btn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="myModal" class="modal fade" data-backdrop="static" data-keyboard="false">
         <style type="text/css">

@@ -45,6 +45,14 @@ Route::post('register/resend-confirm-email', [Register::class, 'resendOtp']);
 // Route::get('/', function() {
 //     abort(403);
 // });
+//Ping https://api.plats.test/api/ping
+Route::get('ping', function() {
+    return response()->json([
+        'message' => 'pong'
+    ]);
+});
+
+
 // Login
 Route::post('login', [Login::class, 'login'])->name('api.login');
 Route::post('login/social', [Login::class, 'socialLogin'])->name('api.socialLogin');
@@ -96,6 +104,7 @@ Route::middleware('auth:api')->group(function ($router) {
     Route::get('jobs/{id}', [Event::class, 'show'])->name('event.show.jobs');
 
     Route::get('top-events', [Task::class, 'getEventTaskHots'])->name('task.event.top-events');
+
     Route::prefix('qr')->controller(QrCode::class)->group(function($router) {
         $router->post('qr-event', 'qrEvent')->name('qr.qrEvent');
     });

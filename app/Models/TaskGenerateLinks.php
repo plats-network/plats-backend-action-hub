@@ -43,4 +43,16 @@ class TaskGenerateLinks extends Model
     protected $hidden = [
 
     ];
+
+    //Create
+    public static function createTaskGenerateLinks($data)
+    {
+        $taskGenerateLinks = new TaskGenerateLinks();
+        $taskGenerateLinks->task_id = $data['task_id'];
+        $taskGenerateLinks->name = $data['name'];
+        $taskGenerateLinks->type = $data['type'];
+        $taskGenerateLinks->url = $data['url'];
+        $taskGenerateLinks->save();
+        return $taskGenerateLinks;
+    }
 }

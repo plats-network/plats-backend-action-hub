@@ -4,7 +4,7 @@ $(document).ready(function() {
     toast: true,
     position: 'top-end',
     showConfirmButton: false,
-    timer: 1500,
+    timer: 4500,
     timerProgressBar: true,
     didOpen: (toast) => {
       toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -16,7 +16,22 @@ $(document).ready(function() {
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
-  });   
+  });
+
+    //Check has param sucess_checkin
+    var url = window.location.href;
+    if (url.indexOf('sucess_checkin') != -1) {
+
+
+        setTimeout(function(e) {
+            //Show toast
+            Toast.fire({
+                icon: 'success',
+                title: 'Checkin success 😀',
+            })
+        }, 1500);
+    }else{
+    }
 
   confer_window.on('load', function() {
     $('#preloader').fadeOut('1000', function() {
@@ -36,6 +51,7 @@ $(document).ready(function() {
 
     $('.ticket--sp').on('click', function() {
       $('#myModal').modal();
+      $('#successModal').modal();
     });
   }
 
@@ -126,10 +142,10 @@ $(document).ready(function() {
           url :  url,
           type: 'POST',
           data: {
-            task_id: id, 
-            sponsor_id: sponsor_id, 
-            sponsor_detail_id: detail_id, 
-            amount: amount, 
+            task_id: id,
+            sponsor_id: sponsor_id,
+            sponsor_detail_id: detail_id,
+            amount: amount,
             note: note
           },
           success: function(data) {
@@ -203,10 +219,10 @@ $(document).ready(function() {
 
   if ($('#s').length > 0) {
     $(document).on('click', '#see1', function (event) {
-      
+
     })
   }
-  
+
   $("#infoForm").validate({
     onfocusout: false,
     onkeyup: false,
@@ -337,7 +353,7 @@ $(document).ready(function() {
     $.preventDefault();
   });
 
-  
+
   var pricingTable = $(".single-ticket-pricing-table");
   pricingTable.on("mouseenter", function() {
     pricingTable.removeClass("active");
@@ -357,6 +373,15 @@ $(document).ready(function() {
   var openCloseSpeed = 500;
   var megaopenCloseSpeed = 800;
   var sideMenu = true;
+  //Check has param sucess_checkin
+    var url = window.location.href;
+    if (url.indexOf('success_checkin') != -1) {
+        //Show toast
+        Toast.fire({
+          icon: 'success',
+          title: 'Checkin success 😀'
+        })
+    }
 
   navbarToggler.on('click', function() {
     navToggler.toggleClass('active');
