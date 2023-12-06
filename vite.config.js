@@ -18,6 +18,8 @@ export default defineConfig({
                 'resources/js/admin.js',
                 'resources/js/event.js',
                 'resources/js/game.js',
+                'resources/css/mail.css',
+
             ],
             refresh: true,
         }),

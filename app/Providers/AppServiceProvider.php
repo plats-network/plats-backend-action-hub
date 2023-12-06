@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\View\Components\Base;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
@@ -45,6 +46,8 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::componentNamespace('App\View\Components\Forms', 'form');
         Blade::anonymousComponentNamespace('admin._components', 'admin');
+
+        Blade::component('mails.base', Base::class);
     }
 
     /**

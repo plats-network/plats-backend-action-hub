@@ -5,7 +5,7 @@ namespace App\Services\Admin;
 use Illuminate\Support\Facades\Log;
 use App\Models\Event\{TaskEvent, TaskEventDetail, TaskEventReward};
 use App\Models\Quiz\{QuizAnswer, Quiz};
-use App\Models\{TaskGallery, TaskGenerateLinks, Sponsor, SponsorDetail};
+use App\Models\{NFT\NFT, TaskGallery, TaskGenerateLinks, Sponsor, SponsorDetail};
 use App\Repositories\EventRepository;
 use App\Repositories\TaskRepository;
 use App\Services\Concerns\BaseService;
@@ -54,6 +54,38 @@ class EventService extends BaseService
             $data['banner_url'] = isset($data['thumbnail']) ? $data['thumbnail']['path'] : '';
 
             $dataBaseTask = $this->taskRepository->update($data, $id);
+
+            //Save NFT Info 06.12.2023
+            if (isset($data['nft']) && $data['nft']) {
+                //Model NFT
+                $nftItem = NFT::query()->where('task_id', $dataBaseTask->id)->first();
+                $image_url='';
+
+                if (isset($data['thumbnail_nft']) && $data['thumbnail_nft']) {
+                    $image_url = $data['thumbnail_nft']['path'];
+                }
+
+
+                if ($nftItem) {
+                    $nftItem->update([
+                        'name' => $data['nft']['name'],
+                        'description' => $data['nft']['description'],
+                        'size' => $data['nft']['size'],
+                        'blockchain' => $data['nft']['blockchain'],
+                        'image_url' => $image_url
+
+                    ]);
+                } else {
+                    $nftItem = NFT::create([
+                        'task_id' => $dataBaseTask->id,
+                        'name' => $data['nft']['name'],
+                        'description' => $data['nft']['description'],
+                        'size' => $data['nft']['size'],
+                        'blockchain' => $data['nft']['blockchain'],
+                        'image_url' => $image_url
+                    ]);
+                }
+            }
 
 
             // Update Session
@@ -131,6 +163,26 @@ class EventService extends BaseService
             $data['reward'] = $data['reward'] ?? 0;
 
             $dataBaseTask = $this->taskRepository->create($data);
+
+            //Save NFT Info 06.12.2023
+            if (isset($data['nft']) && $data['nft']) {
+                //Model NFT
+                $image_url='';
+
+                if (isset($data['thumbnail_nft']) && $data['thumbnail_nft']) {
+                    $image_url = $data['thumbnail_nft']['path'];
+                }
+
+
+                $nftItem = NFT::create([
+                    'task_id' => $dataBaseTask->id,
+                    'name' => $data['nft']['name'],
+                    'description' => $data['nft']['description'],
+                    'size' => $data['nft']['size'],
+                    'blockchain' => $data['nft']['blockchain'],
+                    'image_url' => $image_url
+                ]);
+            }
 
             // Save session
             if ($sessions && !empty($sessions['name'])){

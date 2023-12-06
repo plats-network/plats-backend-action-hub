@@ -65,6 +65,9 @@ Route::middleware(['client_admin'])->group(function($cws) {
     //NFT
     Route::resource('nft', \App\Http\Controllers\Admin\NFTController::class);
 
+    //update db 17.10
+    $cws->get('update-db', [Dashboard::class, 'updateDb'])->name('api.user.updateDb');
+
     //Template form event
     $cws->get('event-template', [EventController::class, 'template'])->name('cws.eventTemplate');
     $cws->get('event-status/{id}', [EventController::class, 'updateStatus'])->name('cws.updateStatus');

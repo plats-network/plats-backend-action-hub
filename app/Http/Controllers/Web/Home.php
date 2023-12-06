@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Mail\OrderCreated;
+use App\Mail\SendNFTMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Task as Event;
 use App\Models\{Task, User, TravelGame, Sponsor};
 use Illuminate\Support\Str;
 use App\Models\Event\{
@@ -83,7 +87,12 @@ class Home extends Controller
         $show_message = $request->get('sucess_checkin') ?? 0;
         try {
             $user = Auth::user();
+
             $event = $this->taskService->find($id);
+
+            //Mail::to($user)->send(new SendNFTMail($event));
+            Mail::to($user)->send(new OrderCreated());
+
             $sponsor = $this->sponsor->whereTaskId($id)->first();
             $checkSponsor = session()->get('sponsor-'.optional($user)->id);
 
@@ -123,6 +132,14 @@ class Home extends Controller
                 //Send NFT to user
 
                 return redirect()->route('web.events.show', [
+                    'id' => $id,
+                    'sucess_checkin' =>1
+                ]);
+            }
+
+            //Case not login, redirect register. 06.12.2023
+            if($request->get('check_in') && $user == null){
+                return redirect()->route('web.register', [
                     'id' => $id,
                     'sucess_checkin' =>1
                 ]);

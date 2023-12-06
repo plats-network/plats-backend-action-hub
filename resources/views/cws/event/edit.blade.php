@@ -67,7 +67,7 @@
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link navItemTab active" data-step="0" aria-current="page" href="#">Overview</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" style="display: {{$is_update? "block": "none"}}">
                                     <a class="nav-link navItemTab"  data-step="10"  href="#">Check-in</a>
                                 </li>
                                 <li class="nav-item">
@@ -76,10 +76,10 @@
                                 <li class="nav-item">
                                     <a class="nav-link navItemTab"   data-step="1"  href="#">Sponsor</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" style="display: {{$is_update? "block": "none"}}">
                                     <a class="nav-link navItemTab"  data-step="30"  href="#">Users List</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" style="display: {{$is_update? "block": "none"}}">
                                     <a class="nav-link navItemTab"  data-step="40"  href="#">Dashboard</a>
                                 </li>
                             </ul>
@@ -250,37 +250,44 @@
                                     <div class="col-lg-8">
                                         <div class="mb-3 field-name">
 
-                                            <label for="basicpill-firstname-input" class="form-label">Collection Name <span class="text-danger">*</span></label>
-                                            <input type="text" value="Name" required="" class="form-control" placeholder="" id="nft_name" name="nft_name" aria-invalid="false">
+                                            <label for="nft[name]" class="form-label">Collection Name <span class="text-danger">*</span></label>
+                                            <input type="text" value="{{$nftItem->name}}" required="" sponsor class="form-control" placeholder="" id="nft[name]" name="nft[name]" aria-invalid="false">
                                             <div class="valid-feedback"></div>
                                         </div>
                                         {{--Collection Description--}}
 
                                         <div class="mb-3">
-                                            <label for="exampleFormControlTextarea1" class="form-label">Collection Description</label>
-                                            <textarea class="form-control" id="nft_description" name="nft_description" rows="3">Description</textarea>
+                                            <label for="nft[description]" class="form-label">Collection Description</label>
+                                            <textarea class="form-control" id="nft[description]" name="nft[description]" rows="3">{{$nftItem->description}}</textarea>
                                         </div>
 
                                         <div class="mb-3 field-name">
 
-                                            <label for="basicpill-firstname-input" class="form-label">Collection Size <span class="text-danger">*</span></label>
-                                            <input type="text" value="Event" required="" class="form-control" placeholder="" id="nft_size" name="nft_size" data-listener-added_7f51dd21="true" aria-invalid="false">
+                                            <label for="nft[size]" class="form-label">Collection Size <span class="text-danger">*</span></label>
+                                            <input type="text" value="{{$nftItem->size}}" required="" class="form-control" placeholder="" id="nft[size]" name="nft[size]" data-listener-added_7f51dd21="true" aria-invalid="false">
                                             <div class="valid-feedback"></div>
                                         </div>
 
                                         <div class="mb-3 field-name">
 
-                                            <label for="basicpill-firstname-input" class="form-label">Blockchain <span class="text-danger">*</span></label>
-                                            <select class="form-select" id="nft_blockchain" name="nft_blockchain" aria-label="Default select example">
-                                                <option value="1">Aleph Zero</option>
-                                                <option value="3">Astar</option>
-                                                <option value="3">Polkadot</option>
+                                            <label for="nft[blockchain]" class="form-label">Blockchain <span class="text-danger">*</span></label>
+                                            <select class="form-select" id="nft[blockchain]" name="nft[blockchain]" aria-label="Default select example">
+                                                @foreach ($allNetwork as $key => $item)
+                                                    <option value="{{ $key }}" {{ ($nftItem->blockchain == $key) ? 'selected' : '' }}>{{ $item }}</option>
+                                                @endforeach
                                             </select>
                                             <div class="valid-feedback"></div>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="formFile" class="form-label">Image</label>
-                                            <input class="form-control" type="file" id="formFile">
+                                            <div class="form-group field-article-thumbnail">
+                                                <label for="article-thumbnail" class="mb-3"><b>Image</b></label>
+                                                <div>
+                                                    <input type="hidden" id="article-thumbnail2" class="empty-value"
+                                                           name="thumbnail_nft">
+                                                    <input type="file" id="w2" accept="image/png, image/gif, image/jpeg" name="_fileinput_w2"></div>
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -753,6 +760,7 @@
             }
 
             var fileAvatarInit = null;
+            var fileAvatarInit10 = null;
             // var fileSlideInit = null;
             @if($event->banner_url)
                 fileAvatarInit = [{
@@ -763,6 +771,15 @@
                     "name": null,
                     "order": null
                 }];
+
+                fileAvatarInit10 = [{
+                    "path": "{{$nftItem->image_url}}",
+                    "base_url": "",
+                    "type": null,
+                    "size": null,
+                    "name": null,
+                    "order": null
+                 }];
             @endif
 
             // fileSlideInit = [
@@ -814,6 +831,43 @@
                     console.log('Upload Alway')
                 },
                 "name": "thumbnail"
+            });
+
+            jQuery('#w2').yiiUploadKit({
+                "url": uploadUrl,
+                "multiple": false,
+                "sortable": false,
+                "maxNumberOfFiles": 1,
+                "maxFileSize": 5000000,
+                "minFileSize": null,
+                "acceptFileTypes": /(\.|\/)(gif|jpe?g|png|webp)$/i,
+                "files": fileAvatarInit10,
+                "previewImage": true,
+                "showPreviewFilename": true,
+                "errorHandler": "popover",
+                "pathAttribute": "path",
+                "baseUrlAttribute": "base_url",
+                "pathAttributeName": "path",
+                "baseUrlAttributeName": "base_url",
+                "messages": {
+                    "maxNumberOfFiles": "Số lượng tối đa của tệp vượt quá",
+                    "acceptFileTypes": "Loại tệp không được phép",
+                    "maxFileSize": "Tập tin quá lớn",
+                    "minFileSize": "Tập tin quá nhỏ"
+                },
+                "start": function (e, data) {
+                    console.log('Upload Start')
+                },
+                "done": function (e, data) {
+                    console.log('Upload Done')
+                },
+                "fail": function (e, data) {
+                    console.log('Upload Fail')
+                },
+                "always": function (e, data) {
+                    console.log('Upload Alway')
+                },
+                "name": "thumbnail_nft"
             });
 
             // jQuery('#w1').yiiUploadKit({
@@ -1295,6 +1349,8 @@
         });
 
         var currentTab = {{$activeTab}}; // Current tab is set to be the first tab (0)
+        //arr index tab
+        var arrTab = [0, 10, 20, 1, 30, 40];
         showTab(currentTab); // Display the current tab
 
         function showTab(n) {

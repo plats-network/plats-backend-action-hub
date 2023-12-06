@@ -37,21 +37,25 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->softDeletes();
+            //Task id
+            $table->uuid('user_id')->nullable();
+            $table->uuid('task_id')->nullable();
 
-            $table->string('name');
-            $table->string('description');
-            $table->string('image_url');
-            $table->string('permalink');
-            $table->string('asset_contract');
-            $table->string('collection_id');
+            $table->string('name')->nullable();
+            $table->string('description')->nullable();
+            $table->string('size')->nullable();
+            $table->string('image_url')->nullable();
+            $table->string('permalink')->nullable();
+            $table->string('asset_contract')->nullable();
+            $table->string('collection_id')->nullable();
             //owner_id
-            $table->string('owner_id');
+            $table->uuid('owner_id')->nullable();
             //contract_date
-            $table->string('contract_date');
+            $table->string('contract_date')->nullable();
             //Blockchain
-            $table->string('blockchain');
+            $table->string('blockchain')->nullable();
             //IS send
-            $table->string('is_send');
+            $table->string('is_send')->nullable();
         });
 
 

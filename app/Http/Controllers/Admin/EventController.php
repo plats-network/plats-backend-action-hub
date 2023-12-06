@@ -3,48 +3,54 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Log;
 use App\Services\UserService;
 use App\Models\Event\{
-    EventDiscords, EventSocial,
-    TaskEvent, TaskEventDetail,
-    TaskEventReward, EventUserTicket,
+    EventDiscords,
+    EventSocial,
+    TaskEvent,
+    TaskEventDetail,
+    TaskEventReward,
+    EventUserTicket,
     UserCode
 };
 use App\Models\Quiz\Quiz;
 use App\Models\Game\{MiniGame};
 
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use App\Models\{
-    Task, TaskGallery, TaskGroup,
-    TaskGenerateLinks, TravelGame,
-    Sponsor, SponsorDetail,
-    UserSponsor, User
-};
+use App\Models\{NFT\NFT,
+    Task,
+    TaskGallery,
+    TaskGroup,
+    TaskGenerateLinks,
+    TravelGame,
+    Sponsor,
+    SponsorDetail,
+    UserSponsor,
+    User};
 use App\Services\Admin\{EventService, TaskService};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Log;
 
 class EventController extends Controller
 {
     public function __construct(
-        private TaskEvent    $eventModel,
-        private EventService $eventService,
-        private TaskService  $taskService,
-        private UserService  $userService,
-        private Task $task,
-        private User $user,
-        private Sponsor $sponsor,
-        private SponsorDetail $sponsorDetail,
-        private UserSponsor $userSponsor,
-        private TravelGame $travelGame,
-        private TaskEventDetail $taskEventDetail,
-        private EventUserTicket $eventUserTicket,
+        private TaskEvent         $eventModel,
+        private EventService      $eventService,
+        private TaskService       $taskService,
+        private UserService       $userService,
+        private Task              $task,
+        private User              $user,
+        private Sponsor           $sponsor,
+        private SponsorDetail     $sponsorDetail,
+        private UserSponsor       $userSponsor,
+        private TravelGame        $travelGame,
+        private TaskEventDetail   $taskEventDetail,
+        private EventUserTicket   $eventUserTicket,
         private TaskGenerateLinks $eventShare,
-        private MiniGame $miniGame,
-        private UserCode $userCode,
+        private MiniGame          $miniGame,
+        private UserCode          $userCode,
     )
     {
         // code
@@ -62,7 +68,7 @@ class EventController extends Controller
             'type' => EVENT
         ]);
 
-        foreach($events as $event) {
+        foreach ($events as $event) {
             if ($event->code == null || $event->code == '') {
                 $event->update(['code' => genCodeTask()]);
             }
@@ -208,7 +214,7 @@ class EventController extends Controller
                 ->pluck('travel_game_id')
                 ->toArray();
 
-            foreach($travelSessionIds as $travelId) {
+            foreach ($travelSessionIds as $travelId) {
                 $checkExists = $this->miniGame
                     ->where('task_event_id', $session->id)
                     ->where('travel_game_id', $travelId)->exists();
@@ -223,7 +229,7 @@ class EventController extends Controller
                 }
             }
 
-            foreach($travelBoothIds as $tBoothid) {
+            foreach ($travelBoothIds as $tBoothid) {
                 $checkExists = $this->miniGame
                     ->where('task_event_id', $booth->id)
                     ->where('travel_game_id', $tBoothid)->exists();
@@ -327,7 +333,7 @@ class EventController extends Controller
                 notify()->success('Create link successfully');
             }
         } catch (\Exception $e) {
-            notify()->error('Error: '. $e->getMessage());
+            notify()->error('Error: ' . $e->getMessage());
 
             return response()->json([
                 'message' => $e->getMessage()
@@ -402,7 +408,7 @@ class EventController extends Controller
     public function create(Request $request)
     {
         /** @var Task $task */
-        $task =  new TaskEvent();
+        $task = new TaskEvent();
         $userId = Auth::user()->id;
         $isCopyModel = $request->get('copy', null);
         if ($isCopyModel) {
@@ -414,6 +420,7 @@ class EventController extends Controller
             }
         }
         $id = $task->id;
+        $eventId = $id;
         $taskGroup = TaskGroup::where('task_id', $id)->pluck('group_id');
         $taskGallery = TaskGallery::where('task_id', $id)->pluck('url_image');
         $booths = TaskEvent::where('task_id', $id)->with('detail')->where('type', 1)->first();
@@ -456,11 +463,27 @@ class EventController extends Controller
         $isPreview = $request->get('preview') ?? '0';
         $travelGames = $this->travelGame->whereUserId($userId)->whereStatus(true)->get();
 
+        //New Code
+        //05.12.2023 - Url Check In event
+        $userCheckIn = $this->listUsers($id); //List user check in event
+
+        //$urlAnswers = route('quiz-name.answers', $eventId);
+        $urlAnswers = route('web.events.show', ['id' => $eventId ?? 1, 'check_in' => true]);
+        $qrCode = QrCode::format('png')->size(250)->generate($urlAnswers);
+        $nftItem = new NFT();
+        $allNetwork = NFT::getAllNetworkName();
+
+
         $data = [
+            'nftItem' => $nftItem,
+            'allNetwork' => $allNetwork,
             'event' => $task,
             'sessions' => $sessions,
             'booths' => $booths,
             'quiz' => $quiz,
+            'eventId' => $eventId,
+            'userCheckIn' => $userCheckIn,
+            'qrCode' => $qrCode,
             'sponsor' => $sponsor,
             'taskEventSocials' => $taskEventSocials,
             'taskEventDiscords' => $taskEventDiscords,
@@ -596,14 +619,34 @@ class EventController extends Controller
 
         //New Code
         //05.12.2023 - Url Check In event
-        $userCheckIn = $this->listUsers( $id); //List user check in event
+        $userCheckIn = $this->listUsers($id); //List user check in event
 
         //$urlAnswers = route('quiz-name.answers', $eventId);
         $urlAnswers = route('web.events.show', ['id' => $eventId, 'check_in' => true]);
         $qrCode = QrCode::format('png')->size(250)->generate($urlAnswers);
 
+        $allNetwork = NFT::getAllNetworkName();
+
+        //Load Item NFT
+        $nftItem = NFT::query()
+            ->where('task_id', $id)
+            ->first();
+
+        //Check empty create one
+        if (!$nftItem) {
+            $nftItems = new NFT();
+            $nftItems->task_id = $id;
+            $nftItems->name = 'NFT Item';
+            $nftItems->description = 'NFT Item';
+            $nftItems->image_url = 'https://cws.plats.com.vn/images/logo.png';
+
+            $nftItems->save();
+        }
+
         $data = [
             'eventId' => $eventId,
+            'allNetwork' => $allNetwork,
+            'nftItem' => $nftItem,
             'event' => $task,
             'sessions' => $sessions,
             'booths' => $booths,
@@ -625,7 +668,7 @@ class EventController extends Controller
         return view('cws.event.edit', $data);
     }
 
-    private function listUsers( $id)
+    private function listUsers($id)
     {
         $users = [];
         try {
@@ -655,12 +698,16 @@ class EventController extends Controller
     {
         try {
             $input = $request->all();
+
+            //dd($input);
+
             $request->validate(['name' => 'required']);
             $this->eventService->store($request);
             notify()->success('Update successful!');
+
         } catch (\Exception $e) {
             notify()->error('Update fail!');
-            Log::error('Update Event Cws: '. $e->getMessage());
+            Log::error('Update Event Cws: ' . $e->getMessage());
             return redirect()->route('cws.eventList', ['tab' => 0]);
         }
 
@@ -672,6 +719,7 @@ class EventController extends Controller
     {
         //Preview Event
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -752,9 +800,9 @@ class EventController extends Controller
                 ->where('user_id', $userId)
                 ->first();
 
-            if($info) {
+            if ($info) {
                 $color = '#' . substr(md5(rand()), 0, 6);
-                if($type == 'session') {
+                if ($type == 'session') {
                     $max = $this->eventUserTicket->max('sesion_code') + 1;
                     $info->update([
                         'sesion_code' => $max,
@@ -818,7 +866,7 @@ class EventController extends Controller
 
             $users = $this->user->whereIn('id', $userIds)->get();
 
-            foreach($users as $user) {
+            foreach ($users as $user) {
                 $codes = $this->userCode->whereTaskEventId($id)
                     ->whereTravelGameId($travelId)
                     ->whereUserId($user->id)

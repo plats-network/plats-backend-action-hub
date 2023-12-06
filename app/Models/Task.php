@@ -113,6 +113,11 @@ class Task extends Model
     {
         return $this->hasOne(EventSocial::class);
     }
+    //NFT
+    /*public function nfts()
+    {
+        return $this->hasMany(NFT\NFT::class);
+    }*/
 
     public function taskEventDiscords()
     {

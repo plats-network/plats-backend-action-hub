@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\Services\Admin\{EventService, TaskService};
+use Illuminate\Support\Facades\Schema;
 
 class Dashboard extends Controller
 {
@@ -40,5 +41,41 @@ class Dashboard extends Controller
             'updated_at' => '27.11.2023',
             'message' => 'pong'
         ]);
+    }
+
+    //updateDb
+    //Method: GET
+    //Url: /api/update-db
+    public function updateDb(Request $request)
+    {
+        //Show all colum from table card_datas
+        //Schema::getColumnListing('card_datas');
+
+
+        if ($request->input('update') == 1) {
+            //Unknown column 'intro_text' in 'field list' (Connection: mysql, SQL: insert into infos (
+            Schema::table('nft', function ($table) {
+                //Task id
+                $table->uuid('user_id')->nullable();
+                $table->uuid('task_id')->nullable();
+
+                $table->string('name')->nullable();
+                $table->string('description')->nullable();
+                $table->string('image_url')->nullable();
+                $table->string('permalink')->nullable();
+                $table->string('asset_contract')->nullable();
+                $table->string('collection_id')->nullable();
+                //owner_id
+                $table->uuid('owner_id')->nullable();
+                //contract_date
+                $table->string('contract_date')->nullable();
+                //Blockchain
+                $table->string('blockchain')->nullable();
+                //IS send
+                $table->string('is_send')->nullable();
+            });
+        }
+
+        return 1;
     }
 }
