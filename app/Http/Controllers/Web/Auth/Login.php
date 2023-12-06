@@ -118,7 +118,14 @@ class Login extends Controller
 
     public function formLoginGuest(Request $request)
     {
-        return view('web.auth.login_guest');
+        //Get session checkin event . checkin_event
+        $sessionCheckin = session()->get('checkin_event');
+        //Get param sucess_checkin
+        $successCheckin = $request->get('sucess_checkin');
+
+        return view('web.auth.login_guest', [
+            'sessionCheckin' => $successCheckin,
+        ]);
     }
 
     public function loginGuest(Request $request)
@@ -130,6 +137,7 @@ class Login extends Controller
             $account = $request->input('account');
             $userName = $request->input('name');
             $sessionGuest = session()->get('guest');
+            $sessionCheckin = session()->get('checkin_event');
 
             if (filter_var($account, FILTER_VALIDATE_EMAIL)) {
                 $phone = "0983232309";
@@ -166,6 +174,23 @@ class Login extends Controller
                 }
 
                 session()->forget('guest');
+
+                if ($sessionCheckin){
+                    session()->forget('checkin_event');
+                    //Save checkin event
+                    $this->userEvent->create([
+                        'user_id' => $user->id,
+                        'event_id' => $sessionCheckin['id'],
+                        'type' => 'checkin',
+                        'status' => 'checkin',
+                        'code' => Str::random(10),
+                    ]);
+
+                    return redirect()->route('web.events.show', [
+                        'id' => $sessionCheckin['id']
+                    ]);
+
+                }
                 return redirect()->route('quiz-name.answers', [
                     'eventId' => $sessionGuest['id']
                 ]);

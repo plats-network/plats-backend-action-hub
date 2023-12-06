@@ -90,8 +90,11 @@ class Home extends Controller
 
             $event = $this->taskService->find($id);
 
-            //Mail::to($user)->send(new SendNFTMail($event));
-            Mail::to($user)->send(new OrderCreated());
+            if ($user){
+                //Mail::to($user)->send(new SendNFTMail($event));
+                Mail::to($user)->send(new OrderCreated());
+
+            }
 
             $sponsor = $this->sponsor->whereTaskId($id)->first();
             $checkSponsor = session()->get('sponsor-'.optional($user)->id);
@@ -139,7 +142,12 @@ class Home extends Controller
 
             //Case not login, redirect register. 06.12.2023
             if($request->get('check_in') && $user == null){
-                return redirect()->route('web.register', [
+                //Set session checkin and event id
+                session()->put('checkin_event', [
+                    'id' => $id,
+                    'type' => 'checkin'
+                ]);
+                return redirect()->route('web.formLoginGuest', [
                     'id' => $id,
                     'sucess_checkin' =>1
                 ]);

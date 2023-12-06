@@ -2,7 +2,11 @@
 
 @section('content')
     <div class="card">
+        @if($sessionCheckin)
+                <h3 class="title mb-3">Thông tin checkin</h3>
+        @else
         <h3 class="title mb-3">Thông tin của bạn</h3>
+        @endif
         {{-- @include('web.auth._social') --}}
         {{-- <p class="note-login">
            Bạn vui lòng nhập đúng số điện thoại hoặc email để có cơ hội nhận những phần quà hấp dẫn từ chương trình.
