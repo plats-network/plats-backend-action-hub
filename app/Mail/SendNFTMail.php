@@ -48,7 +48,7 @@ class SendNFTMail extends Mailable
         );*/
 
         return new Content(
-            markdown: 'emails.nft',
+            markdown: 'emails.nft-gift',
             with: [
                 'url' => $url,
                 'event' => $this->event,

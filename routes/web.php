@@ -23,6 +23,7 @@ use App\Http\Controllers\Web\Auth\{
     ForgotPassword
 };
 
+// Định nghĩa các route cho người dùng chưa đăng nhập (guest)
 Route::middleware(['guest'])->group(function ($auth) {
     // Login social
     Route::get('login/{providerName}', [Login::class, 'redirectToProvider']);
@@ -34,6 +35,19 @@ Route::middleware(['guest'])->group(function ($auth) {
 
     $auth->get('login-guest', [Login::class, 'formLoginGuest'])->name('web.formLoginGuest');
     $auth->post('login-guest', [Login::class, 'loginGuest'])->name('web.loginGuest');
+
+    //API Router
+//API Connect wallet
+    /*
+     * Sau khi connect xong thì frontend gửi lên backend 2 thông tin:
+     * wallet_address và wallet_name (account name: optional)
+    Backend xử lý nếu chưa có trong DB thì đăng ký user mới.
+    Nếu có rồi thì thôi. Cuối cùng xử lý để sao cho user đó đã ở trạng thái đã login.
+     * */
+    Route::post('/api/connect-wallet', [\App\Http\Controllers\FrontendController::class, 'connectWallet'])->name('connect-wallet');
+
+//Wallet Login
+    Route::any('/api/wallet-login', [\App\Http\Controllers\FrontendController::class, 'walletLogin'])->name('wallet-login');
 
     // Comfirm register
     // $auth->get('confirm/{token}', [SignUp::class, 'confirmRegis'])->name('')
@@ -51,6 +65,7 @@ Route::middleware(['guest'])->group(function ($auth) {
     $auth->post('sign-up', [SignUp::class, 'store'])->name('web.signUp');
 });
 
+// Định nghĩa các route cho người dùng đã đăng nhập
 Route::middleware(['user_event'])->group(function ($r) {
     $r->get('logout', [Login::class, 'logout'])->name('web.logout');
     $r->get('profile', [UserController::class, 'profile'])->name('web.profile');
@@ -70,6 +85,7 @@ Route::middleware(['user_event'])->group(function ($r) {
     $r->get('api/remove-nft', [Job::class, 'removeNft'])->name('nft.remove');
 });
 
+// Các route không yêu cầu middleware
 Route::get('/', [Home::class, 'index'])->name('web.home');
 Route::get('event-lists', [Home::class, 'events'])->name('web.events');
 Route::get('event/{id}', [Home::class, 'show'])->name('web.events.show');

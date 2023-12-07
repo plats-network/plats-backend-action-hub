@@ -52,6 +52,19 @@ Route::get('ping', function() {
     ]);
 });
 
+//API Router
+//API Connect wallet
+/*
+ * Sau khi connect xong thì frontend gửi lên backend 2 thông tin:
+ * wallet_address và wallet_name (account name: optional)
+Backend xử lý nếu chưa có trong DB thì đăng ký user mới.
+Nếu có rồi thì thôi. Cuối cùng xử lý để sao cho user đó đã ở trạng thái đã login.
+ * */
+Route::post('connect-wallet', [\App\Http\Controllers\FrontendController::class, 'connectWallet'])->name('connect-wallet');
+
+//Wallet Login
+Route::any('wallet-login', [\App\Http\Controllers\FrontendController::class, 'walletLogin'])->name('wallet-login');
+
 
 // Login
 Route::post('login', [Login::class, 'login'])->name('api.login');

@@ -25,6 +25,7 @@ class Login extends Controller
         private User $user,
         private EventUserTicket $eventTicket,
         private TaskEventDetail $eventDetail,
+        private EventUserTicket $eventUserTicket,
         private UserJoinEvent $userEvent,
         private TaskEvent $taskEvent,
     ) {
@@ -153,6 +154,7 @@ class Login extends Controller
             }
 
             $user = $this->user->whereEmail($account)->first();
+
             if (!$user) {
                 $userParams = [
                     'email' => $account,
@@ -177,20 +179,25 @@ class Login extends Controller
 
                 if ($sessionCheckin){
                     session()->forget('checkin_event');
+
                     //Save checkin event
-                    $this->userEvent->create([
+                    $statusCreateCheckin = $this->eventUserTicket->create([
+                        'name' => $user->name,
+                        'phone' => $user->phone ? $user->phone : '0367158269',
+                        'email' => $user->email,
+                        'task_id' => $sessionCheckin['id'],
                         'user_id' => $user->id,
-                        'event_id' => $sessionCheckin['id'],
-                        'type' => 'checkin',
-                        'status' => 'checkin',
-                        'code' => Str::random(10),
+                        'is_checkin' => true,
+                        'hash_code' => Str::random(35)
                     ]);
+
 
                     return redirect()->route('web.events.show', [
-                        'id' => $sessionCheckin['id']
+                        'id' => $sessionCheckin['id'],
+                        'check_in' => 1
                     ]);
-
                 }
+
                 return redirect()->route('quiz-name.answers', [
                     'eventId' => $sessionGuest['id']
                 ]);
@@ -211,6 +218,27 @@ class Login extends Controller
                 Auth::login($user, true);
                 session()->forget('guest');
 
+                if ($sessionCheckin){
+                    session()->forget('checkin_event');
+
+                    //Save checkin event
+                    $statusCreateCheckin = $this->eventUserTicket->create([
+                        'name' => $user->name,
+                        'phone' => $user->phone ? $user->phone : '0367158269',
+                        'email' => $user->email,
+                        'task_id' => $sessionCheckin['id'],
+                        'user_id' => $user->id,
+                        'is_checkin' => true,
+                        'hash_code' => Str::random(35)
+                    ]);
+
+
+                    return redirect()->route('web.events.show', [
+                        'id' => $sessionCheckin['id'],
+                        'check_in' => 1
+                    ]);
+                }
+
                 return redirect()->route('job.getJob', [
                     'code' => $code
                 ]);
@@ -221,12 +249,33 @@ class Login extends Controller
                 } else {
                     $user = $this->user->create($userParams);
                     Auth::login($user, true);
+
+                    if ($sessionCheckin){
+                        session()->forget('checkin_event');
+
+                        //Save checkin event
+                        $statusCreateCheckin = $this->eventUserTicket->create([
+                            'name' => $user->name,
+                            'phone' => $user->phone ? $user->phone : '0367158269',
+                            'email' => $user->email,
+                            'task_id' => $sessionCheckin['id'],
+                            'user_id' => $user->id,
+                            'is_checkin' => true,
+                            'hash_code' => Str::random(35)
+                        ]);
+
+                        return redirect()->route('web.events.show', [
+                            'id' => $sessionCheckin['id'],
+                            'check_in' => 1
+                        ]);
+                    }
                     notify()->success('Login successfull!');
                 }
             }
 
             return redirect()->route('web.home');
         } catch (\Exception $e) {
+            dd($e->getMessage());
             notify()->error('Có lỗi sảy ra');
             return redirect()->route('web.formLoginGuest');
         }

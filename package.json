@@ -68,6 +68,15 @@
         "vue-qrcode-reader": "^3.1.1",
         "vue-social-sharing": "^3.0.9",
         "vue2-google-maps": "^0.10.7",
-        "waves": "^0.1.1"
+        "waves": "^0.1.1",
+        "@alpinejs/collapse": "^3.13.2",
+        "@sentry/browser": "^7.79.0",
+        "@tailwindcss/container-queries": "^0.1.1",
+        "@vitejs/plugin-react": "^4.1.1",
+        "apexcharts": "^3.44.0",
+        "pageres": "^8.0.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "useink": "^1.14.1"
     }
 }

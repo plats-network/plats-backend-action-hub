@@ -1,4 +1,10 @@
 @extends('web.auth.auth_app')
+
+@viteReactRefresh
+@vite(['resources/js/connect-wallet.jsx'])
+@vite(['resources/js/ModalWallet.jsx'])
+
+
 @section('content')
     <div class="card">
           <h3 class="title mb-3"> Log in</h3>
@@ -24,8 +30,17 @@
                     id="psw"
                     required />
               </div>
+
+
+
               <button class="cta-btn" type="submit">Sign In</button>
               <a class="forget-pass" href="{{route('web.formForgot')}}">Forgot password?</a>
+
            </x-form>
+
+
+                <div class="text-center">
+                    <span id="login_button"></span>
+                </div>
     </div>
 @endsection

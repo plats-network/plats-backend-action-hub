@@ -28,17 +28,19 @@ use DB;
 class Home extends Controller
 {
     public function __construct(
-        private TaskEvent $eventModel,
-        private Task $task,
-        private User $user,
-        private Sponsor $sponsor,
-        private UserJoinEvent $taskDone,
+        private TaskEvent       $eventModel,
+        private Task            $task,
+        private User            $user,
+        private Sponsor         $sponsor,
+        private UserJoinEvent   $taskDone,
         private TaskEventDetail $eventDetail,
         private EventUserTicket $eventUserTicket,
-        private EventService $eventService,
-        private TaskService $taskService,
-        private TravelGame $travelGame,
-    ) {}
+        private EventService    $eventService,
+        private TaskService     $taskService,
+        private TravelGame      $travelGame,
+    )
+    {
+    }
 
     public function index(Request $request)
     {
@@ -69,7 +71,7 @@ class Home extends Controller
             $user = Auth::user();
 
             if ($user && Str::contains($user->email, 'guest')) {
-                session()->put('u-'.$user->id, 1);
+                session()->put('u-' . $user->id, 1);
             }
         } catch (\Exception $e) {
             return redirect()->route('job.getTravelGame', [
@@ -90,17 +92,23 @@ class Home extends Controller
 
             $event = $this->taskService->find($id);
 
-            if ($user){
-                //Mail::to($user)->send(new SendNFTMail($event));
-                Mail::to($user)->send(new OrderCreated());
+            if ($user) {
+                //Need check user is verify email
+                /*if (!$user->email_verified_at) {
+                    notify()->error('Vui lòng xác nhận email để tham gia sự kiện.');
+
+                    return redirect()->route('web.home');
+                }*/
+                Mail::to($user)->send(new SendNFTMail($event));
+                //Mail::to($user)->send(new OrderCreated());
 
             }
 
             $sponsor = $this->sponsor->whereTaskId($id)->first();
-            $checkSponsor = session()->get('sponsor-'.optional($user)->id);
+            $checkSponsor = session()->get('sponsor-' . optional($user)->id);
 
             if ($request->session()->has('sponsor-' . optional($user)->id)) {
-               $request->session()->forget('sponsor-' . optional($user)->id);
+                $request->session()->forget('sponsor-' . optional($user)->id);
             }
             //05.12.2023
             //Check param check_in then check user join event
@@ -113,7 +121,7 @@ class Home extends Controller
                 if (!$check) {
                     $statusCreateCheckin = $this->eventUserTicket->create([
                         'name' => $user->name,
-                        'phone' => $user->phone? $user->phone : '0367158269',
+                        'phone' => $user->phone ? $user->phone : '0367158269',
                         'email' => $user->email,
                         'task_id' => $id,
                         'user_id' => $user->id,
@@ -121,7 +129,7 @@ class Home extends Controller
                         'hash_code' => Str::random(35)
                     ]);
                     $show_message = 1;
-                }else{
+                } else {
                     //Update is_checkin
                     $statusCreateCheckin = $this->eventUserTicket
                         ->whereUserId($user->id)
@@ -136,20 +144,21 @@ class Home extends Controller
 
                 return redirect()->route('web.events.show', [
                     'id' => $id,
-                    'sucess_checkin' =>1
+                    'sucess_checkin' => 1
                 ]);
             }
 
             //Case not login, redirect register. 06.12.2023
-            if($request->get('check_in') && $user == null){
+            if ($request->get('check_in') && $user == null) {
                 //Set session checkin and event id
                 session()->put('checkin_event', [
                     'id' => $id,
                     'type' => 'checkin'
                 ]);
+
                 return redirect()->route('web.formLoginGuest', [
                     'id' => $id,
-                    'sucess_checkin' =>1
+                    'sucess_checkin' => 1
                 ]);
             }
         } catch (\Exception $e) {
@@ -172,7 +181,7 @@ class Home extends Controller
 
         try {
             $user = Auth::user();
-            $name = $request->input('first').' '.$request->input('last');
+            $name = $request->input('first') . ' ' . $request->input('last');
             $taskId = $request->input('task_id');
             $email = $request->input('email');
 
@@ -251,7 +260,7 @@ class Home extends Controller
             $boothDatas = [];
             $user = Auth::user();
             $task = $this->task->whereCode($id)->first();
-            $sessionNFT = session()->get('nft-'.$user->id);
+            $sessionNFT = session()->get('nft-' . $user->id);
 
             if (!$task) {
                 $this->redirectPath();
@@ -262,7 +271,7 @@ class Home extends Controller
             $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)->orderBy('sort', 'asc')->get();
             $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)->orderBy('sort', 'asc')->get();
 
-            foreach($sessions as $session) {
+            foreach ($sessions as $session) {
                 $travel = $this->travelGame->find($session->travel_game_id);
                 $job = $this->taskDone
                     ->whereUserId($user->id)
@@ -283,7 +292,7 @@ class Home extends Controller
                 ];
             }
 
-            foreach($booths as $booth) {
+            foreach ($booths as $booth) {
                 $travel = $this->travelGame->find($booth->travel_game_id);
                 $job = $this->taskDone
                     ->whereUserId($user->id)
@@ -306,11 +315,11 @@ class Home extends Controller
 
             $groupSessions = [];
             $groupBooths = [];
-            foreach($sessionDatas as $item) {
+            foreach ($sessionDatas as $item) {
                 $groupSessions[$item['travel_game_id']][] = $item;
             }
 
-            foreach($boothDatas as $item) {
+            foreach ($boothDatas as $item) {
                 $groupBooths[$item['travel_game_id']][] = $item;
             }
         } catch (\Exception $e) {

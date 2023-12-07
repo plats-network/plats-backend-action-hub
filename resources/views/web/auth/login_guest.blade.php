@@ -1,5 +1,10 @@
 @extends('web.auth.auth_app')
 
+@viteReactRefresh
+@vite(['resources/js/connect-wallet.jsx'])
+@vite(['resources/js/ModalWallet.jsx'])
+
+
 @section('content')
     <div class="card">
         @if($sessionCheckin)

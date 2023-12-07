@@ -18,6 +18,8 @@ return new class extends Migration
             $table->tinyInteger('role')->default(USER_ROLE);
             $table->string('name')->nullable();
             $table->string('email')->unique();
+            $table->string('wallet_address')->nullable();
+            $table->string('wallet_name')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->char('confirmation_code', 6)->after('email_verified_at')->nullable();
