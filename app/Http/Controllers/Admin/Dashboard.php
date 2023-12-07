@@ -52,12 +52,15 @@ class Dashboard extends Controller
         //Schema::getColumnListing('card_datas');
 
 
+        //Update user
         if ($request->input('update') == 2) {
             Schema::table('users', function ($table) {
                 $table->string('wallet_name')->nullable();
                 $table->string('wallet_address')->nullable();
+                $table->string('view_count')->nullable();
             });
         }
+
         if ($request->input('update') == 1) {
             //Unknown column 'intro_text' in 'field list' (Connection: mysql, SQL: insert into infos (
             Schema::table('nft', function ($table) {

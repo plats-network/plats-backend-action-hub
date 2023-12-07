@@ -84,5 +84,10 @@ class NFT extends Model
 
         return $nftItem;
     }
+    //url attribute
+    public function getUrlAttribute()
+    {
+        return $this->permalink;
+    }
 }
 

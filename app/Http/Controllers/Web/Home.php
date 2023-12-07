@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Mail\NFTNotification;
 use App\Mail\OrderCreated;
 use App\Mail\SendNFTMail;
 use Illuminate\Http\Request;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Task as Event;
-use App\Models\{Task, User, TravelGame, Sponsor};
+use App\Models\{NFT\NFT, Task, User, TravelGame, Sponsor};
 use Illuminate\Support\Str;
 use App\Models\Event\{
     EventUserTicket,
@@ -124,6 +125,21 @@ class Home extends Controller
                 }
                 //Mail::to($user)->send(new SendNFTMail($event));
                 //Mail::to($user)->send(new OrderCreated());
+                $recipientEmail = $user->email;
+                $userName = $user->name;
+                $senderName = 'Plats Event';
+                $nftModel = NFT::query()->where('task_id', $id)->first();
+                $nftName = '';
+                $nftDescription = '';
+                $nftUrl = '';
+                if ($nftModel){
+                    $nftName = $nftModel->name;
+                    $nftDescription = $nftModel->description;
+                    $nftUrl = $nftModel->url;
+                }
+
+
+                Mail::to($recipientEmail)->send(new NFTNotification($userName, $senderName, $nftName, $nftDescription, $nftUrl));
 
             }
 
