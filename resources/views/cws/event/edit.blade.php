@@ -43,7 +43,6 @@
                     <a class="ml-5 btn btn-primary btn-sm mb-2" href="{{route('cws.event.users', ['id' => $event->id])}}">List User</a>
                     @endif
 
-
                 </div>
                 <div class="col-md-2 text-end">
                     <a href="{{ route('cws.eventEdit', ['id' => $event->id]) }}" class="btn btn-sm mb-2 btn-primary d-inline-flex align-items-center me-2" >
