@@ -28,6 +28,8 @@ export const ModalWallet = ({ setIsModal, setAccount }) => {
 
             (async () => {
                 await callApiConnect(body);
+                //Redirect to home page
+                window.location.href = "/";
             })();
         }
     }, [account?.address]);

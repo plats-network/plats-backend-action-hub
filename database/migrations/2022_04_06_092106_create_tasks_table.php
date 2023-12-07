@@ -24,6 +24,7 @@ return new class extends Migration
             $table->tinyInteger('status')->default(0)->comment('0:draft, 1:public');
             $table->tinyInteger('type')->default(0);
             $table->tinyInteger('order')->default(0);
+            $table->tinyInteger('view_count')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -94,7 +95,7 @@ return new class extends Migration
             $table->softDeletes();
         });
     }
-   
+
     /**
      * Reverse the migrations.
      *

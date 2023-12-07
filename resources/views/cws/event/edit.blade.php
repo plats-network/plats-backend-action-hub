@@ -34,11 +34,24 @@
     <div class="container-fluid">
         <div class="row">
             @if($isPreview)
-                <div class="col-md-12">
+                <div class="col-md-10">
+                    @if(false)
                     <a class="btn btn-danger btn-sm mb-2 mr-5" style="margin-right: 10px;" href="{{ route('cws.event.overview', ['id' => $event->id]) }}">Overview</a>
-                    <a class="btn btn-danger btn-sm mb-2 mr-5" style="margin-right: 10px;" href="{{ route('cws.event.miniGame', ['id' => $event->id]) }}">Mini Game</a>
-                    <a class="btn btn-primary btn-sm mb-2 mr-5" style="margin-right: 10px;" href="{{ route('cws.eventEdit', ['id' => $event->id]) }}">Edit Event</a>
+
+                    <a class="btn btn-danger btn-sm mb-2 mr-5 none" style="margin-right: 10px;" href="{{ route('cws.event.miniGame', ['id' => $event->id]) }}">Mini Game</a>
+
                     <a class="ml-5 btn btn-primary btn-sm mb-2" href="{{route('cws.event.users', ['id' => $event->id])}}">List User</a>
+                    @endif
+
+
+                </div>
+                <div class="col-md-2 text-end">
+                    <a href="{{ route('cws.eventEdit', ['id' => $event->id]) }}" class="btn btn-sm mb-2 btn-primary d-inline-flex align-items-center me-2" >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon icon-xs me-2 mt-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                        </svg>
+
+                        Edit Event</a>
                 </div>
             @elseif ($event && $event->id)
                 <div class="col-md-12">
@@ -74,7 +87,7 @@
                                     <a class="nav-link navItemTab "  data-step="20" >NFT</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link navItemTab"   data-step="1"  href="#">Sponsor</a>
+                                    <a class="nav-link navItemTab"   data-step="1"  href="#">Crowd Sponsor</a>
                                 </li>
                                 <li class="nav-item" style="display: {{$is_update? "block": "none"}}">
                                     <a class="nav-link navItemTab"  data-step="30"  href="#">Users List</a>

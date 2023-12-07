@@ -91,6 +91,16 @@ class Home extends Controller
             $user = Auth::user();
 
             $event = $this->taskService->find($id);
+            //Check event is null
+            if (!$event) {
+                notify()->error('Sự kiện không tồn tại.');
+
+                return redirect()->route('web.home');
+            }
+            //Increase view
+            /*$this->taskService->update($id, [
+                'view_count' => $event->view + 1
+            ]);*/
 
             if ($user) {
                 //Need check user is verify email
@@ -99,7 +109,20 @@ class Home extends Controller
 
                     return redirect()->route('web.home');
                 }*/
-                Mail::to($user)->send(new SendNFTMail($event));
+                $emailUser = $user->email;
+                //Check email valid
+                if (!filter_var($emailUser, FILTER_VALIDATE_EMAIL)) {
+                    notify()->error('Vui lòng xác nhận email để tham gia sự kiện.');
+
+                    //return redirect()->route('web.events.show', $id);
+                }
+                //Check string length > 50
+                if (strlen($emailUser) > 50) {
+                    notify()->error('Vui lòng xác nhận email để tham gia sự kiện.');
+
+                    //return redirect()->route('web.events.show', $id);
+                }
+                //Mail::to($user)->send(new SendNFTMail($event));
                 //Mail::to($user)->send(new OrderCreated());
 
             }

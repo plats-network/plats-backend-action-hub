@@ -4,8 +4,11 @@
     $e = 'event-';
     $menuEvent = in_array($path, [$e.'list', $e.'preview', $e.'users', $e.'edit', $e.'create']);
     $travelGame = in_array($path, ['travel-games']);
+    //Login user
+    $user = \Illuminate\Support\Facades\Auth::user();
 
     $events = App\Models\Task::where('type', '=', EVENT)
+    ->where('creator_id',  $user? $user->id: '')
     ->limit(5)
     ->orderBy('created_at', 'desc')
     ->get();

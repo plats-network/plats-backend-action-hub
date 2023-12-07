@@ -44,10 +44,10 @@ Route::middleware(['guest'])->group(function ($auth) {
     Backend xử lý nếu chưa có trong DB thì đăng ký user mới.
     Nếu có rồi thì thôi. Cuối cùng xử lý để sao cho user đó đã ở trạng thái đã login.
      * */
-    Route::post('/api/connect-wallet', [\App\Http\Controllers\FrontendController::class, 'connectWallet'])->name('connect-wallet');
+    //Route::post('/api/connect-wallet', [\App\Http\Controllers\FrontendController::class, 'connectWallet'])->name('connect-wallet');
 
-//Wallet Login
-    Route::any('/api/wallet-login', [\App\Http\Controllers\FrontendController::class, 'walletLogin'])->name('wallet-login');
+    //Wallet Login
+    //Route::any('/api/wallet-login', [\App\Http\Controllers\FrontendController::class, 'walletLogin'])->name('wallet-login');
 
     // Comfirm register
     // $auth->get('confirm/{token}', [SignUp::class, 'confirmRegis'])->name('')
@@ -70,6 +70,13 @@ Route::middleware(['user_event'])->group(function ($r) {
     $r->get('logout', [Login::class, 'logout'])->name('web.logout');
     $r->get('profile', [UserController::class, 'profile'])->name('web.profile');
     $r->post('editEmail', [UserController::class, 'editEmail'])->name('web.editEmail');
+
+    //Edit update user
+    $r->get('editUser', [UserController::class, 'showEditUser'])->name('web.showEditUser');
+    $r->post('editUser', [UserController::class, 'editUser'])->name('web.editUser');
+
+    $r->post('editPassword', [UserController::class, 'editPassword'])->name('web.editPassword');
+
 
     // Travel
     $r->get('event-job/{id}', [Home::class, 'jobEvent'])->name('web.jobEvent');

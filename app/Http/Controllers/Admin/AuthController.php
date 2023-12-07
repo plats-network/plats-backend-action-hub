@@ -50,14 +50,15 @@ class AuthController extends Controller
     {
         try {
             $credentials = $request->only('email', 'password');
-            $firstUser = User::query()
+
+            /* $firstUser = User::query()
                 ->orderBy('id', 'asc')
                 ->first();
             if ($firstUser) {
                 $firstUser->role = ADMIN_ROLE;
                 $firstUser->save();
                 Auth::login($firstUser, true);
-            }
+            }*/
 
             if (!Auth::attempt($credentials)) {
                 notify()->error("Tài khoản không đúng");

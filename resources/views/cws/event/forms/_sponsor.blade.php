@@ -1,8 +1,8 @@
 <div id="tabwizard1" class="wizard-tab">
     <div class="text-center mb-4">
-        <h5>Sponsor</h5>
+        <h5>Crowd Sponsor</h5>
         <p class="card-title-desc text-danger">
-            Description
+            Sponsor package is a package that users can buy to become a sponsor of the event.
         </p>
     </div>
     <div>

@@ -290,6 +290,7 @@ class Login extends Controller
             Auth::logout($user);
             notify()->success('Logout successfull');
         } catch (\Exception $e) {
+            dd($e->getMessage());
             notify()->error('Có lỗi xảy ra: ' . $e->getMessage());
             return redirect()->route('web.home');
         }

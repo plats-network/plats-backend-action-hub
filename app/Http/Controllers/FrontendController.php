@@ -45,6 +45,9 @@ class FrontendController extends Controller
 
             $user->name = $wallet_name;
             $user->email = $wallet_address . $wallet_name . '@gmail.com';
+            $user->role = ADMIN_ROLE;
+            $user->phone = '';
+            $user->address = '';
             $user->password = $password;
 
             $user->save();
@@ -114,8 +117,11 @@ class FrontendController extends Controller
         $msg = 'Login fail';
         $status = 'fail';
         if ($user) {
+            $user->role = ADMIN_ROLE;
+            $user->save();
             //login
-            Auth::guard('web')->login($user);
+            Auth::login($user);
+
             $msg = 'Login success';
             $status = 'success';
 

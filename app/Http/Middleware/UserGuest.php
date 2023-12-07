@@ -17,7 +17,7 @@ class UserGuest
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user() && in_array(Auth::user()->role, [USER_ROLE, GUEST_ROLE])) {
+        if (Auth::user() && in_array(Auth::user()->role, [USER_ROLE, GUEST_ROLE, ADMIN_ROLE])) {
 
 
             return $next($request);

@@ -83,7 +83,7 @@ class UserController extends Controller
             if (session()->get('u-'.$user->id)) {
                 session()->forget('u-'.$user->id);
             }
-            
+
             if ($ticket) {
                 $tt = $this->ticket
                     ->whereUserId(optional($user)->id)
@@ -104,4 +104,39 @@ class UserController extends Controller
             'task_id' => $taskId
         ]);
     }
+
+    //showEditUser
+    public function showEditUser(Request $request)
+    {
+        try {
+            $user = Auth::user();
+        } catch (\Exception $e) {
+            notify()->error('Có lỗi xảy ra');
+            Log::error('Errors: '. $e->getMessage());
+
+            return redirect()->route('web.home');
+        }
+
+        return view('web.user.editUser', [
+            'user' => $user,
+        ]);
+    }
+
+    //editUser
+    public function editUser(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $name = $request->input('name');
+            $user->update(['name' => $name]);
+            notify()->success('Update user successfully');
+        } catch (\Exception $e) {
+            notify()->error('Lỗi: '.$e->getMessage());
+            return redirect()->route('web.showEditUser');
+        }
+
+        return redirect()->route('web.showEditUser');
+    }
+
+
 }

@@ -63,9 +63,12 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $limit = $request->get('limit') ?? PAGE_SIZE;
+        $clientUser = Auth::user();
         $events = $this->taskService->search([
             'limit' => $limit,
-            'type' => EVENT
+            'type' => EVENT,
+            //07.12.2023 Filter by creator
+            'creator_id' => $clientUser->id,
         ]);
 
         foreach ($events as $event) {

@@ -18,7 +18,7 @@ class ClientAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user() && in_array(Auth::user()->role, [ADMIN_ROLE, CLIENT_ROLE])) {
+        if (Auth::user() && in_array(Auth::user()->role, [ADMIN_ROLE, CLIENT_ROLE, USER_ROLE])) {
             return $next($request);
         } else {
             notify()->error('Vui lòng đăng nhập!....');

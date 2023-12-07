@@ -38,7 +38,8 @@ class SignUp extends Controller
     {
         try {
             $datas = $request->except(['term']);
-            $this->userService->storeAccount($datas, USER_ROLE);
+            $clientRole = CLIENT_ROLE;
+            $this->userService->storeAccount($datas, $clientRole);
             notify()->success("Đăng ký tài khoản thành. Check email confirm.");
         } catch (Exception $exception) {
             Log::error('User signup error: ' . $e->getMessage());
