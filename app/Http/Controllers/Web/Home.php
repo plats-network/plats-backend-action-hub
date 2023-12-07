@@ -102,8 +102,10 @@ class Home extends Controller
             /*$this->taskService->update($id, [
                 'view_count' => $event->view + 1
             ]);*/
+            //check_in
+            $check_in = $request->get('check_in') ?? 0;
 
-            if ($user) {
+            if ($user && $check_in) {
                 //Need check user is verify email
                 /*if (!$user->email_verified_at) {
                     notify()->error('Vui lòng xác nhận email để tham gia sự kiện.');
