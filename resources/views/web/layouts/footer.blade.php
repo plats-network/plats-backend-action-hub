@@ -9,6 +9,7 @@
                 </div>
             </div>
             <div class="row">
+                @if($version !=2)
                 <div class="col-12 col-sm-6 col-lg-3 menu-item">
                     <div class="single-footer-widget mb-60">
                         <h5 class="widget-title">Organize Events</h5>
@@ -45,10 +46,12 @@
                             <li><a href="{{url('/')}}">Online events</a></li>
                             <li><a href="{{url('/')}}">Upcoming events</a></li>
                             <li><a href="{{url('/')}}">Search by location</a></li>
-                            
+
                         </ul>
                     </div>
                 </div>
+                @endif
+
                 <div class="col-12 col-sm-6 col-lg-3 menu-item">
                     <div class="single-footer-widget mb-60">
                         <h5 class="widget-title">Connect us</h5>

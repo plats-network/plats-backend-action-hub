@@ -24,6 +24,7 @@
                     <div class="classynav">
                         <ul id="nav">
                             <li class="sp-hidden"><a href="https://{{config('plats.cws')}}">Create Event</a></li>
+                            @if($version !=2)
                             <li class="{{request()->is('solution') ? 'active' : ''}}">
                                 <a href="{{route('web.solution')}}">Solutions</a>
                             </li>
@@ -39,6 +40,7 @@
                             <li class="border-r {{request()->is('contact') ? 'active' : ''}}">
                                 <a href="{{route('web.contact')}}">Contact</a>
                             </li>
+                            @endif
                             @if (auth()->guest())
                                 <li>
                                     <a href="{{route('web.formLogin')}}">Sign In</a>

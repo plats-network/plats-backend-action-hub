@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -48,6 +49,9 @@ class AppServiceProvider extends ServiceProvider
         Blade::anonymousComponentNamespace('admin._components', 'admin');
 
         Blade::component('mails.base', Base::class);
+        //09.12.2023
+        //Version Website. Load From Env
+        View::share('version', env('APP_VERSION', '2'));
     }
 
     /**
