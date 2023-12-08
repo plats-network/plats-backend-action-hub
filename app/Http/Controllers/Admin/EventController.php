@@ -480,6 +480,7 @@ class EventController extends Controller
         $data = [
             'nftItem' => $nftItem,
             'allNetwork' => $allNetwork,
+            'urlAnswers' => $urlAnswers,
             'event' => $task,
             'sessions' => $sessions,
             'booths' => $booths,
@@ -649,6 +650,7 @@ class EventController extends Controller
         $data = [
             'eventId' => $eventId,
             'allNetwork' => $allNetwork,
+            'urlAnswers' => $urlAnswers,
             'nftItem' => $nftItem,
             'event' => $task,
             'sessions' => $sessions,

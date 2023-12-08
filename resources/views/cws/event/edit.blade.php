@@ -221,27 +221,23 @@
                                         <div class="d-flex justify-content-center">
                                             <div class="text-center pl-10">
                                                 <div class="visible-print text-center algin-center">
-                                                    <img src="data:image/png;base64, {!! base64_encode($qrCode) !!}" alt="QR Code" style="max-width: 400px;">
+                                                    <div class="row">
+                                                        <div class="col-4"></div>
+                                                        <div class="col-5">
+                                                            <img src="data:image/png;base64, {!! base64_encode($qrCode) !!}" alt="QR Code" style="max-width: 400px;">
+                                                        </div>
+                                                    </div>
+
                                                     <p class="card-title-desc text-success">Quét QR code (Quét Tiket của Users tham gia sự kiện)</p>
+                                                    <p class="card-title-desc text-success">URL Checkin Event: <a target="_blank" href="{{$urlAnswers}}">{{$urlAnswers}}</a></p>
+
                                                 </div>
                                             </div>
                                         </div>
 
                                     </div>
                                     <div>
-                                        <div class="listQuiz" id="listRowQuiz">
 
-                                        </div>
-
-                                        <div class="row mt-3 ">
-                                            <div class="d-flex flex-row-reverse">
-                                                <div class="p-2">
-                                                    <button id="btnAddItemQuiz" type="button" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2">
-                                                        <i class="mdi mdi-plus me-1"></i> Print out</button>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                        </div>
                                     </div>
 
                                 </div>
