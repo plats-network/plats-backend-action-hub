@@ -77,22 +77,22 @@
                             @if(true)
                             <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link navItemTab active" data-step="0" aria-current="page" href="#">Overview</a>
+                                    <a class="nav-link navItemTab active" id="navItemTab10" data-step="0" aria-current="page" href="#">Overview</a>
                                 </li>
                                 <li class="nav-item" style="display: {{$is_update? "block": "none"}}">
-                                    <a class="nav-link navItemTab"  data-step="10"  href="#">Check-in</a>
+                                    <a class="nav-link navItemTab" id="navItemTab10"  data-step="10"  href="#">Check-in</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link navItemTab "  data-step="20" >NFT</a>
+                                    <a class="nav-link navItemTab " id="navItemTab20"  data-step="20" >NFT</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link navItemTab"   data-step="1"  href="#">Crowd Sponsor</a>
+                                    <a class="nav-link navItemTab" id="navItemTab30"  data-step="30"  href="#">CrowdSponsor</a>
                                 </li>
                                 <li class="nav-item" style="display: {{$is_update? "block": "none"}}">
-                                    <a class="nav-link navItemTab"  data-step="30"  href="#">Users List</a>
+                                    <a class="nav-link navItemTab" id="navItemTab40"  data-step="40"  href="#">Users List</a>
                                 </li>
                                 <li class="nav-item" style="display: {{$is_update? "block": "none"}}">
-                                    <a class="nav-link navItemTab"  data-step="40"  href="#">Dashboard</a>
+                                    <a class="nav-link navItemTab" id="navItemTab50" data-step="50"  href="#">Dashboard</a>
                                 </li>
                             </ul>
 
@@ -210,6 +210,7 @@
                             </div>
 
                             {{--CheckIn--}}
+                            @if($is_update)
                             <div id="tabwizard10" class="wizard-tab" style="display: none;">
                                 <div>
                                     <div class="text-center mb-4">
@@ -245,6 +246,7 @@
 
                                 </div>
                             </div>
+                            @endif
 
                             {{--NFT--}}
                             <div id="tabwizard20" class="wizard-tab" style="display: none;">
@@ -263,7 +265,7 @@
                                         <div class="mb-3 field-name">
 
                                             <label for="nft[name]" class="form-label">Collection Name <span class="text-danger">*</span></label>
-                                            <input type="text" value="{{$nftItem->name}}" required="" sponsor class="form-control" placeholder="" id="nft[name]" name="nft[name]" aria-invalid="false">
+                                            <input type="text" value="{{$nftItem->name}}"  sponsor class="form-control" placeholder="" id="nft[name]" name="nft[name]" aria-invalid="false">
                                             <div class="valid-feedback"></div>
                                         </div>
                                         {{--Collection Description--}}
@@ -276,7 +278,7 @@
                                         <div class="mb-3 field-name">
 
                                             <label for="nft[size]" class="form-label">Collection Size <span class="text-danger">*</span></label>
-                                            <input type="text" value="{{$nftItem->size}}" required="" class="form-control" placeholder="" id="nft[size]" name="nft[size]" data-listener-added_7f51dd21="true" aria-invalid="false">
+                                            <input type="text" value="{{$nftItem->size}}" class="form-control" placeholder="" id="nft[size]" name="nft[size]" data-listener-added_7f51dd21="true" aria-invalid="false">
                                             <div class="valid-feedback"></div>
                                         </div>
 
@@ -304,8 +306,16 @@
                                     </div>
                                 </div>
                             </div>
+
+                            @include('cws.event.forms._sponsor', [
+                               'sessions' => $sessions,
+                               'isPreview' => $isPreview,
+                               'event' => $event
+                           ])
+
+                            @if($is_update)
                             {{--User List--}}
-                            <div id="tabwizard30" class="wizard-tab" style="display: none;">
+                            <div id="tabwizard40" class="wizard-tab" style="display: none;">
                                 <div>
                                     <div class="text-center mb-4">
                                         <h5>User List</h5>
@@ -382,7 +392,7 @@
                             </div>
 
                             {{--Dashboard--}}
-                            <div id="tabwizard40" class="wizard-tab" style="display: none;">
+                            <div id="tabwizard50" class="wizard-tab" style="display: none;">
                                 <div>
                                     <div class="text-center mb-4">
                                         <h5>Dashboard</h5>
@@ -462,11 +472,9 @@
                                 </div>
                             </div>
 
-                            @include('cws.event.forms._sponsor', [
-                                'sessions' => $sessions,
-                                'isPreview' => $isPreview,
-                                'event' => $event
-                            ])
+                            @endif
+
+
 
                             <!-- Sessiom -->
                             @include('cws.event.forms._session', [
@@ -1362,7 +1370,7 @@
 
         var currentTab = {{$activeTab}}; // Current tab is set to be the first tab (0)
         //arr index tab
-        var arrTab = [0, 10, 20, 1, 30, 40];
+        var arrTab = [0, 10, 20, 30, 40, 50];
         showTab(currentTab); // Display the current tab
 
         function showTab(n) {
@@ -1370,6 +1378,10 @@
             var x = document.getElementsByClassName("wizard-tab");
 
             x[n].style.display = "block";
+
+            //navItemTab  add class active
+            $('.navItemTab').removeClass('active');
+            $('#navItemTab' + n).addClass('active');
 
             //... and fix the Previous/Next buttons:
             if (n == 0) {
@@ -1453,6 +1465,9 @@
             }
             //... and adds the "active" class on the current step:
             x[n].className += " active";
+            //navItemTab  add class active
+            $('.navItemTab').removeClass('active');
+            $('#navItemTab' + n).addClass('active');
         }
 
         //Check if edit not alow click
@@ -1464,8 +1479,11 @@
                 showTab(id);
                 $('#tabwizard0').css('display', 'none');
                 $('#tabwizard' + id).css('display', 'block');
+                //navItemTab  add class active
+                $('.navItemTab').removeClass('active');
+                $('#navItemTab' + id).addClass('active');
 
-                for (var i = 1; i <= 5; i++) {
+                for (var i = 1; i <= 50; i++) {
                     if (i != id) {
                         $('#tabwizard' + i).css('display', 'none');
                     }

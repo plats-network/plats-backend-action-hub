@@ -1,4 +1,4 @@
-<div id="tabwizard1" class="wizard-tab">
+<div id="tabwizard30" class="wizard-tab" style="display: none">
     <div class="text-center mb-4">
         <h5>Crowd Sponsor</h5>
         <p class="card-title-desc text-danger">
@@ -20,9 +20,14 @@
                 <div class="mb-3">
                     <label for="basicpill-vatno-input" class="form-label">Price Type</label>
                     <select class="form-control" name="sponsor[price_type]">
+
+                        <option value="0">AZERO</option>
+                        <option value="1">POLKADOT</option>
+                        @if(false)
                         <option value="0">USDT</option>
                         <option value="1">NEAR</option>
                         <option value="2">ADA</option>
+                        @endif
                     </select>
                 </div>
             </div>

@@ -88,6 +88,7 @@ class Home extends Controller
     public function show(Request $request, $id)
     {
         $show_message = $request->get('sucess_checkin') ?? 0;
+        $has_checkin = 0;
         try {
             $user = Auth::user();
 
@@ -182,10 +183,10 @@ class Home extends Controller
                     $show_message = 1;
                 }
                 //Send NFT to user
-
+                $has_checkin = 1;
                 return redirect()->route('web.events.show', [
                     'id' => $id,
-                    'sucess_checkin' => 1
+                    'sucess_checkin' => $has_checkin
                 ]);
             }
 
