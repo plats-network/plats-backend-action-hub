@@ -65,6 +65,14 @@ class NFT extends Model
         return $this->belongsTo(NFTCollection::class);
     }
 
+    //Get event_id  attribute from task_id
+    public function getEventIdAttribute()
+    {
+
+        return $this->task_id;
+    }
+
+
 
     //Create NFT Item
     // "nft" => array:4 [▼

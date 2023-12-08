@@ -64,6 +64,14 @@ Route::middleware(['client_admin'])->group(function($cws) {
 
     //NFT
     Route::resource('nft', \App\Http\Controllers\Admin\NFTController::class);
+    Route::get('/payment-request', [App\Http\Controllers\HomeController::class, 'storePaymentRequest'])->name('payment-request');
+    //payment_link
+    Route::get('/payment-link', [App\Http\Controllers\HomeController::class, 'paymentLink'])->name('payment-link');
+    //payment_checkout
+    Route::get('/payment/{slug}', [App\Http\Controllers\HomeController::class, 'paymentCheckout'])->name('payment-checkout');
+    Route::get('/payment/success/{session_id}', [App\Http\Controllers\HomeController::class, 'paymentSuccess'])->name('payment-success');
+    Route::post('stripe/webhook', [App\Http\Controllers\StripeWebhookController::class, 'handleWebhook']);
+
 
     //update db 17.10
     $cws->get('update-db', [Dashboard::class, 'updateDb'])->name('api.user.updateDb');
