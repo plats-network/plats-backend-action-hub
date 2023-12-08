@@ -69,7 +69,7 @@ Route::middleware(['client_admin'])->group(function($cws) {
     Route::get('/payment-link', [App\Http\Controllers\HomeController::class, 'paymentLink'])->name('payment-link');
     //payment_checkout
     Route::get('/payment/{slug}', [App\Http\Controllers\HomeController::class, 'paymentCheckout'])->name('payment-checkout');
-    Route::get('/payment/success/{session_id}', [App\Http\Controllers\HomeController::class, 'paymentSuccess'])->name('payment-success');
+    Route::get('/payment/success', [App\Http\Controllers\HomeController::class, 'paymentSuccess'])->name('payment-success');
     Route::post('stripe/webhook', [App\Http\Controllers\StripeWebhookController::class, 'handleWebhook']);
 
 

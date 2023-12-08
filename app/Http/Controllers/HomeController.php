@@ -52,7 +52,7 @@ class HomeController extends Controller
             'network' => $input['network']??null,
         ];
         //Callback URL
-        $callback_url = route('payment-request', ['link' => $dataNFT['link']]);
+        $callback_url = route('payment-success', ['link' => $dataNFT['link']]);
         $dataNFT['callback_url'] = $callback_url;
         //MD5 Hash
         $dataNFT['hash'] = md5(json_encode($dataNFT));
@@ -64,4 +64,32 @@ class HomeController extends Controller
         return redirect($paymentLink);
     }
 
+    //paymentSuccess
+    public function paymentSuccess(Request $request)
+    {
+        $input = $request->all();
+        //Get NFT ID Record
+        $link = $input['link']??null;
+        $paymentDetail = PaymentDetail::where('link', $link)->first();
+        //Check NFT Record
+        if(!$paymentDetail) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Payment Detail Record Not Found'
+            ]);
+        }
+
+        //Update Payment Detail
+        $paymentDetail->update([
+            'paid' => true,
+            'stripe_payment_id' => $input['stripe_payment_id']??null,
+        ]);
+
+        //Return Payment Link
+        return response()->json([
+            'status' => true,
+            'message' => 'Payment Detail Updated Successfully',
+            'data' => $paymentDetail
+        ]);
+    }
 }
