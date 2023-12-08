@@ -142,7 +142,7 @@ class Home extends Controller
                 }
 
 
-                Mail::to($recipientEmail)->send(new NFTNotification($userName, $senderName, $nftName, $nftDescription, $nftUrl));
+                //Mail::to($recipientEmail)->send(new NFTNotification($userName, $senderName, $nftName, $nftDescription, $nftUrl));
 
             }
 
