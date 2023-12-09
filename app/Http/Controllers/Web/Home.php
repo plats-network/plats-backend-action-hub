@@ -127,6 +127,31 @@ class Home extends Controller
             'data' => $input
         ]);
     }
+    //paymentSuccess
+    //Return view payment success
+    public function paymentSuccess(Request $request)
+    {
+        $input = $request->all();
+        $event_id = $input['event_id']??null;
+        $event = $this->task->find($event_id);
+        $user = Auth::user();
+        $sponsor = $this->sponsor->whereTaskId($event_id)->first();
+        $checkSponsor = session()->get('sponsor-' . optional($user)->id);
+
+        if ($request->session()->has('sponsor-' . optional($user)->id)) {
+            $request->session()->forget('sponsor-' . optional($user)->id);
+        }
+        //Date now payment
+        $dateNow = Carbon::now()->format('Y-m-d H:i:s');
+
+        return view('home.payment-success', [
+            'event' => $event,
+            'user' => $user,
+            'dateNow' => $dateNow,
+            'sponsor' => $sponsor,
+            'checkSponsor' => $checkSponsor,
+        ]);
+    }
 
     public function isResult(Request $request, $id)
     {

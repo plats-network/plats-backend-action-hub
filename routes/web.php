@@ -119,6 +119,9 @@ Route::any('create-crowd-sponsor', [Home::class, 'createCrowdSponsor'])->name('w
 //payment-crowdsponsor
 Route::get('payment-crowdsponsor', [Home::class, 'paymentCrowdSponsor'])->name('web.paymentCrowdSponsor');
 
+//Payment success
+Route::get('payment-success', [Home::class, 'paymentSuccess'])->name('web.paymentSuccess');
+
 // Route::get('/events/history/list', [Job::class, 'apiList']);
 // Route::get('/events/history/user', [Home::class, 'apiList']);
 // Route::get('/events/likes', [Likes::class, 'index'])->name('web.like');;
