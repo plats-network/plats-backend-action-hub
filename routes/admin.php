@@ -64,7 +64,7 @@ Route::middleware(['client_admin'])->group(function($cws) {
 
     //NFT
     Route::resource('nft', \App\Http\Controllers\Admin\NFTController::class);
-    Route::get('/payment-request', [App\Http\Controllers\HomeController::class, 'storePaymentRequest'])->name('payment-request');
+    Route::get('/payment-nft', [App\Http\Controllers\HomeController::class, 'storePaymentRequest'])->name('payment-request');
     //payment_link
     Route::get('/payment-link', [App\Http\Controllers\HomeController::class, 'paymentLink'])->name('payment-link');
     //payment_checkout
