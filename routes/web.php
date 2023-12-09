@@ -113,6 +113,12 @@ Route::get('logout-discord', [App\Http\Controllers\Web\Discord::class, 'logout']
 Route::get('events/list', [Home::class, 'webList'])->name('list.Events');
 Route::post('create-user', [Job::class, 'createUser'])->name('web.createUser');
 
+//Create Crowd Sponsor Link
+Route::any('create-crowd-sponsor', [Home::class, 'createCrowdSponsor'])->name('web.createCrowdSponsor');
+
+//payment-crowdsponsor
+Route::get('payment-crowdsponsor', [Home::class, 'paymentCrowdSponsor'])->name('web.paymentCrowdSponsor');
+
 // Route::get('/events/history/list', [Job::class, 'apiList']);
 // Route::get('/events/history/user', [Home::class, 'apiList']);
 // Route::get('/events/likes', [Likes::class, 'index'])->name('web.like');;

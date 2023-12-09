@@ -71,6 +71,10 @@
                                         </div>
 
                                         <h3>Support</h3>
+                                        {{--Form--}}
+                                        <form action="{{ route('web.createCrowdSponsor',['task_id' =>$event->id] ) }}" method="post">
+                                            @csrf
+                                            @method('POST')
                                         <div class="buget">
                                             <h3>Make a pledge without a reward</h3>
                                             <div class="row text-left">
@@ -89,15 +93,14 @@
                                                 <a class="guest" href="{{route('web.formLogin', ['type' => 'sponsor', 'id' => $event->id])}}">Continue</a>
                                             @else
                                                 <button
-                                                    class="disabled"
                                                     type="submit"
-                                                    disabled
-                                                    id="cSponsor"
-                                                    data-type="sponsor"
+                                                    id="cSponsor2"
+                                                    data-type="sponsor2"
                                                     data-id="{{$event->id}}"
                                                     data-url="{{route('new.sponsor')}}">Continue</button>
                                             @endif
                                         </div>
+                                        </form>
 
                                         <h3>Package</h3>
                                         <div class="package-item">

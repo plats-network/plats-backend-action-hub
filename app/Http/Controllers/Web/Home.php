@@ -61,6 +61,73 @@ class Home extends Controller
         ]);
     }
 
+    //createCrowdSponsor
+    public function createCrowdSponsor(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $task_id = $request->get('task_id');
+            $task = $this->task->find($task_id);
+            $sponsor = $this->sponsor->whereTaskId($task_id)->first();
+            $checkSponsor = session()->get('sponsor-' . optional($user)->id);
+
+            if ($request->session()->has('sponsor-' . optional($user)->id)) {
+                $request->session()->forget('sponsor-' . optional($user)->id);
+            }
+        } catch (\Exception $e) {
+            notify()->error('Sự kiện không tồn tại.');
+            return redirect()->route('web.home');
+        }
+        //localhost:5173/payment-crowdsponsor?name="tranchinh"
+        //&&price_type="xin chao moi nguoi toi la tran van chinh"
+        //&&total_price=5&&blockchain="alphe"&&end_at="urlimage"&&des=”mota”
+
+        //Data send
+        $timeEndExpire  = Carbon::now()->addDays(1)->format('Y-m-d H:i:s');
+        $dataSend = [
+            'event_id' => $task->id,
+            'name' => $user->name,
+            'price_type' => $request->get('price_type', 'Hello'),
+            'total_price' => $request->get('total_price', 100),
+            'blockchain' => $request->get('blockchain', 'alphe'),
+            'end_at' => $request->get('end_at', $timeEndExpire),
+            'des' => $request->get('des', 'Crowd Sponsor'),
+        ];
+
+
+
+        //Callback URL
+        $callback_url = route('payment-success', ['event_id' => $dataSend['event_id']]);
+
+        $dataNFT['callback_url'] = $callback_url;
+        //MD5 Hash
+        $dataNFT['hash'] = md5(json_encode($dataSend));
+
+        //Create Payment Link with data. Set for router payment-request
+        $paymentLink = route('web.paymentCrowdSponsor', $dataSend);
+        //Url Payment
+        //$urlPayment = 'http://localhost:5173';
+        $urlPayment = 'https://platsevent.web.app';
+        //Replace $paymentLink with $urlPayment
+        $paymentLink = str_replace(url('/'), $urlPayment, $paymentLink);
+
+
+        //Return Payment Link
+        return redirect($paymentLink);
+    }
+
+    //paymentCrowdSponsor
+    public function paymentCrowdSponsor(Request $request)
+    {
+        $input = $request->all();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Payment Sponsor Request Created Successfully',
+            'data' => $input
+        ]);
+    }
+
     public function isResult(Request $request, $id)
     {
         try {
