@@ -36,12 +36,13 @@ class HomeController extends Controller
         $dataNFT = [
             'event_id' => $nft->task_id,
             'user_id' => $nft->owner_id,
+            'blockchain' => $nft->blockchain??'aleph',
             'nft_id' => $nft->id,
             'nft_name' => $nft->name,
             'nft_des' => $nft->description,
             'img' => $nft->image_url,
             'nft_size' => $nft->size,
-            'blockchain' => $nft->blockchain,
+
             //'nft_asset_contract' => $nft->asset_contract,
             'email' => $input['email']??null,
             'amount' => $input['amount']??null,
@@ -53,6 +54,7 @@ class HomeController extends Controller
             'stripe_payment_id' => $input['stripe_payment_id']??null,
             'network' => $input['network']??null,
         ];
+
         //Callback URL
         $callback_url = route('payment-success', ['link' => $dataNFT['link']]);
         $dataNFT['callback_url'] = $callback_url;
