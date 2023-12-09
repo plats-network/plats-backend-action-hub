@@ -6,7 +6,7 @@
     <script>var SHUFFLE_DOMAIN = 'https://shuffle.dev/';</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Page title</title>
+    <title>Payment Success</title>
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
