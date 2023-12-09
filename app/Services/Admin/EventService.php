@@ -81,7 +81,7 @@ class EventService extends BaseService
                         'name' => $data['nft']['name'],
                         'description' => $data['nft']['description'],
                         'size' => $data['nft']['size'],
-                        'blockchain' => $data['nft']['blockchain'],
+                        'blockchain' => $data['nft']['blockchain']?? 'aleph',
                         'image_url' => $image_url
                     ]);
                 }

@@ -56,7 +56,8 @@ class HomeController extends Controller
         ];
 
         //Callback URL
-        $callback_url = route('payment-success', ['link' => $dataNFT['link']]);
+        $callback_url = route('payment-success', ['nft_id' => $dataNFT['nft_id']]);
+
         $dataNFT['callback_url'] = $callback_url;
         //MD5 Hash
         $dataNFT['hash'] = md5(json_encode($dataNFT));
@@ -64,7 +65,8 @@ class HomeController extends Controller
         //Create Payment Link with data. Set for router payment-request
         $paymentLink = route('payment-request', $dataNFT);
         //Url Payment
-        $urlPayment = 'http://localhost:5173';
+        //$urlPayment = 'http://localhost:5173';
+        $urlPayment = 'https://platsevent.web.app';
         //Replace $paymentLink with $urlPayment
         $paymentLink = str_replace(url('/'), $urlPayment, $paymentLink);
 
@@ -77,10 +79,11 @@ class HomeController extends Controller
     {
         $input = $request->all();
         //Get NFT ID Record
-        $link = $input['link']??null;
-        $paymentDetail = PaymentDetail::where('link', $link)->first();
+        $nft_id = $input['nft_id']??null;
+        $nftModel = NFT::query()->where('id', $nft_id)->first();
+
         //Check NFT Record
-        if(!$paymentDetail) {
+        if(!$nftModel) {
             return response()->json([
                 'status' => false,
                 'message' => 'Payment Detail Record Not Found'
@@ -88,7 +91,7 @@ class HomeController extends Controller
         }
 
         //Update Payment Detail
-        $paymentDetail->update([
+        $nftModel->update([
             'paid' => true,
             'stripe_payment_id' => $input['stripe_payment_id']??null,
         ]);
@@ -97,7 +100,7 @@ class HomeController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Payment Detail Updated Successfully',
-            'data' => $paymentDetail
+            'data' => $nftModel
         ]);
     }
 }
