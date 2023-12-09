@@ -31,15 +31,17 @@ class HomeController extends Controller
             ]);
         }
 
+        //http://localhost:5173/payment-nft?nft_name=tranchinh&&nft_des=xinchao&&nft_size=5&&blockchain=alphe&&img=urlimage
         //Create Payment Link for NFT
         $dataNFT = [
             'event_id' => $nft->task_id,
             'user_id' => $nft->owner_id,
             'nft_id' => $nft->id,
             'nft_name' => $nft->name,
-            'nft_description' => $nft->description,
-            'nft_image_url' => $nft->image_url,
+            'nft_des' => $nft->description,
+            'img' => $nft->image_url,
             'nft_size' => $nft->size,
+            'blockchain' => $nft->blockchain,
             //'nft_asset_contract' => $nft->asset_contract,
             'email' => $input['email']??null,
             'amount' => $input['amount']??null,
@@ -59,6 +61,10 @@ class HomeController extends Controller
 
         //Create Payment Link with data. Set for router payment-request
         $paymentLink = route('payment-request', $dataNFT);
+        //Url Payment
+        $urlPayment = 'http://localhost:5173';
+        //Replace $paymentLink with $urlPayment
+        $paymentLink = str_replace(url('/'), $urlPayment, $paymentLink);
 
         //Return Payment Link
         return redirect($paymentLink);

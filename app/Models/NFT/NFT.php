@@ -46,6 +46,7 @@ class NFT extends Model
         'image_url',
         'permalink',
         'size',
+        'blockchain',
         'asset_contract',
         'collection_id',
         'owner_id',
