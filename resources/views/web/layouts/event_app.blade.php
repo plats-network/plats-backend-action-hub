@@ -20,6 +20,16 @@
         @vite(['resources/sass/event.scss',  'resources/js/event.js'])
 
         @notifyCss
+
+        <style>
+            .valid-feedback {
+                color: #dc3545;
+            }
+            .invalid-feedback {
+                color: #dc3545;
+            }
+            </style>
+
     </head>
     <body id="event-page" data-env="{{env('APP_ENV') == 'local' ? false : true}}">
         @include('web.layouts.header')
@@ -62,5 +72,6 @@
             }
 
         </script>
+        @yield('scripts')
     </body>
 </html>

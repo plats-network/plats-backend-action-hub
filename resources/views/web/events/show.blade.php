@@ -157,37 +157,43 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{route('order.ticket')}}">
+                    <form id="tickit_form" method="POST" action="{{route('order.ticket')}}">
                         @csrf
+                        @method('POST')
                         <p class="text-danger text-center" style="padding-bottom: 20px;">Vui lòng nhập đúng thông tin email or số điện thoại để nhận đc những phần quà hấp dẫn từ sự kiện.</p>
 
                         <input type="hidden" name="task_id" value="{{$event->id}}">
 
                         <div class="row my-3">
-                            <div class="col-md-6">
+                            <div class="col-md-6 field-first">
                                 <label class="form-label">First Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="first" required>
+                                <input type="text" class="form-control" name="first" id="first" required>
+                                <div class="valid-feedback"></div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 field-last">
                                 <label class="form-label">Last Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="last" required>
+                                <input type="text" class="form-control" name="last" id="last" required>
+                                <div class="valid-feedback"></div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
+                        <div class="row mt-3">
+                            <div class="col-md-6 field-email">
                                 <label class="form-label">Email <span class="text-danger">*</span></label>
                                 <input
-                                    type="text"
+                                    type="email"
                                     class="form-control"
                                     name="email"
+                                    id="email"
                                     value="{{$user ? $user->email : ''}}"
                                     @if ($user) disabled @endif
                                     required>
+                                <div class="valid-feedback"></div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 field-phone">
                                 <label class="form-label">Phone <span class="text-danger">(optional)</span></label>
-                                <input type="text" class="form-control" value="{{$user ? $user->phone : ''}}" name="phone">
+                                <input type="text" class="form-control" max="15" min="10" value="{{$user ? $user->phone : ''}}" id="phone" name="phone">
+                                <div class="valid-feedback"></div>
                             </div>
                         </div>
                         <div class="text-center" style="margin-top: 20px;">
@@ -201,5 +207,106 @@
 
     @include('web.layouts.subscribe')
     <a href="#" class="btn btn-primary ticket--sp">Get ticket</a>
+
+
 @endsection
 
+
+
+@section('scripts')
+    @uploadFileJS
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="{{asset('plugins/yii2-assets/yii.js')}}"></script>
+    <script src="{{asset('plugins/yii2-assets/yii.activeForm.js')}}"></script>
+    <script src="{{asset('plugins/yii2-assets/yii.validation.js')}}"></script>
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+ --}}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"></script><script src="dashboard.js"></script></body>
+
+    <script>
+        var _token = $('meta[name="csrf-token"]').attr('content');
+        var spinText = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ';
+        var fileAvatarInit = null;
+        var flag_check = 1;
+        var modalLoading = $('#modalLoading');
+        var initial_form_state, last_form_state;
+        var contentEditor = document.getElementById('description').value;
+        var contentEditor2 = document.getElementById('sessions-description').value;
+        var contentEditor3 = document.getElementById('booths-description').value;
+
+    </script>
+
+    {{--validate--}}
+    <script>
+        //https://yii2-cookbook-test.readthedocs.io/forms-activeform-js/
+        jQuery(function ($) {
+            jQuery('#tickit_form').yiiActiveForm([
+                {
+                    "id": "first",
+                    "name": "first",
+                    "container": ".field-first",
+                    "input": "#first",
+                    "error": ".valid-feedback",
+                    "validate": function (attribute, value, messages, deferred, $form) {
+                        yii.validation.required(value, messages, {"message": "{{__('validation-inline.required') }}"});
+                    }
+                },
+                /*address*/
+                {
+                    "id": "last",
+                    "name": "last",
+                    "container": ".field-last",
+                    "input": "#last",
+                    "error": ".valid-feedback",
+                    "validate": function (attribute, value, messages, deferred, $form) {
+                        yii.validation.required(value, messages, {"message": "{{__('validation-inline.required') }}"});
+                    }
+                },
+                {
+                    "id": "email",
+                    "name": "email",
+                    "container": ".field-email",
+                    "input": "#email",
+                    "error": ".valid-feedback",
+                    "validate": function (attribute, value, messages, deferred, $form) {
+                        yii.validation.required(value, messages, {"message": "{{__('validation-inline.required') }}"});
+                        yii.validation.email(value, messages, {
+                            "pattern": /^[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/,
+                            "fullPattern": /^[^@]*<[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?>$/,
+                            "allowName": false,
+                            "message": "Email không phải là địa chỉ email hợp lệ.",
+                            "enableIDN": false,
+                            "skipOnEmpty": 1
+                        });
+                    }
+                },
+                {
+                    "id": "phone",
+                    "name": "phone",
+                    "container": ".field-phone",
+                    "input": "#phone",
+                    "error": ".valid-feedback",
+                    "validate": function (attribute, value, messages, deferred, $form) {
+                        yii.validation.string(value, messages, {
+                            "message": "Phone phải là chuỗi.",
+                            "min": 10,
+                            "tooShort": "Phone phải chứa ít nhất 10 ký tự.",
+                            "skipOnEmpty": 1
+                        });
+                        yii.validation.string(value, messages, {
+                            "message": "Phone phải là chuỗi.",
+                            "max": 15,
+                            "tooLong": "Phone phải chứa nhiều nhất 15 ký tự.",
+                            "skipOnEmpty": 1
+                        });
+                    }
+                },
+
+
+            ], []);
+        });
+    </script>
+@endsection

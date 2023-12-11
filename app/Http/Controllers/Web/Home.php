@@ -27,6 +27,7 @@ use App\Services\Admin\{
 };
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Home extends Controller
 {
@@ -54,6 +55,7 @@ class Home extends Controller
                 'type' => 1,
                 'status' => 1
             ]);
+
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());
         }

@@ -60,6 +60,11 @@ class Dashboard extends Controller
                 $table->string('view_count')->nullable();
             });
         }
+        if ($request->input('update') == 3) {
+            Schema::table('event_user_tickets', function ($table) {
+                $table->string('phone')->nullable()->change();
+            });
+        }
 
         if ($request->input('update') == 1) {
             //Unknown column 'intro_text' in 'field list' (Connection: mysql, SQL: insert into infos (
