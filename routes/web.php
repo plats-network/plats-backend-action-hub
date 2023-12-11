@@ -106,8 +106,9 @@ Route::get('lang/{lang}', [PagesController::class, 'lang'])->name('web.lang');
 
 //Order ticket, Send email
 Route::post('order/ticket', [Home::class, 'orderTicket'])->name('order.ticket');
+
 //Ticket pdf
-Route::get('ticket/pdf/{id}', [Home::class, 'ticketPdf'])->name('ticket.pdf');
+Route::get('ticket/pdf/{id?}', [Home::class, 'ticketPdf'])->name('ticket.pdf');
 
 
 Route::get('/discord/login', [App\Http\Controllers\Web\Discord::class, 'getUserDiscord']);

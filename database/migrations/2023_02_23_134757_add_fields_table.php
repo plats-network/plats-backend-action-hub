@@ -32,7 +32,7 @@ return new class extends Migration
             $table->uuid('user_id')->nullable()->comment('Nếu user đã đang ký thì khác null');
             $table->uuid('task_id')->index()->comment('Event id');
             $table->string('name')->nullable()->comment('Họ và tên');
-            $table->integer('phone')->default(0)->comment('Thời gian trả lời đúng các câu hỏi');
+            $table->string('phone')->default(0)->comment('Thời gian trả lời đúng các câu hỏi');
             $table->string('email')->nullable()->comment('Email người nhận vé dự sự kiện');
             $table->integer('type')->default(0)->comment('0: User, 1: Guest');
             $table->timestamps();

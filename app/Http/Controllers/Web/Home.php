@@ -7,7 +7,7 @@ use App\Mail\NFTNotification;
 use App\Mail\OrderCreated;
 use App\Mail\SendNFTMail;
 use App\Mail\SendTicket as EmailSendTicket;
-use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -29,6 +29,7 @@ use App\Services\Admin\{
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Home extends Controller
 {
@@ -137,6 +138,9 @@ class Home extends Controller
     public function paymentSuccess(Request $request)
     {
         $input = $request->all();
+        //type
+        $type = $request->get('type') ?? 1;
+
         $event_id = $input['event_id'] ?? null;
         $event = $this->task->find($event_id);
         $user = Auth::user();
@@ -149,13 +153,20 @@ class Home extends Controller
         //Date now payment
         $dateNow = Carbon::now()->format('Y-m-d H:i:s');
 
-        $text = 'Thanks for ordering a ticket to the event.
+        $text = 'Thanks for sponsoring the event.';
+        $textButton = 'View Invoice';
+        if ($type == 2) {
+            $textButton = 'Download Ticket';
+            $text = 'Thanks for ordering a ticket to the event.
         We will send you a confirmation email with your ticket details shortly.';
+        };
 
 
         return view('home.payment-success', [
             'event' => $event,
             'user' => $user,
+            'text' => $text,
+            'textButton' => $textButton,
             'dateNow' => $dateNow,
             'sponsor' => $sponsor,
             'checkSponsor' => $checkSponsor,
@@ -389,27 +400,36 @@ class Home extends Controller
         }
 
         notify()->success('Get ticket success');
-        return redirect()->route('web.events.show', [
+
+        return redirect()->route('ticket.pdf', [
             'id' => $taskId
         ]);
     }
 
     //ticketPdf
-    public function ticketPdf(Request $request, $id)
+    public function ticketPdf(Request $request, $id = null)
     {
         try {
+            if (!$id){
+                $id = $request->get('id');
+            }
             $user = Auth::user();
             $event = $this->task->find($id);
             $userTicket = EventUserTicket::whereUserId($user->id)
-                ->whereTaskId($id)
+                //->whereTaskId($id)
                 ->first();
-
             if ($userTicket) {
                 // retreive all records from db
+                //$urlAnswers = route('quiz-name.answers', $eventId);
+                $urlAnswers = route('web.events.show', ['id' => $id, 'check_in' => true]);
+                //Date time register
+                $dateRegister = Carbon::parse($userTicket->created_at)->format('Y-m-d H:i:s');
                 $data = [
                     'event' => $event,
                     'user' => $user,
-                    'userTicket' => $userTicket
+                    'userTicket' => $userTicket,
+                    'dateRegister' => $dateRegister,
+                    'urlAnswers' => $urlAnswers,
                 ];
                 // share data to view
                 view()->share('employee', $data);
@@ -418,15 +438,12 @@ class Home extends Controller
                 return $pdf->download('pdf_file.pdf');
             }
         } catch (\Exception $e) {
+            dd($e->getMessage());
             notify()->error('Error submit ticket');
             return redirect()->route('web.home');
         }
 
-        return view('web.events.ticket', [
-            'event' => $event,
-            'user' => $user,
-            'userTicket' => $userTicket
-        ]);
+        return redirect()->route('web.home');
     }
 
 

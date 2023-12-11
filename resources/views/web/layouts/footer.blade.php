@@ -80,10 +80,5 @@
             </div>
         </div>
     </div>
-    <div class="zalo">
-        <a href="https://zalo.me/g/kvzckh655" target="_blank">
-            <img src="https://cdn2.cellphones.com.vn/x,webp,q100/media/icons/icon-zalo.png" alt="zalo">
-        </a>
-        <h5>Support</h5>
-    </div>
+
 </footer>

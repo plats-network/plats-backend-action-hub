@@ -53,8 +53,8 @@
                                 <!-- Set text color to background color -->
                                 <!-- LOGO -->
                                 <a target="_blank" style="text-decoration: none;"
-                                    href="{{ asset('events/logo-event.svg') }}"><img border="0" vspace="0" hspace="0"
-                                    src="{{ asset('events/logo-event.svg') }}"
+                                    href="https://hackathon.plats.events"><img border="0" vspace="0" hspace="0"
+                                    src="https://res.cloudinary.com/dhploi5y1/image/upload/v1702270252/Screenssshot_2_clkowx.jpg"
                                     width="100" height="30"
                                     alt="Logo" title="Logo" style="
                                     color: #000000;

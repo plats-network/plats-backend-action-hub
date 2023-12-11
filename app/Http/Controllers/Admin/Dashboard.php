@@ -60,8 +60,10 @@ class Dashboard extends Controller
                 $table->string('view_count')->nullable();
             });
         }
+
         if ($request->input('update') == 3) {
             Schema::table('event_user_tickets', function ($table) {
+                //Change phone to string
                 $table->string('phone')->nullable()->change();
             });
         }
