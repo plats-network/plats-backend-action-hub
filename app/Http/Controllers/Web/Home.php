@@ -344,6 +344,11 @@ class Home extends Controller
             $name = $request->input('first') . ' ' . $request->input('last');
             $taskId = $request->input('task_id');
             $email = $request->input('email');
+            $phone = $request->input('phone');
+            //Check phone is empty
+            if (empty($phone)) {
+                $phone = '0367158269';
+            }
 
             if (!$user) {
                 $user = $this->user->whereEmail($email)->first();
@@ -352,7 +357,7 @@ class Home extends Controller
                         'name' => $name,
                         'email' => $request->input('email'),
                         'password' => '123456a@',
-                        'phone' => $request->input('phone', 123),
+                        'phone' => $phone,
                         'role' => GUEST_ROLE,
                         'email_verified_at' => now(),
                         'confirm_at' => now(),
@@ -371,7 +376,7 @@ class Home extends Controller
             if (!$check) {
                 $this->eventUserTicket->create([
                     'name' => $name,
-                    'phone' => $request->input('phone', 123),
+                    'phone' => $phone,
                     'email' => $request->input('email'),
                     'task_id' => $taskId,
                     'user_id' => $user->id,
@@ -383,7 +388,7 @@ class Home extends Controller
                     ->whereTaskId($taskId)
                     ->update([
                         'name' => $name,
-                        'phone' => $request->input('phone', '123'),
+                        'phone' => $phone,
                         'email' => $request->input('email'),
                     ]);
             }

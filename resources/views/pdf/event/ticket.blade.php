@@ -131,6 +131,26 @@
 
 <body>
 
+<table class="table mt-5">
+    <tbody>
+    <tr>
+        <td class="border-0 pl-0" width="70%">
+            <h4 class="text-uppercase">
+                <strong>Event Ticket</strong>
+            </h4>
+        </td>
+        <td class="border-0 pl-0">
+            <h4 class="text-uppercase cool-gray">
+                 <strong>success</strong>
+            </h4>
+            <p>Ticket ID: <strong>{{ $userTicket->id }}</strong></p>
+            <p>Date: <strong>{{ $dateRegister }}</strong></p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
 <h1>Event: {{ $event->name }}</h1>
 {{--Date, Location--}}
 <h3>Date {{ $event->start_at }} {{ $event->end_at }}</h3>
