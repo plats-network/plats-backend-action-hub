@@ -150,7 +150,10 @@
     </tbody>
 </table>
 
+{{--Event Image--}}
+<img src="{{ $event->banner_url }}" style="height: 300px; width: 300px" alt="Event Image" width="100%">
 
+{{--Event Name --}}
 <h1>Event: {{ $event->name }}</h1>
 {{--Date, Location--}}
 <h3>Date {{ $event->start_at }} {{ $event->end_at }}</h3>
@@ -166,7 +169,6 @@
 
 <p>If you have any questions, please contact us at info@plats.network.</p>
 
-<p>Register Date Time: {{$dateRegister}}</p>
 </body>
 
 </html>

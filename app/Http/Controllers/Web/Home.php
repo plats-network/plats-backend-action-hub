@@ -150,6 +150,8 @@ class Home extends Controller
         if ($request->session()->has('sponsor-' . optional($user)->id)) {
             $request->session()->forget('sponsor-' . optional($user)->id);
         }
+        //Save Event Sponsor
+
         //Date now payment
         $dateNow = Carbon::now()->format('Y-m-d H:i:s');
 
