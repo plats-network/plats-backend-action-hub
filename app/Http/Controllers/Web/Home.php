@@ -335,7 +335,7 @@ class Home extends Controller
                         'name' => $name,
                         'email' => $request->input('email'),
                         'password' => '123456a@',
-                        'phone' => $request->input('phone'),
+                        'phone' => $request->input('phone', 123),
                         'role' => GUEST_ROLE,
                         'email_verified_at' => now(),
                         'confirm_at' => now(),
@@ -354,7 +354,7 @@ class Home extends Controller
             if (!$check) {
                 $this->eventUserTicket->create([
                     'name' => $name,
-                    'phone' => $request->input('phone'),
+                    'phone' => $request->input('phone', 123),
                     'email' => $request->input('email'),
                     'task_id' => $taskId,
                     'user_id' => $user->id,
@@ -366,7 +366,7 @@ class Home extends Controller
                     ->whereTaskId($taskId)
                     ->update([
                         'name' => $name,
-                        'phone' => $request->input('phone'),
+                        'phone' => $request->input('phone', '123'),
                         'email' => $request->input('email'),
                     ]);
             }
