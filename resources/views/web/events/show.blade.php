@@ -231,12 +231,11 @@
         var spinText = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ';
         var fileAvatarInit = null;
         var flag_check = 1;
-        var modalLoading = $('#modalLoading');
-        var initial_form_state, last_form_state;
-        var contentEditor = document.getElementById('description').value;
-        var contentEditor2 = document.getElementById('sessions-description').value;
-        var contentEditor3 = document.getElementById('booths-description').value;
-
+        //Download ticket,
+        var download_ticket = {{$download_ticket}}
+        @if($download_ticket)
+        window.open("{{$url_download_ticket}}");
+        @endif
     </script>
 
     {{--validate--}}

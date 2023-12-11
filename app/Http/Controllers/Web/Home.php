@@ -200,7 +200,11 @@ class Home extends Controller
     public function show(Request $request, $id)
     {
         $show_message = $request->get('sucess_checkin') ?? 0;
+        //download_ticket
+        $download_ticket = $request->get('download_ticket') ?? 0;
         $has_checkin = 0;
+        //url download ticket
+        $url_download_ticket = route('ticket.pdf', ['id' => $id]);
         try {
             $user = Auth::user();
 
@@ -324,6 +328,8 @@ class Home extends Controller
             'event' => $event,
             'user' => $user,
             'sponsor' => $sponsor,
+            'download_ticket' => $download_ticket,
+            'url_download_ticket' => $url_download_ticket,
             'show_message' => $show_message,
         ]);
     }
@@ -401,8 +407,9 @@ class Home extends Controller
 
         notify()->success('Get ticket success');
 
-        return redirect()->route('ticket.pdf', [
-            'id' => $taskId
+        return redirect()->route('web.events.show', [
+            'id' => $taskId,
+            'download_ticket' => true
         ]);
     }
 
