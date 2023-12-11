@@ -435,7 +435,7 @@ class Home extends Controller
                 view()->share('employee', $data);
                 $pdf = PDF::loadView('pdf.event.ticket', $data);
                 // download PDF file with download method
-                return $pdf->download('pdf_file.pdf');
+                return $pdf->download('Ticket_Download.pdf');
             }
         } catch (\Exception $e) {
             dd($e->getMessage());

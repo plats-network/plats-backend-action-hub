@@ -134,6 +134,7 @@
 <h1>Event: {{ $event->name }}</h1>
 {{--Date, Location--}}
 <h3>Date {{ $event->start_at }} {{ $event->end_at }}</h3>
+<h3>Event management {{ $event->author?$event->author->name :'' }}</h3>
 <h3>Location {{ $event->address }}</h3>
 
 <h2>Event Check-In Information</h2>
