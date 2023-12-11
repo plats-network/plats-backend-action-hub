@@ -144,36 +144,36 @@
                                     <tr>
                                         <!-- ICON 1 -->
                                         <td align="center" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;"><a target="_blank"
-                                            href="https://raw.githubusercontent.com/konsav/email-templates/"
+                                            href="https://t.me/platsnetworkofficial |"
                                             style="text-decoration: none;"><img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block;
                                             color: #000000;"
-                                            alt="F" title="Facebook"
+                                            alt="F" title="Telegram"
                                             width="44" height="44"
-                                            src="https://raw.githubusercontent.com/konsav/email-templates/master/images/social-icons/facebook.png"></a></td>
+                                            src="{{asset('static/icon/telegram.png')}}"></a></td>
                                         <!-- ICON 2 -->
                                         <td align="center" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;"><a target="_blank"
-                                            href="https://raw.githubusercontent.com/konsav/email-templates/"
+                                            href="https://twitter.com/plats_network |"
                                             style="text-decoration: none;"><img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block;
                                             color: #000000;"
                                             alt="T" title="Twitter"
                                             width="44" height="44"
-                                            src="https://raw.githubusercontent.com/konsav/email-templates/master/images/social-icons/twitter.png"></a></td>
+                                            src="{{asset('static/icon/twitter.png')}}"></a></td>
                                         <!-- ICON 3 -->
                                         <td align="center" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;"><a target="_blank"
-                                            href="https://raw.githubusercontent.com/konsav/email-templates/"
+                                            href="https://discord.gg/suJXYCG46g"
                                             style="text-decoration: none;"><img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block;
                                             color: #000000;"
-                                            alt="G" title="Google Plus"
+                                            alt="G" title="Discord"
                                             width="44" height="44"
-                                            src="https://raw.githubusercontent.com/konsav/email-templates/master/images/social-icons/googleplus.png"></a></td>
+                                            src="{{asset('static/icon/discord.png')}}"></a></td>
                                         <!-- ICON 4 -->
                                         <td align="center" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;"><a target="_blank"
-                                            href="https://raw.githubusercontent.com/konsav/email-templates/"
+                                            href="https://linkedin.com/in/plats-network|"
                                             style="text-decoration: none;"><img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block;
                                             color: #000000;"
-                                            alt="I" title="Instagram"
+                                            alt="I" title="Linkedin"
                                             width="44" height="44"
-                                            src="https://raw.githubusercontent.com/konsav/email-templates/master/images/social-icons/instagram.png"></a></td>
+                                            src="{{asset('static/icon/linkedin.png')}}"></a></td>
                                     </tr>
                                 </table>
                             </td>

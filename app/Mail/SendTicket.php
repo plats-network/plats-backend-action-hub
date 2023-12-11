@@ -39,6 +39,7 @@ class SendTicket extends Mailable
         $event = Task::query()->where('id', $this->ticket->task_id)->first();
 
         return $this->subject('Ticket Join Event')
+            //->view('mails.event.ticket', [
             ->view('mails.send_ticket', [
                 'ticket' => $this->ticket,
                 'event' => $event,

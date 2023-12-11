@@ -7,6 +7,7 @@ use App\Mail\NFTNotification;
 use App\Mail\OrderCreated;
 use App\Mail\SendNFTMail;
 use App\Mail\SendTicket as EmailSendTicket;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -88,7 +89,7 @@ class Home extends Controller
         //&&total_price=5&&blockchain="alphe"&&end_at="urlimage"&&des=”mota”
 
         //Data send
-        $timeEndExpire  = Carbon::now()->addDays(1)->format('Y-m-d H:i:s');
+        $timeEndExpire = Carbon::now()->addDays(1)->format('Y-m-d H:i:s');
         $dataSend = [
             'event_id' => $task->id,
             'name' => $user->name,
@@ -98,7 +99,6 @@ class Home extends Controller
             'end_at' => $request->get('end_at', $timeEndExpire),
             'des' => $request->get('des', 'Crowd Sponsor'),
         ];
-
 
 
         //Callback URL
@@ -137,7 +137,7 @@ class Home extends Controller
     public function paymentSuccess(Request $request)
     {
         $input = $request->all();
-        $event_id = $input['event_id']??null;
+        $event_id = $input['event_id'] ?? null;
         $event = $this->task->find($event_id);
         $user = Auth::user();
         $sponsor = $this->sponsor->whereTaskId($event_id)->first();
@@ -151,7 +151,6 @@ class Home extends Controller
 
         $text = 'Thanks for ordering a ticket to the event.
         We will send you a confirmation email with your ticket details shortly.';
-
 
 
         return view('home.payment-success', [
@@ -237,7 +236,7 @@ class Home extends Controller
                 $nftName = '';
                 $nftDescription = '';
                 $nftUrl = '';
-                if ($nftModel){
+                if ($nftModel) {
                     $nftName = $nftModel->name;
                     $nftDescription = $nftModel->description;
                     $nftUrl = $nftModel->url;
@@ -361,7 +360,7 @@ class Home extends Controller
                     'user_id' => $user->id,
                     'hash_code' => Str::random(35)
                 ]);
-            }else{
+            } else {
                 $this->eventUserTicket
                     ->whereUserId($user->id)
                     ->whereTaskId($taskId)
@@ -394,6 +393,42 @@ class Home extends Controller
             'id' => $taskId
         ]);
     }
+
+    //ticketPdf
+    public function ticketPdf(Request $request, $id)
+    {
+        try {
+            $user = Auth::user();
+            $event = $this->task->find($id);
+            $userTicket = EventUserTicket::whereUserId($user->id)
+                ->whereTaskId($id)
+                ->first();
+
+            if ($userTicket) {
+                // retreive all records from db
+                $data = [
+                    'event' => $event,
+                    'user' => $user,
+                    'userTicket' => $userTicket
+                ];
+                // share data to view
+                view()->share('employee', $data);
+                $pdf = PDF::loadView('pdf.event.ticket', $data);
+                // download PDF file with download method
+                return $pdf->download('pdf_file.pdf');
+            }
+        } catch (\Exception $e) {
+            notify()->error('Error submit ticket');
+            return redirect()->route('web.home');
+        }
+
+        return view('web.events.ticket', [
+            'event' => $event,
+            'user' => $user,
+            'userTicket' => $userTicket
+        ]);
+    }
+
 
     public function events(Request $request)
     {
