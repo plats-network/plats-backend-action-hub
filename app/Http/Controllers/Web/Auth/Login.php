@@ -68,8 +68,12 @@ class Login extends Controller
         if (Auth::guard('web')->user()) {
             return redirect('/');
         }
+        $data = [
+            'title' => 'Đăng nhập',
+            'is_show_connect_wallet' => false
+        ];
 
-        return view('web.auth.login');
+        return view('web.auth.login', $data);
     }
 
     /**

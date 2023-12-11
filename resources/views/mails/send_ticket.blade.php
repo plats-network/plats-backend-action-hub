@@ -57,8 +57,8 @@
                                 </div>
                                 <!-- LOGO -->
                                 <a target="_blank" style="text-decoration: none;"
-                                    href="{{ asset('img/admin/logo-light-blue.svg') }}"><img border="0" vspace="0" hspace="0"
-                                    src="{{ asset('img/admin/logo-light-blue.svg') }}"
+                                    href="{{ asset('events/logo-event.svg') }}"><img border="0" vspace="0" hspace="0"
+                                    src="{{ asset('events/logo-event.svg') }}"
                                     width="100" height="30"
                                     alt="Logo" title="Logo" style="
                                     color: #000000;
@@ -80,7 +80,7 @@
                                 padding-top: 25px;
                                 color: #000000;
                                 font-family: sans-serif;" class="header">
-                                {{\Str::limit($ticket->name , 80)}}
+                                {{\Str::limit($event->name , 80)}}
                             </td>
                         </tr>
                         <!-- SUBHEADER -->
@@ -90,7 +90,7 @@
                                 padding-top: 5px;
                                 color: #000000;
                                 font-family: sans-serif;" class="subheader">
-                                Time : {{date("Y-m-d H:i:s", strtotime($ticket->start_at))}} - {{date("Y-m-d H:i:s", strtotime($ticket->end_at))}}
+                                Time : {{date("Y-m-d H:i:s", strtotime($event->start_at))}} - {{date("Y-m-d H:i:s", strtotime($event->end_at))}}
                             </td>
                         </tr>
                         <tr>
@@ -108,7 +108,7 @@
                                 padding-top: 25px;
                                 color: #000000;
                                 font-family: sans-serif;" class="paragraph">
-                                Địa chỉ : {{$ticket->address}}
+                                Địa chỉ : {{$event->address}}
                             </td>
                         </tr>
                         <!-- LINE -->

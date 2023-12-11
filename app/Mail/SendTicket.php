@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Task;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -35,9 +36,12 @@ class SendTicket extends Mailable
      */
     public function build()
     {
+        $event = Task::query()->where('id', $this->ticket->task_id)->first();
+
         return $this->subject('Ticket Join Event')
             ->view('mails.send_ticket', [
                 'ticket' => $this->ticket,
+                'event' => $event,
                 'user' => $this->user,
             ]);
     }

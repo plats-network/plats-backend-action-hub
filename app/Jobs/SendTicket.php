@@ -9,7 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Mail\SendTicket as EmailSendTicket;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class SendTicket implements ShouldQueue
 {

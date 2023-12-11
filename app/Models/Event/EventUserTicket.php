@@ -28,6 +28,7 @@ class EventUserTicket extends Model
         'id',
         'name',
         'phone',
+        'address',
         'email',
         'task_id',
         'user_id',

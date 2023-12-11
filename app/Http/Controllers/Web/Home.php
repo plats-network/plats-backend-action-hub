@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Jobs\SendTicket;
 use App\Mail\NFTNotification;
 use App\Mail\OrderCreated;
 use App\Mail\SendNFTMail;
+use App\Mail\SendTicket as EmailSendTicket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -24,7 +26,7 @@ use App\Services\Admin\{
     TaskService
 };
 use Carbon\Carbon;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class Home extends Controller
 {
@@ -144,6 +146,11 @@ class Home extends Controller
         }
         //Date now payment
         $dateNow = Carbon::now()->format('Y-m-d H:i:s');
+
+        $text = 'Thanks for ordering a ticket to the event.
+        We will send you a confirmation email with your ticket details shortly.';
+
+
 
         return view('home.payment-success', [
             'event' => $event,
@@ -352,10 +359,29 @@ class Home extends Controller
                     'user_id' => $user->id,
                     'hash_code' => Str::random(35)
                 ]);
+            }else{
+                $this->eventUserTicket
+                    ->whereUserId($user->id)
+                    ->whereTaskId($taskId)
+                    ->update([
+                        'name' => $name,
+                        'phone' => $request->input('phone'),
+                        'email' => $request->input('email'),
+                    ]);
+            }
+            //Send Email Tickit
+
+            $userTicket = EventUserTicket::whereUserId($user->id)
+                ->whereTaskId($taskId)
+                ->first();
+
+            if ($userTicket) {
+                Mail::to($user->email)->send(new EmailSendTicket($userTicket, $user));
             }
 
             DB::commit();
         } catch (\Exception $e) {
+            dd($e->getMessage());
             DB::rollBack();
             notify()->error('Error submit ticket');
             return redirect()->route('web.home');

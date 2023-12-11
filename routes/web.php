@@ -104,6 +104,7 @@ Route::get('resource', [PagesController::class, 'resource'])->name('web.resource
 Route::get('contact', [PagesController::class, 'contact'])->name('web.contact');
 Route::get('lang/{lang}', [PagesController::class, 'lang'])->name('web.lang');
 
+//Order ticket, Send email
 Route::post('order/ticket', [Home::class, 'orderTicket'])->name('order.ticket');
 
 Route::get('/discord/login', [App\Http\Controllers\Web\Discord::class, 'getUserDiscord']);
