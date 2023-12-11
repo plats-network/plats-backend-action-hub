@@ -131,7 +131,7 @@
 
 <body>
 
-<table class="table mt-5">
+<table class="table mt-2">
     <tbody>
     <tr>
         <td class="border-0 pl-0" width="70%">
