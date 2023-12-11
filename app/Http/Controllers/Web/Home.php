@@ -64,6 +64,7 @@ class Home extends Controller
     //createCrowdSponsor
     public function createCrowdSponsor(Request $request)
     {
+        $input = $request->all();
         try {
             $user = Auth::user();
             $task_id = $request->get('task_id');
@@ -87,9 +88,9 @@ class Home extends Controller
         $dataSend = [
             'event_id' => $task->id,
             'name' => $user->name,
-            'price_type' => $request->get('price_type', 'Hello'),
-            'total_price' => $request->get('total_price', 100),
-            'blockchain' => $request->get('blockchain', 'alphe'),
+            'price_type' => $request->get('price_type', 'AZERO'),
+            'total_price' => $request->get('price', 100),
+            'blockchain' => $request->get('blockchain', 'Aleph Zero'),
             'end_at' => $request->get('end_at', $timeEndExpire),
             'des' => $request->get('des', 'Crowd Sponsor'),
         ];
