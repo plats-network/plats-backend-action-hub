@@ -23,7 +23,7 @@ return [
         'posts/*',
         'plats-quest.vaix.group/*',
         'hackathon.plats.quest/*',
-        'https://platsevent.web.app/*',
+        'platsevent.web.app/*',
     ],
 
     'allowed_methods' => ['*'],
