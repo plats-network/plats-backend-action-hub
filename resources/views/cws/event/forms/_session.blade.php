@@ -101,12 +101,12 @@
                         @endphp
                         <tr>
                            <td width="5%">{{$k+1}}</td>
-                           <td width="20%">{{$session->name}} {{$session->code}}</td>
+                           <td width="20%">{{$session->name}}</td>
                            <td width="20%">{!!$session->description!!}</td>
                            <td width="20%" class="text-center" data-url="{{$qr}}">
-                                <p class="qr" id="se-{{$session->id}}" data-se-url="{{$qr}}"></p>
-                                <div class="d-none2" style="width: 300px; height: 300px;" id="dse-{{$session->id}}" data-se-url="{{$qr}}"></div>
-                                <a class="se-donw" data-id="{{$session->id}}" data-num="{{$k+1}}" data-name="session">Download</a>
+                                <p class="qr d-none" id="se-{{$session->id}}" data-se-url="{{$qr}}"></p>
+                                <div class="d-none2 mb-3" style="width: 300px; height: 300px;" id="dse-{{$session->id}}" data-se-url="{{$qr}}"></div>
+                                <a class="se-donw mt-3" data-id="{{$session->id}}" data-num="{{$k+1}}" data-name="session">Download</a>
                            </td>
                            <td width="5%">{{totalUserJob($session->id)}}</td>
                            <td width="5%">{{$session->is_question ? 'Yes' : 'No'}}</td>
