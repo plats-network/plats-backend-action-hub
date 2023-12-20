@@ -42,6 +42,8 @@
 
                     <a class="ml-5 btn btn-primary btn-sm mb-2" href="{{route('cws.event.users', ['id' => $event->id])}}">List User</a>
                     @endif
+                    <a class="btn btn-info btn-sm mb-2 mr-5 none" target="_blank" style="margin-right: 10px;" href="https://platsevent.web.app/reward-nft">Reward</a>
+
 
                 </div>
                 <div class="col-md-2 text-end">
@@ -78,6 +80,12 @@
                             <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link navItemTab active" id="navItemTab10" data-step="0" aria-current="page" href="#">Overview</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link navItemTab " id="navItemTab2"  data-step="2" >Session</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link navItemTab " id="navItemTab3"  data-step="3" >Booth</a>
                                 </li>
                                 <li class="nav-item" style="display: {{$is_update? "block": "none"}}">
                                     <a class="nav-link navItemTab" id="navItemTab10"  data-step="10"  href="#">Check-in</a>
@@ -316,6 +324,7 @@
                            ])
 
                             @if($is_update)
+
                             {{--User List--}}
                             <div id="tabwizard40" class="wizard-tab" style="display: none;">
                                 <div>
