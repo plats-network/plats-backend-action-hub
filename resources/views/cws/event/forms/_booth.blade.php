@@ -136,16 +136,16 @@
                                 $qr = 'http://'.config('plats.event').'/events/code?type=event&id='.$booth->code;
                             @endphp
                             <tr>
-                               <td width="5%">{{$k+1}}</td> 
+                               <td width="5%">{{$k+1}}</td>
                                <td width="15%">
                                     {{$booth->name}}
-                                </td> 
-                               <td width="20%">{!!$booth->description!!}</td> 
+                                </td>
+                               <td width="20%">{!!$booth->description!!}</td>
                                <td width="15%" data-url="{{$qr}}" class="text-center">
-                                    <p class="qr" id="bo-{{$booth->id}}" data-bo-url="{{$qr}}"></p>
-                                    <div class="d-none" style="width: 300px; height: 300px;" id="dbo-{{$booth->id}}" data-bo-url="{{$qr}}"></div>
+                                    <p class="qr d-none" id="bo-{{$booth->id}}" data-bo-url="{{$qr}}"></p>
+                                    <div class="d-none2" style="width: 300px; height: 300px;" id="dbo-{{$booth->id}}" data-bo-url="{{$qr}}"></div>
                                     <a class="bo-donw" data-id="{{$booth->id}}" data-num="{{$k+1}}" data-name="booth">Download</a>
-                               </td> 
+                               </td>
                                <td width="10%">{{totalUserJob($booth->id)}}</td>
                                <td>
                                     <input
@@ -192,7 +192,7 @@
                                         </select>
                                </td>
                                <td>
-                                   <a 
+                                   <a
                                         class="btn btn-danger btn-sm bbEdit"
                                         data-id="{{$booth->id}}"
                                         data-name="{{$booth->name}}"

@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Game\HomeController;
 
+//https://minigame.plats.network/api/v1/day1-codes
 // Demo
 Route::get('game/{id}', [HomeController::class, 'miniGame'])->name('game.miniGame');
+
 Route::post('game/result', [HomeController::class, 'updateResult'])->name('game.updateResult');
 
 // Api

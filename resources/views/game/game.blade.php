@@ -12,7 +12,7 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
       <script type="text/javascript" src="{{url('/')}}/js/Winwheel.min.js"></script>
-      <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -60,7 +60,7 @@
             color: #fff;
             border: 2px solid red;
             box-shadow: 0 0 60px rgba(0, 255, 203, 0.64);
-        } 
+        }
 
         .logo {
             text-align: center;
@@ -197,7 +197,7 @@
                   return false;
                 }
               }, false);
-              
+
               if (document.addEventListener) {
                 document.addEventListener('contextmenu', function(e) {
                   e.preventDefault();

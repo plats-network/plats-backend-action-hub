@@ -214,7 +214,7 @@ class Job extends Controller
                 ->whereTaskEventId($session->id)
                 ->pluck('travel_game_id')
                 ->toArray();
-            // End 
+            // End
 
             $booth = $this->taskEvent->whereTaskId($taskId)->whereType(TASK_BOOTH)->first();
             $travelBootsIds = $this->eventDetail
@@ -296,6 +296,7 @@ class Job extends Controller
                 ->whereIn('id', $travelSessionIds)
                 ->orderBy('created_at', 'desc')
                 ->get();
+
             $travelBooths = $this->travelGame->whereIn('id', $travelBootsIds)->get();
 
             // Start

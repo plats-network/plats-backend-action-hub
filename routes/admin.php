@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\{
     Group, User, Export, AuthController,
     ConfirmController, TravelGame
 };
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\Admin\{
     Register
 };
@@ -54,23 +55,26 @@ Route::middleware(['client_admin'])->group(function($cws) {
     $cws->get('event-edit/{id}', [EventController::class, 'edit'])->name('cws.eventEdit');
     //Event Update
     $cws->post('event-update/{id}', [EventController::class, 'update'])->name('cws.eventUpdate');
+
     //Event Preview
     $cws->get('event-preview/{id}', [EventController::class, 'edit'])->name('cws.eventPreview');
     //Event Delete
     $cws->delete('event-delete/{id}', [EventController::class, 'destroy'])->name('cws.eventDelete');
     $cws->get('overview/{id}', [EventController::class, 'overview'])->name('cws.event.overview');
+
     $cws->get('minigame/{id}', [EventController::class, 'miniGame'])->name('cws.event.miniGame');
+
     $cws->get('mini/upd/{id}', [EventController::class, 'updMiniGame'])->name('cws.event.updMiniGame');
 
     //NFT
     Route::resource('nft', \App\Http\Controllers\Admin\NFTController::class);
-    Route::get('/payment-nft', [App\Http\Controllers\HomeController::class, 'storePaymentRequest'])->name('payment-request');
+    Route::get('/payment-nft', [HomeController::class, 'storePaymentRequest'])->name('payment-request');
     //payment_link
-    Route::get('/payment-link', [App\Http\Controllers\HomeController::class, 'paymentLink'])->name('payment-link');
+    Route::get('/payment-link', [HomeController::class, 'paymentLink'])->name('payment-link');
     //payment_checkout
-    Route::get('/payment/{slug}', [App\Http\Controllers\HomeController::class, 'paymentCheckout'])->name('payment-checkout');
+    Route::get('/payment/{slug}', [HomeController::class, 'paymentCheckout'])->name('payment-checkout');
 
-    Route::get('/payment-success', [App\Http\Controllers\HomeController::class, 'paymentSuccess'])->name('payment-success');
+    Route::get('/payment-success', [HomeController::class, 'paymentSuccess'])->name('payment-success');
 
     Route::post('stripe/webhook', [App\Http\Controllers\StripeWebhookController::class, 'handleWebhook']);
 

@@ -24,6 +24,8 @@ return [
         'plats-quest.vaix.group/*',
         'hackathon.plats.quest/*',
         'platsevent.web.app/*',
+        //http://localhost:5173/reward-nft
+        'localhost:5173/*',
     ],
 
     'allowed_methods' => ['*'],

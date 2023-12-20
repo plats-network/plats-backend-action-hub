@@ -35,6 +35,8 @@ class HomeController extends Controller
                     ->whereIsVip(true)
                     ->pluck('user_id')
                     ->toArray();
+
+                $limit=1000;
                 $codes = $this->userCode
                     ->where('task_event_id', '9a131bf1-d4fa-4368-bb6b-c4e5f8d1da08')
                     ->where('travel_game_id', '9a13167f-4a75-4a46-aa5b-4fb8baea4b9b')
@@ -132,10 +134,14 @@ class HomeController extends Controller
         ], 200);
     }
 
+    //https://cws.plats.test/game/
+    //d7zXNbFLsGwqwlABr9z2ukftu4W0t3hb1crLi8nZBck8PvYvUJlJtkgUiWBBFOqxFgVcfw5IAaw4mEAkbiOiocjkMq1VHY79OWIQ
     public function miniGame(Request $request, $code)
     {
+
         try {
             $miniGame = $this->miniGame->whereCode($code)->first();
+
             if (!$miniGame) { abort(404); }
 
             $codes = $this->userCode
@@ -155,6 +161,7 @@ class HomeController extends Controller
             }
 
             $codes = $codes->inRandomOrder()->pluck('number_code')->toArray();
+
         } catch (\Exception $e) {
             abort(404);
         }
@@ -175,17 +182,6 @@ class HomeController extends Controller
         try {
             $code = $request->input('code');
             $codeIds = $request->input('ids');
-            $miniGame = $this->miniGame->whereCode($code)->first();
-
-            $datas = $this->userCode
-                ->where('task_event_id', $miniGame->task_event_id)
-                ->where('travel_game_id', $miniGame->travel_game_id)
-                ->whereType($miniGame->type)
-                ->whereIn('number_code', $codeIds)
-                ->update([
-                    'is_prize' => true,
-                    'name_prize' => $miniGame->type_prize
-                ]);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error'
@@ -271,7 +267,7 @@ class HomeController extends Controller
                 $event->update(['is_session' => true]);
             }
         } catch (\Exception $e) {
-            
+
         }
 
         return response()->json([
