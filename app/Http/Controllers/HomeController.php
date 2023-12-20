@@ -20,6 +20,8 @@ class HomeController extends Controller
     public function paymentLink(Request $request)
     {
         $input = $request->all();
+        //event_id
+        $event_id = $input['event_id']??null;
         //Get NFT ID Record
         $nft_id = $input['nft_id']??null;
         $nft = NFT::where('id', $nft_id)->first();

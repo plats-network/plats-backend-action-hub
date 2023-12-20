@@ -28,7 +28,9 @@ class Job extends Controller
         private TaskEvent $taskEvent,
         private UserJoinEvent $joinEvent,
         private Task $task,
+        private TaskEvent       $eventModel,
         private UserCode $userCode,
+        private UserJoinEvent   $taskDone,
         private Sponsor $sponsor,
         private SponsorDetail $sponsorDetail,
         private UserSponsor $userSponsor,
@@ -273,6 +275,8 @@ class Job extends Controller
     {
         try {
             $event = $this->task->find($taskId);
+            //$checkUserGetCode = $this->checkUserGetCode($request, $taskId);
+            //d($checkUserGetCode);
 
             $travelSessions = [];
             $session = $this->taskEvent->whereTaskId($taskId)->whereType(TASK_SESSION)->first();
@@ -307,22 +311,155 @@ class Job extends Controller
             if ($flag == 1 && Str::contains($user->email, 'guest')) {
                 $flagU = 1;
             }
+            //$userCode = new App\Models\Event\UserCode();
 
             // $this->taskService->genCodeByUser($userId, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
+            $eventSession = $this->eventModel->whereTaskId($taskId)->whereType(TASK_SESSION)->first();
+            $eventBooth = $this->eventModel->whereTaskId($taskId)->whereType(TASK_BOOTH)->first();
+            $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)->orderBy('sort', 'asc')->get();
+            $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)->orderBy('sort', 'asc')->get();
+            $totalCompleted = 0;
+
+            foreach ($sessions as $session) {
+                $travel = $this->travelGame->find($session->travel_game_id);
+                $job = $this->taskDone
+                    ->whereUserId($user->id)
+                    ->whereTaskEventDetailId($session->id)
+                    ->first();
+                $isDoneTask = $this->checkDoneJob($session->id);
+                if ($isDoneTask) {
+                    $totalCompleted++;
+                }
+                $sessionDatas[] = [
+                    'id' => $session->id,
+                    'travel_game_id' => $session->travel_game_id,
+                    'travel_game_name' => $travel->name,
+                    'user_id' => $request->user()->id,
+                    'name' => $session->name,
+                    'desc' => $session->description,
+                    'date' => $job ? Carbon::parse($job->created_at)->format('Y-m-d') : '',
+                    'time' => $job ? Carbon::parse($job->created_at)->format('H:i') : '',
+                    'required' => $session->is_required,
+                    'flag' =>$isDoneTask
+                ];
+            }
+
+            $groupSessions = [];
+            $groupBooths = [];
+            foreach ($sessionDatas as $item) {
+                $groupSessions[$item['travel_game_id']][] = $item;
+            }
+            //Create code if $totalCompleted >=6
+            $maxSession = 6;
+            if ($totalCompleted >= $maxSession) {
+                //$this->taskService->genCodeByUser($user->id, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
+
+                // $codes = $userCode->where('user_id', $userId)
+                //                                    ->where('travel_game_id', $session->id)
+                //                                    ->where('task_event_id', $session_id)
+                //                                    ->where('type', 0)
+                //                                    ->pluck('number_code')
+                //                                    ->implode(',');
+               /* $this->userCode->create([
+                    'user_id' => $userId,
+                    'task_event_id' => $sEventId,
+                    'travel_game_id' => $tId,
+                    'type' => 0,
+                    'number_code' => $maxSession + 1,
+                    'color_code' => randColor()
+                ]);*/
+
+                //Check user code not exists
+                $checkCode = $this->userCode
+                    ->whereUserId($user->id)
+                    ->whereTaskEventId($session->id)
+                    ->where('travel_game_id', $session->travel_game_id)
+                    ->where('type', 0)
+                    ->exists();
+                if (!$checkCode) {
+                    $max = $this->userCode
+                        ->whereTaskEventId($session->id)
+                        ->where('travel_game_id', $session->travel_game_id)
+                        ->max('number_code');
+
+                    $this->userCode->create([
+                        'user_id' => $user->id,
+                        'task_event_id' => $session->id,
+                        'travel_game_id' => $session->travel_game_id,
+                        'type' => 0,
+                        'number_code' => 100 + $max + 1,
+                        'color_code' => randColor()
+                    ]);
+                }
+
+
+                //Send Code to User Email
+            }
+
         } catch (\Exception $e) {
             abort(404);
         }
 
         return view('web.events.travel_game', [
             'event' => $event,
+            'totalCompleted' => $totalCompleted,
             'session_id' => $session->id,
             'booth_id' => $booth->id,
             'travelSessions' => $travelSessions,
             'travelBooths' => $travelBooths,
             'url' => $sessionNFT && $sessionNFT['url'] ? $sessionNFT['url'] : null,
             'nft' => $sessionNFT && $sessionNFT['nft'] ? 1 : 0,
-            'flagU' => $flagU
+            'flagU' => $flagU,
+
+            'groupSessions' => array_reverse($groupSessions),
         ]);
+    }
+    //Check user get code when have attend 6/8 session in booth
+    public function checkUserGetCode(Request $request, $taskId)
+    {
+        try {
+            $userId = Auth::user()->id;
+            $task = $this->task->whereCode($taskId)->first();
+            $eventSession = $this->eventModel->whereTaskId($task->id)->whereType(TASK_SESSION)->first();
+            $eventBooth = $this->eventModel->whereTaskId($task->id)->whereType(TASK_BOOTH)->first();
+            $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)->orderBy('sort', 'asc')->get();
+            $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)->orderBy('sort', 'asc')->get();
+            $countSession = 0;
+            $countBooth = 0;
+            foreach ($booths as $booth) {
+                $countBooth+= $this->countBootDone($booth->id);
+            }
+            dd($countBooth);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error'
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'Ok'
+        ], 200);
+    }
+
+    private function countBootDone($eventDetailId){
+        $userId = Auth::user()->id;
+        $status = $this->taskDone
+           ->whereUserId($userId)
+           ->whereTaskEventDetailId($eventDetailId)
+           ->count();
+
+       return $status;
+    }
+    private function checkDoneJob($eventDetailId)
+    {
+        $userId = Auth::user()->id;
+
+
+        return $this->taskDone
+            ->whereUserId($userId)
+            ->whereTaskEventDetailId($eventDetailId)
+            ->exists();
     }
 
     public function removeNft(Request $request)

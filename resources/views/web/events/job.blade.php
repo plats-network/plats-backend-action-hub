@@ -2,7 +2,7 @@
 
 @section('content')
     @php
-        $type = request()->get('type'); 
+        $type = request()->get('type');
     @endphp
     <style type="text/css">
         .tab-job {
@@ -46,6 +46,7 @@
           z-index: 99999;
         }
     </style>
+
     <section class="our-schedule-area bg-white section-padding-100">
         {{-- <h3>Ready to get started with Plats Network?</h3> --}}
         <div class="container" style="margin-top: 65px;">

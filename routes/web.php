@@ -37,7 +37,7 @@ Route::middleware(['guest'])->group(function ($auth) {
     $auth->post('login-guest', [Login::class, 'loginGuest'])->name('web.loginGuest');
 
     //API Router
-//API Connect wallet
+    //API Connect wallet
     /*
      * Sau khi connect xong thì frontend gửi lên backend 2 thông tin:
      * wallet_address và wallet_name (account name: optional)
@@ -117,6 +117,12 @@ Route::get('ticket/pdf/{id?}', [Home::class, 'ticketPdf'])->name('ticket.pdf');
 //User Event List API
 Route::get('events/user-list/{id}', [Home::class, 'apiUserList'])->name('listUser.Events');
 
+// route for get shortener url
+Route::get('s/{shortener_url}', [\App\Http\Controllers\UrlController::class, 'shortenLink'])->name('shortener-url');
+Route::get('event-code/{id}', [\App\Http\Controllers\UrlController::class, 'dayOne'])->name('code-dayOne');
+
+//Flush all url
+Route::get('flush-all-url', [\App\Http\Controllers\UrlController::class, 'flushAllUrl'])->name('flush-all-url');
 
 Route::get('/discord/login', [App\Http\Controllers\Web\Discord::class, 'getUserDiscord']);
 Route::get('/discord', [App\Http\Controllers\Web\Discord::class, 'index'])->name('discord');

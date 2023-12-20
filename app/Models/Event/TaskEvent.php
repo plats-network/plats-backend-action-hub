@@ -85,4 +85,5 @@ class TaskEvent extends Model
             get: fn($value) => BaseImage::loadImage($value)
         );
     }
+
 }

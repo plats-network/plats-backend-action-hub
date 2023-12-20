@@ -311,7 +311,7 @@
                                     <div class="col-lg-4">
                                         {{--Payment Button--}}
                                         @if($is_update)
-                                        <a target="_blank" href="{{route('payment-link', ['nft_id' => $nftItem->id])}}" class="btn btn-info">Send Create NFT</a>
+                                        <a target="_blank" href="{{route('payment-link', ['nft_id' => $nftItem->id, 'event_id' => $event->id])}}" class="btn btn-info">Send Create NFT</a>
                                         @endif
                                     </div>
                                 </div>

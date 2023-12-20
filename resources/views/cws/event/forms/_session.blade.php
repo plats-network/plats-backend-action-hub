@@ -96,11 +96,12 @@
                 <tbody id="list-session-id" data-s-ids="{{json_encode($sessions->detail->pluck('id')->toArray())}}">
                     @foreach($sessions->detail as $k => $session)
                         @php
-                            $qr = 'http://'.config('plats.event').'/events/code?type=event&id='.$session->code;
+                            $qr = $session->getQrUrlAttribute();
+
                         @endphp
                         <tr>
                            <td width="5%">{{$k+1}}</td>
-                           <td width="20%">{{$session->name}}</td>
+                           <td width="20%">{{$session->name}} {{$session->code}}</td>
                            <td width="20%">{!!$session->description!!}</td>
                            <td width="20%" class="text-center" data-url="{{$qr}}">
                                 <p class="qr" id="se-{{$session->id}}" data-se-url="{{$qr}}"></p>

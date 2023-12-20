@@ -8,6 +8,16 @@
     @endphp
 
     <style type="text/css">
+        .timeline-container ul.tl li {
+            list-style: none;
+            margin: auto;
+            min-height: 50px;
+            border-left: 1px solid #86D6FF;
+            padding: 0 0 15px 25px;
+            position: relative;
+            display: flex;
+            flex-direction: row;
+        }
         #laravel-notify {
             z-index: 1000;
             position: absolute;
@@ -39,6 +49,50 @@
           z-index: 99999;
         }
     </style>
+
+    <style type="text/css">
+        .tab-job {
+            justify-content: center;
+            order-bottom: none;
+        }
+
+        .nav-link {
+            border: 2px solid #177FE2;
+        }
+        .b1 {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .b2 {
+            border-radius: 0px 10px 10px 0;
+        }
+        .active-job {
+            background-color: #177FE2;
+            color: #fff;
+        }
+
+        .ac-color {
+            color: #258CC7!important;
+            font-weight: bold!important;
+        }
+
+        .desc-prize {
+            background-color: #fff8ea;
+            padding: 7px 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            color: #000;
+            line-height: 20px;
+            font-size: 15px;
+            border: 2px solid #fab501;
+        }
+
+        #laravel-notify {
+            position: absolute;
+            z-index: 99999;
+        }
+    </style>
+
     <section class="travel" id="flagU" data-flag="{{$flagU}}">
         <div class="container">
             <div class="travel-content">
@@ -62,19 +116,45 @@
                     <h3 style="padding-bottom: 0;">{{$event->name}}</h3>
                     {{-- <img src="{{$event->banner_url}}" alt="{{$event->name}}"> --}}
                     <div class="text-center" style="margin: 5px auto;">
-                        <img style="width: 70%;" src="{{url('/')}}/events/prize.png" alt="{{$event->name}}">
+                        <img style="width: 100%;" src="{{$event->banner_url}}" alt="{{$event->name}}">
                     </div>
                     <div class="aaa mt-2" style="margin-top: 15px; line-height: 20px;">
-                        Tham gia các Games tại sự kiện với tổng giải thưởng lên tới 300 triệu.
+                        Sự kiện 1000 CEO 2023 tại TP HCM 22/12/2023
+
+                        <p class="pp">1. Quy mô: một trong những sự kiện về chủ doanh nghiệp và NĐT lớn nhất VN với quy mô 1000 CEO + nhà đầu tư </p>
+
+                        <p class="pp">2. Uy tín: Sự kiện diễn ra lần đầu năm 2017. Năm nay 2023 là lần thứ 6 và là năm thứ 7 diễn ra sự kiện. Các sự kiện trước ghi nhận tỉ lệ hài lòng của người tham dự lên tới 98.18% với sự tham gia của nhiều doanh nghiệp lớn hàng đầu tại VN </p>
+
+                        <p class="pp">3. Kết nối: Thành viên tham dự được chọn lọc đa dạng ngành nghề: gồm các chủ doanh nghiệp, quản lý cấp cao và nhà đầu tư với rất nhiều ngành nghề khác nhau. 90% là các chủ doanh nghiệp SME, trong đó có 8% doanh nghiệp có doanh số trên 5M USD/năm và 3% doanh nghiệp có doanh số trên 50M USD/năm. Có 3 cơ hội giao lưu kết nối: session lớn với toàn bộ hội trường, lunch networking và VIP dinner networking với các doanh nghiệp VIP. </p>
+
                         <p class="pp" style="padding-top: 10px; color: red!important;">➤ Không nên dùng Zalo để quét QR code, nên quét từ Camera</p>
                         <div id="seeMore1" style="display: none;">
-                            <p class="pp">➤ Có 3 game là "Travel Game", "Session game day 1" và "Session game day 2" độc lập nhau. Bạn có thể tham gia 1 hoặc cả 3 game.</p>
-                            <p class="pp">➤ Thu thập Mã số quay thưởng (MSQT) để tham gia vòng quay may mắn.</p>
-                            {{-- <p class="pp">➤ Bạn có thể dùng bất kỳ nền tảng nào như Camera hay Zalo... để quét QR code, nhưng cần dùng  1 nền tảng duy nhất  để quét trong suốt sự kiện. Ví dụ nếu đã dùng Zalo để quét lần đầu thì các lần sau cũng dùng Zalo.</p> --}}
-                            <p class="pp">➤ Bạn cần nhập Email (phía trên của màn hình) để tham gia quay thưởng. Vì quyền lợi của bạn, Email này phải  trùng với Email bạn đã đăng ký vé tham gia sự kiện.</p>
-                            <p class="pp">➤ Riêng với Travel Game sau khi quét mã QR tại bất kỳ Booth nào sẽ hiển thị 1 của sổ thông báo cần Claim bộ NFT ở các Booth để hoàn thành nhiệm vụ, người tham gia cần đăng nhập bằng các tài khoản mạng xã hội như Facebook, Google hoặc Apple Icloud để được tặng ví lưu trữ NFT và Claim NFT. Việc đăng nhập này chỉ thực hiện 1 lần duy nhất.</p>
-                            <p class="pp" style="padding-bottom: 10px;">➤ Tại giờ quay thưởng vào cuối ngày, nếu bạn trúng thưởng mà không có mặt sẽ bị loại và giành cơ hội cho người khác.</p>
-                            Chi tiết từng Game ở bên dưới.
+                            <p class="pp">➤ 4. Diễn giả và khách mời là những chuyên gia uy tín và doanh nghiệp lớn ở VN và quốc tế:</p>
+                            <p class="pp">1. Vietnam:</p>
+                            <p class="pp">1. Mr. Hoàng Đình Trọng - CT PDCA - trường đào tạo 30,000 CEO tại VN</p>
+                            <p class="pp">  2. Mr. Hoàng Ngọc Gia Long - chủ tịch KW Vietnam, CEO & Founder SharkLand, SharkAgent, Zeniius với 5,000 CEO, nhà đầu tư và agent tại VN, ban chấp hành YBA HCM - tổ chức dành cho doanh nghiệp có lịch sử 30 năm và uy tín hàng đầu VN.</p>
+                            <p class="pp">  3. Mr. Cao Minh Tuấn - chủ tịch tập đoàn nha khoa Saigon Tâm Đức với chuỗi 50 phòng khám</p>
+                            <p class="pp">   4. Mrs. Lê Thị Ngọc Thủy - chủ tịch Viva International với chuỗi 400 quán cafe Viva Coffee</p>
+                            <p class="pp">   5. 20 chủ doanh nghiệp có chuyên môn và thành tích trong 20 lĩnh vực khác nhau.</p>
+
+                            <p class="pp">➤    2. Quốc tế:</p>
+                            <p class="pp">    1. thầy Adrian Wee - founder MMC với 40,000 doanh nghiệp tại Malaysia, Singapore, Thailand, Brunei...</p>
+                            <p class="pp">    2. Dr. Dolf De Roos - từ USA- chuyên gia bất động sản hàng đầu thế giới và cố vấn của tổng thống Donald Trump, cố vấn của cha giàu và viết cùng sách với Donald Trump, Robert Kiyosaki, mạng lưới quan hệ có thể giúp mở rộng kinh doanh ra 27 quốc gia</p>
+                            <p class="pp">    3. Mr. Park Bong Kyu - chủ tịch Korea CEO Summit với 8,000 doanh nghiệp Hàn Quốc như Samsung, Lotte và mạng lưới quan chức chính phủ Hàn Quốc -phó thủ tướng, bộ trưởng, thị trưởng Seoul, Busan...</p>
+                            <p class="pp">    4. Mr. Abdulaziz Qambar - từ Trung Đông: Global Telecommunication leader: đã sáng lập nhiều công ty mạng di động với giá trị đầu tư vượt quá 10 tỷ đô la Mỹ giúp kết nối kinh doanh tại các nước Trung Đông.</p>
+                            <p class="pp">    5. Mr. Mark Yamamoto - từ Nhật Bản: chủ tịch KW Nhật Bản với 15 sàn bất động sản và mạng lưới nhà đầu tư cá nhân, tổ chức có giá trị tài sản lớn tại Nhật Bản.</p>
+                            <p class="pp">   6. Mr. Brady: Nexus - mạng lưới đầu tư bất động sản tại Anh
+                            <p class="pp">    7. Freewill Capital: mạng lưới family office với các gia đình có tài sản trên 100M USD tại VN & USA
+
+                            <p class="pp">    5. Công nghệ: sự kiện duy nhất mà người tham dự có thể kết nối cùng lúc với gần 1000 CEO & nhà đầu tư thông qua app SharkLand với tính năng thẻ năng lực & MXH CEO - nhà đầu tư với thông tin đầy đủ, tìm kiếm và kết nối dễ dàng.</p>
+
+                            <p class="pp">     6. Ban tổ chức: KW Vietnam và PDCA - thương hiệu nhượng quyền BDS top 1 thế giới (với networking mối quan hệ trên 60 nước) và thương hiệu đào tạo CEO top Vietnam với 30,000 CEO đã từng học</p>
+
+                            <p class="pp">➤   7. Nội dung:</p>
+                            <p class="pp">    - có các phiên chính với nội dung về phương thức giúp CEO & nhà đầu tư vượt qua thời kỳ khó khăn và tận dụng những cơ hội lớn với kiến thức đến từ tập đoàn số 1 thế giới với chủ đề "Xuyên bão:" chiến lược CHUYỂN ĐỔI trong 2 đợt khủng hoảng đã đưa một doanh nghiệp lên top 1 thế giới & doanh số 535 tỷ USD như thế nào?</p>
+                            <p class="pp">   - 2 phiên tọa đàm với nhiều góc nhìn và kinh nghiệm thực tế chia sẻ từ các CEO VN và quốc tế</p>
+                            <p class="pp">    - cùng 20 workshop nhỏ về 20 nội dung khác nhau cho CEO & nhà đầu tư</p>
+
                         </div>
                         <p class="text-center" id="see1" style="cursor: pointer;">Read more</p>
                     </div>
@@ -103,14 +183,18 @@
 
                             <div class="item">
                                 <h3 class="text-center">{{$session->name}}</h3>
-                                <p><strong>Mã số quay thưởng (Lucky Code):</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
                                 <p>
-                                    <strong>Nhiệm vụ (Missions):</strong>
+                                    <strong>Nhiệm vụ (Missions):  Tham gia 6/8 sessions để nhận được một Mã số quay thưởng.</strong>
                                     <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 0])}}#day{{$k+1}}">Click Here!</a>
                                 </p>
+                                <p><strong>Mã số quay thưởng (Lucky Code):</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
+
+                                <p><strong>Bạn đã tham gia:  <span style="color:green">{{$totalCompleted}}</span> / 8 sessions</strong></p>
+                                @if(false)
                                 <p><strong>Thời gian quay thưởng (Time):</strong> {{dateFormat($session->prize_at)}}</p>
                                 <p><strong>Địa điểm (Position):</strong> Hội trường chính (Main Stage)</p>
                                 <p><strong>Phần thưởng (Reward):</strong></p>
+
                                 <p style="padding-left: 15px; line-height: 20px;">
                                     @foreach($sTests as $item)
                                         @if($item)
@@ -118,6 +202,35 @@
                                         @endif
                                     @endforeach
                                 </p>
+                                @endif
+                            </div>
+                            <div class="timeline-container">
+                                @foreach($groupSessions as  $itemDatas)
+                                    <div id="day{{($loop->index+1)}}">&nbsp;</div>
+                                    @if(false)
+                                    <h3 class="step">{{$itemDatas && $itemDatas[0] ? $itemDatas[0]['travel_game_name'] : ''}}</h3>
+                                    @endif
+                                    <ul class="tl">
+                                        @foreach($itemDatas as $item)
+                                            <li class="tl-item {{ $item['flag'] ? '' : 'dashed'}}">
+                                                <div class="item-icon {{ $item['flag'] ? '' : 'not__active'}}"></div>
+                                                <div class="item-text">
+                                                    <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">
+                                                        <p class="{{$item['flag'] ? 'ac-color' : ''}}">
+                                                            {{Str::limit($item['name'], 50)}}
+                                                        </p>
+                                                    </div>
+                                                    {{-- <div class="item-detail {{$item['flag'] ? 'ac-color' : ''}}">{{Str::limit($item['desc'], 20)}}</div> --}}
+                                                </div>
+                                                @if ($item['date'])
+                                                    <div class="item-timestamp">
+                                                        {{$item['date']}}<br> {{$item['time']}}
+                                                    </div>
+                                                @endif
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endforeach
                             </div>
                         @endforeach
                     </div>
@@ -160,9 +273,12 @@
 
                 <div class="event-info" style="border-top: 0; margin-top: 15px;">
                     <div class="aaa mt-2">
-                        Plats Network: Web 2.5 Event Platform.<br>
-                        Thăm quan gian hàng Plats Network, bạn có cơ hội tham gia các trò chơi vui nhộn với những phần quà hấp dẫn.<br>
-                        Games, Gifts, and Good Times Await at Plats Network's Booth!
+                        “Plats Event: Web3 Event Platform.
+                        Nền tảng tổ chức sự kiện mới nhất, hỗ trợ Travel game, Session game và quay thưởng vui nhộn. Ngoài ra Plats Event còn
+                        <br>
+                        cung cấp các dịch vụ khác như Tạo và Phân phối NFT trong các sự kiện, Tạo và Thực hiện các nhiệm vụ truyền thống như
+                        <br>
+                        Social Tasks hay các nhiệm vụ Onchain Tasks."
                     </div>
                     <div class="app text-center">
                         <a href="https://apps.apple.com/us/app/plats/id1672212885" style="padding-right: 20px;" target="_blank">

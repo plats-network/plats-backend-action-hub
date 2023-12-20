@@ -543,6 +543,8 @@ class Home extends Controller
             $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)->orderBy('sort', 'asc')->get();
             $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)->orderBy('sort', 'asc')->get();
 
+
+
             foreach ($sessions as $session) {
                 $travel = $this->travelGame->find($session->travel_game_id);
                 $job = $this->taskDone
@@ -624,5 +626,12 @@ class Home extends Controller
             ->whereUserId($userId)
             ->whereTaskEventDetailId($eventDetailId)
             ->exists();
+
+       /* $status = $this->taskDone
+            ->whereUserId($userId)
+            ->whereTaskEventDetailId($eventDetailId)
+            ->count();
+        //dd($status);
+        return $status;*/
     }
 }

@@ -2,11 +2,14 @@
 
 namespace App\Models\Event;
 
+use App\Models\Url;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Event\TaskEvent;
 use App\Models\Traits\Uuid;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class TaskEventDetail extends Model
 {
@@ -40,4 +43,31 @@ class TaskEventDetail extends Model
         'a1', 'a2', 'a3', 'a4',
         'is_a1', 'is_a2', 'is_a3', 'is_a4',
     ];
+
+    //Get qr url
+    //$qr = 'http://'.config('plats.event').'/events/code?type=event&id='.$session->code;
+    public function getQrUrlAttribute()
+    {
+        $url =  'https://'.config('plats.event').'/events/code?type=event&id='.$this->code;
+
+
+        //Shorten url
+        $shortenUrl = $this->shortenUrl($url, $this->code);
+
+        return route('shortener-url',  ['shortener_url' => $shortenUrl]);
+    }
+
+    //shortenUrl
+    //Save url by code key
+    public function shortenUrl($url, $code)
+    {
+        $data['user_id'] = Auth::user()->id;
+        $data['title'] = $code;
+        $data['original_url'] = $url;
+        $data['shortener_url'] = Str::random(5);
+
+        $model =  Url::create($data);
+
+        return $data['shortener_url'];
+    }
 }
