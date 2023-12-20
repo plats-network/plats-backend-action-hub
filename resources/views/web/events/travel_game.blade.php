@@ -125,10 +125,11 @@
 
                         <p class="pp">2. Uy tín: Sự kiện diễn ra lần đầu năm 2017. Năm nay 2023 là lần thứ 6 và là năm thứ 7 diễn ra sự kiện. Các sự kiện trước ghi nhận tỉ lệ hài lòng của người tham dự lên tới 98.18% với sự tham gia của nhiều doanh nghiệp lớn hàng đầu tại VN </p>
 
-                        <p class="pp">3. Kết nối: Thành viên tham dự được chọn lọc đa dạng ngành nghề: gồm các chủ doanh nghiệp, quản lý cấp cao và nhà đầu tư với rất nhiều ngành nghề khác nhau. 90% là các chủ doanh nghiệp SME, trong đó có 8% doanh nghiệp có doanh số trên 5M USD/năm và 3% doanh nghiệp có doanh số trên 50M USD/năm. Có 3 cơ hội giao lưu kết nối: session lớn với toàn bộ hội trường, lunch networking và VIP dinner networking với các doanh nghiệp VIP. </p>
 
                         <p class="pp" style="padding-top: 10px; color: red!important;">➤ Không nên dùng Zalo để quét QR code, nên quét từ Camera</p>
                         <div id="seeMore1" style="display: none;">
+                            <p class="pp">➤ 3. Kết nối: Thành viên tham dự được chọn lọc đa dạng ngành nghề: gồm các chủ doanh nghiệp, quản lý cấp cao và nhà đầu tư với rất nhiều ngành nghề khác nhau. 90% là các chủ doanh nghiệp SME, trong đó có 8% doanh nghiệp có doanh số trên 5M USD/năm và 3% doanh nghiệp có doanh số trên 50M USD/năm. Có 3 cơ hội giao lưu kết nối: session lớn với toàn bộ hội trường, lunch networking và VIP dinner networking với các doanh nghiệp VIP. </p>
+
                             <p class="pp">➤ 4. Diễn giả và khách mời là những chuyên gia uy tín và doanh nghiệp lớn ở VN và quốc tế:</p>
                             <p class="pp">1. Vietnam:</p>
                             <p class="pp">1. Mr. Hoàng Đình Trọng - CT PDCA - trường đào tạo 30,000 CEO tại VN</p>
