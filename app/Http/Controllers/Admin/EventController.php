@@ -26,6 +26,7 @@ use App\Models\{NFT\NFT,
     TravelGame,
     Sponsor,
     SponsorDetail,
+    Url,
     UserSponsor,
     User};
 use App\Services\Admin\{EventService, TaskService};
@@ -626,7 +627,10 @@ class EventController extends Controller
         $userCheckIn = $this->listUsers($id); //List user check in event
 
         //$urlAnswers = route('quiz-name.answers', $eventId);
-        $urlAnswers = route('web.events.show', ['id' => $eventId, 'check_in' => true]);
+        $urlAnswersFull = route('web.events.show', ['id' => $eventId, 'check_in' => true]);
+        //Shorten url
+        $urlAnswers = Url::shortenUrl($urlAnswersFull);
+
         $qrCode = QrCode::format('png')->size(250)->generate($urlAnswers);
 
         $allNetwork = NFT::getAllNetworkName();

@@ -61,6 +61,13 @@ class TaskEventDetail extends Model
     //Save url by code key
     public function shortenUrl($url, $code)
     {
+        //Check url exist
+        $urlCheck = Url::query()
+            ->where('original_url', $url)
+            ->first();
+        if($urlCheck) {
+            return route('shortener-url',  ['shortener_url' => $urlCheck->shortener_url ]);
+        }
         $data['user_id'] = Auth::user()->id;
         $data['title'] = $code;
         $data['original_url'] = $url;

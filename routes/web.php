@@ -119,6 +119,7 @@ Route::get('events/user-list/{id}', [Home::class, 'apiUserList'])->name('listUse
 
 // route for get shortener url
 Route::get('s/{shortener_url}', [\App\Http\Controllers\UrlController::class, 'shortenLink'])->name('shortener-url');
+
 Route::get('event-code/{id}', [\App\Http\Controllers\UrlController::class, 'dayOne'])->name('code-dayOne');
 
 //Flush all url
