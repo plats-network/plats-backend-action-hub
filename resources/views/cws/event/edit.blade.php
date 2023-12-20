@@ -35,14 +35,14 @@
         <div class="row">
             @if($isPreview)
                 <div class="col-md-10">
-                    @if(false)
+                    @if(true)
                     <a class="btn btn-danger btn-sm mb-2 mr-5" style="margin-right: 10px;" href="{{ route('cws.event.overview', ['id' => $event->id]) }}">Overview</a>
 
                     <a class="btn btn-danger btn-sm mb-2 mr-5 none" style="margin-right: 10px;" href="{{ route('cws.event.miniGame', ['id' => $event->id]) }}">Mini Game</a>
 
                     <a class="ml-5 btn btn-primary btn-sm mb-2" href="{{route('cws.event.users', ['id' => $event->id])}}">List User</a>
                     @endif
-                    <a class="btn btn-info btn-sm mb-2 mr-5 none" target="_blank" style="margin-right: 10px;" href="https://platsevent.web.app/reward-nft">Reward</a>
+                    <a class="btn btn-info btn-sm mb-2 mr-5 none" target="_blank" style="margin-right: 10px;" href="https://platsevent.web.app/reward-nft?id={{$event->id}}">Reward</a>
 
 
                 </div>
