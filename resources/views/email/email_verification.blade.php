@@ -331,8 +331,8 @@
                             </tr>
                             <tr  >
                                 <td align="center">
-                                    @if( config('pleb.mail.play_url') != '' || config('pleb.mail.ios_url') != '' )
-                                        <!-- Buttons -->
+                                @if( config('pleb.mail.play_url') != '' || config('pleb.mail.ios_url') != '' )
+                                    <!-- Buttons -->
                                         <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" class="row" width="100%" style="width:100%;max-width:100%;">
                                             <tr>
                                                 <td align="center">

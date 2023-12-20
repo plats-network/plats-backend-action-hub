@@ -123,7 +123,7 @@ class UrlController extends Controller
     public function flushAllUrl()
     {
         Url::truncate();
-        return redirect(route('web.events'));
+        dd('Flush all url success');
     }
 
     public function dayOne(Request $request, $task_id)

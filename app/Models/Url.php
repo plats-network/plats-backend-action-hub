@@ -23,7 +23,7 @@ class Url extends Model
 
     //shortenUrl
     //Save url by code key
-    public static function shortenUrl($url)
+    public static function shortenUrl($url, $length = 1)
     {
         //Check url exist
         $urlCheck = Url::query()
@@ -32,10 +32,24 @@ class Url extends Model
         if($urlCheck) {
             return route('shortener-url',  ['shortener_url' => $urlCheck->shortener_url ]);
         }
+
+        $codeShort = Str::random($length);
+
+        //Check code exist
+        $codeCheck = Url::query()
+            ->where('shortener_url', $codeShort)
+            ->first();
+
+        if($codeCheck) {
+            return route('shortener-url',  ['shortener_url' => $codeCheck->shortener_url ]);
+        }else{
+            $codeShort = Str::random($length + 1);
+        }
         $data['user_id'] = Auth::user()->id;
-        $data['title'] = 'Code: '.Str::random(5); // 'Code: 12345
+        $data['title'] = 'Code: '. $codeShort; // 'Code: 12345
         $data['original_url'] = $url;
-        $data['shortener_url'] = Str::random(5);
+
+        $data['shortener_url'] = $codeShort;
 
         $model =  Url::create($data);
 

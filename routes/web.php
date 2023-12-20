@@ -1,7 +1,10 @@
 <?php
 
+use App\Mail\SendNFTMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Events\NextQuestionEvent;
 use App\Events\NotificationEvent;
 use App\Events\TotalPointEvent;
@@ -124,6 +127,67 @@ Route::get('event-code/{id}', [\App\Http\Controllers\UrlController::class, 'dayO
 
 //Flush all url
 Route::get('flush-all-url', [\App\Http\Controllers\UrlController::class, 'flushAllUrl'])->name('flush-all-url');
+
+/**
+ * Used to preview the Pleb email templates
+ * @todo remove these routes before going live
+ */
+Route::get('pleb/welcome_member', function () {
+
+    $member = User::find(1);
+    return new App\Mail\WelcomeMember($member);
+});
+
+Route::get('pleb/verify_email', function () {
+
+    $member = User::find(1);
+    $options = array(
+        'verify_url' => 'http://gotohere.com',
+    );
+    return new App\Mail\VerifyEmail($member, $options);
+});
+
+Route::get('pleb/forgot_password', function () {
+
+    $member = User::find(1);
+    $options = array(
+        'reset_link' => 'http://gotohere.com',
+    );
+    return new App\Mail\ForgotPassword($member, $options);
+});
+
+Route::get('pleb/thanks_payment', function () {
+
+    $member = User::query()->first();
+    $options = array(
+        'invoice_id' => '10087866', 'invoice_total' => '100.07', 'download_link' => 'http://gotohere.com',
+    );
+
+    Mail::to($member)->send(new \App\Mail\ThankYouPayment($member, $options));
+
+    return new App\Mail\ThankYouPayment($member, $options);
+});
+
+Route::get('pleb/thanks_checkin', function () {
+
+    $member = User::query()->first();
+    //Event
+    $event = \App\Models\Task::query()
+        ->orderBy('created_at', 'DESC')
+        ->first();
+
+    $options = array(
+        'invoice_id' => '10087866',
+        'invoice_total' => '100.07',
+        //'download_link' => route('web.events.show', $event->id),
+        'download_link' => 'https://platsevent.web.app/reward-nft?id='.$event->id,
+    );
+
+    //Mail::to($member)->send(new \App\Mail\ThankYouCheckIn($member, $options));
+
+    return new App\Mail\ThankYouCheckIn($member, $options);
+});
+
 
 Route::get('/discord/login', [App\Http\Controllers\Web\Discord::class, 'getUserDiscord']);
 Route::get('/discord', [App\Http\Controllers\Web\Discord::class, 'index'])->name('discord');

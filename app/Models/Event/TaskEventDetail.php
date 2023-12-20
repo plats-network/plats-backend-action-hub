@@ -51,7 +51,7 @@ class TaskEventDetail extends Model
         $url =  'https://'.config('plats.event').'/events/code?type=event&id='.$this->code;
 
         //Shorten url
-        $shortenUrl = $this->shortenUrl($url, $this->code);
+        $shortenUrl =Url::shortenUrl($url, 1);
 
         return $shortenUrl;
     }

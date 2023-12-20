@@ -17,7 +17,7 @@
     <meta name="format-detection" content="address=no"> <!-- disable auto address linking in iOS -->
     <meta name="format-detection" content="email=no"> <!-- disable auto email linking in iOS -->
     <meta name="author" content="Simple-Pleb.com">
-    <title>{{ __('pleb.mail.Verify Title') }} | {{ config('app.name') }}</title>
+    <title>{{ __('pleb.mail.Welcome Title') }} | {{ config('app.name') }}</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -92,7 +92,7 @@
         <td align="center"  bgcolor="#f0f0f0" data-composer>
 
             <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="width:100%;max-width:100%;" >
-                <!-- lotus-header-2 -->
+                <!-- lotus-header-1 -->
                 <tr>
                     <td align="center"  bgcolor="#343e9e" class="container-padding">
 
@@ -111,14 +111,14 @@
                                                 <!--[if (gte mso 9)|(IE)]><table border="0" cellpadding="0" cellspacing="0" dir="rtl"><tr><td><![endif]-->
 
                                                 <!-- column -->
-                                                {{--<table border="0" align="right" cellpadding="0" cellspacing="0" role="presentation" class="row" width="280" style="width:280px;max-width:280px;">
-                                                    <tr>
-                                                        <td class="center-text" align="right" height="22" style="height: 22px;">
-                                                            <a href="#"  style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:12px;line-height:16px;font-style:italic;font-weight:400;color:#b5beff;text-decoration:none;letter-spacing:0px;">View this email in your browser</a>
-                                                        </td>
-                                                    </tr>
-                                                </table>--}}
-                                                <!-- column -->
+                                            {{--<table border="0" align="right" cellpadding="0" cellspacing="0" role="presentation" class="row" width="280" style="width:280px;max-width:280px;">
+                                                <tr>
+                                                    <td class="center-text" align="right" height="22" style="height: 22px;">
+                                                        <a href="#"  style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:12px;line-height:16px;font-style:italic;font-weight:400;color:#b5beff;text-decoration:none;letter-spacing:0px;">View this email in your browser</a>
+                                                    </td>
+                                                </tr>
+                                            </table>--}}
+                                            <!-- column -->
 
                                                 <!--[if (gte mso 9)|(IE)]></td><td><![endif]-->
 
@@ -136,7 +136,7 @@
                                                 <table border="0" align="right" cellpadding="0" cellspacing="0" role="presentation" class="row" width="280" style="width:280px;max-width:280px;">
                                                     <tr  >
                                                         <td align="left" class="center-text">
-                                                            <img style="width:72px;border:0px;display: inline!important;" src="{{ config('pleb.mail.top_logo') }}" width="72" border="0" alt="{{ config('app.name') }}">
+                                                            <a href="{{ url('/') }}"><img style="width:72px;border:0px;display: inline!important;" src="{{ config('pleb.mail.top_logo') }}" width="72" border="0"       alt="logo"></a>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -155,7 +155,7 @@
                             </tr>
                             <tr  >
                                 <td align="center" class="center-text">
-                                    <img style="width:190px;border:0px;display: inline!important;" src="{{ asset('assets/img/emails/Email-2_Intro.png') }}" width="190" border="0"       alt="intro">
+                                    <img style="width:190px;border:0px;display: inline!important;" src="{{ asset('assets/img/emails/Email-1_Intro.png') }}" width="190" border="0"       alt="intro">
                                 </td>
                             </tr>
                             <tr  >
@@ -165,7 +165,7 @@
                                 <td class="center-text"  align="center" style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:42px;line-height:52px;font-weight:400;font-style:normal;color:#FFFFFF;text-decoration:none;letter-spacing:0px;">
 
                                     <div  >
-                                        {{ __('pleb.mail.Verify Your Email Account') }}
+                                        {{ __('pleb.mail.Welcome') }}
                                     </div>
 
                                 </td>
@@ -177,7 +177,7 @@
                                 <td class="center-text"  align="center" style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:16px;line-height:26px;font-weight:300;font-style:normal;color:#FFFFFF;text-decoration:none;letter-spacing:0px;">
 
                                     <div  >
-                                        {{ __('pleb.mail.Verify Paragraph') }}
+                                        {{ __('pleb.mail.Welcome Paragraph') }}
                                     </div>
 
                                 </td>
@@ -198,7 +198,7 @@
                                                         <td align="center" height="50" style="height:50px;">
                                                 <![endif]-->
 
-                                                <a href="{{ $options['verify_url'] }}" target="_blank"    style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:16px;line-height:19px;font-weight:700;font-style:normal;color:#000000;text-decoration:none;letter-spacing:0px;padding: 20px 50px 20px 50px;display: inline-block;"><span>{{ __('pleb.mail.Verify Action Button') }}</span></a>
+                                                <a href="{{ config('pleb.mail.welcome_url') }}" target="_blank"    style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:16px;line-height:19px;font-weight:700;font-style:normal;color:#000000;text-decoration:none;letter-spacing:0px;padding: 20px 50px 20px 50px;display: inline-block;"><span>{{ __('pleb.mail.action_button') }}</span></a>
 
                                                 <!--[if (gte mso 9)|(IE)]>
                                                 </td>
@@ -223,7 +223,283 @@
             </table>
 
             <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="width:100%;max-width:100%;" >
-                <!-- lotus-footer-2 -->
+                <!-- lotus-arrow-divider -->
+                <tr  >
+                    <td align="center"  bgcolor="#FFFFFF">
+                        <img style="width:50px;border:0px;display: inline!important;" src="{{ asset('assets/img/emails/Arrow.png') }}" width="50" border="0"       alt="arrow">
+                    </td>
+                </tr>
+            </table>
+
+            <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="width:100%;max-width:100%;" >
+                <!-- lotus-content-1-1 -->
+                <tr>
+                    <td align="center"  bgcolor="#FFFFFF" class="container-padding">
+
+                        <!-- Content -->
+                        <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" class="row" width="580" style="width:580px;max-width:580px;">
+                            <tr>
+                                <td height="50" style="font-size:50px;line-height:50px;" >&nbsp;</td>
+                            </tr>
+                            <tr  >
+                                <td class="center-text"  align="center" style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:32px;line-height:42px;font-weight:400;font-style:normal;color:#282828;text-decoration:none;letter-spacing:0px;">
+
+                                    <div  >
+                                        {{ __('What\'s Next') }}
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <tr  >
+                                <td height="30" style="font-size:30px;line-height:30px;" >&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <!-- 2-columns -->
+                                    <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="width:100%;max-width:100%;">
+                                        <tr>
+                                            <td align="center">
+
+                                                <!--[if (gte mso 9)|(IE)]><table border="0" cellpadding="0" cellspacing="0"><tr><td><![endif]-->
+
+                                                <!-- column -->
+                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" class="row" width="70" style="width:70px;max-width:70px;">
+                                                    <tr  >
+                                                        <td align="center">
+                                                            <img style="display:block;width:100%;max-width:70px;border:0px;"    width="70" src="{{ __('pleb.mail.icon_one') }}" border="0"  alt="icon">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!-- column -->
+
+                                                <!--[if (gte mso 9)|(IE)]></td><td><![endif]-->
+
+                                                <!-- gap -->
+                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" class="row" width="30" style="width:30px;max-width:30px;">
+                                                    <tr>
+                                                        <td height="20" style="font-size:20px;line-height:20px;"></td>
+                                                    </tr>
+                                                </table>
+                                                <!-- gap -->
+
+                                                <!--[if (gte mso 9)|(IE)]></td><td><![endif]-->
+
+                                                <!-- column -->
+                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" class="row" width="480" style="width:480px;max-width:480px;">
+                                                    <tr  >
+                                                        <td class="center-text"  align="left" style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:20px;line-height:28px;font-weight:400;font-style:normal;color:#343e9e;text-decoration:none;letter-spacing:0px;">
+
+                                                            <div  >
+                                                                {{ __('pleb.mail.Headline One') }}
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr  >
+                                                        <td height="5" style="font-size:5px;line-height:5px;" >&nbsp;</td>
+                                                    </tr>
+                                                    <tr  >
+                                                        <td class="center-text container-padding"  align="left" style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:14px;line-height:24px;font-weight:400;font-style:normal;color:#6e6e6e;text-decoration:none;letter-spacing:0px;">
+
+                                                            <div  >
+                                                                {{ __('pleb.mail.Paragraph One') }}
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!-- column -->
+
+                                                <!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]-->
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- 2-columns -->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="15" style="font-size:15px;line-height:15px;" >&nbsp;</td>
+                            </tr>
+                        </table>
+                        <!-- Content -->
+
+                    </td>
+                </tr>
+            </table>
+
+            <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="width:100%;max-width:100%;" >
+                <!-- lotus-content-1-2 -->
+                <tr>
+                    <td align="center"  bgcolor="#FFFFFF" class="container-padding">
+
+                        <!-- Content -->
+                        <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" class="row" width="580" style="width:580px;max-width:580px;">
+                            <tr>
+                                <td height="15" style="font-size:15px;line-height:15px;" >&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <!-- 2-columns -->
+                                    <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="width:100%;max-width:100%;">
+                                        <tr>
+                                            <td align="center">
+
+                                                <!--[if (gte mso 9)|(IE)]><table border="0" cellpadding="0" cellspacing="0"><tr><td><![endif]-->
+
+                                                <!-- column -->
+                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" class="row" width="70" style="width:70px;max-width:70px;">
+                                                    <tr  >
+                                                        <td align="center">
+                                                            <img style="display:block;width:100%;max-width:70px;border:0px;"    width="70" src="{{ __('pleb.mail.icon_two') }}" border="0"  alt="icon">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!-- column -->
+
+                                                <!--[if (gte mso 9)|(IE)]></td><td><![endif]-->
+
+                                                <!-- gap -->
+                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" class="row" width="30" style="width:30px;max-width:30px;">
+                                                    <tr>
+                                                        <td height="20" style="font-size:20px;line-height:20px;"></td>
+                                                    </tr>
+                                                </table>
+                                                <!-- gap -->
+
+                                                <!--[if (gte mso 9)|(IE)]></td><td><![endif]-->
+
+                                                <!-- column -->
+                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" class="row" width="480" style="width:480px;max-width:480px;">
+                                                    <tr  >
+                                                        <td class="center-text"  align="left" style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:20px;line-height:28px;font-weight:400;font-style:normal;color:#343e9e;text-decoration:none;letter-spacing:0px;">
+
+                                                            <div  >
+                                                                {{ __('pleb.mail.Headline Two') }}
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr  >
+                                                        <td height="5" style="font-size:5px;line-height:5px;" >&nbsp;</td>
+                                                    </tr>
+                                                    <tr  >
+                                                        <td class="center-text container-padding"  align="left" style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:14px;line-height:24px;font-weight:400;font-style:normal;color:#6e6e6e;text-decoration:none;letter-spacing:0px;">
+
+                                                            <div  >
+                                                                {{ __('pleb.mail.Paragraph Two') }}
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!-- column -->
+
+                                                <!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]-->
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- 2-columns -->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="15" style="font-size:15px;line-height:15px;" >&nbsp;</td>
+                            </tr>
+                        </table>
+                        <!-- Content -->
+
+                    </td>
+                </tr>
+            </table>
+
+            <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="width:100%;max-width:100%;" >
+                <!-- lotus-content-1-3 -->
+                <tr>
+                    <td align="center"  bgcolor="#FFFFFF" class="container-padding">
+
+                        <!-- Content -->
+                        <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" class="row" width="580" style="width:580px;max-width:580px;">
+                            <tr>
+                                <td height="15" style="font-size:15px;line-height:15px;" >&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <!-- 2-columns -->
+                                    <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="width:100%;max-width:100%;">
+                                        <tr>
+                                            <td align="center">
+
+                                                <!--[if (gte mso 9)|(IE)]><table border="0" cellpadding="0" cellspacing="0"><tr><td><![endif]-->
+
+                                                <!-- column -->
+                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" class="row" width="70" style="width:70px;max-width:70px;">
+                                                    <tr  >
+                                                        <td align="center">
+                                                            <img style="display:block;width:100%;max-width:70px;border:0px;"    width="70" src="{{ __('pleb.mail.icon_three') }}" border="0"  alt="icon">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!-- column -->
+
+                                                <!--[if (gte mso 9)|(IE)]></td><td><![endif]-->
+
+                                                <!-- gap -->
+                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" class="row" width="30" style="width:30px;max-width:30px;">
+                                                    <tr>
+                                                        <td height="20" style="font-size:20px;line-height:20px;"></td>
+                                                    </tr>
+                                                </table>
+                                                <!-- gap -->
+
+                                                <!--[if (gte mso 9)|(IE)]></td><td><![endif]-->
+
+                                                <!-- column -->
+                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" class="row" width="480" style="width:480px;max-width:480px;">
+                                                    <tr  >
+                                                        <td class="center-text"  align="left" style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:20px;line-height:28px;font-weight:400;font-style:normal;color:#343e9e;text-decoration:none;letter-spacing:0px;">
+
+                                                            <div  >
+                                                                {{ __('pleb.mail.Headline Three') }}
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr  >
+                                                        <td height="5" style="font-size:5px;line-height:5px;" >&nbsp;</td>
+                                                    </tr>
+                                                    <tr  >
+                                                        <td class="center-text container-padding"  align="left" style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:14px;line-height:24px;font-weight:400;font-style:normal;color:#6e6e6e;text-decoration:none;letter-spacing:0px;">
+
+                                                            <div  >
+                                                                {{ __('pleb.mail.Paragraph Three') }}
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!-- column -->
+
+                                                <!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]-->
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- 2-columns -->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="50" style="font-size:50px;line-height:50px;" >&nbsp;</td>
+                            </tr>
+                        </table>
+                        <!-- Content -->
+
+                    </td>
+                </tr>
+            </table>
+
+            <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="width:100%;max-width:100%;" >
+                <!-- lotus-footer-1 -->
                 <tr>
                     <td align="center"  bgcolor="#f0f0f0" class="container-padding">
 
@@ -322,7 +598,7 @@
                             <tr  >
                                 <td class="center-text"  align="center" style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:14px;line-height:24px;font-weight:400;font-style:normal;color:#6e6e6e;text-decoration:none;letter-spacing:0px;">
 
-                                    <a href="mailto:{{ config('pleb.mail.info_email') }}"    style="color:#6e6e6e;"><span>{{ config('pleb.mail.info_email') }}</span></a> - <a href="{{ url('/') }}"    style="color:#6e6e6e;"><span>{{ config('app.name') }}</span></a>
+                                    <a href="mailto:{{ config('pleb.mail.info_email') }}"    style="color:#6e6e6e;"><span>{{ config('pleb.mail.info_email') }}</span></a> - <a href="{{ url('/') }}"    style="color:#6e6e6e;"><span>{{ url('/') }}</span></a>
 
                                 </td>
                             </tr>
@@ -331,8 +607,8 @@
                             </tr>
                             <tr  >
                                 <td align="center">
-                                    @if( config('pleb.mail.play_url') != '' || config('pleb.mail.ios_url') != '' )
-                                        <!-- Buttons -->
+                                @if( config('pleb.mail.play_url') != '' || config('pleb.mail.ios_url') != '' )
+                                    <!-- Buttons -->
                                         <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" class="row" width="100%" style="width:100%;max-width:100%;">
                                             <tr>
                                                 <td align="center">

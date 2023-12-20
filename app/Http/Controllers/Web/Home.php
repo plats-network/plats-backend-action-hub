@@ -246,7 +246,18 @@ class Home extends Controller
 
                     //return redirect()->route('web.events.show', $id);
                 }
+
                 //Mail::to($user)->send(new SendNFTMail($event));
+                $options = array(
+                    'invoice_id' => '10087866',
+                    'invoice_total' => '100.07',
+                    //'download_link' => route('web.events.show', $event->id),
+                    'download_link' => 'https://platsevent.web.app/reward-nft?id='.$event->id,
+                );
+
+                Mail::to($user)->send(new \App\Mail\ThankYouCheckIn($user, $options));
+
+
                 //Mail::to($user)->send(new OrderCreated());
                 $recipientEmail = $user->email;
                 $userName = $user->name;

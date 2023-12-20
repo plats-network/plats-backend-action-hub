@@ -17,7 +17,7 @@
     <meta name="format-detection" content="address=no"> <!-- disable auto address linking in iOS -->
     <meta name="format-detection" content="email=no"> <!-- disable auto email linking in iOS -->
     <meta name="author" content="Simple-Pleb.com">
-    <title>{{ __('pleb.mail.Verify Title') }} | {{ config('app.name') }}</title>
+    <title>{{ __('pleb.mail.Payment Thank You Title') }} | {{ config('app.name') }}</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -92,7 +92,7 @@
         <td align="center"  bgcolor="#f0f0f0" data-composer>
 
             <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="width:100%;max-width:100%;" >
-                <!-- lotus-header-2 -->
+                <!-- lotus-header-18-->
                 <tr>
                     <td align="center"  bgcolor="#343e9e" class="container-padding">
 
@@ -110,15 +110,7 @@
 
                                                 <!--[if (gte mso 9)|(IE)]><table border="0" cellpadding="0" cellspacing="0" dir="rtl"><tr><td><![endif]-->
 
-                                                <!-- column -->
-                                                {{--<table border="0" align="right" cellpadding="0" cellspacing="0" role="presentation" class="row" width="280" style="width:280px;max-width:280px;">
-                                                    <tr>
-                                                        <td class="center-text" align="right" height="22" style="height: 22px;">
-                                                            <a href="#"  style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:12px;line-height:16px;font-style:italic;font-weight:400;color:#b5beff;text-decoration:none;letter-spacing:0px;">View this email in your browser</a>
-                                                        </td>
-                                                    </tr>
-                                                </table>--}}
-                                                <!-- column -->
+
 
                                                 <!--[if (gte mso 9)|(IE)]></td><td><![endif]-->
 
@@ -136,7 +128,7 @@
                                                 <table border="0" align="right" cellpadding="0" cellspacing="0" role="presentation" class="row" width="280" style="width:280px;max-width:280px;">
                                                     <tr  >
                                                         <td align="left" class="center-text">
-                                                            <img style="width:72px;border:0px;display: inline!important;" src="{{ config('pleb.mail.top_logo') }}" width="72" border="0" alt="{{ config('app.name') }}">
+                                                            <a href="{{ url('/') }}"><img style="width:72px;border:0px;display: inline!important;" src="{{ config('pleb.mail.top_logo') }}" width="72" border="0"  alt="{{ config('app.name') }}"></a>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -155,7 +147,7 @@
                             </tr>
                             <tr  >
                                 <td align="center" class="center-text">
-                                    <img style="width:190px;border:0px;display: inline!important;" src="{{ asset('assets/img/emails/Email-2_Intro.png') }}" width="190" border="0"       alt="intro">
+                                    <img style="width:190px;border:0px;display: inline!important;" src="{{ asset('assets/img/emails/Email-18_Intro.png') }}" width="190" border="0"       alt="intro">
                                 </td>
                             </tr>
                             <tr  >
@@ -165,7 +157,19 @@
                                 <td class="center-text"  align="center" style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:42px;line-height:52px;font-weight:400;font-style:normal;color:#FFFFFF;text-decoration:none;letter-spacing:0px;">
 
                                     <div  >
-                                        {{ __('pleb.mail.Verify Your Email Account') }}
+                                       Thanks for your check-in!
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <tr  >
+                                <td height="10" style="font-size:10px;line-height:10px;" >&nbsp;</td>
+                            </tr>
+                            <tr  >
+                                <td class="center-text"  align="center" style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:26px;line-height:36px;font-weight:400;font-style:normal;color:#d7e057;text-decoration:none;letter-spacing:0px;">
+
+                                    <div  >
+                                        {{ __('pleb.mail.Attached your receipt') }}.
                                     </div>
 
                                 </td>
@@ -177,39 +181,9 @@
                                 <td class="center-text"  align="center" style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:16px;line-height:26px;font-weight:300;font-style:normal;color:#FFFFFF;text-decoration:none;letter-spacing:0px;">
 
                                     <div  >
-                                        {{ __('pleb.mail.Verify Paragraph') }}
+                                        Congratulations! You have successfully checked in to {{ config('app.name') }}.
                                     </div>
 
-                                </td>
-                            </tr>
-                            <tr  >
-                                <td height="40" style="font-size:40px;line-height:40px;" >&nbsp;</td>
-                            </tr>
-                            <tr  >
-                                <td align="center">
-                                    <!-- Header Button -->
-                                    <table border="0" cellspacing="0" cellpadding="0" role="presentation" align="center" class="center-float">
-                                        <tr>
-                                            <td align="center"    bgcolor="#d6df58" style="border-radius: 6px;">
-                                                <!--[if (gte mso 9)|(IE)]>
-                                                <table border="0" cellpadding="0" cellspacing="0" align="center">
-                                                    <tr>
-                                                        <td align="center" width="50"></td>
-                                                        <td align="center" height="50" style="height:50px;">
-                                                <![endif]-->
-
-                                                <a href="{{ $options['verify_url'] }}" target="_blank"    style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:16px;line-height:19px;font-weight:700;font-style:normal;color:#000000;text-decoration:none;letter-spacing:0px;padding: 20px 50px 20px 50px;display: inline-block;"><span>{{ __('pleb.mail.Verify Action Button') }}</span></a>
-
-                                                <!--[if (gte mso 9)|(IE)]>
-                                                </td>
-                                                <td align="center" width="50"></td>
-                                                </tr>
-                                                </table>
-                                                <![endif]-->
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <!-- Header Button -->
                                 </td>
                             </tr>
                             <tr>
@@ -223,7 +197,167 @@
             </table>
 
             <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="width:100%;max-width:100%;" >
-                <!-- lotus-footer-2 -->
+                <!-- lotus-arrow-divider -->
+                <tr  >
+                    <td align="center"  bgcolor="#FFFFFF">
+                        <img style="width:50px;border:0px;display: inline!important;" src="{{ asset('assets/img/emails/Arrow.png') }}" width="50" border="0"       alt="arrow">
+                    </td>
+                </tr>
+            </table>
+
+            <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="width:100%;max-width:100%;" >
+                <!-- lotus-content-18 -->
+                <tr>
+                    <td align="center"  bgcolor="#FFFFFF" class="container-padding">
+
+                        <!-- Content -->
+                        <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" class="row" width="580" style="width:580px;max-width:580px;">
+                            <tr>
+                                <td height="40" style="font-size:40px;line-height:40px;" >&nbsp;</td>
+                            </tr>
+                            <tr  >
+                                <td align="center"  bgcolor="#f4f5fa">
+                                    <!-- Content -->
+                                    <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" class="row" width="480" style="width:480px;max-width:480px;">
+                                        <tr>
+                                            <td height="40" style="font-size:40px;line-height:40px;">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center">
+                                                <!--[if (gte mso 9)|(IE)]><table border="0" cellpadding="0" cellspacing="0"><tr><td><![endif]-->
+                                                <!-- Column -->
+                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" class="row" width="225" style="width:225px;max-width:225px;">
+                                                    <tr  >
+                                                        <td class="center-text"  align="left" style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:400;font-style:normal;color:#343e9e;text-decoration:none;letter-spacing:0px;">
+
+                                                            <div  >
+                                                                {{ __('pleb.mail.Invoice ID') }}:
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr  >
+                                                        <td height="10" style="font-size:10px;line-height:10px;">&nbsp;</td>
+                                                    </tr>
+                                                    <tr  >
+                                                        <td class="center-text"  align="left" style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:16px;line-height:24px;font-weight:400;font-style:normal;color:#282828;text-decoration:none;letter-spacing:0px;">
+
+                                                            <div  >
+                                                                {{ $options['invoice_id'] }}
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!-- Column -->
+                                                <!--[if (gte mso 9)|(IE)]></td><td><![endif]-->
+                                                <!-- gap -->
+                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" width="30" style="width:30px;max-width:30px;">
+                                                    <tr>
+                                                        <td height="20" style="font-size:20px;line-height:20px;">&nbsp;</td>
+                                                    </tr>
+                                                </table>
+                                                <!-- gap -->
+                                                <!--[if (gte mso 9)|(IE)]></td><td><![endif]-->
+                                                <!-- Column -->
+                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" class="row" width="225" style="width:225px;max-width:225px;">
+                                                    <tr  >
+                                                        <td class="center-text"  align="left" style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:400;font-style:normal;color:#343e9e;text-decoration:none;letter-spacing:0px;">
+
+                                                            <div  >
+                                                                {{ __('pleb.mail.Total') }}:
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr  >
+                                                        <td height="10" style="font-size:10px;line-height:10px;">&nbsp;</td>
+                                                    </tr>
+                                                    <tr  >
+                                                        <td class="center-text"  align="left" style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:16px;line-height:24px;font-weight:400;font-style:normal;color:#282828;text-decoration:none;letter-spacing:0px;">
+
+                                                            <div  >
+                                                                {{ $options['invoice_total'] }}
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <!-- Column -->
+                                                <!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]-->
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td height="40" style="font-size:40px;line-height:40px;">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <!-- Content -->
+                                </td>
+                            </tr>
+                            <tr  >
+                                <td height="30" style="font-size:30px;line-height:30px;" >&nbsp;</td>
+                            </tr>
+                            <tr  >
+                                <td align="center">
+                                    <!-- Paragraphs -->
+                                    <table border="0" cellspacing="0" cellpadding="0" role="presentation" align="center" class="row" width="480" style="width:480px;max-width:480px;">
+                                        <tr>
+                                            <td class="center-text"  align="center" style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:14px;line-height:26px;font-weight:400;font-style:italic;color:#6e6e6e;text-decoration:none;letter-spacing:0px;">
+
+                                                <div  >
+                                                    ({{ __('If you have any questions or feedback, just') }} <a href="mailto:{{ config('pleb.mail.info_email') }}" style="color:#ed6e7a;text-decoration: underline;">{{ __('reply to this email') }}</a>)
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- Paragraphs -->
+                                </td>
+                            </tr>
+                            <tr  >
+                                <td height="30" style="font-size:30px;line-height:30px;" >&nbsp;</td>
+                            </tr>
+                            <tr  >
+                                <td align="center">
+                                    @if($options['download_link'])
+                                    <!-- Buttons -->
+                                    <table border="0" cellspacing="0" cellpadding="0" role="presentation" align="center" class="center-float">
+                                        <tr>
+                                            <td align="center"    bgcolor="#d6df58" style="border-radius: 6px;">
+                                                <!--[if (gte mso 9)|(IE)]>
+                                                <table border="0" cellpadding="0" cellspacing="0" align="center">
+                                                    <tr>
+                                                        <td align="center" width="50"></td>
+                                                        <td align="center" height="50" style="height:50px;">
+                                                <![endif]-->
+
+                                                <a href="{{ $options['download_link'] }}" target="_blank"    style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:16px;line-height:19px;font-weight:700;font-style:normal;color:#000000;text-decoration:none;letter-spacing:0px;padding: 20px 50px 20px 50px;display: inline-block;"><span>Download NFT</span></a>
+
+                                                <!--[if (gte mso 9)|(IE)]>
+                                                </td>
+                                                <td align="center" width="50"></td>
+                                                </tr>
+                                                </table>
+                                                <![endif]-->
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- Buttons -->
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="40" style="font-size:40px;line-height:40px;" >&nbsp;</td>
+                            </tr>
+                        </table>
+                        <!-- Content -->
+
+                    </td>
+                </tr>
+            </table>
+
+            <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="width:100%;max-width:100%;" >
+                <!-- lotus-footer-18 -->
                 <tr>
                     <td align="center"  bgcolor="#f0f0f0" class="container-padding">
 
@@ -322,7 +456,7 @@
                             <tr  >
                                 <td class="center-text"  align="center" style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:14px;line-height:24px;font-weight:400;font-style:normal;color:#6e6e6e;text-decoration:none;letter-spacing:0px;">
 
-                                    <a href="mailto:{{ config('pleb.mail.info_email') }}"    style="color:#6e6e6e;"><span>{{ config('pleb.mail.info_email') }}</span></a> - <a href="{{ url('/') }}"    style="color:#6e6e6e;"><span>{{ config('app.name') }}</span></a>
+                                    <a href="mailto:{{ config('pleb.mail.info_email') }}"    style="color:#6e6e6e;"><span>{{ config('pleb.mail.info_email') }}</span></a> - <a href="{{ url('/') }}"    style="color:#6e6e6e;"><span>{{ url('/') }}</span></a>
 
                                 </td>
                             </tr>
@@ -331,8 +465,8 @@
                             </tr>
                             <tr  >
                                 <td align="center">
-                                    @if( config('pleb.mail.play_url') != '' || config('pleb.mail.ios_url') != '' )
-                                        <!-- Buttons -->
+                                @if( config('pleb.mail.play_url') != '' || config('pleb.mail.ios_url') != '' )
+                                    <!-- Buttons -->
                                         <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation" class="row" width="100%" style="width:100%;max-width:100%;">
                                             <tr>
                                                 <td align="center">
