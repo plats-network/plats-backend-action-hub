@@ -344,10 +344,9 @@
                                                     <th>Avatar</th>
                                                     <th>Name</th>
                                                     <th>Email</th>
-                                                    <th>Checkin</th>
+                                                    <th>Phone</th>
                                                     <th>Set Vip</th>
                                                     <th>Created</th>
-                                                    <th>Updated</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -363,13 +362,14 @@
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td class="fw-semibold" style="width: 10%;">{{$userItem->name}}</td>
+                                                        <td class="fw-semibold" style="width: 20%;">{{$userItem->name}}</td>
                                                         <td class="fw-semibold" style="width: 10%;">
                                                             <p class="text-success" style="font-size: 11px">{{$userItem->email}}</p>
                                                         </td>
-                                                        <td>
-                                                            {{$userInfo->is_checkin ? 'Checkin' : 'Not checkin'}}
+                                                        <td class="fw-semibold" style="width: 10%;">
+                                                            <p class="text-success" style="font-size: 11px">{{$userItem->phone}}</p>
                                                         </td>
+
                                                         <td>
                                                             <input
                                                                 type="checkbox"
@@ -387,9 +387,7 @@
                                                         <td>
                                                             {{dateFormat($userItem->created_at)}}
                                                         </td>
-                                                        <td>
-                                                            {{dateFormat($userItem->updated_at)}}
-                                                        </td>
+
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
