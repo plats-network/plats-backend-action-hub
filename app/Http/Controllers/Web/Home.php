@@ -7,6 +7,7 @@ use App\Mail\NFTNotification;
 use App\Mail\OrderCreated;
 use App\Mail\SendNFTMail;
 use App\Mail\SendTicket as EmailSendTicket;
+use App\Services\UserService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +38,7 @@ class Home extends Controller
         private TaskEvent       $eventModel,
         private Task            $task,
         private User            $user,
+        private UserService       $userService,
         private Sponsor         $sponsor,
         private UserJoinEvent   $taskDone,
         private TaskEventDetail $eventDetail,
@@ -333,6 +335,47 @@ class Home extends Controller
             'download_ticket' => $download_ticket,
             'url_download_ticket' => $url_download_ticket,
             'show_message' => $show_message,
+        ]);
+    }
+
+    //apiUserList
+    //Get list user check in event
+    //Created 20.12.2023
+    public function apiUserList(Request $request, $id)
+    {
+        try {
+            $user = Auth::user();
+            $event = $this->task->find($id);
+
+            $userIds = $this->eventUserTicket->select('user_id')->whereTaskId($id);
+
+            $userIds = $userIds->pluck('user_id')->toArray();
+            $userIds = array_unique($userIds);
+            $eventUserTickets = $this->userService->search([
+                'limit' => 100,
+                'userIds' => $userIds
+            ]);
+
+
+            $data = [];
+
+            foreach ($eventUserTickets as $eventUserTicket) {
+                $data[] = [
+                    'name' => $eventUserTicket->name,
+                    'email' => $eventUserTicket->email,
+                    'phone' => $eventUserTicket->phone,
+                    'created_at' => $eventUserTicket->created_at,
+                ];
+            }
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            notify()->error('Error show event');
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Get list user check in event successfully',
+            'data' => $data
         ]);
     }
 

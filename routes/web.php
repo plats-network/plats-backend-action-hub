@@ -80,7 +80,9 @@ Route::middleware(['user_event'])->group(function ($r) {
 
     // Travel
     $r->get('event-job/{id}', [Home::class, 'jobEvent'])->name('web.jobEvent');
+
     $r->get('info/{task_id}', [Job::class, 'getTravelGame'])->name('job.getTravelGame');
+
     $r->get('quiz/{code}', [Job::class, 'getJob'])->name('job.getJob');
 
     // New sponsor
@@ -109,6 +111,11 @@ Route::post('order/ticket', [Home::class, 'orderTicket'])->name('order.ticket');
 
 //Ticket pdf
 Route::get('ticket/pdf/{id?}', [Home::class, 'ticketPdf'])->name('ticket.pdf');
+
+//Prefix API Router
+
+//User Event List API
+Route::get('events/user-list/{id}', [Home::class, 'apiUserList'])->name('listUser.Events');
 
 
 Route::get('/discord/login', [App\Http\Controllers\Web\Discord::class, 'getUserDiscord']);
