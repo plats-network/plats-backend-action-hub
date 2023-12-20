@@ -15,7 +15,16 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => [
+        'api/*',
+        'sanctum/csrf-cookie',
+        'tasks/*',
+        'admin/*',
+        'posts/*',
+        'plats-quest.vaix.group/*',
+        'hackathon.plats.quest/*',
+        'https://platsevent.web.app/*',
+    ],
 
     'allowed_methods' => ['*'],
 
