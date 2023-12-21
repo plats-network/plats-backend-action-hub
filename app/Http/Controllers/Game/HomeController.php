@@ -11,10 +11,10 @@ use Log;
 class HomeController extends Controller
 {
     public function __construct(
-        private TaskEvent $taskEvent,
+        private TaskEvent       $taskEvent,
         private EventUserTicket $eventUserTicket,
-        private UserCode $userCode,
-        private MiniGame $miniGame,
+        private UserCode        $userCode,
+        private MiniGame        $miniGame,
     )
     {
         // code
@@ -25,44 +25,53 @@ class HomeController extends Controller
     {
         try {
             $isClear = false;
-            $update = $request->input('update');
-            if ($update ==2){
-                $isClear = true;
-            }
-            //For production
-            $task_id = '9ae602bb-5fe5-4f35-85a9-c6021fc22930';
-            //For local
-            //$task_id = '9ae26d36-4825-4136-944c-0adf7b748b7d';
-            $codes = [];
-            $eventSession = TaskEvent::query()->whereTaskId($task_id)->whereType(TASK_SESSION)->first();
-            $eventBooth = TaskEvent::query()->whereTaskId($task_id)->whereType(TASK_BOOTH)->first();
-            $sessions = TaskEventDetail::query()->whereTaskEventId($eventSession->id)->orderBy('sort', 'asc')->get();
-            foreach ($sessions as $session){
+            $isTest = env('IS_TEST', true);
+            if ($isTest) {
+                for ($i = 1; $i <= 1000; $i++) {
+                    $codes[] = $i;
+                }
+            } else {
 
-            }
 
-            if ($isClear){
-                $codes =UserCode::query()
+                $update = $request->input('update');
+                if ($update == 2) {
+                    $isClear = true;
+                }
+                //For production
+                $task_id = '9ae602bb-5fe5-4f35-85a9-c6021fc22930';
+                //For local
+                //$task_id = '9ae26d36-4825-4136-944c-0adf7b748b7d';
+                $codes = [];
+                $eventSession = TaskEvent::query()->whereTaskId($task_id)->whereType(TASK_SESSION)->first();
+                $eventBooth = TaskEvent::query()->whereTaskId($task_id)->whereType(TASK_BOOTH)->first();
+                $sessions = TaskEventDetail::query()->whereTaskEventId($eventSession->id)->orderBy('sort', 'asc')->get();
+                foreach ($sessions as $session) {
+
+                }
+
+                if ($isClear) {
+                    $codes = UserCode::query()
+                        ->where('task_event_id', $session->id)
+                        //->where('travel_game_id', '9a13167f-4a75-4a46-aa5b-4fb8baea4b9b')
+                        //->whereIn('user_id', $userIds)
+                        ->whereType(0)
+                        //Filter by created_at >= 2023-12-22 00:00:00
+                        //->where('created_at', '>=', '2023-12-22 00:00:00')
+                        ->forceDelete();
+                }
+
+                $limit = 1000;
+                $codes = UserCode::query()
                     ->where('task_event_id', $session->id)
                     //->where('travel_game_id', '9a13167f-4a75-4a46-aa5b-4fb8baea4b9b')
                     //->whereIn('user_id', $userIds)
                     ->whereType(0)
                     //Filter by created_at >= 2023-12-22 00:00:00
                     //->where('created_at', '>=', '2023-12-22 00:00:00')
-                    ->forceDelete();
+                    ->inRandomOrder()
+                    ->pluck('number_code')
+                    ->toArray();
             }
-
-            $limit=1000;
-            $codes =UserCode::query()
-                ->where('task_event_id', $session->id)
-                //->where('travel_game_id', '9a13167f-4a75-4a46-aa5b-4fb8baea4b9b')
-                //->whereIn('user_id', $userIds)
-                ->whereType(0)
-                //Filter by created_at >= 2023-12-22 00:00:00
-                //->where('created_at', '>=', '2023-12-22 00:00:00')
-                ->inRandomOrder()
-                ->pluck('number_code')
-                ->toArray();
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -85,12 +94,12 @@ class HomeController extends Controller
             $eventSession = TaskEvent::query()->whereTaskId($task_id)->whereType(TASK_SESSION)->first();
             $eventBooth = TaskEvent::query()->whereTaskId($task_id)->whereType(TASK_BOOTH)->first();
             $sessions = TaskEventDetail::query()->whereTaskEventId($eventSession->id)->orderBy('sort', 'asc')->get();
-            foreach ($sessions as $session){
+            foreach ($sessions as $session) {
 
             }
 
-            $limit=1000;
-            $codes =UserCode::query()
+            $limit = 1000;
+            $codes = UserCode::query()
                 ->where('task_event_id', $session->id)
                 //->where('travel_game_id', '9a13167f-4a75-4a46-aa5b-4fb8baea4b9b')
                 //->whereIn('user_id', $userIds)
@@ -118,7 +127,7 @@ class HomeController extends Controller
         try {
             $codes = [];
             if (env('APP_ENV') != 'production') {
-                for($i=1; $i <= 30000; $i++) {
+                for ($i = 1; $i <= 30000; $i++) {
                     $codes[] = $i;
                 }
             } else {
@@ -128,7 +137,7 @@ class HomeController extends Controller
                     ->pluck('user_id')
                     ->toArray();
 
-                $limit=1000;
+                $limit = 1000;
                 $codes = $this->userCode
                     ->where('task_event_id', '9a131bf1-d4fa-4368-bb6b-c4e5f8d1da08')
                     ->where('travel_game_id', '9a13167f-4a75-4a46-aa5b-4fb8baea4b9b')
@@ -159,7 +168,7 @@ class HomeController extends Controller
             $codes = [];
 
             if (env('APP_ENV') != 'production') {
-                for($i=1; $i <= 30000; $i++) {
+                for ($i = 1; $i <= 30000; $i++) {
                     $codes[] = $i;
                 }
             } else {
@@ -198,7 +207,7 @@ class HomeController extends Controller
             $codes = [];
 
             if (env('APP_ENV') != 'production') {
-                for($i=1; $i <= 30000; $i++) {
+                for ($i = 1; $i <= 30000; $i++) {
                     $codes[] = $i;
                 }
             } else {
@@ -234,7 +243,9 @@ class HomeController extends Controller
         try {
             $miniGame = $this->miniGame->whereCode($code)->first();
 
-            if (!$miniGame) { abort(404); }
+            if (!$miniGame) {
+                abort(404);
+            }
 
             $codes = $this->userCode
                 ->where('task_event_id', $miniGame->task_event_id)
@@ -308,8 +319,8 @@ class HomeController extends Controller
                 abort(404);
             }
             $numbers = [];
-            for($i = 0; $i <= 1000; $i++) {
-                $numbers[] = $i+1;
+            for ($i = 0; $i <= 1000; $i++) {
+                $numbers[] = $i + 1;
             }
         } catch (\Exception $e) {
             abort(404);
