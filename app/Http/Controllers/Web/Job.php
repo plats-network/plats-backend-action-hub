@@ -424,7 +424,7 @@ class Job extends Controller
             'nft' => $sessionNFT && $sessionNFT['nft'] ? 1 : 0,
             'flagU' => $flagU,
 
-            'groupSessions' => array_reverse($groupSessions),
+            'groupSessions' => ($groupSessions),
         ]);
     }
     //Check user get code when have attend 6/8 session in booth
