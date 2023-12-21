@@ -24,7 +24,15 @@ class HomeController extends Controller
     public function dayOne(Request $request)
     {
         try {
+            $isClear = false;
+            $update = $request->input('update');
+            if ($update ==2){
+                $isClear = true;
+            }
+            //For production
             $task_id = '9ae602bb-5fe5-4f35-85a9-c6021fc22930';
+            //For local
+            //$task_id = '9ae26d36-4825-4136-944c-0adf7b748b7d';
             $codes = [];
             $eventSession = TaskEvent::query()->whereTaskId($task_id)->whereType(TASK_SESSION)->first();
             $eventBooth = TaskEvent::query()->whereTaskId($task_id)->whereType(TASK_BOOTH)->first();
@@ -33,12 +41,25 @@ class HomeController extends Controller
 
             }
 
+            if ($isClear){
+                $codes =UserCode::query()
+                    ->where('task_event_id', $session->id)
+                    //->where('travel_game_id', '9a13167f-4a75-4a46-aa5b-4fb8baea4b9b')
+                    //->whereIn('user_id', $userIds)
+                    ->whereType(0)
+                    //Filter by created_at >= 2023-12-22 00:00:00
+                    //->where('created_at', '>=', '2023-12-22 00:00:00')
+                    ->forceDelete();
+            }
+
             $limit=1000;
             $codes =UserCode::query()
                 ->where('task_event_id', $session->id)
                 //->where('travel_game_id', '9a13167f-4a75-4a46-aa5b-4fb8baea4b9b')
                 //->whereIn('user_id', $userIds)
                 ->whereType(0)
+                //Filter by created_at >= 2023-12-22 00:00:00
+                //->where('created_at', '>=', '2023-12-22 00:00:00')
                 ->inRandomOrder()
                 ->pluck('number_code')
                 ->toArray();

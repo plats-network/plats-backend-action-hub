@@ -386,7 +386,7 @@ class Job extends Controller
                     $maxCode =  $max + 1;
                     //Check if  $maxCode < 100 then add 100
                     if ($maxCode < 100) {
-                        $maxCode = $maxCode + 100;
+                        $maxCode = $maxCode;
                     }
 
                     $this->userCode->create([
