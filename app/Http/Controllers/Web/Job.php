@@ -317,8 +317,12 @@ class Job extends Controller
             // $this->taskService->genCodeByUser($userId, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
             $eventSession = $this->eventModel->whereTaskId($taskId)->whereType(TASK_SESSION)->first();
             $eventBooth = $this->eventModel->whereTaskId($taskId)->whereType(TASK_BOOTH)->first();
-            $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)->orderBy('sort', 'asc')->get();
-            $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)->orderBy('sort', 'asc')->get();
+            $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)
+                //->orderBy('sort', 'asc')
+                ->get();
+            $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)
+                //->orderBy('sort', 'asc')
+                ->get();
             $totalCompleted = 0;
 
             foreach ($sessions as $session) {

@@ -561,8 +561,15 @@ class EventController extends Controller
 
         $taskGroup = TaskGroup::where('task_id', $id)->pluck('group_id');
         $taskGallery = TaskGallery::where('task_id', $id)->pluck('url_image');
-        $booths = TaskEvent::where('task_id', $id)->with('detail')->where('type', 1)->first();
-        $sessions = TaskEvent::where('task_id', $id)->with('detail')->where('type', 0)->first();
+
+        $booths = TaskEvent::where('task_id', $id)
+            ->with('detail')->where('type', 1)
+            ->first();
+
+        $sessions = TaskEvent::where('task_id', $id)->with('detail')
+            ->where('type', 0)
+            ->first();
+
         $sponsor = $this->sponsor->whereTaskId($id)->first();
         // dd($sponsor);
 
