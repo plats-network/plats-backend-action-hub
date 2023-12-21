@@ -299,7 +299,7 @@
         'url' => $url
     ])
 
-    <div id="infoEditEmail" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div id="infoEditEmail" class="modal fade @if (Str::contains($email, 'guest')) show @endif" data-backdrop="static" data-keyboard="false">
         <style type="text/css">
             .text-danger, .error {
                 color: red;
@@ -313,10 +313,10 @@
             }
         </style>
 
-        <div class="modal-dialog">
+        <div class="modal-dialog ">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" style="font-size: 25px; text-align: center;">Cập nhật email</h5>
+                    <h5 class="modal-title" style="font-size: 25px; text-align: center;">Đăng ký Check-in Sự Kiện</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -332,7 +332,7 @@
                                     name="name"
                                     required>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 mt-3">
                                 <label class="form-label">Email <span class="text-danger">*</span></label>
                                 <input
                                     type="text"
