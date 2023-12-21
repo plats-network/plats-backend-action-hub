@@ -121,7 +121,7 @@ Route::get('ticket/pdf/{id?}', [Home::class, 'ticketPdf'])->name('ticket.pdf');
 Route::get('events/user-list/{id}', [Home::class, 'apiUserList'])->name('listUser.Events');
 
 // route for get shortener url
-Route::get('s/{shortener_url}', [\App\Http\Controllers\UrlController::class, 'shortenLink'])->name('shortener-url');
+Route::get('{shortener_url}', [\App\Http\Controllers\UrlController::class, 'shortenLink'])->name('shortener-url');
 
 Route::get('event-code/{id}', [\App\Http\Controllers\UrlController::class, 'dayOne'])->name('code-dayOne');
 
