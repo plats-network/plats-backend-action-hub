@@ -566,6 +566,7 @@ class Home extends Controller
     public function jobEvent(Request $request, $id)
     {
         try {
+
             $sessionDatas = [];
             $boothDatas = [];
             $user = Auth::user();
@@ -581,6 +582,7 @@ class Home extends Controller
             $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)->orderBy('sort', 'asc')->get();
             $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)->orderBy('sort', 'asc')->get();
 
+            return redirect(route('job.getTravelGame', ['task_id' => $task->id]));
 
 
             foreach ($sessions as $session) {

@@ -80,7 +80,6 @@ Route::middleware(['user_event'])->group(function ($r) {
 
     $r->post('editPassword', [UserController::class, 'editPassword'])->name('web.editPassword');
 
-
     // Travel
     $r->get('event-job/{id}', [Home::class, 'jobEvent'])->name('web.jobEvent');
 
@@ -124,6 +123,8 @@ Route::get('events/user-list/{id}', [Home::class, 'apiUserList'])->name('listUse
 Route::get('{shortener_url}', [\App\Http\Controllers\UrlController::class, 'shortenLink'])->name('shortener-url');
 
 Route::get('event-code/{id}', [\App\Http\Controllers\UrlController::class, 'dayOne'])->name('code-dayOne');
+
+Route::get('event-user/{id}', [\App\Http\Controllers\UrlController::class, 'dayOne'])->name('code-User');
 
 //Flush all url
 Route::get('flush-all-url', [\App\Http\Controllers\UrlController::class, 'flushAllUrl'])->name('flush-all-url');

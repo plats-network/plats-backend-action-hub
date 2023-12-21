@@ -127,8 +127,9 @@ class Job extends Controller
                     ]);
                 }
 
-                return redirect()->route('web.jobEvent', [
-                    'id' => $task->code
+                return redirect()->route('job.getTravelGame', [
+                    'id' => $task->code,
+                    'task_id' => $task->code
                 ]);
             }
         } catch (\Exception $e) {

@@ -126,7 +126,6 @@
                         <p class="pp">2. Uy tín: Sự kiện diễn ra lần đầu năm 2017. Năm nay 2023 là lần thứ 6 và là năm thứ 7 diễn ra sự kiện. Các sự kiện trước ghi nhận tỉ lệ hài lòng của người tham dự lên tới 98.18% với sự tham gia của nhiều doanh nghiệp lớn hàng đầu tại VN </p>
 
 
-                        <p class="pp" style="padding-top: 10px; color: red!important;">➤ Không nên dùng Zalo để quét QR code, nên quét từ Camera</p>
                         <div id="seeMore1" style="display: none;">
                             <p class="pp">➤ 3. Kết nối: Thành viên tham dự được chọn lọc đa dạng ngành nghề: gồm các chủ doanh nghiệp, quản lý cấp cao và nhà đầu tư với rất nhiều ngành nghề khác nhau. 90% là các chủ doanh nghiệp SME, trong đó có 8% doanh nghiệp có doanh số trên 5M USD/năm và 3% doanh nghiệp có doanh số trên 50M USD/năm. Có 3 cơ hội giao lưu kết nối: session lớn với toàn bộ hội trường, lunch networking và VIP dinner networking với các doanh nghiệp VIP. </p>
 
@@ -163,7 +162,6 @@
 
                 <ul class="nav nav-tabs">
                   <li><a data-toggle="tab" href="#sesion">Sessions Game</a></li>
-                  <li><a data-toggle="tab" href="#booth">Travel Game</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -186,7 +184,6 @@
                                 <h3 class="text-center">{{$session->name}}</h3>
                                 <p>
                                     <strong>Nhiệm vụ (Missions):  Tham gia 6/8 sessions để nhận được một Mã số quay thưởng.</strong>
-                                    <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 0])}}#day{{$k+1}}">Click Here!</a>
                                 </p>
                                 <p><strong>Mã số quay thưởng (Lucky Code):</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
 
@@ -236,40 +233,6 @@
                         @endforeach
                     </div>
 
-                    <div id="booth" class="tab-pane fade">
-                        @foreach($travelBooths as $booth)
-                            @php
-                                $codeBooths = $userCode->where('user_id', $userId)
-                                    ->where('travel_game_id', $booth->id)
-                                    ->where('task_event_id', $booth_id)
-                                    ->where('type', 1)
-                                    ->pluck('number_code')
-                                    ->implode(',');
-                                $aTests = [];
-                                if ($booth->note) {
-                                    $aTests = explode('-', $booth->note);
-                                }
-                            @endphp
-                            <div class="item">
-                                <h3 class="text-center">{{$booth->name}}</h3>
-                                <p><strong>Mã số quay thưởng (Lucky Code):</strong> <span class="fs-25">{{$codeBooths ? $codeBooths : '---'}}</span></p>
-                                <p>
-                                    <strong>Nhiệm vụ (Missions):</strong>
-                                    <a href="{{route('web.jobEvent', ['id' => $event->code, 'type' => 1])}}">Click Here!</a>
-                                </p>
-                                <p><strong>Thời gian quay thưởng (Time):</strong> {{dateFormat($booth->prize_at)}}</p>
-                                <p><strong>Địa điểm (Position):</strong> Hội trường chính (Main Stage)</p>
-                                <p><strong>Phần thưởng (Reward ):</strong></p>
-                                <p style="padding-left: 15px; line-height: 20px;">
-                                    @foreach($aTests as $item)
-                                        @if($item)
-                                            {!! '➤ '.$item.'<br>' !!}
-                                        @endif
-                                    @endforeach
-                                </p>
-                            </div>
-                        @endforeach
-                    </div>
                 </div>
 
                 <div class="event-info" style="border-top: 0; margin-top: 15px;">
