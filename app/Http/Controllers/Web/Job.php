@@ -346,6 +346,7 @@ class Job extends Controller
                     'date' => $job ? Carbon::parse($job->created_at)->format('Y-m-d') : '',
                     'time' => $job ? Carbon::parse($job->created_at)->format('H:i') : '',
                     'required' => $session->is_required,
+                    'created_at' => $session->created_at,
                     'flag' =>$isDoneTask
                 ];
             }
@@ -412,6 +413,62 @@ class Job extends Controller
         } catch (\Exception $e) {
             abort(404);
         }
+
+        //dd($session->id);
+        //dd($groupSessions);
+        //array:1 [▼ // app\Http\Controllers\Web\Job.php:416
+        //  $event->id => array:8 [▼
+        //    0 => array:10 [▼
+        //      "id" => "9ae45be7-b580-452e-91b6-05eda488b4ce"
+        //      "travel_game_id" => $event->id
+        //      "travel_game_name" => "Session"
+        //      "user_id" => "9ae6850b-e2e6-4a3e-9024-237f992b3426"
+        //      "name" => "DOANH NGHIỆP BÀI BẢN - VIỆT NAM PHỤC HỒI"
+        //      "desc" => null
+        //      "date" => "2023-12-21"
+        //      "time" => "15:50"
+        //      "required" => 0
+        //      "flag" => true
+        //    ]
+        //    1 => array:10 [▶]
+        //    2 => array:10 [▶]
+        //    3 => array:10 [▶]
+        //    4 => array:10 [▶]
+        //    5 => array:10 [▶]
+        //    6 => array:10 [▶]
+        //    7 => array:10 [▼
+        //      "id" => "9ae45be8-18e5-496e-aad0-661388e7970b"
+        //      "travel_game_id" => $event->id
+        //      "travel_game_name" => "Session"
+        //      "user_id" => "9ae6850b-e2e6-4a3e-9024-237f992b3426"
+        //      "name" => "Talkshow PHIÊN 2  - CƠ HỘI - VƯƠN TẦM QUỐC TẾ"
+        //      "desc" => null
+        //      "date" => ""
+        //      "time" => ""
+        //      "required" => 0
+        //      "flag" => false
+        //    ]
+        //  ]
+        //]
+
+        //Sort $groupSessions item 5  to 7
+
+    // Lấy thông tin của các phần tử cần đổi vị trí
+        $item5 = $groupSessions[$item['travel_game_id']][5];
+        $item6 = $groupSessions[$item['travel_game_id']][6];
+        $item7 = $groupSessions[$item['travel_game_id']][7];
+
+    // Xóa các phần tử cần đổi vị trí
+        unset(
+            $groupSessions[$item['travel_game_id']][5],
+            $groupSessions[$item['travel_game_id']][6],
+            $groupSessions[$item['travel_game_id']][7]
+        );
+
+    // Chèn lại các phần tử ở vị trí mới
+        array_splice($groupSessions[$item['travel_game_id']], 5, 0, [$item7]);
+        array_splice($groupSessions[$item['travel_game_id']], 6, 0, [$item5]);
+        array_splice($groupSessions[$item['travel_game_id']], 7, 0, [$item6]);
 
         return view('web.events.travel_game', [
             'event' => $event,
