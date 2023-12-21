@@ -48,10 +48,10 @@ class TaskEventDetail extends Model
     //$qr = 'http://'.config('plats.event').'/events/code?type=event&id='.$session->code;
     public function getQrUrlAttribute()
     {
-        $url =  'https://'.config('plats.event').'/events/code?type=event&id='.$this->code;
+        $url = 'https://' . config('plats.event') . '/events/code?type=event&id=' . $this->code;
 
         //Shorten url
-        $shortenUrl =Url::shortenUrl($url, 1);
+        $shortenUrl = Url::shortenUrl($url, 1);
 
         return $shortenUrl;
     }
@@ -64,15 +64,15 @@ class TaskEventDetail extends Model
         $urlCheck = Url::query()
             ->where('original_url', $url)
             ->first();
-        if($urlCheck) {
-            return route('shortener-url',  ['shortener_url' => $urlCheck->shortener_url ]);
+        if ($urlCheck) {
+            return route('shortener-url', ['shortener_url' => $urlCheck->shortener_url]);
         }
         $data['user_id'] = Auth::user()->id;
         $data['title'] = $code;
         $data['original_url'] = $url;
         $data['shortener_url'] = Str::random(5);
 
-        $model =  Url::create($data);
+        $model = Url::create($data);
 
         return $data['shortener_url'];
     }
