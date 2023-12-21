@@ -23,6 +23,8 @@ return [
         'posts/*',
         'plats-quest.vaix.group/*',
         'hackathon.plats.quest/*',
+        'games.plats.quest/*',
+        'games.plats.network/*',
         'platsevent.web.app/*',
         //http://localhost:5173/reward-nft
         'localhost:5173/*',
