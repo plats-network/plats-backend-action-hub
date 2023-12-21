@@ -43,8 +43,9 @@ class Url extends Model
         if($codeCheck) {
             return route('shortener-url',  ['shortener_url' => $codeCheck->shortener_url ]);
         }else{
-            $codeShort = Str::random($length + 1);
+            $codeShort = Str::random($length);
         }
+
         $data['user_id'] = Auth::user()->id;
         $data['title'] = 'Code: '. $codeShort; // 'Code: 12345
         $data['original_url'] = $url;
