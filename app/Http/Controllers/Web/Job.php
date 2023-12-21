@@ -319,6 +319,7 @@ class Job extends Controller
             $eventBooth = $this->eventModel->whereTaskId($taskId)->whereType(TASK_BOOTH)->first();
             $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)
                 //->orderBy('sort', 'asc')
+                ->orderBy('created_at', 'asc')
                 ->get();
             $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)
                 //->orderBy('sort', 'asc')

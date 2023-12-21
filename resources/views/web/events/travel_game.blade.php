@@ -237,12 +237,11 @@
 
                 <div class="event-info" style="border-top: 0; margin-top: 15px;">
                     <div class="aaa mt-2">
-                        “Plats Event: Web3 Event Platform.
+                        Plats Event: Web3 Event Platform <br>
                         Nền tảng tổ chức sự kiện mới nhất, hỗ trợ Travel game, Session game và quay thưởng vui nhộn. Ngoài ra Plats Event còn
-                        <br>
+
                         cung cấp các dịch vụ khác như Tạo và Phân phối NFT trong các sự kiện, Tạo và Thực hiện các nhiệm vụ truyền thống như
-                        <br>
-                        Social Tasks hay các nhiệm vụ Onchain Tasks."
+                        Social Tasks hay các nhiệm vụ Onchain Tasks.
                     </div>
                     <div class="app text-center">
                         <a href="https://apps.apple.com/us/app/plats/id1672212885" style="padding-right: 20px;" target="_blank">
