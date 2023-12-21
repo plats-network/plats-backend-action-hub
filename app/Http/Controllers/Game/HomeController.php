@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Game;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Event\{TaskEvent, EventUserTicket, UserCode};
+use App\Models\Event\{TaskEvent, EventUserTicket, TaskEventDetail, UserCode};
 use App\Models\Game\{MiniGame};
 use Log;
 
@@ -21,7 +21,42 @@ class HomeController extends Controller
     }
 
 
-    public function dayOne(Request $request)
+    public function dayOne(Request $request, $task_id)
+    {
+        try {
+            $codes = [];
+            $eventSession = TaskEvent::query()->whereTaskId($task_id)->whereType(TASK_SESSION)->first();
+            $eventBooth = TaskEvent::query()->whereTaskId($task_id)->whereType(TASK_BOOTH)->first();
+            $sessions = TaskEventDetail::query()->whereTaskEventId($eventSession->id)->orderBy('sort', 'asc')->get();
+            foreach ($sessions as $session){
+
+            }
+
+            $limit=1000;
+            $codes =UserCode::query()
+                ->where('task_event_id', $session->id)
+                //->where('travel_game_id', '9a13167f-4a75-4a46-aa5b-4fb8baea4b9b')
+                //->whereIn('user_id', $userIds)
+                ->whereType(0)
+                ->inRandomOrder()
+                ->pluck('number_code')
+                ->toArray();
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error datas',
+                'data' => null
+            ], 500);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successful',
+            'data' => $codes
+        ], 200);
+    }
+
+    public function dayOne2(Request $request)
     {
         try {
             $codes = [];

@@ -12,6 +12,10 @@ Route::post('game/result', [HomeController::class, 'updateResult'])->name('game.
 
 // Api
 Route::get('/api/v1/day1-codes', [HomeController::class, 'dayOne'])->name('game.dayOne');
+
 Route::get('/api/v1/day2-codes', [HomeController::class, 'dayTwo'])->name('game.dayTwo');
+
+Route::get('/api/v1/day3-codes', [HomeController::class, 'dayThree'])->name('game.dayThree');
+
 Route::get('/api/v1/booth-codes', [HomeController::class, 'boothCodes'])->name('game.boothCodes');
 
