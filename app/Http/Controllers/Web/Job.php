@@ -351,6 +351,7 @@ class Job extends Controller
             }
             //Create code if $totalCompleted >=6
             $maxSession = 6;
+
             if ($totalCompleted >= $maxSession) {
                 //$this->taskService->genCodeByUser($user->id, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
 
@@ -382,12 +383,18 @@ class Job extends Controller
                         ->where('travel_game_id', $session->travel_game_id)
                         ->max('number_code');
 
+                    $maxCode =  $max + 1;
+                    //Check if  $maxCode < 100 then add 100
+                    if ($maxCode < 100) {
+                        $maxCode = $maxCode + 100;
+                    }
+
                     $this->userCode->create([
                         'user_id' => $user->id,
                         'task_event_id' => $session->id,
                         'travel_game_id' => $session->travel_game_id,
                         'type' => 0,
-                        'number_code' => 100 + $max + 1,
+                        'number_code' => $maxCode,
                         'color_code' => randColor()
                     ]);
                 }

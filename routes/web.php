@@ -140,19 +140,35 @@ Route::get('pleb/welcome_member', function () {
 
 Route::get('pleb/verify_email', function () {
 
-    $member = User::find(1);
+    $member = User::query()->first();
     $options = array(
         'verify_url' => 'http://gotohere.com',
     );
     return new App\Mail\VerifyEmail($member, $options);
 });
 
+Route::get('pleb/thanks_checkin_nft', function () {
+
+    $member = User::query()->first();
+    $options = array(
+        'verify_url' => 'http://gotohere.com',
+         'image_url' => '',
+        'event_name' => 'Event Name',
+        'event_location' => 'Event Name',
+        'invoice_id' => '10087866',
+        'invoice_total' => '100.07',
+        'download_link' => 'http://google.com',
+    );
+    return new App\Mail\ThankYouCheckInNFT($member, $options);
+});
+
 Route::get('pleb/forgot_password', function () {
 
-    $member = User::find(1);
+    $member = User::query()->first();
     $options = array(
         'reset_link' => 'http://gotohere.com',
     );
+
     return new App\Mail\ForgotPassword($member, $options);
 });
 
@@ -179,6 +195,13 @@ Route::get('pleb/thanks_checkin', function () {
     $options = array(
         'invoice_id' => '10087866',
         'invoice_total' => '100.07',
+        'event_name' => 'Event',
+        'event_description' => 'Event',
+        'event_location' => 'Event',
+        'event_date' => 'date',
+        'start' => 'date',
+        'end' => 'date',
+        'event_time' => 'time',
         //'download_link' => route('web.events.show', $event->id),
         'download_link' => 'https://platsevent.web.app/reward-nft?id='.$event->id,
     );

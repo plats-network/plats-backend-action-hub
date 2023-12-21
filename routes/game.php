@@ -10,6 +10,8 @@ Route::get('game/{id}', [HomeController::class, 'miniGame'])->name('game.miniGam
 
 Route::post('game/result', [HomeController::class, 'updateResult'])->name('game.updateResult');
 
+//Local. https://cws.plats.test/api/v1/day1-codes
+
 // Api
 Route::get('/api/v1/day1-codes', [HomeController::class, 'dayOne'])->name('game.dayOne');
 

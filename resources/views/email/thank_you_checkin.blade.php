@@ -128,7 +128,7 @@
                                                 <table border="0" align="right" cellpadding="0" cellspacing="0" role="presentation" class="row" width="280" style="width:280px;max-width:280px;">
                                                     <tr  >
                                                         <td align="left" class="center-text">
-                                                            <a href="{{ url('/') }}"><img style="width:72px;border:0px;display: inline!important;" src="{{ config('pleb.mail.top_logo') }}" width="72" border="0"  alt="{{ config('app.name') }}"></a>
+                                                            <a href="{{ url('/') }}"><img style="width:150px;border:0px;display: inline!important;" src="https://res.cloudinary.com/dhploi5y1/image/upload/v1703130283/logo-plats_nt6elq.svg" width="72" border="0"  alt="{{ config('app.name') }}"></a>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -181,7 +181,7 @@
                                 <td class="center-text"  align="center" style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:16px;line-height:26px;font-weight:300;font-style:normal;color:#FFFFFF;text-decoration:none;letter-spacing:0px;">
 
                                     <div  >
-                                        Congratulations! You have successfully checked in to {{ config('app.name') }}.
+                                        Congratulations! You have successfully checked in to event {{$options['event_name']}}.
                                     </div>
 
                                 </td>
@@ -226,12 +226,12 @@
                                             <td align="center">
                                                 <!--[if (gte mso 9)|(IE)]><table border="0" cellpadding="0" cellspacing="0"><tr><td><![endif]-->
                                                 <!-- Column -->
-                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" class="row" width="225" style="width:225px;max-width:225px;">
+                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" class="row" width="425" style="width:425px;max-width:425px;">
                                                     <tr  >
                                                         <td class="center-text"  align="left" style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:400;font-style:normal;color:#343e9e;text-decoration:none;letter-spacing:0px;">
 
                                                             <div  >
-                                                                {{ __('pleb.mail.Invoice ID') }}:
+                                                                Event: {{$options['event_name']}}
                                                             </div>
 
                                                         </td>
@@ -243,46 +243,28 @@
                                                         <td class="center-text"  align="left" style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:16px;line-height:24px;font-weight:400;font-style:normal;color:#282828;text-decoration:none;letter-spacing:0px;">
 
                                                             <div  >
-                                                                {{ $options['invoice_id'] }}
+                                                               Location: {{ $options['event_location'] }}
                                                             </div>
 
                                                         </td>
-                                                    </tr>
-                                                </table>
-                                                <!-- Column -->
-                                                <!--[if (gte mso 9)|(IE)]></td><td><![endif]-->
-                                                <!-- gap -->
-                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" width="30" style="width:30px;max-width:30px;">
-                                                    <tr>
-                                                        <td height="20" style="font-size:20px;line-height:20px;">&nbsp;</td>
-                                                    </tr>
-                                                </table>
-                                                <!-- gap -->
-                                                <!--[if (gte mso 9)|(IE)]></td><td><![endif]-->
-                                                <!-- Column -->
-                                                <table border="0" align="left" cellpadding="0" cellspacing="0" role="presentation" class="row" width="225" style="width:225px;max-width:225px;">
-                                                    <tr  >
-                                                        <td class="center-text"  align="left" style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:400;font-style:normal;color:#343e9e;text-decoration:none;letter-spacing:0px;">
-
-                                                            <div  >
-                                                                {{ __('pleb.mail.Total') }}:
-                                                            </div>
-
-                                                        </td>
-                                                    </tr>
-                                                    <tr  >
-                                                        <td height="10" style="font-size:10px;line-height:10px;">&nbsp;</td>
                                                     </tr>
                                                     <tr  >
                                                         <td class="center-text"  align="left" style="font-family:'Poppins',Arial,Helvetica,sans-serif;font-size:16px;line-height:24px;font-weight:400;font-style:normal;color:#282828;text-decoration:none;letter-spacing:0px;">
 
                                                             <div  >
-                                                                {{ $options['invoice_total'] }}
+                                                                Time : {{date("Y-m-d H:i:s", strtotime($options['start']))}} - {{date("Y-m-d H:i:s", strtotime($options['end']))}}
                                                             </div>
 
                                                         </td>
                                                     </tr>
                                                 </table>
+                                                <!-- Column -->
+                                                <!--[if (gte mso 9)|(IE)]></td><td><![endif]-->
+                                                <!-- gap -->
+
+                                                <!-- gap -->
+                                                <!--[if (gte mso 9)|(IE)]></td><td><![endif]-->
+                                                <!-- Column -->
                                                 <!-- Column -->
                                                 <!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]-->
                                             </td>
@@ -331,7 +313,7 @@
                                                         <td align="center" height="50" style="height:50px;">
                                                 <![endif]-->
 
-                                                <a href="{{ $options['download_link'] }}" target="_blank"    style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:16px;line-height:19px;font-weight:700;font-style:normal;color:#000000;text-decoration:none;letter-spacing:0px;padding: 20px 50px 20px 50px;display: inline-block;"><span>Download NFT</span></a>
+                                                <a href="{{ $options['download_link'] }}" target="_blank"    style="font-family:'Roboto Slab',Arial,Helvetica,sans-serif;font-size:16px;line-height:19px;font-weight:700;font-style:normal;color:#000000;text-decoration:none;letter-spacing:0px;padding: 20px 50px 20px 50px;display: inline-block;"><span>View Event</span></a>
 
                                                 <!--[if (gte mso 9)|(IE)]>
                                                 </td>

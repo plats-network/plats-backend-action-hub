@@ -28,7 +28,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class VerifyEmail extends Mailable
+class ThankYouCheckInNFT extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -53,8 +53,10 @@ class VerifyEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('email.email_verification')->with([
-            'options' => $this->options
+        return $this->view('email.thank_you_checkin_nft')->with([
+            'event_name' => $this->options['event_name'],
+            'event_location' => $this->options['event_location'],
+            'download_link' => $this->options['download_link'],
         ]);
     }
 }

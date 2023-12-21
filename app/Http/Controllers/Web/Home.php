@@ -249,13 +249,22 @@ class Home extends Controller
 
                 //Mail::to($user)->send(new SendNFTMail($event));
                 $options = array(
+                    'verify_url' => 'http://gotohere.com',
+                    'image_url' => '',
+                    'event_name' => $event->name,
+                    'event_description' => $event->description,
+                    'event_url' => route('web.events.show', $event->id),
+                    'event_date' => $event->start_date,
+                    'event_time' => $event->start_time,
+                    'event_location' => $event->address,
                     'invoice_id' => '10087866',
                     'invoice_total' => '100.07',
-                    //'download_link' => route('web.events.show', $event->id),
                     'download_link' => 'https://platsevent.web.app/reward-nft?id='.$event->id,
                 );
 
-                Mail::to($user)->send(new \App\Mail\ThankYouCheckIn($user, $options));
+
+                Mail::to($user)->send(new \App\Mail\ThankYouCheckInNFT($user, $options));
+
 
 
                 //Mail::to($user)->send(new OrderCreated());
@@ -455,7 +464,25 @@ class Home extends Controller
                 ->first();
 
             if ($userTicket) {
-                Mail::to($user->email)->send(new EmailSendTicket($userTicket, $user));
+                $options = array(
+                    'invoice_id' => '10087866',
+                    'invoice_total' => '100.07',
+                    //'download_link' => route('web.events.show', $event->id),
+                    'download_link' => route('web.events.show', [
+                        'id' => $taskId,
+                        'download_ticket' => true
+                    ]),
+                    'event_name' => $userTicket->task->name,
+                    'event_description' => $userTicket->task->description,
+                    'event_location' => $userTicket->task->address,
+                    'event_date' => $userTicket->task->start_date,
+                    'event_time' => $userTicket->task->start_time,
+                    'start' => $userTicket->task->start_at,
+                    'end' => $userTicket->task->end_at,
+                );
+
+                Mail::to($user)->send(new \App\Mail\ThankYouCheckIn($user, $options));
+                //Mail::to($user->email)->send(new EmailSendTicket($userTicket, $user));
             }
 
             DB::commit();
