@@ -32,7 +32,6 @@ class HomeController extends Controller
                 }
             } else {
 
-
                 $update = $request->input('update');
                 if ($update == 2) {
                     $isClear = true;

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Event\UserJoinEvent;
 use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -127,5 +128,20 @@ class User extends Authenticatable implements JWTSubject
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
+    }
+
+    // $this->taskDone
+    //                    ->whereUserId($user->id)
+    //                    ->whereTaskEventDetailId($session->id)
+    //                    ->count())
+    //Count task done by user,
+    //Param: $user, $session
+    //Return: int
+    public function taskDoneEvent($user_id, $session_id)
+    {
+        return UserJoinEvent::query()
+            ->whereUserId($user_id)
+            //->whereTaskEventDetailId($session_id)
+            ->count();
     }
 }

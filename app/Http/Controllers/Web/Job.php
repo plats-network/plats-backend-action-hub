@@ -332,6 +332,15 @@ class Job extends Controller
                     ->whereUserId($user->id)
                     ->whereTaskEventDetailId($session->id)
                     ->first();
+
+                //dd($session->id);
+                //9ae45be7-b580-452e-91b6-05eda488b4ce
+
+                /*dd($this->taskDone
+                    ->whereUserId($user->id)
+                    ->where('task_id', $taskId)
+                    //->whereTaskEventDetailId($session->id)
+                    ->count());*/
                 $isDoneTask = $this->checkDoneJob($session->id);
                 if ($isDoneTask) {
                     $totalCompleted++;

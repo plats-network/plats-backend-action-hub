@@ -345,6 +345,7 @@
                                                     <th>Name</th>
                                                     <th>Email</th>
                                                     <th>Phone</th>
+                                                    <th>Task Done</th>
                                                     <th>Set Vip</th>
                                                     <th>Created</th>
                                                 </tr>
@@ -369,7 +370,9 @@
                                                         <td class="fw-semibold" style="width: 10%;">
                                                             <p class="text-success" style="font-size: 11px">{{$userItem->phone}}</p>
                                                         </td>
-
+                                                        <td class="fw-semibold" style="width: 10%;">
+                                                            <p class="text-success" style="font-size: 11px">{{$userItem->taskDoneEvent($userItem->id, $select_session_id)}}</p>
+                                                        </td>
                                                         <td>
                                                             <input
                                                                 type="checkbox"

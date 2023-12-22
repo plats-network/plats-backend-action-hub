@@ -617,6 +617,8 @@ class EventController extends Controller
         foreach ($taskGallery as $item) {
             $image[]['url'] = $item;
         }
+
+
         $task['group_tasks'] = $taskGroup;
         $task['task_galleries'] = $image;
         $task['booths'] = $booths;
@@ -657,6 +659,19 @@ class EventController extends Controller
 
             $nftItems->save();
         }
+        //Get first $sessions id
+        $sessionsPlay = TaskEventDetail::query()
+            ->whereTaskEventId($sessions->id)
+            //->orderBy('sort', 'asc')
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        $select_session_id = 0;
+        foreach ($sessionsPlay as $itemSession){
+
+            $select_session_id = $itemSession->id;
+            break;
+        }
 
         $data = [
             'eventId' => $eventId,
@@ -669,6 +684,7 @@ class EventController extends Controller
             'quiz' => $quiz,
             'qrCode' => $qrCode,
             'userCheckIn' => $userCheckIn,
+            'select_session_id' => $select_session_id,
             'sponsor' => $sponsor,
             'taskEventSocials' => $taskEventSocials,
             'taskEventDiscords' => $taskEventDiscords,
