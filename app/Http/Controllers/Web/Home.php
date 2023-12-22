@@ -259,7 +259,8 @@ class Home extends Controller
                     'event_location' => $event->address,
                     'invoice_id' => '10087866',
                     'invoice_total' => '100.07',
-                    'download_link' => 'https://platsevent.web.app/reward-nft?id='.$event->id,
+                    //'download_link' => 'https://platsevent.web.app/reward-nft?id='.$event->id,
+                    'download_link' => 'https://platsevent.web.app/claim-nft?id='.$event->id,
                 );
 
 
