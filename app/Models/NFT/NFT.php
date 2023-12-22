@@ -31,11 +31,11 @@ class NFT extends Model
     {
         return [
             self::NETWORK_TYPE_PHALA => 'Phala',
-            self::NETWORK_TYPE_PHALA_ZERO => 'Phala Zero',
+            //self::NETWORK_TYPE_PHALA_ZERO => 'Phala Zero',
+            self::NETWORK_TYPE_ALEPH_TESTNET => 'Aleph Zero Testnet',
             self::NETWORK_TYPE_ASTAR => 'Astar',
             self::NETWORK_TYPE_POLKADOT => 'Polkadot',
             self::NETWORK_TYPE_ASTAR_TESTNET => 'Astar Testnet',
-            self::NETWORK_TYPE_ALEPH_TESTNET => 'Aleph Testnet',
         ];
     }
 
