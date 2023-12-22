@@ -333,7 +333,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <p>Contract Address NFT: 5HUUrVNNC9ioJFDKMGuvCQWVaw1kskLF5MVPkM9NQujHbGd7</p>
+                            <p>Contract Address NFT: 5Fit6V47YhFW8Yc2Q2YV4e2zHZgC8Jrzq7KjiT6AaPKj3nVg</p>
 
 
                             <p>Please note that this NFT is a unique digital asset, and once claimed, it will be added to your digital wallet. If you don't have a digital wallet yet, you can create one within our platform.
