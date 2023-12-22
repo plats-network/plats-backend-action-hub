@@ -108,6 +108,10 @@ Route::get('resource', [PagesController::class, 'resource'])->name('web.resource
 Route::get('contact', [PagesController::class, 'contact'])->name('web.contact');
 Route::get('lang/{lang}', [PagesController::class, 'lang'])->name('web.lang');
 
+//Payment success
+Route::get('payment-success', [Home::class, 'paymentSuccess'])->name('web.paymentSuccess');
+
+
 //Order ticket, Send email
 Route::post('order/ticket', [Home::class, 'orderTicket'])->name('order.ticket');
 
@@ -226,8 +230,6 @@ Route::any('create-crowd-sponsor', [Home::class, 'createCrowdSponsor'])->name('w
 //payment-crowdsponsor
 Route::get('payment-crowdsponsor', [Home::class, 'paymentCrowdSponsor'])->name('web.paymentCrowdSponsor');
 
-//Payment success
-Route::get('payment-success', [Home::class, 'paymentSuccess'])->name('web.paymentSuccess');
 
 // Route::get('/events/history/list', [Job::class, 'apiList']);
 // Route::get('/events/history/user', [Home::class, 'apiList']);
