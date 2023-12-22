@@ -366,7 +366,7 @@ class Job extends Controller
                 $groupSessions[$item['travel_game_id']][] = $item;
             }
             //Create code if $totalCompleted >=6
-            $maxSession = 6;
+            $maxSession = 1;
 
             if ($totalCompleted >= $maxSession) {
                 //$this->taskService->genCodeByUser($user->id, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);

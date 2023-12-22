@@ -183,7 +183,7 @@
                             <div class="item">
                                 <h3 class="text-center">{{$session->name}}</h3>
                                 <p>
-                                    <strong>Nhiệm vụ (Missions):  Tham gia 6/8 sessions để nhận được một Mã số quay thưởng.</strong>
+                                    <strong>Nhiệm vụ (Missions):  Quét QR để nhận được một Mã số quay thưởng.</strong>
                                 </p>
                                 <p><strong>Mã số quay thưởng (Lucky Code):</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
 
