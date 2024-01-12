@@ -96,9 +96,11 @@ class Home extends Controller
         $dataSend = [
             'event_id' => $task->id,
             'name' => $user->name,
-            'price_type' => $request->get('price_type', 'AZERO'),
+            //'price_type' => $request->get('price_type', 'AZERO'),
+            'price_type' => $request->get('price_type', 'ACA'), //Update 12/01/2024
             'total_price' => $request->get('price', 100),
-            'blockchain' => $request->get('blockchain', 'Aleph Zero'),
+            //'blockchain' => $request->get('blockchain', 'Aleph Zero'),
+            'blockchain' => $request->get('blockchain', 'Acala'),
             'end_at' => $request->get('end_at', $timeEndExpire),
             'des' => $request->get('des', 'Crowd Sponsor'),
         ];

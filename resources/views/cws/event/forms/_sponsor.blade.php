@@ -22,7 +22,10 @@
                     <select class="form-control" name="sponsor[price_type]">
 
                         <option value="0">AZERO</option>
+
                         <option value="1">POLKADOT</option>
+
+                        <option value="2">ACA </option>
                         @if(false)
                         <option value="0">USDT</option>
                         <option value="1">NEAR</option>

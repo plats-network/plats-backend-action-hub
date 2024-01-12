@@ -65,7 +65,7 @@
                                         <h3 class="title" title="{{$sponsor->name}}">{{$sponsor->name}}</h3>
                                         <p class="descs"  title="{{$sponsor->description}}">{{$sponsor->description}}</p>
                                         <div class="note">
-                                            <p class="price">Total Price: {{number_format($sponsor->price)}} AZERO</p>
+                                            <p class="price">Total Price: {{number_format($sponsor->price)}} ACA</p>
                                             <p>Backers: 10+</p>
                                             <p>Est delivery: {{dateFormat($sponsor->end_at)}}</p>
                                         </div>
@@ -83,7 +83,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-5" style="padding-top: 8px; padding-right: 0px;">AZERO</div>
+                                                <div class="col-md-5" style="padding-top: 8px; padding-right: 0px;">ACA </div>
                                                 <div class="col-md-7" style="padding-left: 2px">
                                                     <input id="amount" class="form-control" type="text" name="price">
                                                     <input id="sponsorId" type="hidden">
@@ -106,7 +106,7 @@
                                         <div class="package-item">
                                             @foreach($sponsor->sponsorDetails as $item)
                                                 <div class="item price-package" data-price="{{number_format($item->price)}}" data-id="{{$item->id}}">
-                                                    <p>{{$item->name}} <span class="price">{{$item->price}}</span> AZERO</p>
+                                                    <p>{{$item->name}} <span class="price">{{$item->price}}</span> ACA</p>
                                                     <p class="desc">{{$item->description}}</p>
                                                     <hr>
                                                 </div>
