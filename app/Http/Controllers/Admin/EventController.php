@@ -616,7 +616,7 @@ class EventController extends Controller
             $sponsor->save();
         }
 
-        return $quiz = Quiz::where('task_id', $id)->with('detail')->get();
+        $quiz = Quiz::where('task_id', $id)->with('detail')->get();
 
         foreach ($quiz as $value) {
             foreach ($value['detail'] as $key => $value) {
