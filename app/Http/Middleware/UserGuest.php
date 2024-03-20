@@ -17,16 +17,19 @@ class UserGuest
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user() && in_array(Auth::user()->role, [USER_ROLE, GUEST_ROLE, ADMIN_ROLE])) {
+       
 
+        if (Auth::user() && in_array(Auth::user()->role, [USER_ROLE, GUEST_ROLE, ADMIN_ROLE,CLIENT_ROLE])) {
 
             return $next($request);
-        } else {
-            if($request->segment(1) == 'quiz-game') {
-                session()->put('type', 'quiz-game');
-            }
+        } 
+        
+        if($request->segment(1) == 'quiz-game') {
 
-            return redirect()->route('web.formLoginGuest');
+            session()->put('type', 'quiz-game');
         }
+        
+        return redirect()->route('web.formLoginGuest');
+        
     }
 }
