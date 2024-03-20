@@ -63,6 +63,7 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
+
         $limit = $request->get('limit') ?? PAGE_SIZE;
         $clientUser = Auth::user();
         $events = $this->taskService->search([
@@ -569,17 +570,26 @@ class EventController extends Controller
         $sessions = TaskEvent::where('task_id', $id)->with('detail')
             ->where('type', 0)
             ->first();
+        
+
+        //check empty
+        if(empty($sessions) || empty($task) || empty($taskGroup) || empty($taskGallery) || empty($booths)){
+
+            abort(404);
+        }
 
         $sponsor = $this->sponsor->whereTaskId($id)->first();
-        // dd($sponsor);
 
         $taskEventDiscords = $task->taskEventDiscords;
+
         if ($taskEventDiscords == null) {
             $taskEventDiscords = new EventDiscords();
             $taskEventDiscords->task_id = $id;
             $taskEventDiscords->save();
         }
+
         $taskEventSocials = $task->taskEventSocials;
+        
         if ($taskEventSocials == null) {
             $taskEventSocials = new EventSocial();
             $taskEventSocials->task_id = $id;
@@ -606,7 +616,7 @@ class EventController extends Controller
             $sponsor->save();
         }
 
-        $quiz = Quiz::where('task_id', $id)->with('detail')->get();
+        return $quiz = Quiz::where('task_id', $id)->with('detail')->get();
 
         foreach ($quiz as $value) {
             foreach ($value['detail'] as $key => $value) {
