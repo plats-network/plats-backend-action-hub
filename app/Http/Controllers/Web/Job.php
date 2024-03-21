@@ -68,7 +68,7 @@ class Job extends Controller
             abort(404);
         }
 
-        // try {
+        try {
             if (Auth::guest()) {
                 $time = Carbon::now()->timestamp;
                 $user = User::create([
@@ -156,10 +156,10 @@ class Job extends Controller
                 'id' => $task->code,
                 'task_id' => $task->code
             ]);
-        // } catch (\Exception $e) {
-        //     notify()->error('Có lỗi xảy ra');
-        //     return redirect()->route('web.home');
-        // }
+        } catch (\Exception $e) {
+            notify()->error('Có lỗi xảy ra');
+            return redirect()->route('web.home');
+        }
     }
 
     // TODO
@@ -167,7 +167,7 @@ class Job extends Controller
     // url: http://event.plats.test/quiz/tuiLOSvRxDUZk2cNTMu5LoA8s4VXxoO4fXe
     public function getJob(Request $request, $code) {
         
-        // try {
+        try {
             $detail = $this->eventDetail->whereCode($code)->first();
 
             // check data
@@ -211,7 +211,7 @@ class Job extends Controller
                 ->whereUserId($user->id)
                 ->exists();
 
-            //không có user thì tạo 1 user vào ngẫu nhiên
+            //không có user thì tạo 1 user mới ngẫu nhiên
             if (!$checkJoin) {
 
                 $this->eventUserTicket->create([
@@ -293,7 +293,6 @@ class Job extends Controller
                 return $this->taskService->genCodeByUser($user->id, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
             }
 
-
             // notify()->success('Scan QR code success');
             if ($countJobOne <= 1) {
 
@@ -311,10 +310,10 @@ class Job extends Controller
             ]);
 
             
-        // } catch (\Exception $e) {
-        //     notify()->error('Có lỗi xảy ra');
-        //     return redirect()->route('web.home');
-        // }
+        } catch (\Exception $e) {
+            notify()->error('Có lỗi xảy ra');
+            return redirect()->route('web.home');
+        }
 
         return view('web.events.quiz', [
             'detail' => $detail,

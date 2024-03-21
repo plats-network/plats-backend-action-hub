@@ -549,8 +549,11 @@ class EventController extends Controller
         $eventId = $id;
 
         $userId = Auth::user()->id;
+        
         if (Str::contains($request->path(), 'event-preview')) {
+
             if (!$request->get('preview') == 1) {
+                
                 notify()->error('Không thể truy cập');
                 return redirect()->route('cws.eventList');
             }
