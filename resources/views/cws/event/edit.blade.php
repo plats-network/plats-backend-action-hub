@@ -3,12 +3,14 @@
 @section('style')
     @uploadFileCSS
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.1.1/dist/select2-bootstrap-5-theme.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.1.1/dist/select2-bootstrap-5-theme.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     {{--Editor--}}
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/styles/metro/notify-metro.min.css" />
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/styles/metro/notify-metro.min.css"/>
 @endsection
 
 @section('name_page')
@@ -21,42 +23,58 @@
             @else
                 Create
             @endif
-             Event
+            Event
         </h4>
     </div>
 @endsection
 
 @section('content')
     <style type="text/css">
-        .qr {margin: 0 auto; display: block; width: 50px; height: 50px;}
-        .se-donw, .bo-donw {cursor: pointer;}
+        .qr {
+            margin: 0 auto;
+            display: block;
+            width: 50px;
+            height: 50px;
+        }
+
+        .se-donw, .bo-donw {
+            cursor: pointer;
+        }
     </style>
     <div class="container-fluid">
         <div class="row">
             @if($isPreview)
                 <div class="col-md-10">
                     @if(true)
-                    <a class="btn btn-danger btn-sm mb-2 mr-5" style="margin-right: 10px;" href="{{ route('cws.event.overview', ['id' => $event->id]) }}">Overview</a>
+                        <a class="btn btn-danger btn-sm mb-2 mr-5" style="margin-right: 10px;"
+                           href="{{ route('cws.event.overview', ['id' => $event->id]) }}">Overview</a>
 
-                    <a class="btn btn-danger btn-sm mb-2 mr-5 none" style="margin-right: 10px;" href="{{ route('cws.event.miniGame', ['id' => $event->id]) }}">Mini Game</a>
+                        <a class="btn btn-danger btn-sm mb-2 mr-5 none" style="margin-right: 10px;"
+                           href="{{ route('cws.event.miniGame', ['id' => $event->id]) }}">Mini Game</a>
 
-                    <a class="ml-5 btn btn-primary btn-sm mb-2" href="{{route('cws.event.users', ['id' => $event->id])}}">List User</a>
+                        <a class="ml-5 btn btn-primary btn-sm mb-2"
+                           href="{{route('cws.event.users', ['id' => $event->id])}}">List User</a>
                     @endif
-                    <a class="btn btn-info btn-sm mb-2 mr-5 none" target="_blank" style="margin-right: 10px;" href="https://platsevent.web.app/reward-nft?id={{$event->id}}">Reward</a>
+                    <a class="btn btn-info btn-sm mb-2 mr-5 none" target="_blank" style="margin-right: 10px;"
+                       href="https://platsevent.web.app/reward-nft?id={{$event->id}}">Reward</a>
 
 
                 </div>
                 <div class="col-md-2 text-end">
-                    <a href="{{ route('cws.eventEdit', ['id' => $event->id]) }}" class="btn btn-sm mb-2 btn-primary d-inline-flex align-items-center me-2" >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon icon-xs me-2 mt-1">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                    <a href="{{ route('cws.eventEdit', ['id' => $event->id]) }}"
+                       class="btn btn-sm mb-2 btn-primary d-inline-flex align-items-center me-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                             stroke="currentColor" class="icon icon-xs me-2 mt-1">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
                         </svg>
 
                         Edit Event</a>
                 </div>
             @elseif ($event && $event->id)
                 <div class="col-md-12">
-                    <a class="btn btn-danger btn-sm mb-2 mr-5" style="margin-right: 10px;" href="{{ route('cws.eventPreview', ['id' => $event->id, 'preview' => 1]) }}">Back</a>
+                    <a class="btn btn-danger btn-sm mb-2 mr-5" style="margin-right: 10px;"
+                       href="{{ route('cws.eventPreview', ['id' => $event->id, 'preview' => 1]) }}">Back</a>
                 </div>
             @endif
             <div class="col-lg-12">
@@ -66,45 +84,54 @@
                     </div>
                     <div class="card-body">
                         <form method="POST"
-                            id="post_form"
-                            action="{{$is_update ? route('cws.eventUpdate', ['id' => $event->id]) : route('cws.eventStore')}}">
+                              id="post_form"
+                              action="{{$is_update ? route('cws.eventUpdate', ['id' => $event->id]) : route('cws.eventStore')}}">
                             @csrf
                             <input type="hidden" name="id" value="{{ $event->id }}">
 
                             {{-- Step --}}
                             @if(true)
-                            @include('cws.event._step')
+                                @include('cws.event._step')
                             @endif
 
                             @if(true)
-                            <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <a class="nav-link navItemTab active" id="navItemTab10" data-step="0" aria-current="page" href="#">Overview</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link navItemTab " id="navItemTab2"  data-step="2" >Session</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link navItemTab " id="navItemTab3"  data-step="3" >Booth</a>
-                                </li>
-                                <li class="nav-item" style="display: {{$is_update? "block": "none"}}">
-                                    <a class="nav-link navItemTab" id="navItemTab10"  data-step="10"  href="#">Check-in</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link navItemTab " id="navItemTab20"  data-step="20" >NFT</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link navItemTab" id="navItemTab30"  data-step="30"  href="#">CrowdSponsor</a>
-                                </li>
-                                <li class="nav-item" style="display: {{$is_update? "block": "none"}}">
-                                    <a class="nav-link navItemTab" id="navItemTab40"  data-step="40"  href="#">Users List</a>
-                                </li>
-                                <li class="nav-item" style="display: {{$is_update? "block": "none"}}">
-                                    <a class="nav-link navItemTab" id="navItemTab50" data-step="50"  href="#">Dashboard</a>
-                                </li>
-                            </ul>
+                                <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link navItemTab active" id="navItemTab0" data-step="0"
+                                           aria-current="page" href="#">Overview</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link navItemTab " id="navItemTab1" data-step="1">Session</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link navItemTab " id="navItemTab2" data-step="2">Booth</a>
+                                    </li>
+                                    @if($is_update)
+                                        <li class="nav-item">
+                                            <a class="nav-link navItemTab" id="navItemTab3" data-step="3" href="#">Check-in</a>
+                                        </li>
+                                    @endif
+                                    <li class="nav-item">
+                                        <a class="nav-link navItemTab " id="navItemTab{{$is_update? "4": "3"}}"
+                                           data-step="{{$is_update? "4": "3"}}">NFT</a>
+                                    </li>
+{{--                                    <li class="nav-item d-none">--}}
+{{--                                        <a class="nav-link navItemTab" id="navItemTab{{$is_update? "5": "4"}}"--}}
+{{--                                           data-step="{{$is_update? "5": "4"}}" href="#">CrowdSponsor</a>--}}
+{{--                                    </li>--}}
+                                    @if($is_update)
+                                        <li class="nav-item">
+                                            <a class="nav-link navItemTab" id="navItemTab5" data-step="5" href="#">Users
+                                                List</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link navItemTab" id="navItemTab6" data-step="6" href="#">Dashboard</a>
+                                        </li>
+                                    @endif
 
-                            <p></p>
+                                </ul>
+
+                                <p></p>
 
                             @endif
                             <!-- wizard-nav -->
@@ -120,9 +147,12 @@
                                                 <div class="col-lg-12">
                                                     <div class="mb-3 field-name">
                                                         {{-- <x-label>Name</x-label> --}}
-                                                        <label for="basicpill-firstname-input" class="form-label">Name <span class="text-danger">*</span></label>
+                                                        <label for="basicpill-firstname-input" class="form-label">Name
+                                                            <span class="text-danger">*</span></label>
                                                         <input type="text" value="{{ $event->name }}" required
-                                                               class="form-control" placeholder="[TECH-ED PROGRAM] Cross-chain: Sidechain Solutions & BAS Case Study" id="name" name="name">
+                                                               class="form-control"
+                                                               placeholder="[TECH-ED PROGRAM] Cross-chain: Sidechain Solutions & BAS Case Study"
+                                                               id="name" name="name">
                                                         <div class="valid-feedback"></div>
                                                     </div>
                                                 </div>
@@ -130,9 +160,12 @@
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="mb-3 field-address">
-                                                        <label for="basicpill-firstname-input" class="form-label">Address <span class="text-danger">*</span></label>
-                                                        <input  type="text" value="{{ $event->address }}"
-                                                               class="form-control" placeholder="30 Đường Văn Cao Hà Nội, Hà Nội" id="address" name="address">
+                                                        <label for="basicpill-firstname-input" class="form-label">Address
+                                                            <span class="text-danger">*</span></label>
+                                                        <input type="text" value="{{ $event->address }}"
+                                                               class="form-control"
+                                                               placeholder="30 Đường Văn Cao Hà Nội, Hà Nội"
+                                                               id="address" name="address">
                                                         <div class="valid-feedback"></div>
                                                     </div>
                                                 </div>
@@ -140,12 +173,14 @@
                                             <div class="row d-none">
                                                 <div class="col-lg-4">
                                                     <div class="mb-3 field-lat">
-                                                        <input type="text" class="form-control" value="1" id="lat-address" name="lat">
+                                                        <input type="text" class="form-control" value="1"
+                                                               id="lat-address" name="lat">
                                                     </div>
                                                 </div><!-- end col -->
                                                 <div class="col-lg-4">
                                                     <div class="mb-3 field-lng">
-                                                        <input type="text" class="form-control" value="1" id="lng-address" name="lng">
+                                                        <input type="text" class="form-control" value="1"
+                                                               id="lng-address" name="lng">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-4">
@@ -158,7 +193,8 @@
                                                 <div class="col-lg-6">
                                                     <div class="mb-3 field-start_at">
                                                         <label for="basicpill-phoneno-input"
-                                                            class="form-label">Start At <span class="text-danger">*</span>
+                                                               class="form-label">Start At <span
+                                                                class="text-danger">*</span>
                                                         </label>
                                                         <input
                                                             type="text"
@@ -173,7 +209,8 @@
                                                 <div class="col-lg-6">
                                                     <div class="mb-3 field-end_at">
                                                         <label for="basicpill-email-input"
-                                                               class="form-label">End At <span class="text-danger">*</span></label>
+                                                               class="form-label">End At <span
+                                                                class="text-danger">*</span></label>
                                                         <input
                                                             type="text"
                                                             class="form-control"
@@ -190,11 +227,15 @@
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="form-group field-article-thumbnail">
-                                                        <label for="article-thumbnail" class="mb-3"><b>Banner</b></label>
+                                                        <label for="article-thumbnail"
+                                                               class="mb-3"><b>Banner</b></label>
                                                         <div>
-                                                            <input type="hidden" id="article-thumbnail" class="empty-value"
+                                                            <input type="hidden" id="article-thumbnail"
+                                                                   class="empty-value"
                                                                    name="thumbnail">
-                                                            <input type="file" id="w0" accept="image/png, image/gif, image/jpeg" name="_fileinput_w0"></div>
+                                                            <input type="file" id="w0"
+                                                                   accept="image/png, image/gif, image/jpeg"
+                                                                   name="_fileinput_w0"></div>
                                                         <div class="invalid-feedback">
                                                         </div>
                                                     </div>
@@ -205,10 +246,12 @@
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="mb-3">
-                                                        <label for="event_description" class="form-label">Description <span class="text-danger">*</span></label>
+                                                        <label for="event_description" class="form-label">Description
+                                                            <span class="text-danger">*</span></label>
 
                                                         <div id="editor"></div>
-                                                        <input type="hidden" id="description" name="description" value="{{ $event->description }}">
+                                                        <input type="hidden" id="description" name="description"
+                                                               value="{{ $event->description }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -216,277 +259,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            {{--CheckIn--}}
-                            @if($is_update)
-                            <div id="tabwizard10" class="wizard-tab" style="display: none;">
-                                <div>
-                                    <div class="text-center mb-4">
-                                        <h5>Checkin</h5>
-                                        <p class="card-title-desc text-success">
-                                            - Mã QR code đăng ký và Check-in
-                                        </p>
-                                        <div class="d-flex justify-content-center">
-                                            <div class="text-center pl-10">
-                                                <div class="visible-print text-center algin-center">
-                                                    <div class="row">
-                                                        <div class="col-4"></div>
-                                                        <div class="col-5">
-                                                            <img src="data:image/png;base64, {!! base64_encode($qrCode) !!}" alt="QR Code" style="max-width: 400px;">
-                                                        </div>
-                                                    </div>
-
-                                                    <p class="card-title-desc text-success">Quét QR code (Quét Tiket của Users tham gia sự kiện)</p>
-                                                    <p class="card-title-desc text-success">URL Checkin Event: <a target="_blank" href="{{$urlAnswers}}">{{$urlAnswers}}</a></p>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div>
-
-                                    </div>
-
-                                </div>
-                            </div>
-                            @endif
-
-                            {{--NFT--}}
-                            <div id="tabwizard20" class="wizard-tab" style="display: none;">
-                                <div>
-                                    <div class="text-center mb-4">
-                                        <h5>NFT Setting</h5>
-                                        <p class="card-title-desc text-success">
-                                            - Create NFT
-                                        </p>
-
-                                    </div>
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-8">
-                                        <div class="mb-3 field-name">
-
-                                            <label for="nft[name]" class="form-label">Collection Name <span class="text-danger">*</span></label>
-                                            <input type="text" value="{{$nftItem->name}}"  sponsor class="form-control" placeholder="" id="nft[name]" name="nft[name]" aria-invalid="false">
-                                            <div class="valid-feedback"></div>
-                                        </div>
-                                        {{--Collection Description--}}
-
-                                        <div class="mb-3">
-                                            <label for="nft[description]" class="form-label">Collection Description</label>
-                                            <textarea class="form-control" id="nft[description]" name="nft[description]" rows="3">{{$nftItem->description}}</textarea>
-                                        </div>
-
-                                        <div class="mb-3 field-name">
-
-                                            <label for="nft[size]" class="form-label">Collection Size <span class="text-danger">*</span></label>
-                                            <input type="text" value="{{$nftItem->size}}" class="form-control" placeholder="" id="nft[size]" name="nft[size]" data-listener-added_7f51dd21="true" aria-invalid="false">
-                                            <div class="valid-feedback"></div>
-                                        </div>
-
-                                        <div class="mb-3 field-name">
-
-                                            <label for="nft[blockchain]" class="form-label">Blockchain <span class="text-danger">*</span></label>
-                                            <select class="form-select" id="nft[blockchain]" name="nft[blockchain]" aria-label="Default select example">
-                                                @foreach ($allNetwork as $key => $item)
-                                                    <option value="{{ $key }}" {{ ($nftItem->blockchain == $key) ? 'selected' : '' }}>{{ $item }}</option>
-                                                @endforeach
-                                            </select>
-                                            <div class="valid-feedback"></div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="form-group field-article-thumbnail">
-                                                <label for="article-thumbnail" class="mb-3"><b>Image</b></label>
-                                                <div>
-                                                    <input type="hidden" id="article-thumbnail2" class="empty-value"
-                                                           name="thumbnail_nft">
-                                                    <input type="file" id="w2" accept="image/png, image/gif, image/jpeg" name="_fileinput_w2"></div>
-                                                <div class="invalid-feedback">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        {{--Payment Button--}}
-                                        @if($is_update)
-                                        <a target="_blank" href="{{route('payment-link', ['nft_id' => $nftItem->id, 'event_id' => $event->id])}}" class="btn btn-info">Send Create NFT</a>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-
-                            @include('cws.event.forms._sponsor', [
-                               'sessions' => $sessions,
-                               'isPreview' => $isPreview,
-                               'event' => $event
-                           ])
-
-                            @if($is_update)
-
-                            {{--User List--}}
-                            <div id="tabwizard40" class="wizard-tab" style="display: none;">
-                                <div>
-                                    <div class="text-center mb-4">
-                                        <h5>User List</h5>
-                                        <p class="card-title-desc text-success">
-                                            - User Check-in
-                                        </p>
-
-
-                                    </div>
-                                    <div>
-                                        <div class="listUser" id="listUser">
-                                            <table class="table table-bordered mb-0">
-                                                <thead class="table-light">
-                                                <tr>
-                                                    <th>Avatar</th>
-                                                    <th>Name</th>
-                                                    <th>Email</th>
-                                                    <th>Phone</th>
-                                                    <th>Task Done</th>
-                                                    <th>Set Vip</th>
-                                                    <th>Created</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @foreach($userCheckIn as $userItem)
-                                                    @php
-                                                        $userInfo = eventInfo($userItem->id, $eventId);
-                                                    @endphp
-                                                    <tr>
-                                                        <td style="width: 5%;">
-                                                            <div class="avatar">
-                                                                <div class="product-img avatar-title img-thumbnail bg-soft-primary border-0">
-                                                                    <img src="{{imgAvatar($userItem->avatar_path)}}" class="img-fluid" alt="{{$userItem->name}}">
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="fw-semibold" style="width: 20%;">{{$userItem->name}}</td>
-                                                        <td class="fw-semibold" style="width: 10%;">
-                                                            <p class="text-success" style="font-size: 11px">{{$userItem->email}}</p>
-                                                        </td>
-                                                        <td class="fw-semibold" style="width: 10%;">
-                                                            <p class="text-success" style="font-size: 11px">{{$userItem->phone}}</p>
-                                                        </td>
-                                                        <td class="fw-semibold" style="width: 10%;">
-                                                            <p class="text-success" style="font-size: 11px">{{$userItem->taskDoneEvent($userItem->id, $select_session_id)}}</p>
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="checkbox"
-                                                                id="v_{{$eventId}}"
-                                                                switch="none"
-                                                                @if($userInfo->is_vip) checked @endif>
-                                                            <label
-                                                                class="userVip"
-                                                                data-id="{{$userInfo->id}}"
-                                                                for="v_{{$userInfo->id}}"
-                                                                data-on-label="On"
-                                                                data-off-label="Off"
-                                                                data-url="{{route('cws.setTicketVip', ['id' => $userInfo->id])}}"></label>
-                                                        </td>
-                                                        <td>
-                                                            {{dateFormat($userItem->created_at)}}
-                                                        </td>
-
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            {{--Dashboard--}}
-                            <div id="tabwizard50" class="wizard-tab" style="display: none;">
-                                <div>
-                                    <div class="text-center mb-4">
-                                        <h5>Dashboard</h5>
-                                        <p class="card-title-desc text-success">
-                                            - Thống kê sự kiện
-                                        </p>
-
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-
-                                                <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-
-                                                <h2>User Reward</h2>
-                                                <div class="table-responsive small">
-                                                    <table class="table table-bordered mb-0">
-                                                        <thead class="table-light">
-                                                        <tr>
-                                                            <th>Avatar</th>
-                                                            <th>Name</th>
-                                                            <th>Email</th>
-                                                            <th>Checkin</th>
-                                                            <th>Set Vip</th>
-                                                            <th>Created</th>
-                                                            <th>Updated</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        @foreach($userCheckIn as $userItem)
-                                                            @php
-                                                                $userInfo = eventInfo($userItem->id, $eventId);
-                                                            @endphp
-                                                            <tr>
-                                                                <td style="width: 5%;">
-                                                                    <div class="avatar">
-                                                                        <div class="product-img avatar-title img-thumbnail bg-soft-primary border-0">
-                                                                            <img src="{{imgAvatar($userItem->avatar_path)}}" class="img-fluid" alt="{{$userItem->name}}">
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="fw-semibold" style="width: 10%;">{{$userItem->name}}</td>
-                                                                <td class="fw-semibold" style="width: 10%;">
-                                                                    <p class="text-success" style="font-size: 11px">{{$userItem->email}}</p>
-                                                                </td>
-                                                                <td>
-                                                                    {{$userInfo->is_checkin ? 'Checkin' : 'Not checkin'}}
-                                                                </td>
-                                                                <td>
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        id="v_{{$eventId}}"
-                                                                        switch="none"
-                                                                        @if($userInfo->is_vip) checked @endif>
-                                                                    <label
-                                                                        class="userVip"
-                                                                        data-id="{{$userInfo->id}}"
-                                                                        for="v_{{$userInfo->id}}"
-                                                                        data-on-label="On"
-                                                                        data-off-label="Off"
-                                                                        data-url="{{route('cws.setTicketVip', ['id' => $userInfo->id])}}"></label>
-                                                                </td>
-                                                                <td>
-                                                                    {{dateFormat($userItem->created_at)}}
-                                                                </td>
-                                                                <td>
-                                                                    {{dateFormat($userItem->updated_at)}}
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </main>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @endif
-
-
 
                             <!-- Sessiom -->
                             @include('cws.event.forms._session', [
@@ -501,19 +273,321 @@
                                 'isPreview' => $isPreview,
                                 'event' => $event
                             ])
+                            {{--CheckIn--}}
+                            @if($is_update)
+                                <div id="tabwizard3" class="wizard-tab" style="display: none;">
+                                    <div>
+                                        <div class="text-center mb-4">
+                                            <h5>Checkin</h5>
+                                            <p class="card-title-desc text-success">
+                                                - Mã QR code đăng ký và Check-in
+                                            </p>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="text-center pl-10">
+                                                    <div class="visible-print text-center algin-center">
+                                                        <div class="row">
+                                                            <div class="col-4"></div>
+                                                            <div class="col-5">
+                                                                <img
+                                                                    src="data:image/png;base64, {!! base64_encode($qrCode) !!}"
+                                                                    alt="QR Code" style="max-width: 400px;">
+                                                            </div>
+                                                        </div>
+
+                                                        <p class="card-title-desc text-success">Quét QR code (Quét Tiket
+                                                            của Users tham gia sự kiện)</p>
+                                                        <p class="card-title-desc text-success">URL Checkin Event: <a
+                                                                target="_blank"
+                                                                href="{{$urlAnswers}}">{{$urlAnswers}}</a></p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            @endif
+
+                            {{--NFT--}}
+                            <div id="tabwizard{{$is_update ? '4':'3'}}" class="wizard-tab" style="display: none;">
+                                <div>
+                                    <div class="text-center mb-4">
+                                        <h5>NFT Setting</h5>
+                                        <p class="card-title-desc text-success">
+                                            - Create NFT
+                                        </p>
+
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="mb-3 field-name">
+
+                                            <label for="nft[name]" class="form-label">Collection Name <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" value="{{$nftItem->name}}" sponsor class="form-control"
+                                                   placeholder="" id="nft[name]" name="nft[name]" aria-invalid="false">
+                                            <div class="valid-feedback"></div>
+                                        </div>
+                                        {{--Collection Description--}}
+
+                                        <div class="mb-3">
+                                            <label for="nft[description]" class="form-label">Collection
+                                                Description</label>
+                                            <textarea class="form-control" id="nft[description]" name="nft[description]"
+                                                      rows="3">{{$nftItem->description}}</textarea>
+                                        </div>
+
+                                        <div class="mb-3 field-name">
+
+                                            <label for="nft[size]" class="form-label">Collection Size <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" value="{{$nftItem->size}}" class="form-control"
+                                                   placeholder="" id="nft[size]" name="nft[size]"
+                                                   data-listener-added_7f51dd21="true" aria-invalid="false">
+                                            <div class="valid-feedback"></div>
+                                        </div>
+
+                                        <div class="mb-3 field-name">
+
+                                            <label for="nft[blockchain]" class="form-label">Blockchain <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-select" id="nft[blockchain]" name="nft[blockchain]"
+                                                    aria-label="Default select example">
+                                                @foreach ($allNetwork as $key => $item)
+                                                    <option
+                                                        value="{{ $key }}" {{ ($nftItem->blockchain == $key) ? 'selected' : '' }}>{{ $item }}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="valid-feedback"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="form-group field-article-thumbnail">
+                                                <label for="article-thumbnail" class="mb-3"><b>Image</b></label>
+                                                <div>
+                                                    <input type="hidden" id="article-thumbnail2" class="empty-value"
+                                                           name="thumbnail_nft">
+                                                    <input type="file" id="w2" accept="image/png, image/gif, image/jpeg"
+                                                           name="_fileinput_w2"></div>
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        {{--Payment Button--}}
+                                        @if($is_update)
+                                            <a target="_blank"
+                                               href="{{route('payment-link', ['nft_id' => $nftItem->id, 'event_id' => $event->id])}}"
+                                               class="btn btn-info">Send Create NFT</a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+{{--                            <div id="tabwizard{{$is_update ? '5':'4'}}" class="wizard-tab" style="display: none">--}}
+{{--                                @include('cws.event.forms._sponsor', [--}}
+{{--                                   'sessions' => $sessions,--}}
+{{--                                   'isPreview' => $isPreview,--}}
+{{--                                   'event' => $event--}}
+{{--                               ])--}}
+{{--                            </div>--}}
+                            @if($is_update)
+
+                                {{--User List--}}
+                                <div id="tabwizard5" class="wizard-tab" style="display: none;">
+                                    <div>
+                                        <div class="text-center mb-4">
+                                            <h5>User List</h5>
+                                            <p class="card-title-desc text-success">
+                                                - User Check-in
+                                            </p>
+
+
+                                        </div>
+                                        <div>
+                                            <div class="listUser" id="listUser">
+                                                <table class="table table-bordered mb-0">
+                                                    <thead class="table-light">
+                                                    <tr>
+                                                        <th>Avatar</th>
+                                                        <th>Name</th>
+                                                        <th>Email</th>
+                                                        <th>Phone</th>
+                                                        <th>Task Done</th>
+                                                        <th>Set Vip</th>
+                                                        <th>Created</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($userCheckIn as $userItem)
+                                                        @php
+                                                            $userInfo = eventInfo($userItem->id, $eventId);
+                                                        @endphp
+                                                        <tr>
+                                                            <td style="width: 5%;">
+                                                                <div class="avatar">
+                                                                    <div
+                                                                        class="product-img avatar-title img-thumbnail bg-soft-primary border-0">
+                                                                        <img src="{{imgAvatar($userItem->avatar_path)}}"
+                                                                             class="img-fluid"
+                                                                             alt="{{$userItem->name}}">
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="fw-semibold"
+                                                                style="width: 20%;">{{$userItem->name}}</td>
+                                                            <td class="fw-semibold" style="width: 10%;">
+                                                                <p class="text-success"
+                                                                   style="font-size: 11px">{{$userItem->email}}</p>
+                                                            </td>
+                                                            <td class="fw-semibold" style="width: 10%;">
+                                                                <p class="text-success"
+                                                                   style="font-size: 11px">{{$userItem->phone}}</p>
+                                                            </td>
+                                                            <td class="fw-semibold" style="width: 10%;">
+                                                                <p class="text-success"
+                                                                   style="font-size: 11px">{{$userItem->taskDoneEvent($userItem->id, $select_session_id)}}</p>
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    type="checkbox"
+                                                                    id="v_{{$eventId}}"
+                                                                    switch="none"
+                                                                    @if($userInfo->is_vip) checked @endif>
+                                                                <label
+                                                                    class="userVip"
+                                                                    data-id="{{$userInfo->id}}"
+                                                                    for="v_{{$userInfo->id}}"
+                                                                    data-on-label="On"
+                                                                    data-off-label="Off"
+                                                                    data-url="{{route('cws.setTicketVip', ['id' => $userInfo->id])}}"></label>
+                                                            </td>
+                                                            <td>
+                                                                {{dateFormat($userItem->created_at)}}
+                                                            </td>
+
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                {{--Dashboard--}}
+                                <div id="tabwizard6" class="wizard-tab" style="display: none;">
+                                    <div>
+                                        <div class="text-center mb-4">
+                                            <h5>Dashboard</h5>
+                                            <p class="card-title-desc text-success">
+                                                - Thống kê sự kiện
+                                            </p>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+                                                    <canvas class="my-4 w-100" id="myChart" width="900"
+                                                            height="380"></canvas>
+
+                                                    <h2>User Reward</h2>
+                                                    <div class="table-responsive small">
+                                                        <table class="table table-bordered mb-0">
+                                                            <thead class="table-light">
+                                                            <tr>
+                                                                <th>Avatar</th>
+                                                                <th>Name</th>
+                                                                <th>Email</th>
+                                                                <th>Checkin</th>
+                                                                <th>Set Vip</th>
+                                                                <th>Created</th>
+                                                                <th>Updated</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            @foreach($userCheckIn as $userItem)
+                                                                @php
+                                                                    $userInfo = eventInfo($userItem->id, $eventId);
+                                                                @endphp
+                                                                <tr>
+                                                                    <td style="width: 5%;">
+                                                                        <div class="avatar">
+                                                                            <div
+                                                                                class="product-img avatar-title img-thumbnail bg-soft-primary border-0">
+                                                                                <img
+                                                                                    src="{{imgAvatar($userItem->avatar_path)}}"
+                                                                                    class="img-fluid"
+                                                                                    alt="{{$userItem->name}}">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="fw-semibold"
+                                                                        style="width: 10%;">{{$userItem->name}}</td>
+                                                                    <td class="fw-semibold" style="width: 10%;">
+                                                                        <p class="text-success"
+                                                                           style="font-size: 11px">{{$userItem->email}}</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        {{$userInfo->is_checkin ? 'Checkin' : 'Not checkin'}}
+                                                                    </td>
+                                                                    <td>
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            id="v_{{$eventId}}"
+                                                                            switch="none"
+                                                                            @if($userInfo->is_vip) checked @endif>
+                                                                        <label
+                                                                            class="userVip"
+                                                                            data-id="{{$userInfo->id}}"
+                                                                            for="v_{{$userInfo->id}}"
+                                                                            data-on-label="On"
+                                                                            data-off-label="Off"
+                                                                            data-url="{{route('cws.setTicketVip', ['id' => $userInfo->id])}}"></label>
+                                                                    </td>
+                                                                    <td>
+                                                                        {{dateFormat($userItem->created_at)}}
+                                                                    </td>
+                                                                    <td>
+                                                                        {{dateFormat($userItem->updated_at)}}
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </main>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            @endif
+
 
                             {{-- Social --}}
-                            @include('cws.event.forms._social', [
-                                'taskEventSocials' => $taskEventSocials,
-                                'taskEventDiscords' => $taskEventDiscords,
-                                'event' => $event
-                            ])
+                            {{--                            @include('cws.event.forms._social', [--}}
+                            {{--                                'taskEventSocials' => $taskEventSocials,--}}
+                            {{--                                'taskEventDiscords' => $taskEventDiscords,--}}
+                            {{--                                'event' => $event--}}
+                            {{--                            ])--}}
 
                             {{-- Quiz --}}
-                            @include('cws.event.forms._quiz', [
-                                'quiz' => $quiz,
-                                'isPreview' => $isPreview
-                            ])
+                            {{--                            @include('cws.event.forms._quiz', [--}}
+                            {{--                                'quiz' => $quiz,--}}
+                            {{--                                'isPreview' => $isPreview--}}
+                            {{--                            ])--}}
 
                             <div class="d-flex align-items-start gap-3 mt-4">
                                 <div>
@@ -521,18 +595,20 @@
                                         type="button"
                                         class="btn btn-primary w-sm"
                                         id="prevBtn" onclick="nextPrev(-1)">
-                                        Previous</button>
+                                        Previous
+                                    </button>
                                     <button
                                         type="button"
                                         class="btn btn-primary w-sm ms-auto"
-                                        id="nextBtn" onclick="nextPrev(1)">Next</button>
+                                        id="nextBtn" onclick="nextPrev(1)">Next
+                                    </button>
                                 </div>
 
 
                                 @if($isPreview == false)
                                     <div id="subForm" class="w-sm ms-auto d-none">
                                         <a class="btn btn-secondary w-sm ms-auto" href="{{route('cws.eventList')}}">Cancel</a>
-                                        <button type="submit" class="btn btn-primary w-sm ms-auto" >Save</button>
+                                        <button type="submit" class="btn btn-primary w-sm ms-auto">Save</button>
                                     </div>
                                 @endif
                             </div>
@@ -542,6 +618,7 @@
             </div>
         </div>
     </div>
+    <input type="hidden" id="currentTab" value="{{$activeTab}}">
 
     {{--Modal Loading--}}
     <div class="modal fade" id="modalLoading" tabindex="-1" role="dialog" aria-labelledby="modal-default"
@@ -572,10 +649,13 @@
  --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"></script><script src="dashboard.js"></script></body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js"
+            integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp"
+            crossorigin="anonymous"></script>
+    <script src="dashboard.js"></script></body>
 
     <script type="text/javascript"
-            src="https://maps.google.com/maps/api/js?key={{ env('GOOGLE_MAP_KEY') }}&libraries=places" ></script>
+            src="https://maps.google.com/maps/api/js?key={{ env('GOOGLE_MAP_KEY') }}&libraries=places"></script>
     <script>
         $(document).ready(function () {
             $("#lat-address").addClass("d-none");
@@ -634,24 +714,24 @@
             hooks: {
                 addImageBlobHook(imgeBlob, callback) {
                     var fd = new FormData();
-                    fd.append('file',imgeBlob);
+                    fd.append('file', imgeBlob);
                     modalLoading.modal("show");
 
                     $.ajax({
-                        url :  "{{route('uploadEditor')}}",
+                        url: "{{route('uploadEditor')}}",
                         type: 'POST',
                         data: fd,
                         contentType: false,
                         processData: false,
                         cache: false,
 
-                        success: function(data) {
+                        success: function (data) {
                             urlImage = data.url_full;
                             callback(urlImage, data.name)
 
                             modalLoading.modal("hide");
                         },
-                        error: function() {
+                        error: function () {
                             //alert("not so boa!");
                         }
                     });
@@ -669,23 +749,23 @@
             hooks: {
                 addImageBlobHook(imgeBlob, callback) {
                     var fd = new FormData();
-                    fd.append('file',imgeBlob);
+                    fd.append('file', imgeBlob);
                     modalLoading.modal("show");
                     $.ajax({
-                        url :  "{{route('uploadEditor')}}",
+                        url: "{{route('uploadEditor')}}",
                         type: 'POST',
                         data: fd,
                         contentType: false,
                         processData: false,
                         cache: false,
 
-                        success: function(data) {
+                        success: function (data) {
                             urlImage = data.url_full;
                             callback(urlImage, data.name)
 
                             modalLoading.modal("hide");
                         },
-                        error: function() {
+                        error: function () {
                             //alert("not so boa!");
                         }
                     });
@@ -706,25 +786,25 @@
                     // write your code
                     //console.log(imgeBlob)
                     var fd = new FormData();
-                    fd.append('file',imgeBlob);
+                    fd.append('file', imgeBlob);
                     //Show loading
                     modalLoading.modal("show");
 
                     $.ajax({
-                        url :  "{{route('uploadEditor')}}",
+                        url: "{{route('uploadEditor')}}",
                         type: 'POST',
                         data: fd,
                         contentType: false,
                         processData: false,
                         cache: false,
 
-                        success: function(data) {
+                        success: function (data) {
                             urlImage = data.url_full;
                             callback(urlImage, data.name)
 
                             modalLoading.modal("hide");
                         },
-                        error: function() {
+                        error: function () {
                             //alert("not so boa!");
                         }
                     });
@@ -733,12 +813,12 @@
             }
         });
 
-        $('.job').on('click', function(e) {
+        $('.job').on('click', function (e) {
             var id = $(this).data('id'),
                 event_id = $(this).data('detail-id'),
                 _token = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
-                url: '/event-job/'+ id,
+                url: '/event-job/' + id,
                 type: 'GET',
                 dataType: 'json',
                 data: {
@@ -787,7 +867,7 @@
                 $('#end_at').flatpickr(option);
             }
 
-            if($('.date').length > 0) {
+            if ($('.date').length > 0) {
                 $('.date').flatpickr(option);
             }
 
@@ -796,22 +876,22 @@
             // var fileSlideInit = null;
             @if($event->banner_url)
                 fileAvatarInit = [{
-                    "path": "{{$event->banner_url}}",
-                    "base_url": "",
-                    "type": null,
-                    "size": null,
-                    "name": null,
-                    "order": null
-                }];
+                "path": "{{$event->banner_url}}",
+                "base_url": "",
+                "type": null,
+                "size": null,
+                "name": null,
+                "order": null
+            }];
 
-                fileAvatarInit10 = [{
-                    "path": "{{$nftItem->image_url}}",
-                    "base_url": "",
-                    "type": null,
-                    "size": null,
-                    "name": null,
-                    "order": null
-                 }];
+            fileAvatarInit10 = [{
+                "path": "{{$nftItem->image_url}}",
+                "base_url": "",
+                "type": null,
+                "size": null,
+                "name": null,
+                "order": null
+            }];
             @endif
 
             // fileSlideInit = [
@@ -944,32 +1024,32 @@
             var boothIds = $('#list-booth-id').data('b-ids');
 
             if (boothIds.length > 0) {
-                boothIds.forEach(function(item) {
-                    var url = $("#bo-"+item).data('bo-url');
-                    new QRCode(document.getElementById("bo-"+item), url);
-                    new QRCode("dbo-"+item, {
+                boothIds.forEach(function (item) {
+                    var url = $("#bo-" + item).data('bo-url');
+                    new QRCode(document.getElementById("bo-" + item), url);
+                    new QRCode("dbo-" + item, {
                         text: url,
                         width: 300,
                         height: 300
                     });
                 });
             }
-            $('.bo-donw').on('click', function(e) {
+            $('.bo-donw').on('click', function (e) {
                 var id = $(this).data('id')
-                    num = $(this).data('num'),
+                num = $(this).data('num'),
                     name = $(this).data('name');
-                let dataUrl = document.querySelector('#dbo-'+id).querySelector('img').src;
-                downloadURI(dataUrl, name+'-'+num+'.png');
+                let dataUrl = document.querySelector('#dbo-' + id).querySelector('img').src;
+                downloadURI(dataUrl, name + '-' + num + '.png');
             });
         }
 
         if ($('#list-session-id').length > 0) {
             var sessionIds = $('#list-session-id').data('s-ids');
             if (sessionIds.length > 0) {
-                sessionIds.forEach(function(item) {
-                    var url = $("#se-"+item).data('se-url');
-                    new QRCode(document.getElementById("se-"+item), url);
-                    new QRCode("dse-"+item, {
+                sessionIds.forEach(function (item) {
+                    var url = $("#se-" + item).data('se-url');
+                    new QRCode(document.getElementById("se-" + item), url);
+                    new QRCode("dse-" + item, {
                         text: url,
                         width: 300,
                         height: 300
@@ -977,23 +1057,23 @@
                 });
             }
 
-            $('.se-donw').on('click', function(e) {
+            $('.se-donw').on('click', function (e) {
                 var id = $(this).data('id')
-                    num = $(this).data('num'),
+                num = $(this).data('num'),
                     name = $(this).data('name');
-                let dataUrl = document.querySelector('#dse-'+id).querySelector('img').src;
-                downloadURI(dataUrl, name+'-'+num+'.png');
+                let dataUrl = document.querySelector('#dse-' + id).querySelector('img').src;
+                downloadURI(dataUrl, name + '-' + num + '.png');
             })
         }
 
         function downloadURI(uri, name) {
-          var link = document.createElement("a");
-          link.download = name;
-          link.href = uri;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          delete link;
+            var link = document.createElement("a");
+            link.download = name;
+            link.href = uri;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            delete link;
         };
     </script>
 
@@ -1003,7 +1083,7 @@
             var uploadUrl = '{{config('admin.upload_url')}}';
             var flag_check = 1;
 
-            $('#is_tweet').on('change', function(event) {
+            $('#is_tweet').on('change', function (event) {
                 if (event.currentTarget.checked) {
                     $('#tweetId').removeClass('d-none');
                 } else {
@@ -1030,7 +1110,7 @@
 
             var isPreview = {{$isPreview}};
             //Check is preview page will disable all input
-            if(isPreview){
+            if (isPreview) {
                 //Disable all input
                 $('input').attr('disabled', 'disabled');
                 $('textarea').attr('disabled', 'disabled');
@@ -1048,7 +1128,7 @@
             //btnAddItemSession onclick call ajax
             $(document).on('click', '#btnAddItemSession', function (event) {
                 var rowCount = $('.itemSessionDetail').length;
-                if(rowCount >= 100){
+                if (rowCount >= 100) {
                     alert('{{__('Maximum number of Item is')}} 100');
                     return false;
                 }
@@ -1067,7 +1147,7 @@
                     success: function (data) {
                         if (data.status == 200) {
                             $('#listRowSession').append(data.html);
-                            $('#q_'+(rowCount+1)).addClass('sCheck');
+                            $('#q_' + (rowCount + 1)).addClass('sCheck');
                             flag_check++;
                         }
                     },
@@ -1104,10 +1184,10 @@
                 var id = $(this).data('id');
 
                 if (event.currentTarget.checked) {
-                    $('#s-'+id).removeClass('d-none');
+                    $('#s-' + id).removeClass('d-none');
                     // $('#s-'+id).val(true);
                 } else {
-                    $('#s-'+id).addClass('d-none');
+                    $('#s-' + id).addClass('d-none');
                     // $('#s-'+id).val(false);
                 }
             });
@@ -1209,7 +1289,7 @@
             /*Start Booth*/
             $(document).on('click', '#btnAddItemBooth', function (event) {
                 var rowCount = $('.itemBoothDetail').length;
-                if(rowCount >= 100){
+                if (rowCount >= 100) {
                     alert('{{__('Maximum number of Item is')}} 100');
                     return false;
                 }
@@ -1227,7 +1307,7 @@
                     success: function (data) {
                         if (data.status == 200) {
                             $('#listRowBooth').append(data.html);
-                            $('#b_'+(rowCount+1)).addClass('bCheck');
+                            $('#b_' + (rowCount + 1)).addClass('bCheck');
                             flag_check++;
                         }
                     },
@@ -1264,9 +1344,9 @@
                 var id = $(this).data('id');
 
                 if (event.currentTarget.checked) {
-                    $('#b-'+id).removeClass('d-none');
+                    $('#b-' + id).removeClass('d-none');
                 } else {
-                    $('#b-'+id).addClass('d-none');
+                    $('#b-' + id).addClass('d-none');
                 }
             });
             // End Booth
@@ -1323,7 +1403,7 @@
             /*Quiz*/
             $(document).on('click', '#btnAddItemQuiz', function (event) {
                 var rowCount = $('.itemQuizDetail').length;
-                if(rowCount >= 20){
+                if (rowCount >= 20) {
                     alert('{{__('Maximum number of Item is')}} 20');
                     return false;
                 }
@@ -1380,7 +1460,8 @@
             });
         });
 
-        var currentTab = {{$activeTab}}; // Current tab is set to be the first tab (0)
+        {{--var currentTab = {{$activeTab}}; // Current tab is set to be the first tab (0)--}}
+        var currentTab = Number($('#currentTab').val());
         //arr index tab
         var arrTab = [0, 10, 20, 30, 40, 50];
         showTab(currentTab); // Display the current tab
@@ -1388,7 +1469,8 @@
         function showTab(n) {
             // This function will display the specified tab of the form...
             var x = document.getElementsByClassName("wizard-tab");
-
+            console.log(n);
+            console.log(x);
             x[n].style.display = "block";
 
             //navItemTab  add class active
@@ -1418,12 +1500,14 @@
         function nextPrev(n) {
             //Todo check validate then next
             //Check if n = 1 and validate form before next
-            if ( validateForm(n) == false){
+            if (validateForm(n) == false) {
                 return false;
-            } else{
+            } else {
                 var x = document.getElementsByClassName("wizard-tab");
+                let currentTab = Number($('#currentTab').val());
                 x[currentTab].style.display = "none";
                 currentTab = currentTab + n;
+                $('#currentTab').val(currentTab);
                 if (currentTab >= x.length) {
                     currentTab = currentTab - n;
                     x[currentTab].style.display = "block";
@@ -1435,13 +1519,13 @@
         }
 
         //validateForm step
-        function validateForm(step){
+        function validateForm(step) {
             let isValid = true
-            if(step==1){
+            if (step == 1) {
                 //Check name input is empty
                 //Check empty input, name, lat, lng, address
 
-                if($('#name').val() == '' ||
+                if ($('#name').val() == '' ||
                     $('#lat').val() == '' ||
                     $('#lng').val() == '' ||
                     $('#address').val() == '') {
@@ -1461,7 +1545,7 @@
                     isValid = false;
                 }
 
-                if($('#address').val() == '') {
+                if ($('#address').val() == '') {
                 }
 
             }
@@ -1484,23 +1568,23 @@
 
         //Check if edit not alow click
         @if($isPreview || $event->id)
-            $(document).on('click', '.step-icon', function (event) {
-                event.preventDefault();
-                var id = $(this).attr('data-step');
-                // alert(id);
-                showTab(id);
-                $('#tabwizard0').css('display', 'none');
-                $('#tabwizard' + id).css('display', 'block');
-                //navItemTab  add class active
-                $('.navItemTab').removeClass('active');
-                $('#navItemTab' + id).addClass('active');
+        $(document).on('click', '.step-icon', function (event) {
+            event.preventDefault();
+            var id = $(this).attr('data-step');
+            // alert(id);
+            showTab(id);
+            $('#tabwizard0').css('display', 'none');
+            $('#tabwizard' + id).css('display', 'block');
+            //navItemTab  add class active
+            $('.navItemTab').removeClass('active');
+            $('#navItemTab' + id).addClass('active');
 
-                for (var i = 1; i <= 50; i++) {
-                    if (i != id) {
-                        $('#tabwizard' + i).css('display', 'none');
-                    }
+            for (var i = 1; i <= 50; i++) {
+                if (i != id) {
+                    $('#tabwizard' + i).css('display', 'none');
                 }
-            });
+            }
+        });
         @endif
 
         //Class navItemTab click active tab
@@ -1510,9 +1594,10 @@
             $('.navItemTab').removeClass('active');
             $(this).addClass('active');
             var id = $(this).attr('data-step');
+            $('#currentTab').val(id);
             //alert(id)
             // alert(id);
-            //showTab(id);
+            showTab(id);
             $('#tabwizard0').css('display', 'none');
 
             $('#tabwizard' + id).css('display', 'block');

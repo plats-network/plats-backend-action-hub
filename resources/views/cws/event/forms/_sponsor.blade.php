@@ -1,4 +1,3 @@
-<div id="tabwizard30" class="wizard-tab" style="display: none">
     <div class="text-center mb-4">
         <h5>Crowd Sponsor</h5>
         <p class="card-title-desc text-danger">
@@ -147,4 +146,3 @@
             @endif
         </div>
     </div>
-</div>

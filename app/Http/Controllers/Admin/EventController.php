@@ -28,7 +28,8 @@ use App\Models\{NFT\NFT,
     SponsorDetail,
     Url,
     UserSponsor,
-    User};
+    User
+};
 use App\Services\Admin\{EventService, TaskService};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -570,13 +571,7 @@ class EventController extends Controller
         $sessions = TaskEvent::where('task_id', $id)->with('detail')
             ->where('type', 0)
             ->first();
-        
 
-        //check empty
-        if(empty($sessions) || empty($task) || empty($taskGroup) || empty($taskGallery) || empty($booths)){
-
-            abort(404);
-        }
 
         $sponsor = $this->sponsor->whereTaskId($id)->first();
 
@@ -589,7 +584,7 @@ class EventController extends Controller
         }
 
         $taskEventSocials = $task->taskEventSocials;
-        
+
         if ($taskEventSocials == null) {
             $taskEventSocials = new EventSocial();
             $taskEventSocials->task_id = $id;
@@ -677,7 +672,7 @@ class EventController extends Controller
             ->get();
 
         $select_session_id = 0;
-        foreach ($sessionsPlay as $itemSession){
+        foreach ($sessionsPlay as $itemSession) {
 
             $select_session_id = $itemSession->id;
             break;

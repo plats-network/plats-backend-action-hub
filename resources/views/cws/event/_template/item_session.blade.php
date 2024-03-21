@@ -33,7 +33,7 @@
             value="">
     </div>
 
-    <div class="col-sm-4 mt-2">
+    <div class="col-sm-4 mt-2 d-none">
         <input type="hidden" name="sessions[detail][{{$indexImageItem}}][is_required]" value="0">
         <input
             class="form-check-input sCheck"

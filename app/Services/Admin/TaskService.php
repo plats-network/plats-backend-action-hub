@@ -44,7 +44,7 @@ class TaskService extends BaseService
         }
         if ($this->filter->has('type')) {
             $this->builder->where(function ($q) {
-                $q->where('type',$this->filter->get('type'));
+                $q->where('type', $this->filter->get('type'));
             });
             // Remove condition after apply query builder
             $this->cleanFilterBuilder('type');
@@ -65,7 +65,7 @@ class TaskService extends BaseService
                 $this->builder->where(function ($q) use ($start) {
                     $q->where('created_at', '>=', $start);
                 });
-            } elseif(empty($start) && $end) {
+            } elseif (empty($start) && $end) {
                 $this->builder->where(function ($q) use ($end) {
                     $q->where('created_at', '<=', $end);
                 });
@@ -88,13 +88,12 @@ class TaskService extends BaseService
             $this->cleanFilterBuilder('name');
         }
 
-        if ($user && $user->role == CLIENT_ROLE) {
-            $this->builder->where(function ($q) use ($user) {
-                $q->where('creator_id', $user->id);
-            });
-        }
-
-        $this->builder->with('taskLocations','taskSocials','taskGalleries','taskGenerateLinks','taskEvents','userGetTickets')->orderBy('created_at', 'desc');
+//        if ($user && $user->role == CLIENT_ROLE) {
+//            $this->builder->where(function ($q) use ($user) {
+//                $q->where('creator_id', $user->id);
+//            });
+//        }
+        $this->builder->with('taskLocations', 'taskSocials', 'taskGalleries', 'taskGenerateLinks', 'taskEvents', 'userGetTickets')->orderBy('created_at', 'desc');
         return $this->endFilter();
     }
 
@@ -103,7 +102,7 @@ class TaskService extends BaseService
         if (!$request->filled('id')) {
             return $this->create($request);
         }
-        return $this->update($request,$request->input('id'));
+        return $this->update($request, $request->input('id'));
     }
 
     public function update(Request $request, $id)
@@ -117,44 +116,44 @@ class TaskService extends BaseService
             /** @var Task $dataBaseTask */
             $dataBaseTask = $this->repository->update($baseTask, $id);
 
-            TaskGallery::where('task_id',$id)->delete();
-            if (isset($baseTask['task_galleries'])){
-                foreach ($baseTask['task_galleries'] as $uploadedFile){
-                    $dataBaseTask->taskGalleries()->create( ['url_image' => empty($uploadedFile['url']) ? $uploadedFile :  $uploadedFile['url']]);
+            TaskGallery::where('task_id', $id)->delete();
+            if (isset($baseTask['task_galleries'])) {
+                foreach ($baseTask['task_galleries'] as $uploadedFile) {
+                    $dataBaseTask->taskGalleries()->create(['url_image' => empty($uploadedFile['url']) ? $uploadedFile : $uploadedFile['url']]);
                 }
             }
-            if (isset($baseTask['group_tasks'])){
-                TaskGroup::where('task_id',$id)->delete();
-                foreach ($baseTask['group_tasks'] as $item){
+            if (isset($baseTask['group_tasks'])) {
+                TaskGroup::where('task_id', $id)->delete();
+                foreach ($baseTask['group_tasks'] as $item) {
                     DB::table('task_groups')->insert([
                         'task_id' => $id,
                         'group_id' => $item,
                         'created_at' => date('Y-m-d H:i:s'),
                         'updated_at' => date('Y-m-d H:i:s'),
-                ]);
+                    ]);
                 }
 
             }
             $locations = Arr::get($data, 'task_locations');
-            if ($locations){
-                TaskLocation::where('task_id',$id)->delete();
-                foreach ($locations as $location){
+            if ($locations) {
+                TaskLocation::where('task_id', $id)->delete();
+                foreach ($locations as $location) {
                     $idTaskLocation = $dataBaseTask->taskLocations()->create($location);
-                    if ($location['task_location_jobs']){
-                        foreach ($location['task_location_jobs'] as $item){
+                    if ($location['task_location_jobs']) {
+                        foreach ($location['task_location_jobs'] as $item) {
                             $idTaskLocation->taskLocationJob()->create($item);
                         }
                     }
                 }
             }
             $socials = Arr::get($data, 'task_socials');
-            if ($socials){
+            if ($socials) {
                 $dataBaseTask->taskSocials()->delete();
                 $dataBaseTask->taskSocials()->createMany($socials);
             }
             //Task session has one
             $taskSessions = Arr::get($data, 'sessions');
-            if ($taskSessions){
+            if ($taskSessions) {
 
 
             }
@@ -183,20 +182,20 @@ class TaskService extends BaseService
             $baseTask['status'] = true;
 
             $dataBaseTask = $this->repository->create($baseTask);
-            if ($baseTask['task_galleries']){
-                foreach ($baseTask['task_galleries'] as $uploadedFile){
-                    $dataBaseTask->taskGalleries()->create( ['url_image' => empty($uploadedFile['url']) ? $uploadedFile :  $uploadedFile['url']]);
+            if ($baseTask['task_galleries']) {
+                foreach ($baseTask['task_galleries'] as $uploadedFile) {
+                    $dataBaseTask->taskGalleries()->create(['url_image' => empty($uploadedFile['url']) ? $uploadedFile : $uploadedFile['url']]);
                 }
             }
-            if ($baseTask['group_tasks']){
+            if ($baseTask['group_tasks']) {
                 $dataBaseTask->groupTasks()->attach($baseTask['group_tasks']);
             }
             $locations = Arr::get($data, 'task_locations');
-            if ($locations){
-                foreach ($locations as $location){
+            if ($locations) {
+                foreach ($locations as $location) {
                     $idTaskLocation = $dataBaseTask->taskLocations()->create($location);
-                    if ($location['task_location_jobs']){
-                        foreach ($location['task_location_jobs'] as $item){
+                    if ($location['task_location_jobs']) {
+                        foreach ($location['task_location_jobs'] as $item) {
                             $idTaskLocation->taskLocationJob()->create($item);
                         }
                     }
@@ -204,12 +203,12 @@ class TaskService extends BaseService
             }
             $events = Arr::get($data, 'events');
             if ($events) {
-                foreach ($events as $event){
+                foreach ($events as $event) {
                     $path = 'event/image/banner' . Carbon::now()->format('Ymd');
                     $event['banner_url'] = Storage::disk('s3')->putFileAs($path, $event['banner_url'], $event['banner_url']->hashName());
                     $idTaskEvent = $dataBaseTask->taskEvents()->create($event);
-                    if ($event['details']){
-                        foreach ($event['details'] as $item){
+                    if ($event['details']) {
+                        foreach ($event['details'] as $item) {
                             $idTaskEvent->eventDetails()->create($item);
                         }
                     }
@@ -217,7 +216,7 @@ class TaskService extends BaseService
             }
             $generateNumber = $dataBaseTask->taskGenerateLinks()->createMany($this->generateNumber($dataBaseTask->slug));
             $socials = Arr::get($data, 'task_socials');
-            if ($socials){
+            if ($socials) {
                 $dataBaseTask->taskSocials()->createMany($socials);
             }
             DB::commit();
@@ -243,9 +242,9 @@ class TaskService extends BaseService
         $dataLinkGenerate = [];
         foreach ($type as $key => $item) {
             $dataLinkGenerate[] = [
-                'name' => 'Link share '.$item,
+                'name' => 'Link share ' . $item,
                 'type' => $key,
-                'url' => config('app.link_event').'/events/' .$slug . '?' . $item . '=' . Str::random(32),
+                'url' => config('app.link_event') . '/events/' . $slug . '?' . $item . '=' . Str::random(32),
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ];

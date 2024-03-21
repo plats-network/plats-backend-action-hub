@@ -316,7 +316,6 @@ abstract class SearchBaseServiceAbstract
         if (!$request->has('include')) {
             return;
         }
-
         return $this->withLoad = array_unique(array_merge($this->withLoad, [$request->input('include')]));
     }
 }

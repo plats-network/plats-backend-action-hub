@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="card">
-        <div class="card-body p-4"> 
+        <div class="card-body p-4">
             <div class="text-center mt-2">
                 <h5>Sign in</h5>
                 <p class="text-muted">Sign in to continue to plats.</p>
