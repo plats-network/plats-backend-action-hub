@@ -139,6 +139,7 @@
                                                     'label' => 'Show',
                                                     'icon' => 'show'
                                                 ])
+                                                
                                                 @include('cws.actions.link', [
                                                     'url' => route('cws.event.users', ['id' => $event->id]),
                                                     'label' => 'Users',

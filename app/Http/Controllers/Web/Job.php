@@ -19,6 +19,7 @@ use App\Models\{Task, User, TravelGame, Sponsor, SponsorDetail, UserSponsor};
 use App\Services\{CodeHashService, TaskService};
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class Job extends Controller
 {
@@ -46,6 +47,27 @@ class Job extends Controller
     // Url: http://event.plats.test/events/code?type=event&id=tuiLOSvRxDUZk2cNTMu5LoA8s4VXxoO4fXe
     public function index(Request $request)
     {
+        $data = $request->only(['type','id']);
+
+        //valid credential
+        $validator = Validator::make($data, [
+            'type' => [
+                'required',
+                'string',
+                'min:1',
+            ],
+            'id' => [
+                'required',
+                'string',
+                'min:1',
+            ],
+        ]);
+
+        //Send failed response if request is not valid
+        if ($validator->fails()) {
+            abort(404);
+        }
+
         try {
             if (Auth::guest()) {
                 $time = Carbon::now()->timestamp;
@@ -83,7 +105,6 @@ class Job extends Controller
                     ]);
                 }
             }
-
             // End Check NFT
 
             if (!$event) {
@@ -99,39 +120,42 @@ class Job extends Controller
                 notify()->error('Vui lòng login để hoàn thành.');
 
                 return redirect()->route('web.formLoginGuest');
-            } else {
-                if ($task) {
-                    $checkUserEvent = $this->userEvent
-                        ->whereTaskId($task->id)
-                        ->whereUserId($user->id)
-                        ->exists();
+            }
 
-                    if (!$checkUserEvent) {
-                        $this->userEvent->create([
-                            'user_id' => $user->id,
-                            'task_id' => $task->id
-                        ]);
-                    }
-                }
+            if ($task) {
+                $checkUserEvent = $this->userEvent
+                    ->whereTaskId($task->id)
+                    ->whereUserId($user->id)
+                    ->exists();
 
-                if ($event && $event->status == false) {
-                    notify()->error('Job locked!');
-
-                    return redirect()->route('job.getJob', [
-                        'code' => $event->code
-                    ])->with('error', "Job locked!");
-                } else {
-                    notify()->success('Scan QR code success');
-                    return redirect()->route('job.getJob', [
-                        'code' => $event->code
+                if (!$checkUserEvent) {
+                    $this->userEvent->create([
+                        'user_id' => $user->id,
+                        'task_id' => $task->id
                     ]);
                 }
-
-                return redirect()->route('job.getTravelGame', [
-                    'id' => $task->code,
-                    'task_id' => $task->code
-                ]);
             }
+
+            //không có mã qr hợp lệ
+            if ($event && !$event->status) {
+
+                notify()->error('Job locked!');
+                return redirect()->route('job.getJob', [
+                    'code' => $event->code
+                ])->with('error', "Job locked!");
+            } else {
+               
+                notify()->success('Scan QR code success');
+                return $this->getJob($request,$event->code);
+                // return redirect()->route('job.getJob', [
+                //     'code' => $event->code
+                // ]);
+            }
+
+            return redirect()->route('job.getTravelGame', [
+                'id' => $task->code,
+                'task_id' => $task->code
+            ]);
         } catch (\Exception $e) {
             notify()->error('Có lỗi xảy ra');
             return redirect()->route('web.home');
@@ -142,28 +166,54 @@ class Job extends Controller
     // method: GET
     // url: http://event.plats.test/quiz/tuiLOSvRxDUZk2cNTMu5LoA8s4VXxoO4fXe
     public function getJob(Request $request, $code) {
+        
         try {
             $detail = $this->eventDetail->whereCode($code)->first();
-            if (!$detail) {
-                notify()->error('Errors');
-                return redirect()->route('web.home');
-            }
-            $taskEvent = $this->taskEvent->find($detail->task_event_id);
-            $taskId = $taskEvent->task_id;
-            $task = $this->task->find($taskId);
-            $user = Auth::user();
 
-            if (!$detail) {
-                notify()->error('Có lỗi xảy ra');
+            // check data
+            if (empty($detail)) {
+
+                notify()->error('Errors detail');
                 return redirect()->route('web.home');
             }
+
+            $taskEvent = $this->taskEvent->find($detail->task_event_id);
+    
+            // check data
+            if (empty($taskEvent)) {
+
+                notify()->error('Errors taskEvent');
+                return redirect()->route('web.home');
+            }
+
+            $taskId = $taskEvent->task_id;
+
+            // check data
+            if (empty($taskId)) {
+
+                notify()->error('Errors taskId');
+                return redirect()->route('web.home');
+            }
+
+            $task = $this->task->find($taskId);
+
+            // check data
+            if (empty($task)) {
+                
+                notify()->error('Errors task');
+                return redirect()->route('web.home');
+            }
+
+            $user = Auth::user();
 
             $checkJoin = $this->eventUserTicket
                 ->whereTaskId($taskId)
                 ->whereUserId($user->id)
                 ->exists();
 
+            //không có user thì tạo 1 user mới ngẫu nhiên
             if (!$checkJoin) {
+
                 $this->eventUserTicket->create([
                     'name' => $user->name,
                     'phone' => $user->phone ?? '092384234',
@@ -181,13 +231,18 @@ class Job extends Controller
                 ->exists();
 
             if (!$checkEventJob) {
+
                 if (!$detail->status) {
+
                     notify()->error('QR code locked');
+
                     return redirect()->route('web.jobEvent', [
                         'id' => $task->code,
                         'type' => $taskEvent->type
                     ]);
+
                 } else {
+
                     $isImportant = $taskEvent->type == 0 ? $detail->is_question : $detail->is_required;
 
                     $this->joinEvent->create([
@@ -200,10 +255,10 @@ class Job extends Controller
                         'is_important' => $isImportant
                     ]);
                 }
-
             }
 
             $eventIds = $this->taskEvent->whereTaskId($taskId)->pluck('id')->toArray();
+            
             $countJobOne = $this->joinEvent
                 ->whereUserId($user->id)
                 ->whereIn('task_event_id', $eventIds)
@@ -231,27 +286,30 @@ class Job extends Controller
                 notify()->success('Scan QR code success');
             }
 
-            if ($detail->is_question == false) {
-                // notify()->success('Scan QR code success');
+            //có đâu hỏi rồi thì genCode luôn
+            if ($detail->is_question) {
 
-                if ($countJobOne <= 1) {
-                    return redirect()->route('job.getTravelGame', [
-                        'task_id' => $taskId
-                    ]);
-                } else {
-                    // Gen code
-                    $this->taskService->genCodeByUser($user->id, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
+                // Gen code
+                return $this->taskService->genCodeByUser($user->id, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
+            }
 
-                    // notify()->success('Scan QR code success');
-                    return redirect()->route('web.jobEvent', [
-                        'id' => $task->code,
-                        'type' => $taskEvent->type
-                    ]);
-                }
+            // notify()->success('Scan QR code success');
+            if ($countJobOne <= 1) {
+
+                return $this->getTravelGame($request,$taskId);
+
             }
 
             // Gen code
             $this->taskService->genCodeByUser($user->id, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
+
+            // notify()->success('Scan QR code success');
+            return redirect()->route('web.jobEvent', [
+                'id' => $task->code,
+                'type' => $taskEvent->type
+            ]);
+
+            
         } catch (\Exception $e) {
             notify()->error('Có lỗi xảy ra');
             return redirect()->route('web.home');
@@ -274,6 +332,7 @@ class Job extends Controller
      */
     public function getTravelGame(Request $request, $taskId)
     {
+        
         try {
             $event = $this->task->find($taskId);
             //$checkUserGetCode = $this->checkUserGetCode($request, $taskId);
@@ -316,14 +375,14 @@ class Job extends Controller
 
             // $this->taskService->genCodeByUser($userId, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
             $eventSession = $this->eventModel->whereTaskId($taskId)->whereType(TASK_SESSION)->first();
+            
             $eventBooth = $this->eventModel->whereTaskId($taskId)->whereType(TASK_BOOTH)->first();
+            
             $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)
                 //->orderBy('sort', 'asc')
                 ->orderBy('created_at', 'asc')
                 ->get();
-            $booths = $this->eventDetail->whereTaskEventId($eventBooth->id)
-                //->orderBy('sort', 'asc')
-                ->get();
+
             $totalCompleted = 0;
 
             foreach ($sessions as $session) {

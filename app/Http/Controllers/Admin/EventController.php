@@ -550,8 +550,11 @@ class EventController extends Controller
         $eventId = $id;
 
         $userId = Auth::user()->id;
+        
         if (Str::contains($request->path(), 'event-preview')) {
+
             if (!$request->get('preview') == 1) {
+                
                 notify()->error('Không thể truy cập');
                 return redirect()->route('cws.eventList');
             }
@@ -647,6 +650,7 @@ class EventController extends Controller
 
         //$urlAnswers = route('quiz-name.answers', $eventId);
         $urlAnswersFull = route('web.events.show', ['id' => $eventId, 'check_in' => true]);
+        
         //Shorten url
         $urlAnswers = Url::shortenUrl($urlAnswersFull);
 
