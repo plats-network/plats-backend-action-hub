@@ -637,6 +637,7 @@ class EventController extends Controller
 
         //$urlAnswers = route('quiz-name.answers', $eventId);
         $urlAnswersFull = route('web.events.show', ['id' => $eventId, 'check_in' => true]);
+        
         //Shorten url
         $urlAnswers = Url::shortenUrl($urlAnswersFull);
 
