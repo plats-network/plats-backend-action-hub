@@ -514,23 +514,28 @@ class Job extends Controller
 
         //Sort $groupSessions item 5  to 7
 
-    // Lấy thông tin của các phần tử cần đổi vị trí
-        $item5 = $groupSessions[$item['travel_game_id']][5];
-        $item6 = $groupSessions[$item['travel_game_id']][6];
-        $item7 = $groupSessions[$item['travel_game_id']][7];
+        // Lấy thông tin của các phần tử cần đổi vị trí
+        $item5 = $groupSessions[$item['travel_game_id']][5] ?? null;
+        $item6 = $groupSessions[$item['travel_game_id']][6] ?? null;
+        $item7 = $groupSessions[$item['travel_game_id']][7] ?? null;
 
-    // Xóa các phần tử cần đổi vị trí
-        unset(
-            $groupSessions[$item['travel_game_id']][5],
-            $groupSessions[$item['travel_game_id']][6],
-            $groupSessions[$item['travel_game_id']][7]
-        );
+        // Kiểm tra xem các phần tử có tồn tại không
+        if ($item5 !== null && $item6 !== null && $item7 !== null) {
+            // Xóa các phần tử cần đổi vị trí
+            unset(
+                $groupSessions[$item['travel_game_id']][5],
+                $groupSessions[$item['travel_game_id']][6],
+                $groupSessions[$item['travel_game_id']][7]
+            );
 
-    // Chèn lại các phần tử ở vị trí mới
-        array_splice($groupSessions[$item['travel_game_id']], 5, 0, [$item7]);
-        array_splice($groupSessions[$item['travel_game_id']], 6, 0, [$item5]);
-        array_splice($groupSessions[$item['travel_game_id']], 7, 0, [$item6]);
+            // Thêm các phần tử vào mảng tạm thời
+            $tempArray = [$item5, $item6, $item7];
 
+            // Chèn lại các phần tử ở vị trí mới
+            array_splice($groupSessions[$item['travel_game_id']], 5, 0, [$tempArray[2]]);
+            array_splice($groupSessions[$item['travel_game_id']], 6, 0, [$tempArray[0]]);
+            array_splice($groupSessions[$item['travel_game_id']], 7, 0, [$tempArray[1]]);
+        } 
         return view('web.events.travel_game', [
             'event' => $event,
             'totalCompleted' => $totalCompleted,
