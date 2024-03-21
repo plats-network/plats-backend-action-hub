@@ -286,13 +286,6 @@ class Job extends Controller
                 notify()->success('Scan QR code success');
             }
 
-            //có đâu hỏi rồi thì genCode luôn
-            if ($detail->is_question) {
-
-                // Gen code
-                return $this->taskService->genCodeByUser($user->id, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
-            }
-
             // notify()->success('Scan QR code success');
             if ($countJobOne <= 1) {
 
