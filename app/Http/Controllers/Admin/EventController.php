@@ -573,13 +573,6 @@ class EventController extends Controller
         $sessions = TaskEvent::where('task_id', $id)->with('detail')
             ->where('type', 0)
             ->first();
-        
-
-        //check empty
-        if(empty($sessions) || empty($task) || empty($taskGroup) || empty($taskGallery) || empty($booths)){
-
-            abort(404);
-        }
 
         $sponsor = $this->sponsor->whereTaskId($id)->first();
 
