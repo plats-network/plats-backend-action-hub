@@ -52,6 +52,7 @@ class Home extends Controller
 
     public function index(Request $request)
     {
+
         try {
             $limit = $request->get('limit') ?? 4;
             $events = $this->taskService->search([
@@ -63,7 +64,7 @@ class Home extends Controller
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());
         }
-
+      
         return view('web.home', [
             'events' => $events
         ]);
