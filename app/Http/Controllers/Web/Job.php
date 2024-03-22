@@ -399,16 +399,16 @@ class Job extends Controller
                 }
                 $sessionDatas[] = [
                     'id' => $session->id,
-                    'travel_game_id' => $session->travel_game_id,
-                    'travel_game_name' => $travel->name,
-                    'user_id' => $request->user()->id,
-                    'name' => $session->name,
-                    'desc' => $session->description,
+                    'travel_game_id' => $session->travel_game_id ?? '',
+                    'travel_game_name' => $travel->name ?? '',
+                    'user_id' => $request->user()->id ?? '',
+                    'name' => $session->name ?? '',
+                    'desc' => $session->description ?? '',
                     'date' => $job ? Carbon::parse($job->created_at)->format('Y-m-d') : '',
                     'time' => $job ? Carbon::parse($job->created_at)->format('H:i') : '',
-                    'required' => $session->is_required,
-                    'created_at' => $session->created_at,
-                    'flag' =>$isDoneTask
+                    'required' => $session->is_required ?? '',
+                    'created_at' => $session->created_at ?? '',
+                    'flag' =>$isDoneTask ?? ''
                 ];
             }
 
