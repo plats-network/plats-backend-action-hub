@@ -175,6 +175,7 @@
                                     ->pluck('number_code')
                                     ->implode(',');
                                 $sTests = [];
+//                                dd($codes);
                                 if ($session->note) {
                                     $sTests = explode('-', $session->note);
                                 }

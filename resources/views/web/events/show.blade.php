@@ -60,7 +60,7 @@
                                 <a id="showModal" class="btn btn-info" href="#">Get Ticket</a>
                                 @if ($sponsor)
                                     <hr>
-                                    <div class="sponsor">
+                                    <div class="sponsor d-none">
                                         <h3 style="font-size: 30px;">Sponsor</h3>
                                         <h3 class="title" title="{{$sponsor->name}}">{{$sponsor->name}}</h3>
                                         <p class="descs"  title="{{$sponsor->description}}">{{$sponsor->description}}</p>

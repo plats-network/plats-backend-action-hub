@@ -64,7 +64,7 @@ class Home extends Controller
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());
         }
-      
+
         return view('web.home', [
             'events' => $events
         ]);
@@ -347,11 +347,36 @@ class Home extends Controller
                     'sucess_checkin' => 1
                 ]);
             }
+            // lay session
+            $travelSessions = [];
+            $session = $this->eventModel->whereTaskId($id)->whereType(TASK_SESSION)->first();
+            $travelSessionIds = $this->eventDetail
+                ->select('travel_game_id')
+                ->distinct()
+                ->whereTaskEventId($session->id)
+                ->pluck('travel_game_id')
+                ->toArray();
+            $travelSessions = $this->travelGame
+                ->whereIn('id', $travelSessionIds)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            //lay booth
+            $travelBoots = [];
+            $booth = $this->eventModel->whereTaskId($id)->whereType(TASK_BOOTH)->first();
+            $travelBootsIds = $this->eventDetail
+                ->select('travel_game_id')
+                ->distinct()
+                ->whereTaskEventId($booth->id)
+                ->pluck('travel_game_id')
+                ->toArray();
+
+            $travelBooths = $this->travelGame->whereIn('id', $travelBootsIds)->get();
+
         } catch (\Exception $e) {
             dd($e->getMessage());
             notify()->error('Error show event');
         }
-
         return view('web.events.show', [
             'event' => $event,
             'user' => $user,
