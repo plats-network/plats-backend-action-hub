@@ -31,7 +31,7 @@
     ];
 @endphp
 
-<div id="tabwizard3" class="wizard-tab">
+<div id="tabwizard2" class="wizard-tab">
     <div class="text-center mb-4">
         <h5>Booths</h5>
         <p class="card-title-desc text-danger">

@@ -28,7 +28,8 @@ use App\Models\{NFT\NFT,
     SponsorDetail,
     Url,
     UserSponsor,
-    User};
+    User
+};
 use App\Services\Admin\{EventService, TaskService};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -550,11 +551,8 @@ class EventController extends Controller
         $eventId = $id;
 
         $userId = Auth::user()->id;
-        
         if (Str::contains($request->path(), 'event-preview')) {
-
             if (!$request->get('preview') == 1) {
-                
                 notify()->error('Không thể truy cập');
                 return redirect()->route('cws.eventList');
             }
@@ -574,6 +572,7 @@ class EventController extends Controller
             ->where('type', 0)
             ->first();
 
+
         $sponsor = $this->sponsor->whereTaskId($id)->first();
 
         $taskEventDiscords = $task->taskEventDiscords;
@@ -585,7 +584,7 @@ class EventController extends Controller
         }
 
         $taskEventSocials = $task->taskEventSocials;
-        
+
         if ($taskEventSocials == null) {
             $taskEventSocials = new EventSocial();
             $taskEventSocials->task_id = $id;
@@ -643,7 +642,6 @@ class EventController extends Controller
 
         //$urlAnswers = route('quiz-name.answers', $eventId);
         $urlAnswersFull = route('web.events.show', ['id' => $eventId, 'check_in' => true]);
-        
         //Shorten url
         $urlAnswers = Url::shortenUrl($urlAnswersFull);
 
@@ -674,7 +672,7 @@ class EventController extends Controller
             ->get();
 
         $select_session_id = 0;
-        foreach ($sessionsPlay as $itemSession){
+        foreach ($sessionsPlay as $itemSession) {
 
             $select_session_id = $itemSession->id;
             break;

@@ -9,7 +9,7 @@
         <link rel="shortcut icon" href="assets/images/favicon.ico">
 
         @notifyCss
-        @vite(['resources/sass/admin.scss', 'resources/js/admin.js'])
+        @vite(['resources/sass/admin.scss', 'resources/js/admin.js', 'resources/js/admin/pages/pass-addon.init.js'])
     </head>
     <body>
         <div class="authentication-bg min-vh-100">

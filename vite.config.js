@@ -28,6 +28,7 @@ export default defineConfig({
                 'resources/js/deposit-wallet.jsx',
                 'resources/js/ModalWallet.jsx',
                 'resources/js/connect-wallet-admin.jsx',
+                'resources/js/admin/pages/pass-addon.init.js',
             ],
             refresh: true,
         }),

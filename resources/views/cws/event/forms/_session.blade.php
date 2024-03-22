@@ -27,7 +27,7 @@
     ];
 @endphp
 
-<div id="tabwizard2" class="wizard-tab">
+<div id="tabwizard1" class="wizard-tab">
     <div class="text-center mb-4">
         <h5>Sessions</h5>
         <p class="card-title-desc text-danger">
@@ -191,7 +191,7 @@
                                     name="sessions[detail][{{$sessionDetail->id}}][description]"
                                     value="{{$sessionDetail->description}}">
                             </div>
-                            <div class="col-sm-4 mt-5 mt-5">
+                            <div class="col-sm-4 mt-5 d-none">
                                 <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][is_required]" value="{{$sessionDetail->is_required}}">
                                 <input
                                     class="form-check-input sCheck"
