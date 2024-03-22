@@ -88,11 +88,11 @@ class TaskService extends BaseService
             $this->cleanFilterBuilder('name');
         }
 //        if ($user && $user->role  ==  CLIENT_ROLE) {
-        if ($user && in_array($user->role, [CLIENT_ROLE, ADMIN_ROLE])) {
-            $this->builder->where(function ($q) use ($user) {
-                $q->where('creator_id', $user->id);
-            });
-        }
+//        if ($user && in_array($user->role, [CLIENT_ROLE, ADMIN_ROLE])) {
+//            $this->builder->where(function ($q) use ($user) {
+//                $q->where('creator_id', $user->id);
+//            });
+//        }
         $this->builder->with('taskLocations', 'taskSocials', 'taskGalleries', 'taskGenerateLinks', 'taskEvents', 'userGetTickets')->orderBy('created_at', 'desc');
         return $this->endFilter();
     }
