@@ -408,6 +408,7 @@ class Home extends Controller
             dd($e->getMessage());
             notify()->error('Error show event');
         }
+        dd($travelSessions, $travelBooths);
         return view('web.events.show', [
             'event' => $event,
             'user' => $user,
