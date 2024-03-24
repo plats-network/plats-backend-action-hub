@@ -211,6 +211,7 @@ class Home extends Controller
             $user = Auth::user();
 
             $event = $this->taskService->find($id);
+            dd($user, $event);
             //Check event is null
             if (!$event) {
                 notify()->error('Sự kiện không tồn tại.');
@@ -375,7 +376,6 @@ class Home extends Controller
                 }
             }
 
-dd(1);
             //lay booth
             $travelBoots = [];
             $booth = $this->eventModel->whereTaskId($id)->whereType(TASK_BOOTH)->first();
