@@ -67,12 +67,14 @@ class EventController extends Controller
 
         $limit = $request->get('limit') ?? PAGE_SIZE;
         $clientUser = Auth::user();
-        $events = $this->taskService->search([
+        $condition = [
             'limit' => $limit,
             'type' => EVENT,
-            //07.12.2023 Filter by creator
-            'creator_id' => $clientUser->id,
-        ]);
+        ];
+        if (Auth::user()->role != ADMIN_ROLE){
+            $condition['creator_id'] = $clientUser->id;
+        }
+        $events = $this->taskService->search($condition);
 
         foreach ($events as $event) {
             if ($event->code == null || $event->code == '') {

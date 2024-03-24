@@ -87,8 +87,8 @@ class TaskService extends BaseService
             // Remove condition after apply query builder
             $this->cleanFilterBuilder('name');
         }
-
-//        if ($user && $user->role == CLIENT_ROLE) {
+//        if ($user && $user->role  ==  CLIENT_ROLE) {
+//        if ($user && in_array($user->role, [CLIENT_ROLE, ADMIN_ROLE])) {
 //            $this->builder->where(function ($q) use ($user) {
 //                $q->where('creator_id', $user->id);
 //            });
