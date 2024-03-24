@@ -359,12 +359,13 @@ class Home extends Controller
 
 
             $eventSession = $this->eventModel->whereTaskId($id)->whereType(TASK_SESSION)->first();
-            dd($eventSession);
 
             $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)
                 //->orderBy('sort', 'asc')
                 ->orderBy('created_at', 'asc')
                 ->get();
+            dd($sessions, $eventSession);
+
 
             $totalCompleted = 0;
 
