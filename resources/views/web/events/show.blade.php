@@ -1,11 +1,6 @@
 @extends('web.layouts.event_app')
 
 @section('content')
-    @php
-        $userId = auth()->user()->id;
-        $email = auth()->user()->email;
-        $userCode = new App\Models\Event\UserCode();
-    @endphp
     <section class="confer-blog-details-area section-padding-100-0">
         <div class="container">
             <div class="row justify-content-center">
@@ -22,8 +17,7 @@
                                 <a class="post-date" href="#">
                                     <i class="zmdi zmdi-alarm-check"></i> {{dateFormat($event->created_at)}}
                                 </a>
-                                <a class="post-author" href="#"><i
-                                        class="zmdi zmdi-account"></i> {{optional($event->author)->name}}</a>
+                                <a class="post-author" href="#"><i class="zmdi zmdi-account"></i> {{optional($event->author)->name}}</a>
                                 <a class="post-author" href="#"><i class="zmdi zmdi-favorite-outline"></i> 8 Likes</a>
                             </div>
                             {!! $event->description !!}
@@ -49,8 +43,7 @@
                         </div>
                         <div class="post-author-area d-flex align-items-center my-5">
                             <div class="author-avatar">
-                                <img src="{{imgAvatar(optional($event->author)->avatar_path)}}"
-                                     alt="{{optional($event->author)->name}}">
+                                <img src="{{imgAvatar(optional($event->author)->avatar_path)}}" alt="{{optional($event->author)->name}}">
                             </div>
                             <div class="author-content">
                                 <h5>{{optional($event->author)->name}}</h5>
@@ -65,13 +58,12 @@
                         <div class="single-widget-area">
                             <div class="post-author-widget">
                                 <a id="showModal" class="btn btn-info" href="#">Get Ticket</a>
-                                <hr>
-
                                 @if ($sponsor)
-                                    <div class="sponsor d-none">
+                                    <hr>
+                                    <div class="sponsor">
                                         <h3 style="font-size: 30px;">Sponsor</h3>
                                         <h3 class="title" title="{{$sponsor->name}}">{{$sponsor->name}}</h3>
-                                        <p class="descs" title="{{$sponsor->description}}">{{$sponsor->description}}</p>
+                                        <p class="descs"  title="{{$sponsor->description}}">{{$sponsor->description}}</p>
                                         <div class="note">
                                             <p class="price">Total Price: {{number_format($sponsor->price)}} ACA</p>
                                             <p>Backers: 10+</p>
@@ -80,51 +72,41 @@
 
                                         <h3>Support</h3>
                                         {{--Form--}}
-                                        <form action="{{ route('web.createCrowdSponsor',['task_id' =>$event->id] ) }}"
-                                              method="post">
+                                        <form action="{{ route('web.createCrowdSponsor',['task_id' =>$event->id] ) }}" method="post">
                                             @csrf
                                             @method('POST')
-                                            <div class="buget">
-                                                <h3>Make a pledge without a reward</h3>
-                                                <div class="row text-left">
-                                                    <div class="col-12 text-left">
-                                                        <label class="text-left" style="width: 100%; font-size: 12px;">Pledge
-                                                            amount</label>
-                                                    </div>
+                                        <div class="buget">
+                                            <h3>Make a pledge without a reward</h3>
+                                            <div class="row text-left">
+                                                <div class="col-12 text-left">
+                                                    <label class="text-left" style="width: 100%; font-size: 12px;">Pledge amount</label>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-5" style="padding-top: 8px; padding-right: 0px;">
-                                                        ACA
-                                                    </div>
-                                                    <div class="col-md-7" style="padding-left: 2px">
-                                                        <input id="amount" class="form-control" type="text"
-                                                               name="price">
-                                                        <input id="sponsorId" type="hidden">
-                                                    </div>
-                                                </div>
-                                                @if (auth()->guest())
-                                                    <a class="guest"
-                                                       href="{{route('web.formLogin', ['type' => 'sponsor', 'id' => $event->id])}}">Continue</a>
-                                                @else
-                                                    <button
-                                                        type="submit"
-                                                        id="cSponsor2"
-                                                        data-type="sponsor2"
-                                                        data-id="{{$event->id}}"
-                                                        data-url="{{route('new.sponsor')}}">Continue
-                                                    </button>
-                                                @endif
                                             </div>
+                                            <div class="row">
+                                                <div class="col-md-5" style="padding-top: 8px; padding-right: 0px;">ACA </div>
+                                                <div class="col-md-7" style="padding-left: 2px">
+                                                    <input id="amount" class="form-control" type="text" name="price">
+                                                    <input id="sponsorId" type="hidden">
+                                                </div>
+                                            </div>
+                                            @if (auth()->guest())
+                                                <a class="guest" href="{{route('web.formLogin', ['type' => 'sponsor', 'id' => $event->id])}}">Continue</a>
+                                            @else
+                                                <button
+                                                    type="submit"
+                                                    id="cSponsor2"
+                                                    data-type="sponsor2"
+                                                    data-id="{{$event->id}}"
+                                                    data-url="{{route('new.sponsor')}}">Continue</button>
+                                            @endif
+                                        </div>
                                         </form>
 
                                         <h3>Package</h3>
                                         <div class="package-item">
                                             @foreach($sponsor->sponsorDetails as $item)
-                                                <div class="item price-package"
-                                                     data-price="{{number_format($item->price)}}"
-                                                     data-id="{{$item->id}}">
-                                                    <p>{{$item->name}} <span class="price">{{$item->price}}</span> ACA
-                                                    </p>
+                                                <div class="item price-package" data-price="{{number_format($item->price)}}" data-id="{{$item->id}}">
+                                                    <p>{{$item->name}} <span class="price">{{$item->price}}</span> ACA</p>
                                                     <p class="desc">{{$item->description}}</p>
                                                     <hr>
                                                 </div>
@@ -132,55 +114,6 @@
                                         </div>
                                     </div>
                                 @endif
-
-                                <div class="box_gift" style="margin-top: 20px">
-                                    <div class="session" style="margin-bottom: 20px">
-                                        <div class="d-flex justify-content-between align-items-center mb-3" style="margin-bottom: 20px">
-                                            <strong>Session</strong>
-                                            <a class="p-0" href="{{route('job.getTravelGame', $task_id)}}">See more</a>
-                                        </div>
-                                        @foreach($travelSessions as $k => $session)
-                                            @php
-                                                $codes = $userCode->where('user_id', $userId)
-                                                    ->where('travel_game_id', $session->id)
-                                                    ->where('task_event_id', $session_id)
-                                                    ->where('type', 0)
-                                                    ->pluck('number_code')
-                                                    ->implode(',');
-                                            @endphp
-                                            <div class="item">
-                                                <p>Joined: <span style="color:green">{{$totalCompleted}}</span>
-                                                        / {{$countEventDetail}}
-                                                        sessions</p>
-                                                <p>My Lucky Code: <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                    <hr>
-                                    <div class="booth" style="margin: 20px 0">
-                                        <div class="d-flex justify-content-between align-items-center mb-3" style="margin-bottom: 20px">
-                                            <strong>Booth</strong>
-                                            <a class="p-0" href="{{route('job.getTravelGame', $task_id)}}">See more</a>
-                                        </div>
-                                        @foreach($travelBooths as $k => $booth)
-                                            @php
-                                                $codesBooth = $userCode->where('user_id', $userId)
-                                                    ->where('travel_game_id', $booth->id)
-                                                    ->where('task_event_id', $booth_id)
-                                                    ->where('type', 1)
-                                                    ->pluck('number_code')
-                                                    ->implode(',');
-                                            @endphp
-                                            <div class="item">
-                                                <p>Joined: <span style="color:green">{{$totalCompletedBooth}}</span>
-                                                    / {{$countEventDetailBooth}}
-                                                    booth</p>
-                                                <p>My Lucky Code: <span class="fs-25">{{$codesBooth ? $codesBooth : '---'}}</span></p>
-                                            </div>
-                                        @endforeach
-                                    </div>
-
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -190,8 +123,7 @@
     </section>
 
     {{--Model success--}}
-    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
-         aria-hidden="true">
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -228,8 +160,7 @@
                     <form id="tickit_form" method="POST" action="{{route('order.ticket')}}">
                         @csrf
                         @method('POST')
-                        <p class="text-danger text-center" style="padding-bottom: 20px;">Vui lòng nhập đúng thông tin
-                            email or số điện thoại để nhận đc những phần quà hấp dẫn từ sự kiện.</p>
+                        <p class="text-danger text-center" style="padding-bottom: 20px;">Vui lòng nhập đúng thông tin email or số điện thoại để nhận đc những phần quà hấp dẫn từ sự kiện.</p>
 
                         <input type="hidden" name="task_id" value="{{$event->id}}">
 
@@ -261,8 +192,7 @@
                             </div>
                             <div class="col-md-6 field-phone">
                                 <label class="form-label">Phone <span class="text-danger">(optional)</span></label>
-                                <input type="text" class="form-control" max="15" min="10"
-                                       value="{{$user ? $user->phone : ''}}" id="phone" name="phone">
+                                <input type="text" class="form-control" max="15" min="10" value="{{$user ? $user->phone : ''}}" id="phone" name="phone">
                                 <div class="valid-feedback"></div>
                             </div>
                         </div>
@@ -277,6 +207,7 @@
 
     @include('web.layouts.subscribe')
     <a href="#" class="btn btn-primary ticket--sp">Get ticket</a>
+
 
 @endsection
 
@@ -293,10 +224,7 @@
  --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js"
-            integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp"
-            crossorigin="anonymous"></script>
-    <script src="dashboard.js"></script></body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"></script><script src="dashboard.js"></script></body>
 
     <script>
         var _token = $('meta[name="csrf-token"]').attr('content');

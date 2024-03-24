@@ -125,7 +125,7 @@ class TaskService extends BaseService
                 ->where('is_important', false)
                 ->limit(5);
 
-            if (count($codeBooths->pluck('id')->toArray()) == config('app.max_booth')) {
+            if (count($codeBooths->pluck('id')->toArray()) == 5) {
                 $this->userCode->create([
                     'user_id' => $userId,
                     'task_event_id' => $bEventId,
@@ -333,7 +333,7 @@ class TaskService extends BaseService
         if ($taskType == TYPE_CHECKIN) {
             $this->createLocation($task, $request->input('locations'));
         }
-
+        
         //Create social
         if ($taskType == TYPE_SOCIAL) {
             $this->createSocial($task, $request->input('socials'));
@@ -390,7 +390,7 @@ class TaskService extends BaseService
                 $task->locations()->whereIn('id', $request->input('list_delete', []))->delete();
             }
         }
-
+        
         //Update/Create Social
         if ($request->filled('socials') && $request->type == TYPE_SOCIAL) {
             $createSocials = [];

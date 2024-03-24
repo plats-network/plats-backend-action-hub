@@ -144,7 +144,7 @@ class Job extends Controller
                     'code' => $event->code
                 ])->with('error', "Job locked!");
             } else {
-
+               
                 notify()->success('Scan QR code success');
                 return $this->getJob($request,$event->code);
                 // return redirect()->route('job.getJob', [
@@ -166,7 +166,7 @@ class Job extends Controller
     // method: GET
     // url: http://event.plats.test/quiz/tuiLOSvRxDUZk2cNTMu5LoA8s4VXxoO4fXe
     public function getJob(Request $request, $code) {
-
+        
         try {
             $detail = $this->eventDetail->whereCode($code)->first();
 
@@ -178,7 +178,7 @@ class Job extends Controller
             }
 
             $taskEvent = $this->taskEvent->find($detail->task_event_id);
-
+    
             // check data
             if (empty($taskEvent)) {
 
@@ -199,7 +199,7 @@ class Job extends Controller
 
             // check data
             if (empty($task)) {
-
+                
                 notify()->error('Errors task');
                 return redirect()->route('web.home');
             }
@@ -258,7 +258,7 @@ class Job extends Controller
             }
 
             $eventIds = $this->taskEvent->whereTaskId($taskId)->pluck('id')->toArray();
-
+            
             $countJobOne = $this->joinEvent
                 ->whereUserId($user->id)
                 ->whereIn('task_event_id', $eventIds)
@@ -302,7 +302,7 @@ class Job extends Controller
                 'type' => $taskEvent->type
             ]);
 
-
+            
         } catch (\Exception $e) {
             notify()->error('Có lỗi xảy ra');
             return redirect()->route('web.home');
@@ -325,7 +325,7 @@ class Job extends Controller
      */
     public function getTravelGame(Request $request, $taskId)
     {
-
+        
         try {
             $event = $this->task->find($taskId);
             //$checkUserGetCode = $this->checkUserGetCode($request, $taskId);
@@ -368,9 +368,9 @@ class Job extends Controller
 
             // $this->taskService->genCodeByUser($userId, $taskId, $travelSessionIds, $travelBootsIds, $session->id, $booth->id);
             $eventSession = $this->eventModel->whereTaskId($taskId)->whereType(TASK_SESSION)->first();
-
+            
             $eventBooth = $this->eventModel->whereTaskId($taskId)->whereType(TASK_BOOTH)->first();
-
+            
             $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)
                 //->orderBy('sort', 'asc')
                 ->orderBy('created_at', 'asc')
@@ -535,7 +535,7 @@ class Job extends Controller
             array_splice($groupSessions[$item['travel_game_id']], 5, 0, [$tempArray[2]]);
             array_splice($groupSessions[$item['travel_game_id']], 6, 0, [$tempArray[0]]);
             array_splice($groupSessions[$item['travel_game_id']], 7, 0, [$tempArray[1]]);
-        }
+        } 
         return view('web.events.travel_game', [
             'event' => $event,
             'totalCompleted' => $totalCompleted,
