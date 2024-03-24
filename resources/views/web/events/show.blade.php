@@ -2,9 +2,11 @@
 
 @section('content')
     @php
-        $userId = auth()->user()->id;
-        $email = auth()->user()->email;
-        $userCode = new App\Models\Event\UserCode();
+        if (auth()->user() !== null){
+            $userId = auth()->user()->id;
+            $email = auth()->user()->email;
+            $userCode = new App\Models\Event\UserCode();
+        }
     @endphp
     <section class="confer-blog-details-area section-padding-100-0">
         <div class="container">
@@ -132,55 +134,63 @@
                                         </div>
                                     </div>
                                 @endif
-
-                                <div class="box_gift" style="margin-top: 20px">
-                                    <div class="session" style="margin-bottom: 20px">
-                                        <div class="d-flex justify-content-between align-items-center mb-3" style="margin-bottom: 20px">
-                                            <strong>Session</strong>
-                                            <a class="p-0" href="{{route('job.getTravelGame', $task_id)}}">See more</a>
-                                        </div>
-                                        @foreach($travelSessions as $k => $session)
-                                            @php
-                                                $codes = $userCode->where('user_id', $userId)
-                                                    ->where('travel_game_id', $session->id)
-                                                    ->where('task_event_id', $session_id)
-                                                    ->where('type', 0)
-                                                    ->pluck('number_code')
-                                                    ->implode(',');
-                                            @endphp
-                                            <div class="item">
-                                                <p>Joined: <span style="color:green">{{$totalCompleted}}</span>
+                                @if(auth()->user() !== null)
+                                    <div class="box_gift" style="margin-top: 20px">
+                                        <div class="session" style="margin-bottom: 20px">
+                                            <div class="d-flex justify-content-between align-items-center mb-3"
+                                                 style="margin-bottom: 20px">
+                                                <strong>Session</strong>
+                                                <a class="p-0" href="{{route('job.getTravelGame', $task_id)}}">See
+                                                    more</a>
+                                            </div>
+                                            @foreach($travelSessions as $k => $session)
+                                                @php
+                                                    $codes = $userCode->where('user_id', $userId)
+                                                        ->where('travel_game_id', $session->id)
+                                                        ->where('task_event_id', $session_id)
+                                                        ->where('type', 0)
+                                                        ->pluck('number_code')
+                                                        ->implode(',');
+                                                @endphp
+                                                <div class="item">
+                                                    <p>Joined: <span style="color:green">{{$totalCompleted}}</span>
                                                         / {{$countEventDetail}}
                                                         sessions</p>
-                                                <p>My Lucky Code: <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                    <hr>
-                                    <div class="booth" style="margin: 20px 0">
-                                        <div class="d-flex justify-content-between align-items-center mb-3" style="margin-bottom: 20px">
-                                            <strong>Booth</strong>
-                                            <a class="p-0" href="{{route('job.getTravelGame', $task_id)}}">See more</a>
+                                                    <p>My Lucky Code: <span
+                                                            class="fs-25">{{$codes ? $codes : '---'}}</span></p>
+                                                </div>
+                                            @endforeach
                                         </div>
-                                        @foreach($travelBooths as $k => $booth)
-                                            @php
-                                                $codesBooth = $userCode->where('user_id', $userId)
-                                                    ->where('travel_game_id', $booth->id)
-                                                    ->where('task_event_id', $booth_id)
-                                                    ->where('type', 1)
-                                                    ->pluck('number_code')
-                                                    ->implode(',');
-                                            @endphp
-                                            <div class="item">
-                                                <p>Joined: <span style="color:green">{{$totalCompletedBooth}}</span>
-                                                    / {{$countEventDetailBooth}}
-                                                    booth</p>
-                                                <p>My Lucky Code: <span class="fs-25">{{$codesBooth ? $codesBooth : '---'}}</span></p>
+                                        <hr>
+                                        <div class="booth" style="margin: 20px 0">
+                                            <div class="d-flex justify-content-between align-items-center mb-3"
+                                                 style="margin-bottom: 20px">
+                                                <strong>Booth</strong>
+                                                <a class="p-0" href="{{route('job.getTravelGame', $task_id)}}">See
+                                                    more</a>
                                             </div>
-                                        @endforeach
-                                    </div>
+                                            @foreach($travelBooths as $k => $booth)
+                                                @php
+                                                    $codesBooth = $userCode->where('user_id', $userId)
+                                                        ->where('travel_game_id', $booth->id)
+                                                        ->where('task_event_id', $booth_id)
+                                                        ->where('type', 1)
+                                                        ->pluck('number_code')
+                                                        ->implode(',');
+                                                @endphp
+                                                <div class="item">
+                                                    <p>Joined: <span style="color:green">{{$totalCompletedBooth}}</span>
+                                                        / {{$countEventDetailBooth}}
+                                                        booth</p>
+                                                    <p>My Lucky Code: <span
+                                                            class="fs-25">{{$codesBooth ? $codesBooth : '---'}}</span>
+                                                    </p>
+                                                </div>
+                                            @endforeach
+                                        </div>
 
-                                </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

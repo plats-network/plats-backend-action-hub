@@ -729,7 +729,7 @@ class Home extends Controller
 
     private function checkDoneJob($eventDetailId)
     {
-        $userId = Auth::user()->id;
+        $userId = Auth::user() !== null ? Auth::user()->id : null;
         if (empty($userId)){
             return null;
         }
