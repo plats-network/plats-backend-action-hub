@@ -341,7 +341,6 @@ class Home extends Controller
                     'sucess_checkin' => 1
                 ]);
             }
-            dd(1);
             // lay session
             $travelSessions = [];
             $session = $this->eventModel->whereTaskId($id)->whereType(TASK_SESSION)->first();
@@ -353,6 +352,7 @@ class Home extends Controller
                 ->whereTaskEventId($session->id)
                 ->pluck('travel_game_id')
                 ->toArray();
+            dd($travelSessionIds);
             $travelSessions = $this->travelGame
                 ->whereIn('id', $travelSessionIds)
                 ->orderBy('created_at', 'desc')
