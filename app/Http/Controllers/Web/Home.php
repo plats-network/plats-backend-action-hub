@@ -364,7 +364,6 @@ class Home extends Controller
                 //->orderBy('sort', 'asc')
                 ->orderBy('created_at', 'asc')
                 ->get();
-            dd($sessions, $eventSession);
 
 
             $totalCompleted = 0;
@@ -731,7 +730,9 @@ class Home extends Controller
     private function checkDoneJob($eventDetailId)
     {
         $userId = Auth::user()->id;
-
+        if (empty($userId)){
+            return null;
+        }
         return $this->taskDone
             ->whereUserId($userId)
             ->whereTaskEventDetailId($eventDetailId)
