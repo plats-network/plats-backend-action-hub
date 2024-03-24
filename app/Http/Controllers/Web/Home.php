@@ -284,7 +284,6 @@ class Home extends Controller
                 //Mail::to($recipientEmail)->send(new NFTNotification($userName, $senderName, $nftName, $nftDescription, $nftUrl));
 
             }
-dd(1);
             $sponsor = $this->sponsor->whereTaskId($id)->first();
             $checkSponsor = session()->get('sponsor-' . optional($user)->id);
 
@@ -342,6 +341,7 @@ dd(1);
                     'sucess_checkin' => 1
                 ]);
             }
+            dd(1);
             // lay session
             $travelSessions = [];
             $session = $this->eventModel->whereTaskId($id)->whereType(TASK_SESSION)->first();
