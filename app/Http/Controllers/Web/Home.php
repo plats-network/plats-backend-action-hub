@@ -211,7 +211,6 @@ class Home extends Controller
             $user = Auth::user();
 
             $event = $this->taskService->find($id);
-            dd($user, $event);
             //Check event is null
             if (!$event) {
                 notify()->error('Sự kiện không tồn tại.');
@@ -285,7 +284,7 @@ class Home extends Controller
                 //Mail::to($recipientEmail)->send(new NFTNotification($userName, $senderName, $nftName, $nftDescription, $nftUrl));
 
             }
-
+dd(1);
             $sponsor = $this->sponsor->whereTaskId($id)->first();
             $checkSponsor = session()->get('sponsor-' . optional($user)->id);
 
