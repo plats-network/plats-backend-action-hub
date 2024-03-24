@@ -352,7 +352,6 @@ class Home extends Controller
                 ->whereTaskEventId($session->id)
                 ->pluck('travel_game_id')
                 ->toArray();
-            dd($travelSessionIds);
             $travelSessions = $this->travelGame
                 ->whereIn('id', $travelSessionIds)
                 ->orderBy('created_at', 'desc')
@@ -360,6 +359,7 @@ class Home extends Controller
 
 
             $eventSession = $this->eventModel->whereTaskId($id)->whereType(TASK_SESSION)->first();
+            dd($eventSession);
 
             $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)
                 //->orderBy('sort', 'asc')
