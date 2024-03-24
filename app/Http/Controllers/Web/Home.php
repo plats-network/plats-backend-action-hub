@@ -375,7 +375,7 @@ class Home extends Controller
                 }
             }
 
-
+dd(1);
             //lay booth
             $travelBoots = [];
             $booth = $this->eventModel->whereTaskId($id)->whereType(TASK_BOOTH)->first();
@@ -395,7 +395,7 @@ class Home extends Controller
                 //->orderBy('sort', 'asc')
                 ->orderBy('created_at', 'asc')
                 ->get();
-dd($travelBooths, $booths);
+//dd($travelBooths, $booths);
             $totalCompletedBooth = 0;
 
             foreach ($booths as $booth) {
