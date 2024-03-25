@@ -3,9 +3,9 @@
 @section('content')
     <section class="event-list ev-list pt-70">
         <div class="container">
-            <div id="boxEvent" class="row">
-                @include('web.events.data', ['events' => $events])
-            </div>
+            
+            @include('web.events.data', ['events' => $events,'eventsPendings'=>$eventsPending])
+
             <div class="row">
                 <div class="col-12">
                     <div

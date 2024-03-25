@@ -6,7 +6,8 @@ use App\Helpers\BaseImage;
 use App\Models\Event\{
     EventDiscords, EventSocial,
     EventUserTicket, TaskEvent,
-    UserEventLike
+    UserEventLike,
+    UserEvent
 };
 use App\Models\Quiz\Quiz;
 use App\Models\Traits\Attribute\TaskAttribute;
@@ -164,7 +165,14 @@ class Task extends Model
     {
         return $this->hasMany(TaskGallery::class);
     }
-
+ 
+    /**
+     * user tham gia sự kiện
+     */
+    public function userEvents()
+    {
+        return $this->hasMany(UserEvent::class, 'task_id');
+    }
     protected function bannerUrl(): Attribute
     {
         return Attribute::make(
