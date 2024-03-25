@@ -131,7 +131,7 @@
                                                             type="text"
                                                             class="form-control"
                                                             value="{{ dateFormat($event->end_at) }}"
-                                                            placeholder="{{ dateFormat($event->end_at) ?? '2023-06-19 17:30' }}"
+                                                            placeholder="{{ dateFormat($event->end_at) ?? '2024-01-01 01:01' }}"
                                                             id="{{$isPreview ? '' : 'end_at'}}"
                                                             name="end_at">
                                                         <div class="valid-feedback"></div>
