@@ -40,6 +40,16 @@
         .se-donw, .bo-donw {
             cursor: pointer;
         }
+        .user-event{
+            padding: 35px;
+            border: 1px solid #b4cae5;
+            border-radius: 10px;
+        }
+        .user-event p {
+            font-size: 15px;
+            color: black;
+            font-weight: bold;
+        }
     </style>
     <div class="container-fluid">
         <div class="row">
@@ -289,7 +299,7 @@
                                                             <div class="col-4"></div>
                                                             <div class="col-5">
                                                                 <img
-                                                                    src="data:image/png;base64, {!! base64_encode($qrCode) !!}"
+                                                                    src="data:image/png;base64, {!! $qrCode !!}"
                                                                     alt="QR Code" style="max-width: 400px;">
                                                             </div>
                                                         </div>
@@ -299,7 +309,6 @@
                                                         <p class="card-title-desc text-success">URL Checkin Event: <a
                                                                 target="_blank"
                                                                 href="{{$urlAnswers}}">{{$urlAnswers}}</a></p>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -408,8 +417,6 @@
                                             <p class="card-title-desc text-success">
                                                 - User Check-in
                                             </p>
-
-
                                         </div>
                                         <div>
                                             <div class="listUser" id="listUser">
@@ -488,22 +495,62 @@
                                 {{--Dashboard--}}
                                 <div id="tabwizard6" class="wizard-tab" style="display: none;">
                                     <div>
+                                    
                                         <div class="text-center mb-4">
                                             <h5>Dashboard</h5>
                                             <p class="card-title-desc text-success">
                                                 - Thống kê sự kiện
                                             </p>
-
                                         </div>
                                         <div class="row">
-                                            <div class="col-lg-12">
-                                                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 
-                                                    <canvas class="my-4 w-100" id="myChart" width="900"
-                                                            height="380"></canvas>
+                                            {{-- số người đăng kí --}}
+                                            <div class="col-12">
+                                                <h2>User</h2>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="user-event">
+                                                            <p>Số lượng tham gia event</p>
+                                                            <div class="text-right">
+                                                                <h2>454</h2>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+    
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="user-event">
+                                                            <p>Số lượng đămg kí event</p>
+                                                            <div class="text-right">
+                                                                <h2>454</h2>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                                    <h2>User Reward</h2>
-                                                    <div class="table-responsive small">
+                                            {{-- biểu đồ --}}
+                                            <div class="col-12 mt-4">
+                                                <div class="row">
+                                                    <div class="col-6 col-md-6">
+                                                        <h2>Booth</h2>
+                                                        <canvas class="my-4 w-100" id="boothChart" width="900"
+                                                                    height="380">
+                                                        </canvas>
+                                                    </div>
+                                                    <div class="col-6 col-md-6">
+                                                        <h2>Session</h2>
+                                                        <canvas class="my-4 w-100" id="sessionChart" width="900"
+                                                                    height="380">
+                                                        </canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {{-- danh sách user --}}
+                                            <div class="col-12 mt-4">
+                                                <h2>User Reward</h2>
+                                                <div class="row">
+                                                    <div class="table-responsive small col-lg-12 col-md-12 ms-sm-auto col-lg-12">
                                                         <table class="table table-bordered mb-0">
                                                             <thead class="table-light">
                                                             <tr>
@@ -567,7 +614,7 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                </main>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1612,10 +1659,54 @@
     </script>
 
     <script>
-        // Graphs
-        const ctx = document.getElementById('myChart')
+        // boothChart
+        const ctxBooth = document.getElementById('boothChart')
         // eslint-disable-next-line no-unused-vars
-        const myChart = new Chart(ctx, {
+        const boothChart = new Chart(ctxBooth, {
+            type: 'line',
+            data: {
+                labels: [
+                    'Sunday',
+                    'Monday',
+                    'Tuesday',
+                    'Wednesday',
+                    'Thursday',
+                    'Friday',
+                    'Saturday'
+                ],
+                datasets: [{
+                    data: [
+                        10,
+                        120,
+                        100,
+                        190,
+                        150,
+                        200,
+                        300
+                    ],
+                    lineTension: 0,
+                    backgroundColor: 'transparent',
+                    borderColor: '#007bff',
+                    borderWidth: 4,
+                    pointBackgroundColor: '#007bff'
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        boxPadding: 3
+                    }
+                }
+            }
+        })
+
+        // sessionChart
+        const ctxSession = document.getElementById('sessionChart')
+        // eslint-disable-next-line no-unused-vars
+        const sessionChart = new Chart(ctxSession, {
             type: 'line',
             data: {
                 labels: [
