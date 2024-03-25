@@ -16,13 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\Task as Event;
 use App\Models\{NFT\NFT, Task, User, TravelGame, Sponsor};
 use Illuminate\Support\Str;
-use App\Models\Event\{
-    EventUserTicket,
-    TaskEvent,
-    TaskEventDetail,
-    UserEventLike,
-    UserJoinEvent,
-};
+use App\Models\Event\{EventUserTicket, TaskEvent, TaskEventDetail, UserCode, UserEventLike, UserJoinEvent};
 use App\Services\Admin\{
     EventService,
     TaskService
@@ -46,6 +40,7 @@ class Home extends Controller
         private EventService    $eventService,
         private TaskService     $taskService,
         private TravelGame      $travelGame,
+        private UserCode        $userCode,
     )
     {
     }
@@ -312,7 +307,6 @@ class Home extends Controller
                 //Mail::to($recipientEmail)->send(new NFTNotification($userName, $senderName, $nftName, $nftDescription, $nftUrl));
 
             }
-
             $sponsor = $this->sponsor->whereTaskId($id)->first();
             $checkSponsor = session()->get('sponsor-' . optional($user)->id);
 
@@ -370,11 +364,73 @@ class Home extends Controller
                     'sucess_checkin' => 1
                 ]);
             }
+            // lay session
+            $travelSessions = [];
+            $session = $this->eventModel->whereTaskId($id)->whereType(TASK_SESSION)->first();
+            $countEventDetail = TaskEventDetail::where('task_event_id',$session->id)->count();
+
+            $travelSessionIds = $this->eventDetail
+                ->select('travel_game_id')
+                ->distinct()
+                ->whereTaskEventId($session->id)
+                ->pluck('travel_game_id')
+                ->toArray();
+            $travelSessions = $this->travelGame
+                ->whereIn('id', $travelSessionIds)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+
+            $eventSession = $this->eventModel->whereTaskId($id)->whereType(TASK_SESSION)->first();
+
+            $sessions = $this->eventDetail->whereTaskEventId($eventSession->id)
+                //->orderBy('sort', 'asc')
+                ->orderBy('created_at', 'asc')
+                ->get();
+
+
+            $totalCompleted = 0;
+
+            foreach ($sessions as $session) {
+                $isDoneTask = $this->checkDoneJob($session->id);
+                if ($isDoneTask) {
+                    $totalCompleted++;
+                }
+            }
+
+            //lay booth
+            $travelBoots = [];
+            $booth = $this->eventModel->whereTaskId($id)->whereType(TASK_BOOTH)->first();
+            $countEventDetailBooth = TaskEventDetail::where('task_event_id',$booth->id)->count();
+            $travelBootsIds = $this->eventDetail
+                ->select('travel_game_id')
+                ->distinct()
+                ->whereTaskEventId($booth->id)
+                ->pluck('travel_game_id')
+                ->toArray();
+
+            $travelBooths = $this->travelGame->whereIn('id', $travelBootsIds)->get();
+
+            $eventBooths = $this->eventModel->whereTaskId($id)->whereType(TASK_BOOTH)->first();
+
+            $booths = $this->eventDetail->whereTaskEventId($eventBooths->id)
+                //->orderBy('sort', 'asc')
+                ->orderBy('created_at', 'asc')
+                ->get();
+//dd($travelBooths, $booths);
+            $totalCompletedBooth = 0;
+
+            foreach ($booths as $booth) {
+                $isDoneTaskBooth = $this->checkDoneJob($booth->id);
+                if ($isDoneTaskBooth) {
+                    $totalCompletedBooth++;
+                }
+            }
+
         } catch (\Exception $e) {
             dd($e->getMessage());
             notify()->error('Error show event');
         }
-
         return view('web.events.show', [
             'event' => $event,
             'user' => $user,
@@ -382,6 +438,15 @@ class Home extends Controller
             'download_ticket' => $download_ticket,
             'url_download_ticket' => $url_download_ticket,
             'show_message' => $show_message,
+            'travelSessions' => $travelSessions,
+            'travelBooths' => $travelBooths,
+            'task_id' => $id,
+            'session_id' => $session->id,
+            'totalCompleted' => $totalCompleted,
+            'countEventDetail' => $countEventDetail,
+            'booth_id' => $booth->id,
+            'totalCompletedBooth' => $totalCompletedBooth,
+            'countEventDetailBooth' => $countEventDetailBooth,
         ]);
     }
 
@@ -711,8 +776,10 @@ class Home extends Controller
 
     private function checkDoneJob($eventDetailId)
     {
-        $userId = Auth::user()->id;
-
+        $userId = Auth::user() !== null ? Auth::user()->id : null;
+        if (empty($userId)){
+            return null;
+        }
         return $this->taskDone
             ->whereUserId($userId)
             ->whereTaskEventDetailId($eventDetailId)
@@ -725,4 +792,5 @@ class Home extends Controller
         //dd($status);
         return $status;*/
     }
+
 }
