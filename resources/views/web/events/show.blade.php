@@ -136,7 +136,7 @@
                                 @endif
                                 @if(auth()->user() !== null)
                                     <div class="box_gift" style="margin-top: 20px">
-                                        @if($travelBooths)
+                                        @if($travelSessions->isNotEmpty())
                                             <div class="session" style="margin-bottom: 20px">
                                                 <div class="d-flex justify-content-between align-items-center mb-3"
                                                      style="margin-bottom: 20px">
@@ -163,7 +163,7 @@
                                                 @endforeach
                                             </div>
                                         @endif
-                                        @if($travelBooths)
+                                        @if($travelBooths->isNotEmpty())
                                             <hr>
                                             <div class="booth" style="margin: 20px 0">
                                                 <div class="d-flex justify-content-between align-items-center mb-3"
