@@ -20,25 +20,121 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="about-thumb mb-80">
-                        <img src="{{url('events/home/home-banner.png')}}" alt="">
+                        <img src="{{url('events/home/home-banner.png')}}">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="event-list pt-70">
+    <section class="event-list pt-10">
         <div class="container">
             <div class="row">
+                @if(!empty($eventsPendings))
+                <div class="col-12">
+
+                    <!-- sự kiện bạn tham gia -->
+                    @if(!empty(auth()->user()))
+                        <div class="section-heading-2 mt-2">
+                            <p class="color-white">Your events pending!</p>
+                        </div>
+                    @else
+                        <div class="section-heading-2 mt-2">
+                            <p class="color-white">The event is taking place!</p>
+                        </div>
+                    @endif
+
+                    <div class="tab-content" id="conferScheduleTabContent">
+                        <div class="tab-pane fade show active" id="step-one" role="tabpanel" aria-labelledby="monday-tab">
+                            <div class="row">
+                                @foreach($eventsPendings as $eventsPending)
+                                    <div class="col-12 col-md-6 col-xl-3 item-event">
+                                        <div class="single-blog-area style-2">
+                                            <div class="single-blog-thumb">
+                                                <a href="{{route('web.events.show', $eventsPending->id)}}">
+                                                    <img src="{{$eventsPending->banner_url}}">
+                                                </a>
+                                            </div>
+                                            <div class="single-blog-text">
+                                                <a class="blog-title" href="{{route('web.events.show', $eventsPending->id)}}">{{$eventsPending->name}}</a>
+                                                <div class="post-meta">
+                                                    <a class="post-date" href="{{route('web.events.show', $eventsPending->id)}}">
+                                                        <i class="zmdi zmdi-alarm-check"></i> {{ dateFormat($eventsPending->created_at)}}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="step-two" role="tabpanel" aria-labelledby="tuesday-tab">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-xl-3 item-event">
+                                    <div class="single-blog-area style-2">
+                                        <div class="single-blog-thumb">
+                                            <a href="#"><img src="{{url('events/event/event-1.png')}}"></a>
+                                        </div>
+                                        <div class="single-blog-text">
+                                            <a class="blog-title" href="#">Street Food Convention</a>
+                                            <div class="post-meta">
+                                                <a class="post-date" href="#"><i class="zmdi zmdi-alarm-check"></i> 2023-04-20 21:00:00</a>
+                                            </div>
+                                            <p>International Curriculum Conference 2023: Vietnam ...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-3 item-event">
+                                    <div class="single-blog-area style-2">
+                                        <div class="single-blog-thumb">
+                                            <img src="{{url('events/event/event-2.png')}}">
+                                        </div>
+                                        <div class="single-blog-text">
+                                            <a class="blog-title" href="#">Street Food Convention</a>
+                                            <div class="post-meta">
+                                                <a class="post-date" href="#"><i class="zmdi zmdi-alarm-check"></i> 2023-04-20 21:00:00</a>
+                                            </div>
+                                            <p>International Curriculum Conference 2023: Vietnam ...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-3 item-event">
+                                    <div class="single-blog-area style-2">
+                                        <div class="single-blog-thumb">
+                                            <img src="{{url('events/event/event-3.png')}}">
+                                        </div>
+                                        <div class="single-blog-text">
+                                            <a class="blog-title" href="#">Tedx Moscow Conference</a>
+                                            <div class="post-meta">
+                                                <a class="post-date" href="#"><i class="zmdi zmdi-alarm-check"></i>2023-04-20 21:00:00</a>
+                                            </div>
+                                            <p>International Curriculum Conference 2023: Vietnam ...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-xl-3 item-event">
+                                    <div class="single-blog-area style-2">
+                                        <div class="single-blog-thumb">
+                                            <img src="{{url('events/event/event-4.png')}}">
+                                        </div>
+                                        <div class="single-blog-text">
+                                            <a class="blog-title" href="#">Los Angeles Institute</a>
+                                            <div class="post-meta">
+                                                <a class="post-date" href="#"><i class="zmdi zmdi-alarm-check"></i>2023-04-20 21:00:00</a>
+                                            </div>
+                                            <p>International Curriculum Conference 2023: Vietnam ...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
                 <div class="col-12">
                     <div class="section-heading-2 ">
                         <p class="color-white">Find your event!</p>
                     </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12">
                     <div class="schedule-tab">
                         <div class="col-9">
                             <ul class="nav nav-tabs tab-m" id="conferScheduleTab" role="tablist">
@@ -70,7 +166,7 @@
                                     <div class="col-12 col-md-6 col-xl-3 item-event">
                                         <div class="single-blog-area style-2">
                                             <div class="single-blog-thumb">
-                                                <a href="{{route('web.events.show', $event->id)}}"><img src="{{$event->banner_url}}" alt=""></a>
+                                                <a href="{{route('web.events.show', $event->id)}}"><img src="{{$event->banner_url}}"></a>
                                             </div>
                                             <div class="single-blog-text">
                                                 <a class="blog-title" href="{{route('web.events.show', $event->id)}}">{{$event->name}}</a>
@@ -99,7 +195,7 @@
                                 <div class="col-12 col-md-6 col-xl-3 item-event">
                                     <div class="single-blog-area style-2">
                                         <div class="single-blog-thumb">
-                                            <a href="#"><img src="{{url('events/event/event-1.png')}}" alt=""></a>
+                                            <a href="#"><img src="{{url('events/event/event-1.png')}}"></a>
                                         </div>
                                         <div class="single-blog-text">
                                             <a class="blog-title" href="#">Street Food Convention</a>
@@ -113,7 +209,7 @@
                                 <div class="col-12 col-md-6 col-xl-3 item-event">
                                     <div class="single-blog-area style-2">
                                         <div class="single-blog-thumb">
-                                            <img src="{{url('events/event/event-2.png')}}" alt="">
+                                            <img src="{{url('events/event/event-2.png')}}">
                                         </div>
                                         <div class="single-blog-text">
                                             <a class="blog-title" href="#">Street Food Convention</a>
@@ -127,7 +223,7 @@
                                 <div class="col-12 col-md-6 col-xl-3 item-event">
                                     <div class="single-blog-area style-2">
                                         <div class="single-blog-thumb">
-                                            <img src="{{url('events/event/event-3.png')}}" alt="">
+                                            <img src="{{url('events/event/event-3.png')}}">
                                         </div>
                                         <div class="single-blog-text">
                                             <a class="blog-title" href="#">Tedx Moscow Conference</a>
@@ -141,7 +237,7 @@
                                 <div class="col-12 col-md-6 col-xl-3 item-event">
                                     <div class="single-blog-area style-2">
                                         <div class="single-blog-thumb">
-                                            <img src="{{url('events/event/event-4.png')}}" alt="">
+                                            <img src="{{url('events/event/event-4.png')}}">
                                         </div>
                                         <div class="single-blog-text">
                                             <a class="blog-title" href="#">Los Angeles Institute</a>
@@ -246,49 +342,49 @@
                 <div class="col-12">
                     <div class="our-sponsor-area d-flex flex-wrap">
                         <div class="single-sponsor">
-                            <img src="{{url('events/clients/client-01.svg')}}" alt="">
+                            <img src="{{url('events/clients/client-01.svg')}}">
                             <h5>GFI Ventures</h5>
                             <p>16,734 followers</p>
                             <a href="#">Follow</a>
                         </div>
                         <div class="single-sponsor">
-                            <img src="{{url('events/clients/client-02.svg')}}" alt="">
+                            <img src="{{url('events/clients/client-02.svg')}}">
                             <h5>Vaix Vietnam</h5>
                             <p>16,734 followers</p>
                             <a href="#">Follow</a>
                         </div>
                         <div class="single-sponsor">
-                            <img src="{{url('events/clients/client-03.svg')}}" alt="">
+                            <img src="{{url('events/clients/client-03.svg')}}">
                             <h5>V2B Labs</h5>
                             <p>16734 followers</p>
                             <a href="#">Follow</a>
                         </div>
                         <div class="single-sponsor">
-                            <img src="{{url('events/clients/client-04.svg')}}" alt="">
+                            <img src="{{url('events/clients/client-04.svg')}}">
                             <h5>Keller Williams Vietnam</h5>
                             <p>16734 followers</p>
                             <a href="#">Follow</a>
                         </div>
                         <div class="single-sponsor">
-                            <img src="{{url('events/clients/client-05.svg')}}" alt="">
+                            <img src="{{url('events/clients/client-05.svg')}}">
                             <h5>Coin98</h5>
                             <p>16734 followers</p>
                             <a href="#">Follow</a>
                         </div>
                         <div class="single-sponsor">
-                            <img src="{{url('events/clients/client-06.svg')}}" alt="">
+                            <img src="{{url('events/clients/client-06.svg')}}">
                             <h5>Kyber Network</h5>
                             <p>16734 followers</p>
                             <a href="#">Follow</a>
                         </div>
                         <div class="single-sponsor">
-                            <img src="{{url('events/clients/client-07.svg')}}" alt="">
+                            <img src="{{url('events/clients/client-07.svg')}}">
                             <h5>BlockX Network</h5>
                             <p>16734 followers</p>
                             <a href="#">Follow</a>
                         </div>
                         <div class="single-sponsor">
-                            <img src="{{url('events/clients/client-08.svg')}}" alt="">
+                            <img src="{{url('events/clients/client-08.svg')}}">
                             <h5>K300 Ventures</h5>
                             <p>16734 followers</p>
                             <a href="#">Follow</a>

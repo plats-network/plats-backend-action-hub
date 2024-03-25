@@ -38,7 +38,7 @@ class Home extends Controller
         private TaskEvent       $eventModel,
         private Task            $task,
         private User            $user,
-        private UserService       $userService,
+        private UserService     $userService,
         private Sponsor         $sponsor,
         private UserJoinEvent   $taskDone,
         private TaskEventDetail $eventDetail,
@@ -52,22 +52,45 @@ class Home extends Controller
 
     public function index(Request $request)
     {
-
+    
         try {
+
             $limit = $request->get('limit') ?? 4;
+            
+            $user = Auth::user();
+
+            // Sử dụng mối quan hệ để lấy thông tin
+            $eventsQuery = Task::where('status', 1)
+                ->whereNotNull('name')
+                ->whereNotNull('description')
+                ->orderBy('id', 'DESC');
+
+            //lấy thông tin user tham gia sự kiện
+            if (!empty($user)) {
+                    $eventsQuery = $eventsQuery->whereHas('userEvents', function ($query) use ($user) {
+                    $query->where('user_id', $user['id']);
+                });
+            }
+
+            $eventsPendings = $eventsQuery->paginate(4);
+            
+            //lấy thông tin các sự kiện
             $events = $this->taskService->search([
                 'limit' => $limit,
                 'type' => 1,
                 'status' => 1
             ]);
-
+            
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());
         }
-      
-        return view('web.home', [
-            'events' => $events
-        ]);
+
+        $data =  [
+            'events' => $events,
+            'eventsPendings'=>$eventsPendings
+        ];
+        
+        return view('web.home',$data);
     }
 
     //createCrowdSponsor
@@ -549,19 +572,43 @@ class Home extends Controller
     public function events(Request $request)
     {
         try {
+
+            $eventsPendings = [];
+
             $limit = $request->get('limit') ?? 100;
+            
             $events = $this->taskService->search([
                 'limit' => $limit,
                 'type' => 1,
                 'status' => 1
             ]);
+
+            $user = Auth::user();
+
+            //lấy thông tin user tham gia sự kiện
+            if (!empty($user)) {
+                
+                // Sử dụng mối quan hệ để lấy thông tin
+                $eventsPendings = Task::where(['tasks.status'=>1])
+                    ->join('user_events','tasks.id','=','user_events.task_id')
+                    ->whereNotNull('tasks.name')
+                    ->whereNotNull('tasks.description')
+                    ->where(['user_events.user_id'=>$user['id']])
+                    ->orderBy('tasks.id', 'DESC')
+                    ->paginate(10);
+                
+            }
+
         } catch (\Exception $e) {
             Log::error('Errors: ' . $e->getMessage());
         }
+        
+        $data = [
+            'events' => $events,
+            'eventsPending'=> $eventsPendings
+        ];
 
-        return view('web.events.index', [
-            'events' => $events
-        ]);
+        return view('web.events.index', $data);
     }
 
     // User work job session, booth
