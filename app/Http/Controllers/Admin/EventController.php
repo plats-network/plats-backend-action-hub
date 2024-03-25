@@ -624,7 +624,7 @@ class EventController extends Controller
         }
 
 
-        $task['group_tasks'] = $taskGroup;
+        $task['group_tasks'] = $taskGroup ?? [];
         $task['task_galleries'] = $image;
         $task['booths'] = $booths;
         $task['sessions'] = $sessions;
@@ -677,7 +677,7 @@ class EventController extends Controller
             $select_session_id = $itemSession->id;
             break;
         }
-
+       
         $data = [
             'eventId' => $eventId,
             'allNetwork' => $allNetwork,
@@ -687,7 +687,7 @@ class EventController extends Controller
             'sessions' => $sessions,
             'booths' => $booths,
             'quiz' => $quiz,
-            'qrCode' => $qrCode,
+            'qrCode' => base64_encode($qrCode),
             'userCheckIn' => $userCheckIn,
             'select_session_id' => $select_session_id,
             'sponsor' => $sponsor,
