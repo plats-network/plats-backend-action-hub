@@ -31,9 +31,9 @@
     <div class="text-center mb-4">
         <h5>Sessions</h5>
         <p class="card-title-desc text-danger">
-            - Trong sự kiện bạn tổ chức nếu có session thì vui lòng tạo sesion
+            - In the event you organize, if there is a session, please create a session
             <br>
-            - Nếu không có session bạn ấn "Next" để bỏ qua bước tạo session
+            - If you do not have a session, click "Next" to skip the step of creating a session
         </p>
     </div>
     <div>
@@ -159,7 +159,7 @@
                                 value="0">
 
                             <label class="col-sm-12 col-form-label">
-                                Session {{$loop->index+1}}<span class="text-danger" style="font-size: 11px;"> (Chú ý: Những trường có dấu * bắt buộc phải nhập)</span>
+                                Session {{$loop->index+1}}<span class="text-danger" style="font-size: 11px;"> (Note: Fields marked with * are required)</span>
                             </label>
                             <div class="row">
                                 <div class="col-lg-4">

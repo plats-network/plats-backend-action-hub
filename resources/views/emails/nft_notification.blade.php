@@ -3,24 +3,24 @@
 @component('mail::message')
     # Thông Báo Nhận NFT
 
-    Chào bạn {{ $userName }},
+    Hi {{ $userName }},
 
-    Chúc mừng! Bạn vừa nhận được một món quà NFT từ {{ $senderName }}. Dưới đây là thông tin chi tiết về NFT của bạn:
+    Congratulations! You just received an NFT gift from {{ $senderName }}. Below are the details about your NFT:
 
-    **Tên NFT:** {{ $nftName }}
-    **Mô tả:** {{ $nftDescription }}
-    **Đường Dẫn Xem NFT:** [{{$nftUrl}}]
+    **Name NFT:** {{ $nftName }}
+    **Describe:** {{ $nftDescription }}
+    **Link NFT:** [{{$nftUrl}}]
 
-    Hãy kiểm tra ngay và trải nghiệm NFT độc đáo của bạn!
+    Check it out now and experience your unique NFT!
 
     @component('mail::button', ['url' => $nftUrl])
-        Xem NFT
+        View NFT
     @endcomponent
 
-    Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ, đừng ngần ngại liên hệ với chúng tôi.
+    If you have any questions or need assistance, don't hesitate to contact us.
 
-    Cảm ơn bạn đã tham gia cộng đồng của chúng tôi và chúc bạn có những trải nghiệm thú vị với NFT của mình.
+    Thank you for joining our community and have fun with your NFT.
 
-    Trân trọng,
+    Best regards,
     Platform Team
 @endcomponent

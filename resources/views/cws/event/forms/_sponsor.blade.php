@@ -84,7 +84,7 @@
                             value="0">
 
                         <label class="col-sm-12 col-form-label">
-                            Sponsor package {{$loop->index+1}} <span class="text-danger" style="font-size: 11px;"> (Chú ý: Những trường có dấu * bắt buộc phải nhập)</span>
+                            Sponsor package {{$loop->index+1}} <span class="text-danger" style="font-size: 11px;"> (Note: Fields marked with * are required)</span>
                         </label>
                         <div class="row">
                             <div class="col-sm-8">
