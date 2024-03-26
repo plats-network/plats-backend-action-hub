@@ -532,16 +532,20 @@
                                             <div class="col-12 mt-4">
                                                 <div class="row">
                                                     <div class="col-6 col-md-6">
-                                                        <h2>Booth</h2>                                               
-                                                        <canvas class="my-4 w-100" id="boothChart" width="900"
-                                                                    height="380">
-                                                        </canvas>
+                                                        @if(!empty($booths['detail']))
+                                                            <h2>Booth</h2>                                               
+                                                            <canvas class="my-4 w-100" id="boothChart" width="900"
+                                                                        height="380">
+                                                            </canvas>
+                                                        @endif
                                                     </div>
                                                     <div class="col-6 col-md-6">
-                                                        <h2>Session</h2>
-                                                        <canvas class="my-4 w-100" id="sessionChart" width="900"
-                                                                    height="380">
-                                                        </canvas>
+                                                        @if(!empty($sessions['detail']))
+                                                            <h2>Session</h2>
+                                                            <canvas class="my-4 w-100" id="sessionChart" width="900"
+                                                                        height="380">
+                                                            </canvas>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
@@ -1671,7 +1675,9 @@
 
         // Lặp qua mỗi phần tử trong mảng JSON và đẩy tên của booth vào mảng boothNames và giá trị của totalUserJob vào mảng totalUserJobs
         dataBooth.forEach(function(booth) {
-            boothNames.push(booth.name);
+            let words = booth.name.split(' ');
+            let truncatedName = words.length > 2 ? words.slice(0, 2).join(' ') + ' ...' : booth.name;
+            boothNames.push(truncatedName);
             totalBoothUserJobs.push(booth.totalUserJob);
         });
 
@@ -1682,7 +1688,7 @@
                 datasets: [{
                     data: totalBoothUserJobs,
                     lineTension: 0,
-                    backgroundColor: 'transparent',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: '#007bff',
                     borderWidth: 4,
                     pointBackgroundColor: '#007bff'
@@ -1711,7 +1717,9 @@
 
         // Lặp qua mỗi phần tử trong mảng JSON và đẩy tên của session vào mảng sessionNames và giá trị của totalUserJob vào mảng totalUserJobs
         dataSession.forEach(function(session) {
-            sessionNames.push(session.name);
+            let words = session.name.split(' ');
+            let truncatedName = words.length > 2 ? words.slice(0, 2).join(' ') + ' ...' : session.name;
+            sessionNames.push(truncatedName);
             totalSessionUserJobs.push(session.totalUserJob);
         });
 
@@ -1722,7 +1730,7 @@
                 datasets: [{
                     data: totalSessionUserJobs,
                     lineTension: 0,
-                    backgroundColor: 'transparent',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: '#007bff',
                     borderWidth: 4,
                     pointBackgroundColor: '#007bff'
@@ -1738,9 +1746,7 @@
                     }
                 },
                 scales: {
-                    x: {
-                        barThickness: 2 // Điều chỉnh kích thước của cột (50% của chiều rộng của label)
-                    }
+                  
                 }
             }
         });
