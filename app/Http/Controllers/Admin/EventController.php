@@ -12,7 +12,9 @@ use App\Models\Event\{
     TaskEventDetail,
     TaskEventReward,
     EventUserTicket,
-    UserCode
+    UserCode,
+    UserJoinEvent,
+    UserEvent
 };
 use App\Models\Quiz\Quiz;
 use App\Models\Game\{MiniGame};
@@ -564,17 +566,27 @@ class EventController extends Controller
         $task = Task::with('taskSocials', 'taskLocations', 'taskEventSocials', 'taskGenerateLinks', 'taskEventDiscords')->find($id);
 
         $taskGroup = TaskGroup::where('task_id', $id)->pluck('group_id');
+
         $taskGallery = TaskGallery::where('task_id', $id)->pluck('url_image');
 
         $booths = TaskEvent::where('task_id', $id)
             ->with('detail')->where('type', 1)
             ->first();
 
+        foreach($booths['detail'] as $booth){
+            
+            $booth['totalUserJob']  = totalUserJob($booth['id']);
+        }
+        
         $sessions = TaskEvent::where('task_id', $id)->with('detail')
             ->where('type', 0)
             ->first();
 
-
+        foreach($sessions['detail'] as $session){
+            
+            $session['totalUserJob']  = totalUserJob($session['id']);
+        }
+        
         $sponsor = $this->sponsor->whereTaskId($id)->first();
 
         $taskEventDiscords = $task->taskEventDiscords;
@@ -667,19 +679,20 @@ class EventController extends Controller
             $nftItems->save();
         }
         //Get first $sessions id
-        $sessionsPlay = TaskEventDetail::query()
+        $select_session_id = TaskEventDetail::query()
             ->whereTaskEventId($sessions->id)
-            //->orderBy('sort', 'asc')
             ->orderBy('created_at', 'asc')
-            ->get();
+            ->value('id');
 
-        $select_session_id = 0;
-        foreach ($sessionsPlay as $itemSession) {
+        //tổng user tham gia sự kiện
+        $countUserJoinEvent = UserJoinEvent::where('task_id', $id)->count();
 
-            $select_session_id = $itemSession->id;
-            break;
-        }
-       
+        //tổng user đăng kí sự kiện
+        $countUserRegisterEvent = EventUserTicket::where('task_id', $id)->count();
+
+        //user vào sự kiện
+        $dataUserJoinEvent = UserJoinEvent::select('user_id','updated_at','type')->get();
+        
         $data = [
             'eventId' => $eventId,
             'allNetwork' => $allNetwork,
@@ -691,7 +704,7 @@ class EventController extends Controller
             'quiz' => $quiz,
             'qrCode' => base64_encode($qrCode),
             'userCheckIn' => $userCheckIn,
-            'select_session_id' => $select_session_id,
+            'select_session_id' =>  $select_session_id,
             'sponsor' => $sponsor,
             'taskEventSocials' => $taskEventSocials,
             'taskEventDiscords' => $taskEventDiscords,
@@ -701,12 +714,16 @@ class EventController extends Controller
             'activeTab' => $activeTab,
             'is_update' => 1,
             'isPreview' => $isPreview,
-            'travelGames' => $travelGames
+            'travelGames' => $travelGames,
+            'countUser'=>[
+                'userJoinEvent'=>$countUserJoinEvent,
+                'userRegisterEvent'=>$countUserRegisterEvent
+            ]
         ];
 
         return view('cws.event.edit', $data);
     }
-
+  
     private function listUsers($id)
     {
         $users = [];
