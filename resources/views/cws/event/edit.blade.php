@@ -498,7 +498,7 @@
                                         <div class="text-center mb-4">
                                             <h5>Dashboard</h5>
                                             <p class="card-title-desc text-success">
-                                                - Thống kê sự kiện
+                                                - Statistical facts
                                             </p>
                                         </div>
                                         <div class="row">
@@ -509,18 +509,19 @@
                                                 <div class="row">
                                                     <div class="col-md-6 col-12">
                                                         <div class="user-event">
-                                                            <p>Số lượng tham gia event</p>
+                                                            <p>Number of participants in the event</p>
                                                             <div class="text-right">
-                                                                <h2>454</h2>
+                                                                <h2>{{ $countUser['userJoinEvent'] }}</h2>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-6 col-12">
                                                         <div class="user-event">
-                                                            <p>Số lượng đămg kí event</p>
+                                                            <p>Number of event registrations</p>
                                                             <div class="text-right">
-                                                                <h2>454</h2>
+                                                                
+                                                                <h2>{{ $countUser['userRegisterEvent'] }}</h2>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -531,7 +532,7 @@
                                             <div class="col-12 mt-4">
                                                 <div class="row">
                                                     <div class="col-6 col-md-6">
-                                                        <h2>Booth</h2>
+                                                        <h2>Booth</h2>                                               
                                                         <canvas class="my-4 w-100" id="boothChart" width="900"
                                                                     height="380">
                                                         </canvas>
@@ -698,7 +699,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js"
             integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp"
             crossorigin="anonymous"></script>
-    <script src="dashboard.js"></script></body>
+    <script src="dashboard.js"></script>
 
     <script type="text/javascript"
             src="https://maps.google.com/maps/api/js?key={{ env('GOOGLE_MAP_KEY') }}&libraries=places"></script>
@@ -1658,31 +1659,28 @@
     </script>
 
     <script>
+
         // boothChart
         const ctxBooth = document.getElementById('boothChart')
+
         // eslint-disable-next-line no-unused-vars
+        const dataBooth = {!! json_encode($booths['detail']) !!};
+
+        const boothNames = [];
+        const totalBoothUserJobs = [];
+
+        // Lặp qua mỗi phần tử trong mảng JSON và đẩy tên của booth vào mảng boothNames và giá trị của totalUserJob vào mảng totalUserJobs
+        dataBooth.forEach(function(booth) {
+            boothNames.push(booth.name);
+            totalBoothUserJobs.push(booth.totalUserJob);
+        });
+
         const boothChart = new Chart(ctxBooth, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: [
-                    'Sunday',
-                    'Monday',
-                    'Tuesday',
-                    'Wednesday',
-                    'Thursday',
-                    'Friday',
-                    'Saturday'
-                ],
+                labels: boothNames,
                 datasets: [{
-                    data: [
-                        10,
-                        120,
-                        100,
-                        190,
-                        150,
-                        200,
-                        300
-                    ],
+                    data: totalBoothUserJobs,
                     lineTension: 0,
                     backgroundColor: 'transparent',
                     borderColor: '#007bff',
@@ -1696,37 +1694,33 @@
                         display: false
                     },
                     tooltip: {
-                        boxPadding: 3
+                        boxPadding: 1
                     }
                 }
             }
-        })
+      });
 
         // sessionChart
         const ctxSession = document.getElementById('sessionChart')
+        
         // eslint-disable-next-line no-unused-vars
+        const dataSession = {!! json_encode($sessions['detail']) !!};
+
+        const sessionNames = [];
+        const totalSessionUserJobs = [];
+
+        // Lặp qua mỗi phần tử trong mảng JSON và đẩy tên của session vào mảng sessionNames và giá trị của totalUserJob vào mảng totalUserJobs
+        dataSession.forEach(function(session) {
+            sessionNames.push(session.name);
+            totalSessionUserJobs.push(session.totalUserJob);
+        });
+
         const sessionChart = new Chart(ctxSession, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: [
-                    'Sunday',
-                    'Monday',
-                    'Tuesday',
-                    'Wednesday',
-                    'Thursday',
-                    'Friday',
-                    'Saturday'
-                ],
+                labels: sessionNames,
                 datasets: [{
-                    data: [
-                        10,
-                        120,
-                        100,
-                        190,
-                        150,
-                        200,
-                        300
-                    ],
+                    data: totalSessionUserJobs,
                     lineTension: 0,
                     backgroundColor: 'transparent',
                     borderColor: '#007bff',
@@ -1742,9 +1736,14 @@
                     tooltip: {
                         boxPadding: 3
                     }
+                },
+                scales: {
+                    x: {
+                        barThickness: 2 // Điều chỉnh kích thước của cột (50% của chiều rộng của label)
+                    }
                 }
             }
-        })
+        });
     </script>
 
     {{--validate--}}
