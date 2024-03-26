@@ -82,7 +82,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function getAvatarPathAttribute()
     {
-        return BaseImage::loadImage($this->attributes['avatar_path']);
+        return BaseImage::loadImage($this->attributes['avatar_path'] ?? null);
     }
 
     /**
