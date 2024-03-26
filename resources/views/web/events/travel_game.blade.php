@@ -184,11 +184,11 @@
                             <div class="item">
                                 <h3 class="text-center">{{$session->name}}</h3>
                                 <p>
-                                    <strong>Nhiệm vụ (Missions):  Quét QR để nhận được một Mã số quay thưởng.</strong>
+                                    <strong>Missions:  Scan the QR to receive a Lucky Draw Code.</strong>
                                 </p>
-                                <p><strong>Mã số quay thưởng (Lucky Code):</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
+                                <p><strong>Lucky Code:</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span></p>
 
-                                <p><strong>Bạn đã tham gia:  <span style="color:green">{{$totalCompleted}}</span> / 8 sessions</strong></p>
+                                <p><strong>Joined:  <span style="color:green">{{$totalCompleted}}</span> / 8 sessions</strong></p>
                                 @if(false)
                                 <p><strong>Thời gian quay thưởng (Time):</strong> {{dateFormat($session->prize_at)}}</p>
                                 <p><strong>Địa điểm (Position):</strong> Hội trường chính (Main Stage)</p>

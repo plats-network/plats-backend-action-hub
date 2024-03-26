@@ -1,7 +1,7 @@
 <div class="mb-3 row itemSessionDetail" id="itemSession{{$indexImageItem}}">
     <hr>
     <label for="inputPassword" class="col-sm-12 col-form-label">
-        Session {{$getInc}}<span class="text-danger" style="font-size: 11px;">(Chú ý: Những trường có dấu * bắt buộc phải nhập)</span>
+        Session {{$getInc}}<span class="text-danger" style="font-size: 11px;">(Note: Fields marked with * are required)</span>
     </label>
     <div class="row">
         <div class="col-lg-4 mb-2">

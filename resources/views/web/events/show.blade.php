@@ -157,7 +157,7 @@
                                                         <p>Joined: <span style="color:green">{{$totalCompleted}}</span>
                                                             / {{$countEventDetail}}
                                                             sessions</p>
-                                                        <p>My Lucky Code: <span
+                                                        <p>Lucky Code: <span
                                                                 class="fs-25">{{$codes ? $codes : '---'}}</span></p>
                                                     </div>
                                                 @endforeach
@@ -186,7 +186,7 @@
                                                                 style="color:green">{{$totalCompletedBooth}}</span>
                                                             / {{$countEventDetailBooth}}
                                                             booth</p>
-                                                        <p>My Lucky Code: <span
+                                                        <p>Lucky Code: <span
                                                                 class="fs-25">{{$codesBooth ? $codesBooth : '---'}}</span>
                                                         </p>
                                                     </div>
@@ -242,8 +242,8 @@
                     <form id="tickit_form" method="POST" action="{{route('order.ticket')}}">
                         @csrf
                         @method('POST')
-                        <p class="text-danger text-center" style="padding-bottom: 20px;">Vui lòng nhập đúng thông tin
-                            email or số điện thoại để nhận đc những phần quà hấp dẫn từ sự kiện.</p>
+                        <p class="text-danger text-center" style="padding-bottom: 20px;">Please enter correct email or
+                            phone number information to receive attractive gifts from the event.</p>
 
                         <input type="hidden" name="task_id" value="{{$event->id}}">
 

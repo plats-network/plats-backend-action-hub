@@ -1,7 +1,7 @@
 <div class="mb-3 row itemSponsorDetail" id="itemSponsor{{$indexImageItem}}">
     <hr>
     <label class="col-sm-12 col-form-label">
-        Sponsor package {{$getInc}} <span class="text-danger fs-11">(Chú ý: Những trường có dấu * bắt buộc phải nhập)</span>
+        Sponsor package {{$getInc}} <span class="text-danger fs-11">(Note: Fields marked with * are required)</span>
     </label>
     <input
         type="hidden"

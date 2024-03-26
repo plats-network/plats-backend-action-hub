@@ -35,9 +35,9 @@
     <div class="text-center mb-4">
         <h5>Booths</h5>
         <p class="card-title-desc text-danger">
-            - Trong sự kiện bạn tổ chức nếu có booth thì vui lòng tạo booth
+            - If you have a booth during the event you organize, please create one
             <br>
-            - Nếu không có booth bạn ấn "Next" để bỏ qua bước tạo booth
+            - If you do not have a booth, click "Next" to skip the step of creating a booth
         </p>
     </div>
 
@@ -102,10 +102,10 @@
                                         <input class="form-control bg-input" type="text" name="name" id="b-desc">
                                         <p class="text-danger d-none" id="error-b-desc">Please imput cescription</p>
                                     </div>
-                                    <div class="col-sm-4">
-                                        <label class="col-form-label">Link NFT</label>
-                                        <input class="form-control bg-input" type="text" name="name" id="b-nft">
-                                    </div>
+{{--                                    <div class="col-sm-4">--}}
+{{--                                        <label class="col-form-label">Link NFT</label>--}}
+{{--                                        <input class="form-control bg-input" type="text" name="name" id="b-nft">--}}
+{{--                                    </div>--}}
                                     <div class="col-sm-2">
                                         <a
                                             class="btn btn-primary bbSave"
@@ -218,7 +218,7 @@
                                 name="booths[detail][{{$boothDetail->id}}][is_delete]"
                                 id="boothFlagDelete{{$boothDetail->id}}"
                                 value="0">
-                            <label class="col-sm-12 col-form-label">Booth {{$k+1}} <span class="text-danger" style="font-size: 11px;">(Chú ý: Những trường có dấu * bắt buộc phải nhập)</span></label>
+                            <label class="col-sm-12 col-form-label">Booth {{$k+1}} <span class="text-danger" style="font-size: 11px;">(Note: Fields marked with * are required)</span></label>
                             <div class="row">
                                 <div class="col-lg-4">
                                     <label class="col-form-label">Travel game</label>
@@ -264,13 +264,13 @@
                                 </label>
                             </div>
                             <div class="row">
-                                <div class="col-sm-8">
-                                    <label class="col-form-label">Link NFT <span class="text-danger fs-11">(optional)</span></label>
-                                    <input class="form-control"
-                                        type="text" name="booths[detail][{{$boothDetail->id}}][nft_link]"
-                                        value="{{$boothDetail->nft_link}}">
-                                </div>
-                                <div class="col-sm-4 text-right" style="margin-top: 20px;">
+{{--                                <div class="col-sm-8">--}}
+{{--                                    <label class="col-form-label">Link NFT <span class="text-danger fs-11">(optional)</span></label>--}}
+{{--                                    <input class="form-control"--}}
+{{--                                        type="text" name="booths[detail][{{$boothDetail->id}}][nft_link]"--}}
+{{--                                        value="{{$boothDetail->nft_link}}">--}}
+{{--                                </div>--}}
+                                <div class="col-sm-4 text-left" style="margin-top: 20px;">
                                     <div class="col-auto">
                                         <button type="button" data-id="{{$boothDetail->id}}" class="btn btn-danger mb-3 bRemove">Remove</button>
                                     </div>

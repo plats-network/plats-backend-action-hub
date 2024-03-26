@@ -1,7 +1,7 @@
 <div class="mb-3 row itemBoothDetail" id="itemBooth{{$indexImageItem}}">
     <hr>
     <label class="col-sm-12 col-form-label">
-        Booth {{$getInc}}<span class="text-danger" style="font-size: 11px;">(Chú ý: Những trường có dấu * bắt buộc phải nhập)</span>
+        Booth {{$getInc}}<span class="text-danger" style="font-size: 11px;">(Note: Fields marked with * are required)</span>
     </label>
     <div class="row">
         <div class="col-lg-4 mb-2">
@@ -30,7 +30,7 @@
             class="form-control"
             id="booths[detail][{{$indexImageItem}}][description]"
             name="booths[detail][{{$indexImageItem}}][description]"
-            placeholder="Mô tả {{$getInc}}"
+            placeholder="Describe {{$getInc}}"
             value="">
     </div>
 
@@ -47,10 +47,10 @@
         </label>
     </div>
     <div class="row">
-        <div class="col-sm-8">
-            <label class="col-form-label">Link NFT <span class="text-danger fs-11">(optional)</span></label>
-            <input class="form-control" type="" name="booths[detail][{{$indexImageItem}}][nft_link]">
-        </div>
+{{--        <div class="col-sm-8">--}}
+{{--            <label class="col-form-label">Link NFT <span class="text-danger fs-11">(optional)</span></label>--}}
+{{--            <input class="form-control" type="" name="booths[detail][{{$indexImageItem}}][nft_link]">--}}
+{{--        </div>--}}
         <div class="col-sm-4">
             <label class="col-form-label">&nbsp;</label>
             <div class="col-auto">
