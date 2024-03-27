@@ -43,14 +43,15 @@
             <div class="col-lg-9">
                 <div class="mb-3">
                     <label for="basicpill-pancard-input" class="form-label">Name</label>
-                    <input type="text" class="form-control" value="{{$sessions->name}}" placeholder="Name" id="sessions[name]" name="sessions[name]">
+                    <input type="text" class="form-control" value="{{$sessions->name}}" placeholder="Name"
+                           id="sessions[name]" name="sessions[name]">
                     <div class="valid-feedback"></div>
                 </div>
             </div>
             <div class="col-lg-2">
                 <div class="mb-3">
                     <label for="basicpill-vatno-input"
-                        class="form-label">Max job</label>
+                           class="form-label">Max job</label>
                     <input
                         type="number"
                         class="form-control"
@@ -70,10 +71,10 @@
                     <label for="basicpill-cstno-input" class="form-label">Description</label>
                     <div id="editor2"></div>
                     <input type="hidden"
-                        class="form-control"
-                        id="sessions-description"
-                        name="sessions[description]"
-                        value="{{$sessions->description}}" />
+                           class="form-control"
+                           id="sessions-description"
+                           name="sessions[description]"
+                           value="{{$sessions->description}}"/>
                 </div>
             </div>
         </div>
@@ -87,7 +88,7 @@
                         <th>Description</th>
                         <th>QR</th>
                         <th>Total</th>
-                        <th>Quiz</th>
+{{--                        <th>Quiz</th>--}}
                         <th>Click</th>
                         <th>QR <span class="text-danger">(ON/OFF)</span></th>
                         <th>Sort</th>
@@ -109,7 +110,7 @@
                                 <a class="se-donw mt-3" data-id="{{$session->id}}" data-num="{{$k+1}}" data-name="session">Download</a>
                            </td>
                            <td width="5%">{{totalUserJob($session->id)}}</td>
-                           <td width="5%">{{$session->is_question ? 'Yes' : 'No'}}</td>
+{{--                           <td width="5%">{{$session->is_question ? 'Yes' : 'No'}}</td>--}}
                            <td width="5%"><a href="{{$qr}}" target="_blank">link</a></td>
                            <td width="10%">
                                 <input
@@ -182,7 +183,7 @@
                                     value="{{$sessionDetail->name}}">
                             </div>
                             <div class="col-sm-4">
-                                <label class="col-form-label">Description <span class="text-danger" style="font-size: 11px;">(optional)</label>
+                                <label class="col-form-label">Description <span class="text-danger" style="font-size: 11px;">(optional)</span></label>
                                 <input
                                     type="text"
                                     placeholder="Description"
@@ -192,7 +193,8 @@
                                     value="{{$sessionDetail->description}}">
                             </div>
                             <div class="col-sm-4 mt-5 d-none">
-                                <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][is_required]" value="{{$sessionDetail->is_required}}">
+                                <input type="hidden" name="sessions[detail][{{$sessionDetail->id}}][is_required]"
+                                       value="{{$sessionDetail->is_required}}">
                                 <input
                                     class="form-check-input sCheck"
                                     data-id="{{$sessionDetail->id}}"
@@ -314,7 +316,9 @@
 
                             <div class="col-sm-12 text-right">
                                 <div class="col-auto">
-                                    <button type="button" data-id="{{$sessionDetail->id}}" class="btn btn-danger mb-3 sRemove">Remove</button>
+                                    <button type="button" data-id="{{$sessionDetail->id}}"
+                                            class="btn btn-danger mb-3 sRemove">Remove
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -328,7 +332,8 @@
                                 id="btnAddItemSession"
                                 type="button"
                                 class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2">
-                                <i class="mdi mdi-plus me-1"></i> Add More</button>
+                                <i class="mdi mdi-plus me-1"></i> Add More
+                            </button>
                         </div>
                     </div>
                     <hr>

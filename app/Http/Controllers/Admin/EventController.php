@@ -574,19 +574,19 @@ class EventController extends Controller
             ->first();
 
         foreach($booths['detail'] as $booth){
-            
+
             $booth['totalUserJob']  = totalUserJob($booth['id']);
         }
-        
+
         $sessions = TaskEvent::where('task_id', $id)->with('detail')
             ->where('type', 0)
             ->first();
 
         foreach($sessions['detail'] as $session){
-            
+
             $session['totalUserJob']  = totalUserJob($session['id']);
         }
-        
+
         $sponsor = $this->sponsor->whereTaskId($id)->first();
 
         $taskEventDiscords = $task->taskEventDiscords;
@@ -692,7 +692,7 @@ class EventController extends Controller
 
         //user vào sự kiện
         $dataUserJoinEvent = UserJoinEvent::select('user_id','updated_at','type')->get();
-        
+
         $data = [
             'eventId' => $eventId,
             'allNetwork' => $allNetwork,
@@ -723,7 +723,7 @@ class EventController extends Controller
 
         return view('cws.event.edit', $data);
     }
-  
+
     private function listUsers($id)
     {
         $users = [];

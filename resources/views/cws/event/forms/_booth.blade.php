@@ -125,7 +125,7 @@
                             <th>Vip</th>
                             <th>Click</th>
                             <th>QR <span class="text-danger">(ON/OFF)</span></th>
-                            <th>NFT</th>
+{{--                            <th>NFT</th>--}}
                             <th>Sort</th>
                             <th>Edit</th>
                         </tr>
@@ -179,7 +179,7 @@
                                         data-off-label="Off">
                                     </label>
                                </td>
-                               <td width="5%">{{$booth->nft_link ? 'Yes' : 'No'}}</td>
+{{--                               <td width="5%">{{$booth->nft_link ? 'Yes' : 'No'}}</td>--}}
                                <td width="10%">
                                     <select
                                         name="sort"
