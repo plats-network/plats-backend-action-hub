@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * 
+     *
      * The path to the "home" route for your application.
      *
      * This is used by Laravel authentication to redirect users after login.
@@ -49,6 +49,9 @@ class RouteServiceProvider extends ServiceProvider
             // Dev: https://dev-minigame.plats.network
             // Prod: https://minigame.plats.network
             $this->mapGameRoute(ENV('APP_URL'));
+
+            //Local: http://beta.plats.test/api
+            $this->mapApiBetaRoute(ENV('APP_URL'));
         });
     }
 
@@ -66,7 +69,7 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapApiRoute($domain)
     {
-        Route::domain(ENV('SUB_API').'.'.$domain)
+        Route::domain(ENV('SUB_API') . '.' . $domain)
             ->middleware(['api'])
             ->prefix('api')
             ->group(base_path('routes/api.php'));
@@ -74,22 +77,31 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapCwsRoute($domain)
     {
-        Route::domain(ENV('SUB_CWS').'.'.$domain)
+        Route::domain(ENV('SUB_CWS') . '.' . $domain)
             ->middleware(['web'])
             ->group(base_path('routes/admin.php'));
     }
 
     protected function mapEventRoute($domain)
     {
-        Route::domain(ENV('SUB_EVENT').'.'.$domain)
+        Route::domain(ENV('SUB_EVENT') . '.' . $domain)
             ->middleware(['web'])
             ->group(base_path('routes/web.php'));
     }
 
     protected function mapGameRoute($domain)
     {
-        Route::domain(ENV('SUB_MINIGAME').'.'.$domain)
+        Route::domain(ENV('SUB_MINIGAME') . '.' . $domain)
             ->middleware(['web'])
             ->group(base_path('routes/game.php'));
+    }
+
+    //api beta
+    protected function mapApiBetaRoute($domain)
+    {
+        Route::domain(ENV('BETA_API') . '.' . $domain)
+            ->middleware(['api'])
+            ->prefix('api')
+            ->group(base_path('routes/api/beta.php'));
     }
 }

@@ -76,7 +76,7 @@ Route::middleware(['client_admin'])->group(function($cws) {
 
     Route::get('/payment-success', [HomeController::class, 'paymentSuccess'])->name('payment-success');
 
-    Route::post('stripe/webhook', [App\Http\Controllers\StripeWebhookController::class, 'handleWebhook']);
+//    Route::post('stripe/webhook', [App\Http\Controllers\StripeWebhookController::class, 'handleWebhook']);
 
 
     //update db 17.10
