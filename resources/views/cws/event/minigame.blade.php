@@ -50,7 +50,7 @@
                     <table class="table table-bordered mb-0 table-responsive">
                         <thead class="table-light">
                             <tr>
-                                <th>Travel Game<br>Link Quay Thưởng</th>
+                                <th>Travel Game<br>Bonus Spin Link</th>
                                 <th>VIP(ON/OFF)</th>
                                 <th>Prize List<br>User List</th>
                                 <th>Status</th>
@@ -157,7 +157,7 @@
                     <table class="table table-bordered mb-0 table-responsive">
                         <thead class="table-light">
                             <tr>
-                                <th>Travel Game<br>Link Quay Thưởng</th>
+                                <th>Travel Game<br>Bonus Spin Link</th>
                                 <th>VIP(ON/OFF)</th>
                                 <th>Prize List<br>User List</th>
                                 <th>Status</th>
@@ -292,7 +292,7 @@
                 });
             });
 
-            
+
             $(document).on('click', '.vip', function (e) {
                 var url = $(this).data('url');
                 $.ajax({
