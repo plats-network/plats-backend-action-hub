@@ -158,7 +158,7 @@ class EventService extends BaseService
             $sponsors = Arr::get($data, 'sponsor');
 
             $data['banner_url'] =  isset($data['thumbnail']) ? $data['thumbnail']['path'] : '';
-            $data['creator_id'] = Auth::user()->id;
+            $data['creator_id'] = Auth::user()->id ?? 0;
             $data['status'] = 0;
             $data['slug'] = $request->input('name');
             $data['max_job'] = 0;

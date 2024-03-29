@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Symfony\Component\HttpFoundation\Response;
 
 class Controller extends BaseController
 {
@@ -31,14 +32,13 @@ class Controller extends BaseController
      *
      * @return JsonResponse
      */
-    public function responseApiError($data, string $message = 'Có lỗi xảy ra!', $code = 400): \Illuminate\Http\JsonResponse
+    public function responseApiError($data, string $message = 'Có lỗi xảy ra!', $code = Response::HTTP_BAD_REQUEST): \Illuminate\Http\JsonResponse
     {
 
         $responseMessage = [];
-        
-        if(is_array($message)){
-            foreach($message as $m){
-                if(is_array($m)){
+        if (is_array($message)) {
+            foreach ($message as $m) {
+                if (is_array($m)) {
                     $m = array_shift($m);
                 }
                 $responseMessage[] = $m;
