@@ -34,6 +34,7 @@ class Controller extends BaseController
      */
     public function responseApiError($data, string $message = 'Có lỗi xảy ra!', $code = Response::HTTP_BAD_REQUEST): \Illuminate\Http\JsonResponse
     {
+
         $responseMessage = [];
         if (is_array($message)) {
             foreach ($message as $m) {

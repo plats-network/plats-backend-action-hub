@@ -31,7 +31,9 @@ class EventService extends BaseService
 
     public function store($request)
     {
+        
         if ($request->has('id') && $request->filled('id')) {
+          
             return $this->update($request, $request->input('id'));
         }
 
@@ -40,10 +42,13 @@ class EventService extends BaseService
 
     public function update($request, $id)
     {
+
+        $request = isset($request) ?  $request :  $request->all();
+
         DB::beginTransaction();
 
         try {
-            $data = Arr::except($request->all(), '_token');
+            $data = Arr::except($request, '_token');
 
             $sessions = Arr::get($data, 'sessions');
             $booths = Arr::get($data, 'booths');
