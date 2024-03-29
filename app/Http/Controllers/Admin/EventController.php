@@ -754,9 +754,7 @@ class EventController extends Controller
     {
         try {
             $input = $request->all();
-
-            //dd($input);
-
+       
             $request->validate(['name' => 'required']);
             $this->eventService->store($request);
             notify()->success('Update successful!');
