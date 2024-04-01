@@ -107,7 +107,8 @@ Route::get('pricing', [PagesController::class, 'pricing'])->name('web.pricing');
 Route::get('resource', [PagesController::class, 'resource'])->name('web.resource');
 Route::get('contact', [PagesController::class, 'contact'])->name('web.contact');
 Route::get('lang/{lang}', [PagesController::class, 'lang'])->name('web.lang');
-
+Route::get('callback', [Home::class, 'callbackLogin'])->name('web.callback');
+//Route::get('callback', [Home::class, 'callbackLogin'])->name('web.callback');
 //Payment success
 Route::get('payment-success', [Home::class, 'paymentSuccess'])->name('web.paymentSuccess');
 

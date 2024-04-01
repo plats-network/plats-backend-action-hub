@@ -121,10 +121,10 @@
                                             <a class="nav-link navItemTab" id="navItemTab3" data-step="3" href="#">Check-in</a>
                                         </li>
                                     @endif
-{{--                                    <li class="nav-item">--}}
-{{--                                        <a class="nav-link navItemTab " id="navItemTab{{$is_update? "4": "3"}}"--}}
-{{--                                           data-step="{{$is_update? "4": "3"}}">NFT</a>--}}
-{{--                                    </li>--}}
+                                    <li class="nav-item">
+                                        <a class="nav-link navItemTab " id="navItemTab{{$is_update? "4": "3"}}"
+                                           data-step="{{$is_update? "4": "3"}}">NFT</a>
+                                    </li>
 {{--                                    <li class="nav-item d-none">--}}
 {{--                                        <a class="nav-link navItemTab" id="navItemTab{{$is_update? "5": "4"}}"--}}
 {{--                                           data-step="{{$is_update? "5": "4"}}" href="#">CrowdSponsor</a>--}}
@@ -256,6 +256,19 @@
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="mb-3">
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-primary w-sm ms-auto"
+                                                            id="connect_wallet">Connect Wallet
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="mb-3">
                                                         <label for="event_description" class="form-label">Description
                                                             <span class="text-danger">*</span></label>
 
@@ -322,82 +335,82 @@
                             @endif
 
                             {{--NFT--}}
-{{--                            <div id="tabwizard{{$is_update ? '4':'3'}}" class="wizard-tab" style="display: none;">--}}
-{{--                                <div>--}}
-{{--                                    <div class="text-center mb-4">--}}
-{{--                                        <h5>NFT Setting</h5>--}}
-{{--                                        <p class="card-title-desc text-success">--}}
-{{--                                            - Create NFT--}}
-{{--                                        </p>--}}
+                            <div id="tabwizard{{$is_update ? '4':'3'}}" class="wizard-tab" style="display: none;">
+                                <div>
+                                    <div class="text-center mb-4">
+                                        <h5>NFT Setting</h5>
+                                        <p class="card-title-desc text-success">
+                                            - Create NFT
+                                        </p>
 
-{{--                                    </div>--}}
+                                    </div>
 
-{{--                                </div>--}}
-{{--                                <div class="row">--}}
-{{--                                    <div class="col-lg-8">--}}
-{{--                                        <div class="mb-3 field-name">--}}
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="mb-3 field-name">
 
-{{--                                            <label for="nft[name]" class="form-label">Collection Name <span--}}
-{{--                                                    class="text-danger">*</span></label>--}}
-{{--                                            <input type="text" value="{{$nftItem->name}}" sponsor class="form-control"--}}
-{{--                                                   placeholder="" id="nft[name]" name="nft[name]" aria-invalid="false">--}}
-{{--                                            <div class="valid-feedback"></div>--}}
-{{--                                        </div>--}}
-{{--                                        --}}{{--Collection Description--}}
+                                            <label for="nft[name]" class="form-label">Collection Name <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" value="{{$nftItem->name}}" sponsor class="form-control"
+                                                   placeholder="" id="nft[name]" name="nft[name]" aria-invalid="false">
+                                            <div class="valid-feedback"></div>
+                                        </div>
+                                        Collection Description
 
-{{--                                        <div class="mb-3">--}}
-{{--                                            <label for="nft[description]" class="form-label">Collection--}}
-{{--                                                Description</label>--}}
-{{--                                            <textarea class="form-control" id="nft[description]" name="nft[description]"--}}
-{{--                                                      rows="3">{{$nftItem->description}}</textarea>--}}
-{{--                                        </div>--}}
+                                        <div class="mb-3">
+                                            <label for="nft[description]" class="form-label">Collection
+                                                Description</label>
+                                            <textarea class="form-control" id="nft[description]" name="nft[description]"
+                                                      rows="3">{{$nftItem->description}}</textarea>
+                                        </div>
 
-{{--                                        <div class="mb-3 field-name">--}}
+                                        <div class="mb-3 field-name">
 
-{{--                                            <label for="nft[size]" class="form-label">Collection Size <span--}}
-{{--                                                    class="text-danger">*</span></label>--}}
-{{--                                            <input type="text" value="{{$nftItem->size}}" class="form-control"--}}
-{{--                                                   placeholder="" id="nft[size]" name="nft[size]"--}}
-{{--                                                   data-listener-added_7f51dd21="true" aria-invalid="false">--}}
-{{--                                            <div class="valid-feedback"></div>--}}
-{{--                                        </div>--}}
+                                            <label for="nft[size]" class="form-label">Collection Size <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" value="{{$nftItem->size}}" class="form-control"
+                                                   placeholder="" id="nft[size]" name="nft[size]"
+                                                   data-listener-added_7f51dd21="true" aria-invalid="false">
+                                            <div class="valid-feedback"></div>
+                                        </div>
 
-{{--                                        <div class="mb-3 field-name">--}}
+                                        <div class="mb-3 field-name">
 
-{{--                                            <label for="nft[blockchain]" class="form-label">Blockchain <span--}}
-{{--                                                    class="text-danger">*</span></label>--}}
-{{--                                            <select class="form-select" id="nft[blockchain]" name="nft[blockchain]"--}}
-{{--                                                    aria-label="Default select example">--}}
-{{--                                                @foreach ($allNetwork as $key => $item)--}}
-{{--                                                    <option--}}
-{{--                                                        value="{{ $key }}" {{ ($nftItem->blockchain == $key) ? 'selected' : '' }}>{{ $item }}</option>--}}
-{{--                                                @endforeach--}}
-{{--                                            </select>--}}
-{{--                                            <div class="valid-feedback"></div>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="mb-3">--}}
-{{--                                            <div class="form-group field-article-thumbnail">--}}
-{{--                                                <label for="article-thumbnail" class="mb-3"><b>Image</b></label>--}}
-{{--                                                <div>--}}
-{{--                                                    <input type="hidden" id="article-thumbnail2" class="empty-value"--}}
-{{--                                                           name="thumbnail_nft">--}}
-{{--                                                    <input type="file" id="w2" accept="image/png, image/gif, image/jpeg"--}}
-{{--                                                           name="_fileinput_w2"></div>--}}
-{{--                                                <div class="invalid-feedback">--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="col-lg-4">--}}
-{{--                                        --}}{{--Payment Button--}}
-{{--                                        @if($is_update)--}}
-{{--                                            <a target="_blank"--}}
-{{--                                               href="{{route('payment-link', ['nft_id' => $nftItem->id, 'event_id' => $event->id])}}"--}}
-{{--                                               class="btn btn-info">Send Create NFT</a>--}}
-{{--                                        @endif--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
+                                            <label for="nft[blockchain]" class="form-label">Blockchain <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-select" id="nft[blockchain]" name="nft[blockchain]"
+                                                    aria-label="Default select example">
+                                                @foreach ($allNetwork as $key => $item)
+                                                    <option
+                                                        value="{{ $key }}" {{ ($nftItem->blockchain == $key) ? 'selected' : '' }}>{{ $item }}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="valid-feedback"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="form-group field-article-thumbnail">
+                                                <label for="article-thumbnail" class="mb-3"><b>Image</b></label>
+                                                <div>
+                                                    <input type="hidden" id="article-thumbnail2" class="empty-value"
+                                                           name="thumbnail_nft">
+                                                    <input type="file" id="w2" accept="image/png, image/gif, image/jpeg"
+                                                           name="_fileinput_w2"></div>
+                                                <div class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        Payment Button
+                                        @if($is_update)
+                                            <a target="_blank"
+                                               href="{{route('payment-link', ['nft_id' => $nftItem->id, 'event_id' => $event->id])}}"
+                                               class="btn btn-info">Send Create NFT</a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
 
 {{--                            <div id="tabwizard{{$is_update ? '5':'4'}}" class="wizard-tab" style="display: none">--}}
 {{--                                @include('cws.event.forms._sponsor', [--}}
@@ -520,7 +533,7 @@
                                                         <div class="user-event">
                                                             <p>Number of event registrations</p>
                                                             <div class="text-right">
-                                                                
+
                                                                 <h2>{{ $countUser['userRegisterEvent'] }}</h2>
                                                             </div>
                                                         </div>
@@ -533,7 +546,7 @@
                                                 <div class="row">
                                                     <div class="col-6 col-md-6">
                                                         @if(!empty($booths['detail']))
-                                                            <h2>Booth</h2>                                               
+                                                            <h2>Booth</h2>
                                                             <canvas class="my-4 w-100" id="boothChart" width="900"
                                                                         height="380">
                                                             </canvas>
@@ -1708,7 +1721,7 @@
 
         // sessionChart
         const ctxSession = document.getElementById('sessionChart')
-        
+
         // eslint-disable-next-line no-unused-vars
         const dataSession = {!! json_encode($sessions['detail']) !!};
 
@@ -1746,7 +1759,7 @@
                     }
                 },
                 scales: {
-                  
+
                 }
             }
         });
@@ -1857,4 +1870,27 @@
             ], []);
         });
     </script>
+    <style>
+        body #__sc__outer_modal {
+            top: 100px
+        }
+    </style>
 @endsection
+@push('custom-scripts')
+    <script src="{{ url('js/index.umd.js') }}"></script>
+    <script>
+        const solConnect = new window.SolanaConnect();
+
+        if (solConnect.getWallet()) {
+            $('#connect_wallet').hide()
+        }
+
+        $('#connect_wallet').click(function () {
+            solConnect.openMenu({
+                top: 100
+            });
+            $('#connect_wallet').text('Connected');
+        })
+
+    </script>
+@endpush

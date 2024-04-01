@@ -51,6 +51,7 @@ class NFT extends Model
         'collection_id',
         'owner_id',
         'contract_date',
+        'metadata'
     ];
 
 
