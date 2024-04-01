@@ -5,13 +5,13 @@ seeds = false
 skip-lint = false
 
 [programs.devnet]
-nft = "CYKRXdd4hnrKkA2HpdJAMcmeUauYXDJ4D5hqrnXUsFDg"
+mint_to = "D5GK8Kye78gjuDMMjRnkWH5a6KfNEXzex5mekXL3HLR2"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Devnet"
+cluster = "devnet"
 wallet = "/home/anh/.config/solana/id.json"
 
 [scripts]

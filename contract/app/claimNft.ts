@@ -29,25 +29,17 @@ async function mintNft() {
   const actionNftTitle = "Action NFT";
   const actionNftSymbol = "ACTION";
   const actionNftUri = "https://raw.githubusercontent.com/Coding-and-Crypto/Solana-NFT-Marketplace/master/assets/example.json"; 
-  const actionNftPrice = 0;
 
   const freeTicketNftTitle = "Free ticket NFT";
   const freeTicketNftSymbol = "FTICKET";
   const freeTicketNftUri = "https://raw.githubusercontent.com/Coding-and-Crypto/Solana-NFT-Marketplace/master/assets/example.json"; 
-  const freeTicketNftPrice = 0;
 
   const ticketNftTitle = "Ticket NFT";
   const ticketNftSymbol = "TICKET";
   const ticketNftUri = "https://raw.githubusercontent.com/Coding-and-Crypto/Solana-NFT-Marketplace/master/assets/example.json"; 
-  const ticketNftPrice = 123000000;
-  
   const TOKEN_METADATA_PROGRAM_ID = new PublicKey(
     "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
   );
-
-  // const mintKeypair = web3.Keypair.generate();
-  // console.log(`mint: ${mintKeypair.publicKey}`)
-  // console.log(`mint secret: ${mintKeypair.secretKey}`)
 
   const payerMint = Keypair.fromSecretKey(Uint8Array.from([
     208,32,235,43,108,17,94,0,58,152,203,22,78,114,36,184,81,177,102,173,49,1,246,137,27,167,96,62,200,39,60,244,58,205,50,173,207,138,166,222,183,97,57,233,167,247,218,194,224,24,230,75,232,119,44,39,208,112,252,142,250,93,136,227
@@ -55,38 +47,17 @@ async function mintNft() {
   const mintKeypair = new Wallet(payerMint);
   console.log(`mint: ${mintKeypair.publicKey}`)
 
-  const metadataAddress = (await web3.PublicKey.findProgramAddressSync(
-    [
-      Buffer.from("metadata"),
-      TOKEN_METADATA_PROGRAM_ID.toBuffer(),
-      mintKeypair.publicKey.toBuffer(),
-    ],
-    TOKEN_METADATA_PROGRAM_ID
-  ))[0];
-  console.log("Metadata initialized");
-  const masterEditionAddress = (await web3.PublicKey.findProgramAddressSync(
-    [
-      Buffer.from("metadata"),
-      TOKEN_METADATA_PROGRAM_ID.toBuffer(),
-      mintKeypair.publicKey.toBuffer(),
-      Buffer.from("edition"),
-    ],
-    TOKEN_METADATA_PROGRAM_ID
-  ))[0];
+//   const tokenAddress = await getAssociatedTokenAddress(
+//     mintKeypair.publicKey,
+//     wallet.publicKey
+//   );
 
-  const tokenAddress = await getAssociatedTokenAddress(
+  const buyTokenAddress = await getAssociatedTokenAddress(
     mintKeypair.publicKey,
-    wallet.publicKey
+    wallet0.publicKey
   );
 
-  // const buyTokenAddress = await getAssociatedTokenAddress(
-  //   mintKeypair.publicKey,
-  //   wallet0.publicKey
-  // );
-
-  
-  const seed = new BN(randomBytes(8));
-  console.log(`seed: ${seed}`)
+  const seed = new BN("15608558783288954992"); // TODO: enter seed
   const pool = web3.PublicKey.findProgramAddressSync(
     [
       Buffer.from("state"),
@@ -95,14 +66,15 @@ async function mintNft() {
     program.programId
   )[0];
 
-  console.log(`pool: ${pool}`)
-
   const poolTokenAddress = await getAssociatedTokenAddressSync(
     mintKeypair.publicKey,
     pool,
     true
   );
   console.log(`poolTokenAddress: ${poolTokenAddress}`)
+
+
+  const feeWallet = new PublicKey("9fXYPrfSfmenmPdyNW1AqaP5TSHMj5qkwwEuyQEa1ut2");
 
   // console.log(`metadata: ${metadataAddress}`)
   // console.log(`mintAuth: ${wallet.publicKey}`)
@@ -111,39 +83,54 @@ async function mintNft() {
   try{
     let tx = new Transaction();
     const setComputeUnitLimitInstruction = ComputeBudgetProgram.setComputeUnitLimit(
-      { units: 500_000 }
+      { units: 400_000 }
     );
-    // // ticket
-    const mintTx = await program.methods
-    .mint(ticketNftTitle, ticketNftSymbol, ticketNftUri)
-    .accounts(
-      {
-        masterEdition: masterEditionAddress,
-        metadata: metadataAddress,
-        mint: mintKeypair.publicKey,
-        tokenAccount: tokenAddress,
-        mintAuthority: wallet.publicKey,
-        tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
-      }
-    ).instruction();
-    console.log("mintTx")
+    // // action
+
+    // const transferTx = await program.methods
+    // .claim()
+    // .accounts(
+    //   {
+    //     mint: mintKeypair.publicKey,
+    //     ownerTokenAccount: tokenAddress,
+    //     ownerAuthority: wallet.publicKey,
+    //     buyerTokenAccount: buyTokenAddress,
+    //     buyerAuthority: wallet0.publicKey,
+    //   }
+    // ).instruction();
+
+    // // free ticket
+    
+    // const transferTx = await program.methods
+    // .claim()
+    // .accounts(
+    //   {
+    //     mint: mintAddr.publicKey,
+    //     ownerTokenAccount: tokenAddress,
+    //     ownerAuthority: owner,
+    //     buyerTokenAccount: buyTokenAddress,
+    //     buyerAuthority: wallet0.publicKey,
+    //   }
+    // ).instruction();
+
+    // ticket
     const transferTx = await program.methods
-    .deposit(seed, new BN(ticketNftPrice))
+    .claim()
     .accounts(
       {
         mint: mintKeypair.publicKey,
-        tokenAccount: tokenAddress,
-        mintAuthority: wallet.publicKey,
-        pool: pool,
         poolTokenAccount: poolTokenAddress,
+        pool: pool,
+        buyerTokenAccount: buyTokenAddress,
+        buyerAuthority: wallet0.publicKey,
+        feeWallet: wallet.publicKey,
       }
     ).instruction();
-    console.log("depositTx")
     tx.add(setComputeUnitLimitInstruction, transferTx);
     const createTx = await sendAndConfirmTransaction(
       connection,
       tx,
-      [payer, payerMint]
+      [payer0, payerMint]
     );
     console.log(tx)
 

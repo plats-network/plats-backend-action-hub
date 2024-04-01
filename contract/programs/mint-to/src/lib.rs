@@ -1,16 +1,11 @@
 use anchor_lang::prelude::*;
 
-pub mod mint;
-pub mod sell;
-pub mod claim;
-mod constants;
+mod instructions;
+mod states;
+mod error;
+use self::instructions::*;
 
-use mint::*;
-use sell::*;
-use claim::*;
-
-
-declare_id!("CYKRXdd4hnrKkA2HpdJAMcmeUauYXDJ4D5hqrnXUsFDg");
+declare_id!("D5GK8Kye78gjuDMMjRnkWH5a6KfNEXzex5mekXL3HLR2");
 
 
 #[program]
@@ -23,7 +18,7 @@ pub mod nft {
         metadata_symbol: String, 
         metadata_uri: String,
     ) -> Result<()> {
-        mint::mint(
+        MintNft::mint(
             ctx,
             metadata_title,
             metadata_symbol,
@@ -31,17 +26,21 @@ pub mod nft {
         )
     }
 
-    pub fn sell(
-        ctx: Context<SellNft>,
+    pub fn deposit(
+        ctx: Context<DepositNft>, 
+        seed: u64,
+        price: u64
     ) -> Result<()> {
-        sell::sell(
+        DepositNft::deposit(
             ctx,
+            seed,
+            price,
         )
     }
 
     pub fn claim(
         ctx: Context<ClaimNft>
     ) -> Result<()> {
-        claim::claim(ctx)
+        ClaimNft::claim(ctx)
     }
 }
