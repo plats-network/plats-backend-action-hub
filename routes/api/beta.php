@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 //tasks
 Route::group(['prefix' => 'tasks'], function () {
-    
+
     Route::put('/{taskId}', [App\Http\Controllers\Api\Beta\Admin\TaskController::class, 'update']);
 
     Route::delete('/{taskId}', [App\Http\Controllers\Api\Beta\Admin\TaskController::class, 'delete']);
@@ -22,8 +22,6 @@ Route::group(['prefix' => 'tasks'], function () {
 
     Route::post('event-create', [TaskController::class, 'store']);
 });
-
-Route::post('short-link', [ShortLinkController::class, 'create']);
 
 Route::post('event-job/{code}', [EventController::class, 'updateJob']);
 

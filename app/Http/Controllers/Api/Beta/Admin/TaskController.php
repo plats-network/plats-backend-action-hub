@@ -14,6 +14,7 @@ use App\Models\Url;
 use App\Services\Admin\EventService;
 use App\Services\Admin\TaskService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Admin\UploadController;
@@ -31,24 +32,25 @@ class TaskController extends Controller
 {
 
     public function __construct(
-        private EventService   $eventService,
+        private EventService     $eventService,
         private UploadController $uploadController,
-        private TaskService  $taskService,
+        private TaskService      $taskService,
     )
     {
         // code
     }
 
-    public function update(Request $request,$taskId){
+    public function update(Request $request, $taskId)
+    {
 
-        $data = $request->only(['name','address','lat','lng','start_at','end_at','thumbnail','description','sessions','booths']);
-        
+        $data = $request->only(['name', 'address', 'lat', 'lng', 'start_at', 'end_at', 'thumbnail', 'description', 'sessions', 'booths']);
+
         // Define the data to be validated and the validation rules separately
         $dataValidator = $data; // Assuming you want to validate all data fields
 
         // Set the value of 'id' field based on $taskId
         $dataValidator['id'] = $taskId ?? '';
-        
+
         $requireValidator = [
             'id' => 'required|string|min:1|exists:tasks', // Ensure valid UUID format
             'name' => 'required|string|max:255',
@@ -91,12 +93,12 @@ class TaskController extends Controller
         ];
 
         $messageValidator = [
-            'id.exists'=>'task Id not exits',
-            'id.required'=>'task Id required',
-            'id.string'=>'task Id is string',
+            'id.exists' => 'task Id not exits',
+            'id.required' => 'task Id required',
+            'id.string' => 'task Id is string',
         ];
 
-        $validator = Validator::make($dataValidator, $requireValidator,$messageValidator);
+        $validator = Validator::make($dataValidator, $requireValidator, $messageValidator);
 
         // validate data
         if ($validator->fails()) {
@@ -105,11 +107,11 @@ class TaskController extends Controller
 
             return $this->responseApiError($error);
         }
-        
+
         try {
 
             //cập nhật data vào service
-            $this->eventService->update($data,$taskId);
+            $this->eventService->update($data, $taskId);
 
             //trạng thái thành công
             return $this->responseApiSuccess($data);
@@ -120,36 +122,37 @@ class TaskController extends Controller
         }
     }
 
-    public function delete($taskId){
-     
+    public function delete($taskId)
+    {
+
         // Set the value of 'id' field based on $taskId
         $dataValidator['id'] = $taskId ?? '';
-        
+
         $requireValidator = [
             'id' => 'required|string|min:1|exists:tasks', // Ensure valid UUID format
         ];
- 
+
         $messageValidator = [
-            'id.exists'=>'task Id not exits',
-            'id.required'=>'task Id required',
-            'id.string'=>'task Id is string',
+            'id.exists' => 'task Id not exits',
+            'id.required' => 'task Id required',
+            'id.string' => 'task Id is string',
         ];
- 
-        $validator = Validator::make($dataValidator, $requireValidator,$messageValidator);
- 
+
+        $validator = Validator::make($dataValidator, $requireValidator, $messageValidator);
+
         // validate data
         if ($validator->fails()) {
- 
-             $error = $validator->messages()->first();
- 
-             return $this->responseApiError($error);
+
+            $error = $validator->messages()->first();
+
+            return $this->responseApiError($error);
         }
-        
+
         try {
 
             $task = Task::findOrFail($taskId)->update(['status' => 0]);
 
-            if(!$task){
+            if (!$task) {
 
                 return $this->responseApiError('Data table task not exits');
             }
@@ -164,22 +167,23 @@ class TaskController extends Controller
 
     }
 
-    public function upload(Request $request){
+    public function upload(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             '_fileinput_w0' => 'file|mimes:jpeg,jpg,png|max:10240', // Allowed formats: jpeg, jpg, png, max size: 10MB
         ]);
- 
+
         // validate data
         if ($validator->fails()) {
- 
-             $error = $validator->messages()->first();
- 
-             return $this->responseApiError($error);
+
+            $error = $validator->messages()->first();
+
+            return $this->responseApiError($error);
         }
 
         try {
-            
+
             $uploadSingle = $this->uploadController->uploadSingle($request);
 
             //trạng thái thành công
@@ -191,6 +195,7 @@ class TaskController extends Controller
         }
 
     }
+
     public function index(Request $request)
     {
         try {
@@ -242,12 +247,33 @@ class TaskController extends Controller
         }
     }
 
-    public function store(TaskRequest $request)
+    public function store(Request $request)
     {
+        $params = $request->only(['name', 'description', 'address', 'status', 'end_at', 'start_at', 'sessions', 'booths']);
+
+        $validator = Validator::make($params, [
+            'name' => 'required',
+            'description' => 'required',
+            'address' => 'required',
+            'status' => 'nullable',
+            'end_at' => 'required',
+            'start_at' => 'required',
+            'sessions' => 'nullable',
+            'sessions*.name' => 'required',
+            'booths' => 'nullable',
+            'booths*.name' => 'required',
+            'booths*.description' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->responseApiError([], $validator->errors()->first());
+        }
+
         try {
             $task = $this->eventService->store($request);
             return $this->responseApiSuccess($task);
         } catch (\Exception $exception) {
+            Log::info('log error', ['error' => $exception->getMessage()]);
             return $this->responseApiError([], $exception->getMessage());
         }
     }
