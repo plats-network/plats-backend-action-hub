@@ -18,7 +18,7 @@ return new class extends Migration
         });
 
         Schema::table('user_codes', function (Blueprint $table) {
-            $table->renameColumn('task_id', 'task_event_id');
+//            $table->renameColumn('task_id', 'task_event_id');
             $table->boolean('is_prize')->default(false);
             $table->string('name_prize')->nullable()->comment('Tên giải');
             $table->boolean('is_vip')->default(false)->comment('0: normal, 1: vip');

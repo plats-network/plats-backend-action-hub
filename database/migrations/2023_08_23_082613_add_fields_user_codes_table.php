@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('user_codes', function (Blueprint $table) {
-            $table->renameColumn('hash_code', 'color_code');
+//            $table->renameColumn('hash_code', 'color_code');
             $table->dropColumn('type');
         });
     }
