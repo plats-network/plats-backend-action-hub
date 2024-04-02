@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\View\Components\Base;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
@@ -52,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
         //09.12.2023
         //Version Website. Load From Env
         View::share('version', env('APP_VERSION', '2'));
+        Schema::defaultStringLength(191);
     }
 
     /**

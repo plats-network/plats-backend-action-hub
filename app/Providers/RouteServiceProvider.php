@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * 
+     *
      * The path to the "home" route for your application.
      *
      * This is used by Laravel authentication to redirect users after login.
@@ -49,6 +49,9 @@ class RouteServiceProvider extends ServiceProvider
             // Dev: https://dev-minigame.plats.network
             // Prod: https://minigame.plats.network
             $this->mapGameRoute(ENV('APP_URL'));
+
+            // Prod: https://colosseum.plats.network
+            $this->mapColosseumRoute(ENV('APP_URL'));
         });
     }
 
@@ -92,4 +95,12 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware(['web'])
             ->group(base_path('routes/game.php'));
     }
+
+    protected function mapColosseumRoute($domain)
+    {
+        Route::domain(ENV('SUB_COLOSSEUM').'.'.$domain)
+            ->middleware(['web'])
+            ->group(base_path('routes/web.php'));
+    }
+
 }
