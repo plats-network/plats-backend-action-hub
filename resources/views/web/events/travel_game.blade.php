@@ -55,7 +55,7 @@
     <style type="text/css">
         .tab-job {
             justify-content: center;
-            order-bottom: none;
+            border-bottom: none;
         }
 
         .nav-link {

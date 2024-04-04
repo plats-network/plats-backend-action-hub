@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Beta\Admin\EventController;
 use App\Http\Controllers\Api\Beta\Admin\ShortLinkController;
 use App\Http\Controllers\Api\Beta\Admin\TaskController;
+use App\Http\Controllers\Api\Beta\Member\LoginController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -30,3 +31,10 @@ Route::post('job-sort/{id}', [EventController::class, 'updateJobSort']);
 Route::post('update-boot-detail', [EventController::class, 'updateBoothDetail']);
 
 Route::post('create-short-link/{code}', [EventController::class, 'createShortLink']);
+
+//login
+Route::group(['prefix' => 'login'], function () {
+
+    Route::get('social', [LoginController::class, 'loginSocial']);
+
+});
