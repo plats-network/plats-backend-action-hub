@@ -573,20 +573,30 @@ class EventController extends Controller
             ->with('detail')->where('type', 1)
             ->first();
 
-        foreach($booths['detail'] as $booth){
+        if(!empty($booths['detail'])){
+            foreach($booths['detail'] as $booth){
 
-            $booth['totalUserJob']  = totalUserJob($booth['id']);
+                $booth['totalUserJob']  = totalUserJob($booth['id']);
+            }
         }
 
         $sessions = TaskEvent::where('task_id', $id)->with('detail')
             ->where('type', 0)
             ->first();
+            
+        if(!empty($sessions['detail'])){
+            
+            foreach($sessions['detail'] as $session){
 
-        foreach($sessions['detail'] as $session){
-
-            $session['totalUserJob']  = totalUserJob($session['id']);
+                $session['totalUserJob']  = totalUserJob($session['id']);
+            }
         }
 
+        //không có sự kiện thì trả về 404
+        if(empty($task)){
+            
+            abort(404);
+        }
         $sponsor = $this->sponsor->whereTaskId($id)->first();
 
         $taskEventDiscords = $task->taskEventDiscords;
@@ -644,7 +654,7 @@ class EventController extends Controller
         $task['sessions'] = $sessions;
         $task['quiz'] = $quiz;
         $task['sponsor'] = $sponsor;
-
+        
         $activeTab = $request->get('tab') ?? '0';
         //Is preview
         $isPreview = $request->get('preview') ?? '0';
@@ -685,13 +695,10 @@ class EventController extends Controller
             ->value('id');
 
         //tổng user tham gia sự kiện
-        $countUserJoinEvent = UserJoinEvent::where('task_id', $id)->count();
+        $countUserJoinEvent = EventUserTicket::where('task_id', $id)->sum('is_checkin');
 
         //tổng user đăng kí sự kiện
         $countUserRegisterEvent = EventUserTicket::where('task_id', $id)->count();
-
-        //user vào sự kiện
-        $dataUserJoinEvent = UserJoinEvent::select('user_id','updated_at','type')->get();
 
         $data = [
             'eventId' => $eventId,

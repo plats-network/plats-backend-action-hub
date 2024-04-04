@@ -520,7 +520,6 @@
                                                         <div class="user-event">
                                                             <p>Number of event registrations</p>
                                                             <div class="text-right">
-                                                                
                                                                 <h2>{{ $countUser['userRegisterEvent'] }}</h2>
                                                             </div>
                                                         </div>
@@ -531,8 +530,9 @@
                                             {{-- biểu đồ --}}
                                             <div class="col-12 mt-4">
                                                 <div class="row">
+                                                    
                                                     <div class="col-6 col-md-6">
-                                                        @if(!empty($booths['detail']))
+                                                        @if(!$booths['detail']->isEmpty())
                                                             <h2>Booth</h2>                                               
                                                             <canvas class="my-4 w-100" id="boothChart" width="900"
                                                                         height="380">
@@ -540,7 +540,7 @@
                                                         @endif
                                                     </div>
                                                     <div class="col-6 col-md-6">
-                                                        @if(!empty($sessions['detail']))
+                                                        @if(!$sessions['detail']->isEmpty())
                                                             <h2>Session</h2>
                                                             <canvas class="my-4 w-100" id="sessionChart" width="900"
                                                                         height="380">
@@ -1669,7 +1669,6 @@
 
         // eslint-disable-next-line no-unused-vars
         const dataBooth = {!! json_encode($booths['detail']) !!};
-
         const boothNames = [];
         const totalBoothUserJobs = [];
 
@@ -1689,9 +1688,9 @@
                     data: totalBoothUserJobs,
                     lineTension: 0,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: '#007bff',
-                    borderWidth: 4,
-                    pointBackgroundColor: '#007bff'
+                    borderColor: '#36a2eb',
+                    borderWidth: 2,
+                    borderRadius: 5,
                 }]
             },
             options: {
@@ -1731,9 +1730,9 @@
                     data: totalSessionUserJobs,
                     lineTension: 0,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: '#007bff',
-                    borderWidth: 4,
-                    pointBackgroundColor: '#007bff'
+                    borderColor: '#36a2eb',
+                    borderWidth: 2,
+                    borderRadius: 5,
                 }]
             },
             options: {
