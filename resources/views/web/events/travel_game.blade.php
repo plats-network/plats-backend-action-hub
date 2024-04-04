@@ -35,7 +35,7 @@
             color: #000 !important;
         }
 
-        .aaa {
+        .aaa,.infor-description {
             background-color: #fff8ea;
             padding: 7px 10px;
             border-radius: 10px;
@@ -55,7 +55,7 @@
     <style type="text/css">
         .tab-job {
             justify-content: center;
-            order-bottom: none;
+            border-bottom: none;
         }
 
         .nav-link {
@@ -124,153 +124,175 @@
                         <img style="width: 100%;" src="{{$event->banner_url}}" alt="{{$event->name}}">
                     </div>
                     <div class="aaa mt-2" style="margin-top: 15px; line-height: 20px;">
-                        Sự kiện 1000 CEO 2023 tại TP HCM 22/12/2023
-
-                        <p class="pp">1. Quy mô: một trong những sự kiện về chủ doanh nghiệp và NĐT lớn nhất VN với quy
-                            mô 1000 CEO + nhà đầu tư </p>
-
-                        <p class="pp">2. Uy tín: Sự kiện diễn ra lần đầu năm 2017. Năm nay 2023 là lần thứ 6 và là năm
-                            thứ 7 diễn ra sự kiện. Các sự kiện trước ghi nhận tỉ lệ hài lòng của người tham dự lên tới
-                            98.18% với sự tham gia của nhiều doanh nghiệp lớn hàng đầu tại VN </p>
-
-
-                        <div id="seeMore1" style="display: none;">
-                            <p class="pp">➤ 3. Kết nối: Thành viên tham dự được chọn lọc đa dạng ngành nghề: gồm các chủ
-                                doanh nghiệp, quản lý cấp cao và nhà đầu tư với rất nhiều ngành nghề khác nhau. 90% là
-                                các chủ doanh nghiệp SME, trong đó có 8% doanh nghiệp có doanh số trên 5M USD/năm và 3%
-                                doanh nghiệp có doanh số trên 50M USD/năm. Có 3 cơ hội giao lưu kết nối: session lớn với
-                                toàn bộ hội trường, lunch networking và VIP dinner networking với các doanh nghiệp
-                                VIP. </p>
-
-                            <p class="pp">➤ 4. Diễn giả và khách mời là những chuyên gia uy tín và doanh nghiệp lớn ở VN
-                                và quốc tế:</p>
-                            <p class="pp">1. Vietnam:</p>
-                            <p class="pp">1. Mr. Hoàng Đình Trọng - CT PDCA - trường đào tạo 30,000 CEO tại VN</p>
-                            <p class="pp"> 2. Mr. Hoàng Ngọc Gia Long - chủ tịch KW Vietnam, CEO & Founder SharkLand,
-                                SharkAgent, Zeniius với 5,000 CEO, nhà đầu tư và agent tại VN, ban chấp hành YBA HCM -
-                                tổ chức dành cho doanh nghiệp có lịch sử 30 năm và uy tín hàng đầu VN.</p>
-                            <p class="pp"> 3. Mr. Cao Minh Tuấn - chủ tịch tập đoàn nha khoa Saigon Tâm Đức với chuỗi 50
-                                phòng khám</p>
-                            <p class="pp"> 4. Mrs. Lê Thị Ngọc Thủy - chủ tịch Viva International với chuỗi 400 quán
-                                cafe Viva Coffee</p>
-                            <p class="pp"> 5. 20 chủ doanh nghiệp có chuyên môn và thành tích trong 20 lĩnh vực khác
-                                nhau.</p>
-
-                            <p class="pp">➤ 2. Quốc tế:</p>
-                            <p class="pp"> 1. thầy Adrian Wee - founder MMC với 40,000 doanh nghiệp tại Malaysia,
-                                Singapore, Thailand, Brunei...</p>
-                            <p class="pp"> 2. Dr. Dolf De Roos - từ USA- chuyên gia bất động sản hàng đầu thế giới và cố
-                                vấn của tổng thống Donald Trump, cố vấn của cha giàu và viết cùng sách với Donald Trump,
-                                Robert Kiyosaki, mạng lưới quan hệ có thể giúp mở rộng kinh doanh ra 27 quốc gia</p>
-                            <p class="pp"> 3. Mr. Park Bong Kyu - chủ tịch Korea CEO Summit với 8,000 doanh nghiệp Hàn
-                                Quốc như Samsung, Lotte và mạng lưới quan chức chính phủ Hàn Quốc -phó thủ tướng, bộ
-                                trưởng, thị trưởng Seoul, Busan...</p>
-                            <p class="pp"> 4. Mr. Abdulaziz Qambar - từ Trung Đông: Global Telecommunication leader: đã
-                                sáng lập nhiều công ty mạng di động với giá trị đầu tư vượt quá 10 tỷ đô la Mỹ giúp kết
-                                nối kinh doanh tại các nước Trung Đông.</p>
-                            <p class="pp"> 5. Mr. Mark Yamamoto - từ Nhật Bản: chủ tịch KW Nhật Bản với 15 sàn bất động
-                                sản và mạng lưới nhà đầu tư cá nhân, tổ chức có giá trị tài sản lớn tại Nhật Bản.</p>
-                            <p class="pp"> 6. Mr. Brady: Nexus - mạng lưới đầu tư bất động sản tại Anh
-                            <p class="pp"> 7. Freewill Capital: mạng lưới family office với các gia đình có tài sản trên
-                                100M USD tại VN & USA
-
-                            <p class="pp"> 5. Công nghệ: sự kiện duy nhất mà người tham dự có thể kết nối cùng lúc với
-                                gần 1000 CEO & nhà đầu tư thông qua app SharkLand với tính năng thẻ năng lực & MXH CEO -
-                                nhà đầu tư với thông tin đầy đủ, tìm kiếm và kết nối dễ dàng.</p>
-
-                            <p class="pp"> 6. Ban tổ chức: KW Vietnam và PDCA - thương hiệu nhượng quyền BDS top 1 thế
-                                giới (với networking mối quan hệ trên 60 nước) và thương hiệu đào tạo CEO top Vietnam
-                                với 30,000 CEO đã từng học</p>
-
-                            <p class="pp">➤ 7. Nội dung:</p>
-                            <p class="pp"> - có các phiên chính với nội dung về phương thức giúp CEO & nhà đầu tư vượt
-                                qua thời kỳ khó khăn và tận dụng những cơ hội lớn với kiến thức đến từ tập đoàn số 1 thế
-                                giới với chủ đề "Xuyên bão:" chiến lược CHUYỂN ĐỔI trong 2 đợt khủng hoảng đã đưa một
-                                doanh nghiệp lên top 1 thế giới & doanh số 535 tỷ USD như thế nào?</p>
-                            <p class="pp"> - 2 phiên tọa đàm với nhiều góc nhìn và kinh nghiệm thực tế chia sẻ từ các
-                                CEO VN và quốc tế</p>
-                            <p class="pp"> - cùng 20 workshop nhỏ về 20 nội dung khác nhau cho CEO & nhà đầu tư</p>
-
-                        </div>
-                        <p class="text-center" id="see1" style="cursor: pointer;">Read more</p>
+                        {!! $event['description'] !!}
+                        <!-- <p class="text-center" id="see1" style="cursor: pointer;">Read more</p> -->
                     </div>
                 </div>
-
-                <ul class="nav nav-tabs">
-                    <li><a data-toggle="tab" href="#sesion">Sessions Game</a></li>
-                </ul>
-
                 <div class="tab-content">
-                    <div id="sesion" class="tab-pane fade in active">
-                        @foreach($travelSessions as $k => $session)
-                            @php
-                                $codes = $userCode->where('user_id', $userId)
-                                    ->where('travel_game_id', $session->id)
-                                    ->where('task_event_id', $session_id)
-                                    ->where('type', 0)
-                                    ->pluck('number_code')
-                                    ->implode(',');
-                                $sTests = [];
-//                                dd($codes);
-                                if ($session->note) {
-                                    $sTests = explode('-', $session->note);
-                                }
-                            @endphp
-
-                            <div class="item">
-                                <h3 class="text-center">{{$session->name}}</h3>
-                                <p>
-                                    <strong>Missions: Scan the QR to receive a Lucky Draw Code.</strong>
-                                </p>
-                                <p><strong>Lucky Code:</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span>
-                                </p>
-
-                                <p><strong>Joined: <span style="color:green">{{$totalCompleted}}</span> / 8
-                                        sessions</strong></p>
-                                @if(false)
-                                    <p><strong>Prize drawing time:</strong> {{dateFormat($session->prize_at)}}</p>
-                                    <p><strong>Position:</strong> Main Stage</p>
-                                    <p><strong>Reward:</strong></p>
-
-                                    <p style="padding-left: 15px; line-height: 20px;">
-                                        @foreach($sTests as $item)
-                                            @if($item)
-                                                {!! '➤ '.$item.'<br>' !!}
-                                            @endif
-                                        @endforeach
+                    <nav>
+                        <ul class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <li>
+                                <a class="nav-link active" data-toggle="tab" href="#sesion" id="nav-sesion-tab" data-toggle="tab" data-target="#nav-session"  role="tab" aria-controls="nav-session" aria-selected="true">Sessions Game</a>
+                            </li>
+                            <li>
+                                <a class="nav-link" data-toggle="tab" href="#booth" id="nav-booth-tab" data-toggle="tab" data-target="#nav-booth"  role="tab" aria-controls="nav-booth" aria-selected="true">Booths Game</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-session" role="tabpanel" aria-labelledby="nav-sesion-tab">
+                            <div class="infor-description mt-2" >
+                        
+                                {!! $sessions['description'] !!}
+                                {{--  <p class="text-center" id="see1" style="cursor: pointer;">Read more</p>  --}}
+                            </div>
+                            @foreach($travelSessions as $k => $session)
+                                @php
+                                    $codes = $userCode->where('user_id', $userId)
+                                        ->where('travel_game_id', $session->id)
+                                        ->where('task_event_id', $session_id)
+                                        ->where('type', 0)
+                                        ->pluck('number_code')
+                                        ->implode(',');
+                                    $sTests = [];
+                                    if ($session->note) {
+                                        $sTests = explode('-', $session->note);
+                                    }
+                                @endphp
+                             
+                                <div class="item">
+                                    <h3 class="text-center">{{$session->name}}</h3>
+                                  
+                                    <p>
+                                        <strong>Missions: Scan the QR to receive a Lucky Draw Code.</strong>
                                     </p>
-                                @endif
-                            </div>
-                            <div class="timeline-container">
-                                @foreach($groupSessions as  $itemDatas)
-                                    <div id="day{{($loop->index+1)}}">&nbsp;</div>
+                                    <p><strong>Lucky Code:</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span>
+                                    </p>
+
+                                    <p><strong>Joined: <span style="color:green">{{ $totalSessionCompleted }}</span> / {{  count($sessions['detail']) }}
+                                            sessions</strong></p>
                                     @if(false)
-                                        <h3 class="step">{{$itemDatas && $itemDatas[0] ? $itemDatas[0]['travel_game_name'] : ''}}</h3>
-                                    @endif
-                                    <ul class="tl">
-                                        @foreach($itemDatas as $item)
-                                            <li class="tl-item {{ $item['flag'] ? '' : 'dashed'}}">
-                                                <div class="item-icon {{ $item['flag'] ? '' : 'not__active'}}"></div>
-                                                <div class="item-text">
-                                                    <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">
-                                                        <p class="{{$item['flag'] ? 'ac-color' : ''}}">
-                                                            {{Str::limit($item['name'], 50)}}
-                                                        </p>
-                                                    </div>
-                                                    {{-- <div class="item-detail {{$item['flag'] ? 'ac-color' : ''}}">{{Str::limit($item['desc'], 20)}}</div> --}}
-                                                </div>
-                                                @if ($item['date'])
-                                                    <div class="item-timestamp">
-                                                        {{$item['date']}}<br> {{$item['time']}}
-                                                    </div>
+                                        <p><strong>Prize drawing time:</strong> {{dateFormat($session->prize_at)}}</p>
+                                        <p><strong>Position:</strong> Main Stage</p>
+                                        <p><strong>Reward:</strong></p>
+
+                                        <p style="padding-left: 15px; line-height: 20px;">
+                                            @foreach($sTests as $item)
+                                                @if($item)
+                                                    {!! '➤ '.$item.'<br>' !!}
                                                 @endif
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                @endforeach
+                                            @endforeach
+                                        </p>
+                                    @endif
+                                </div>
+                                <div class="timeline-container">
+                                    @foreach($groupSessions as  $itemDatas)
+                                        <div id="day{{($loop->index+1)}}">&nbsp;</div>
+                                        @if(false)
+                                            <h3 class="step">{{$itemDatas && $itemDatas[0] ? $itemDatas[0]['travel_game_name'] : ''}}</h3>
+                                        @endif
+                                        <ul class="tl">
+                                            @foreach($itemDatas as $item)
+                                                <li class="tl-item {{ $item['flag'] ? '' : 'dashed'}}">
+                                                    <div class="item-icon {{ $item['flag'] ? '' : 'not__active'}}"></div>
+                                                    <div class="item-text">
+                                                        <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">
+                                                            <p class="{{$item['flag'] ? 'ac-color' : ''}}">
+                                                                {{Str::limit($item['name'], 50)}}
+                                                            </p>
+                                                        </div>
+                                                        {{-- <div class="item-detail {{$item['flag'] ? 'ac-color' : ''}}">{{Str::limit($item['desc'], 20)}}</div> --}}
+                                                    </div>
+                                                    @if ($item['date'])
+                                                        <div class="item-timestamp">
+                                                            {{$item['date']}}<br> {{$item['time']}}
+                                                        </div>
+                                                    @endif
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endforeach
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <div class="tab-pane fade" id="nav-booth" role="tabpanel" aria-labelledby="nav-booth-tab">
+                            <div class="infor-description a-2">
+                        
+                                {!! $booths['description'] !!}
+                                {{--  <p class="text-center" id="see1" style="cursor: pointer;">Read more</p>  --}}
                             </div>
-                        @endforeach
+                            @foreach($travelBooths as $k => $booth)
+                                @php
+                                    $codes = $userCode->where('user_id', $userId)
+                                        ->where('travel_game_id', $booth->id)
+                                        ->where('task_event_id', $session_id)
+                                        ->where('type', 0)
+                                        ->pluck('number_code')
+                                        ->implode(',');
+                                    $sTests = [];
+                                    if ($booth->note) {
+                                        $sTests = explode('-', $booth->note);
+                                    }
+                                @endphp
+                             
+                                <div class="item">
+                                    <h3 class="text-center">{{$booth->name}}</h3>
+                                  
+                                    <p>
+                                        <strong>Missions: Scan the QR to receive a Lucky Draw Code.</strong>
+                                    </p>
+                                    <p><strong>Lucky Code:</strong> <span class="fs-25">{{$codes ? $codes : '---'}}</span>
+                                    </p>
+
+                                    <p><strong>Joined: <span style="color:green">{{ $totalBoothCompleted }}</span> / {{  count($booths['detail']) }}
+                                            sessions</strong></p>
+                                    @if(false)
+                                        <p><strong>Prize drawing time:</strong> {{dateFormat($booth->prize_at)}}</p>
+                                        <p><strong>Position:</strong> Main Stage</p>
+                                        <p><strong>Reward:</strong></p>
+
+                                        <p style="padding-left: 15px; line-height: 20px;">
+                                            @foreach($sTests as $item)
+                                                @if($item)
+                                                    {!! '➤ '.$item.'<br>' !!}
+                                                @endif
+                                            @endforeach
+                                        </p>
+                                    @endif
+                                </div>
+                                <div class="timeline-container">
+                                    @foreach($groupBooths as  $itemDatas)
+                                        <div id="day{{($loop->index+1)}}">&nbsp;</div>
+                                        @if(false)
+                                            <h3 class="step">{{$itemDatas && $itemDatas[0] ? $itemDatas[0]['travel_game_name'] : ''}}</h3>
+                                        @endif
+                                        <ul class="tl">
+                                            @foreach($itemDatas as $item)
+                                                <li class="tl-item {{ $item['flag'] ? '' : 'dashed'}}">
+                                                    <div class="item-icon {{ $item['flag'] ? '' : 'not__active'}}"></div>
+                                                    <div class="item-text">
+                                                        <div class="item-title {{$item['flag'] ? '' : 'not-active'}}">
+                                                            <p class="{{$item['flag'] ? 'ac-color' : ''}}">
+                                                                {{Str::limit($item['name'], 50)}}
+                                                            </p>
+                                                        </div>
+                                                        {{-- <div class="item-detail {{$item['flag'] ? 'ac-color' : ''}}">{{Str::limit($item['desc'], 20)}}</div> --}}
+                                                    </div>
+                                                    @if ($item['date'])
+                                                        <div class="item-timestamp">
+                                                            {{$item['date']}}<br> {{$item['time']}}
+                                                        </div>
+                                                    @endif
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endforeach
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
+
 
                 </div>
 
