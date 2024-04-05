@@ -43,4 +43,8 @@ Route::group(['prefix' => 'login'], function () {
     Route::get('google-redirect', [LoginController::class, 'loginRedirectGoogle']);
     Route::get('google-callback', [LoginController::class, 'loginCallbackGoogle']);
 
+    //twitter
+    Route::get('twitter-redirect', [LoginController::class, 'loginRedirectTwitter']);
+    Route::get('twitter-callback', [LoginController::class, 'loginCallbackTwitter']);
+    
 });

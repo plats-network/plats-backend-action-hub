@@ -31,11 +31,14 @@ Route::get('/social', [LoginController::class, 'loginSocial']);
 Route::get('/google-redirect', [LoginController::class, 'loginRedirectGoogle'])->name('test-google-login');
 Route::get('/google-callback', [LoginController::class, 'loginCallbackGoogle']);
 
-Route::get('/appple-redirect', [LoginController::class, 'loginRedirectApple'])->name('test-appple-login');
-Route::get('/appple-callback', [LoginController::class, 'loginCallbackApple']);
-
 Route::get('/github-redirect', [LoginController::class, 'loginRedirectGithub'])->name('test-github-login');
 Route::get('/github-callback', [LoginController::class, 'loginCallbackGithub']);
+
+Route::get('/twitter-redirect', [LoginController::class, 'loginRedirectTwitter'])->name('test-twitter-login');
+Route::get('/twitter-callback', [LoginController::class, 'loginCallbackTwitter']);
+
+Route::get('/facebook-redirect', [LoginController::class, 'loginRedirectFacebook'])->name('test-facebook-login');
+Route::get('/facebook-callback', [LoginController::class, 'loginCallbackFacebook']);
 
 // Định nghĩa các route cho người dùng chưa đăng nhập (guest)
 Route::middleware(['guest'])->group(function ($auth) {

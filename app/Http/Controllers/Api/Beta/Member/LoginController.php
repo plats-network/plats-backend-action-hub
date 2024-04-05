@@ -45,13 +45,27 @@ class LoginController extends Controller
         return response()->json($user);
     }   
 
-    public function loginRedirectApple(){
-
-        return 1113232;
+    public function loginRedirectTwitter(){
+        
+        return Socialite::driver('twitter')->redirect();
     }
 
-    public function loginCallbackApple(){
+    public function loginCallbackTwitter(){
         
-        return 111;
+        $user = Socialite::driver('twitter')->user();
+
+        return response()->json($user);
+    }
+
+    public function loginRedirectFacebook(){
+        
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    public function loginCallbackFacebook(){
+        
+        $user = Socialite::driver('facebook')->user();
+        
+        return response()->json($user);
     }
 }

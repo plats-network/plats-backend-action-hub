@@ -9,7 +9,7 @@
 <body>
     <a href="{{ route('test-github-login') }}">dang ki github</a> <br>
     <a href="{{ route('test-google-login') }}">dang ki google</a> <br>
-    <a href="">dang ki facebook</a> <br>
-    <a href="{{ route('test-appple-login') }}">dang ki apple</a> 
+    <a href="{{ route('test-twitter-login') }}">dang ki twitter</a> <br>
+    <a href="{{ route('test-facebook-login') }}">dang ki facebook</a> <br>
 </body>
 </html>
