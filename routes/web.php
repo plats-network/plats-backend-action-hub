@@ -27,6 +27,7 @@ use App\Http\Controllers\Web\Auth\{
 };
 use App\Http\Controllers\Api\Beta\Member\LoginController;
 
+//test login social
 Route::get('/social', [LoginController::class, 'loginSocial']);
 Route::get('/google-redirect', [LoginController::class, 'loginRedirectGoogle'])->name('test-google-login');
 Route::get('/google-callback', [LoginController::class, 'loginCallbackGoogle']);
@@ -39,6 +40,7 @@ Route::get('/twitter-callback', [LoginController::class, 'loginCallbackTwitter']
 
 Route::get('/facebook-redirect', [LoginController::class, 'loginRedirectFacebook'])->name('test-facebook-login');
 Route::get('/facebook-callback', [LoginController::class, 'loginCallbackFacebook']);
+//test login social
 
 // Định nghĩa các route cho người dùng chưa đăng nhập (guest)
 Route::middleware(['guest'])->group(function ($auth) {

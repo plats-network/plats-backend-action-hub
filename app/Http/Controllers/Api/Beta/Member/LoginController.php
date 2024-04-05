@@ -34,7 +34,13 @@ class LoginController extends Controller
     public function loginRedirectGithub()
     {
 
-        return Socialite::driver('github')->redirect();
+        try {
+
+            return Socialite::driver('github')->redirect();
+        
+        } catch (\Throwable $th) {
+            return $this->responseApiError([], 'Cant`t login github');
+        }
     }
 
     public function loginCallbackGithub()
@@ -82,8 +88,14 @@ class LoginController extends Controller
 
     public function loginRedirectGoogle()
     {
+        
+        try {
 
-        return Socialite::driver('google')->redirect();
+            return Socialite::driver('google')->redirect();
+        } catch (\Throwable $th) {
+            return $this->responseApiError([], 'Cant`t login google');
+        }
+      
     }
 
     public function loginCallbackGoogle()
@@ -128,8 +140,13 @@ class LoginController extends Controller
 
     }
     public function loginRedirectTwitter(){
-        
-        return Socialite::driver('twitter')->redirect();
+
+        try {
+
+            return Socialite::driver('twitter')->redirect();
+        } catch (\Throwable $th) {
+            return $this->responseApiError([], 'Cant`t login twitter');
+        }
     }
 
     public function loginCallbackTwitter(){
@@ -176,7 +193,12 @@ class LoginController extends Controller
 
     public function loginRedirectFacebook(){
         
-        return Socialite::driver('facebook')->redirect();
+        try {
+
+            return Socialite::driver('facebook')->redirect();
+        } catch (\Throwable $th) {
+            return $this->responseApiError([], 'Cant`t login facebook');
+        }
     }
 
     public function loginCallbackFacebook(){
@@ -297,7 +319,7 @@ class LoginController extends Controller
 
             return $this->responseApiError([], 'Empty data input');
         }
-        
+
         $user = Auth::user();
         
         try {
