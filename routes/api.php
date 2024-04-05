@@ -65,7 +65,6 @@ Route::post('connect-wallet', [\App\Http\Controllers\FrontendController::class, 
 //Wallet Login
 Route::any('wallet-login', [\App\Http\Controllers\FrontendController::class, 'walletLogin'])->name('wallet-login');
 
-
 // Login
 Route::post('login', [Login::class, 'login'])->name('api.login');
 Route::post('login/social', [Login::class, 'socialLogin'])->name('api.socialLogin');

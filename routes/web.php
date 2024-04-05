@@ -25,6 +25,17 @@ use App\Http\Controllers\Web\Auth\{
     SignUp,
     ForgotPassword
 };
+use App\Http\Controllers\Api\Beta\Member\LoginController;
+
+Route::get('/social', [LoginController::class, 'loginSocial']);
+Route::get('/google-redirect', [LoginController::class, 'loginRedirectGoogle'])->name('test-google-login');
+Route::get('/google-callback', [LoginController::class, 'loginCallbackGoogle']);
+
+Route::get('/appple-redirect', [LoginController::class, 'loginRedirectApple'])->name('test-appple-login');
+Route::get('/appple-callback', [LoginController::class, 'loginCallbackApple']);
+
+Route::get('/github-redirect', [LoginController::class, 'loginRedirectGithub'])->name('test-github-login');
+Route::get('/github-callback', [LoginController::class, 'loginCallbackGithub']);
 
 // Định nghĩa các route cho người dùng chưa đăng nhập (guest)
 Route::middleware(['guest'])->group(function ($auth) {

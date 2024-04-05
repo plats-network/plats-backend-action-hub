@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\Backend\AccountController;
 |
 */
 
+
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('forget', [AuthController::class, 'forget']);

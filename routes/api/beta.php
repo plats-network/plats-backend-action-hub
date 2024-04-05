@@ -35,6 +35,12 @@ Route::post('create-short-link/{code}', [EventController::class, 'createShortLin
 //login
 Route::group(['prefix' => 'login'], function () {
 
-    Route::get('social', [LoginController::class, 'loginSocial']);
+    //github
+    Route::get('github-redirect', [LoginController::class, 'loginRedirectGithub']);
+    Route::get('github-callback', [LoginController::class, 'loginCallbackGithub']);
+
+    //google
+    Route::get('google-redirect', [LoginController::class, 'loginRedirectGoogle']);
+    Route::get('google-callback', [LoginController::class, 'loginCallbackGoogle']);
 
 });
