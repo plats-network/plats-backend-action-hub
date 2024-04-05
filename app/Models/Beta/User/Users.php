@@ -2,8 +2,6 @@
 
 namespace App\Models\Beta\User;
 
-use App\Models\Event\UserJoinEvent;
-use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,7 +16,6 @@ class Users extends Authenticatable implements JWTSubject
     use HasFactory;
     use Notifiable;
     use SoftDeletes;
-    use Uuid;
 
     protected $table = 'plats_users';
 
