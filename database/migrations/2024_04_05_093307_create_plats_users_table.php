@@ -22,8 +22,8 @@ return new class extends Migration {
             $table->string('social')->nullable()->comment('đăng nhập mạng xã hội: facebook,google,apple, nếu login bình thường thì không cần');
             $table->boolean('active')->default(0)->comment('0: unactive, 1: active');
             $table->string('verify_code', 255)->nullable()->comment('verify code for user');
-            $table->unsignedBigInteger('created')->comment('ngày tạo tài khoản');
-            $table->unsignedBigInteger('updated')->comment('ngày cập nhật tài khoản');
+            $table->unsignedBigInteger('created')->nullable()->comment('ngày tạo tài khoản');
+            $table->unsignedBigInteger('updated')->nullable()->comment('ngày cập nhật tài khoản');
             $table->timestamps();
 
             // Add indexes
