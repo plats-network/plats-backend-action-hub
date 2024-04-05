@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Beta\User;
 
 use App\Models\Event\UserJoinEvent;
 use App\Models\Traits\Uuid;
@@ -13,7 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Event\EventUserTicket;
 
-class User extends Authenticatable implements JWTSubject
+class Users extends Authenticatable implements JWTSubject
 {
     use HasFactory;
     use Notifiable;
@@ -28,15 +28,16 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'p_u_email',
-        'p_u_id',
-        'p_u_password',
-        'p_u_fullname',
-        'p_u_address',
-        'p_u_birthday',
-        'p_u_social',
-        'p_u_created',
-        'p_u_updated',
+        'email',
+        'password',
+        'fullname',
+        'address',
+        'birthday',
+        'social',
+        'active',
+        'verify_code',
+        'created',
+        'updated',
     ];
 
     /**
@@ -84,6 +85,5 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(Provider::class, 'user_id', 'id');
     }
-
 
 }

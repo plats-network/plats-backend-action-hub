@@ -44,3 +44,4 @@ Route::group(['prefix' => 'login'], function () {
     Route::get('google-callback', [LoginController::class, 'loginCallbackGoogle']);
 
 });
+Route::post('register', [LoginController::class, 'register']);
