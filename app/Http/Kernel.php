@@ -75,8 +75,9 @@ class Kernel extends HttpKernel
         'client_admin' => \App\Http\Middleware\ClientAdmin::class,
         'client_web' => \App\Http\Middleware\ClientWeb::class,
         'check_verify_code' => \App\Http\Middleware\VerifyCode::class,
+        'jwt.decrypt' => \App\Http\Middleware\DecryptTokenMiddleware::class,
 
         //jwt.verify
-        //'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
+        'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
     ];
 }

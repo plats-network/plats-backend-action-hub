@@ -47,4 +47,14 @@ Route::group(['prefix' => 'login'], function () {
     Route::get('twitter-redirect', [LoginController::class, 'loginRedirectTwitter']);
     Route::get('twitter-callback', [LoginController::class, 'loginCallbackTwitter']);
     
+    //facebook
+    Route::get('facebook-redirect', [LoginController::class, 'loginRedirectFacebook']);
+    Route::get('facebook-callback', [LoginController::class, 'loginCallbackFacebook']);
+    
 });
+
+// add infor
+Route::post('create-infor', [LoginController::class, 'createInforSocial'])->middleware('jwt.decrypt');
+
+
+Route::post('register', [LoginController::class, 'register']);
